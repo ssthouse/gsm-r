@@ -72,6 +72,7 @@ public class MeasureActivity extends AppCompatActivity {
     //构造对象--折线对象
     private OverlayOptions polylineOptions = new PolylineOptions();
 
+    private boolean isFistIn = true;
 
     public static void start(Context context, PrjItem prjItem) {
         Intent intent = new Intent(context, MeasureActivity.class);
@@ -97,6 +98,12 @@ public class MeasureActivity extends AppCompatActivity {
         mLocationClient.registerLocationListener(new BDLocationListener() {
             @Override
             public void onReceiveLocation(BDLocation bdLocation) {
+                if(isFistIn){
+                    MapHelper.animateToPoint(mBaiduMap, new LatLng(
+                            bdLocation.getLatitude(), bdLocation.getLongitude()));
+                    MapHelper.animateZoom(mBaiduMap, 15);
+                    isFistIn = false;
+                }
             }
         });
         mLocationClient.start();

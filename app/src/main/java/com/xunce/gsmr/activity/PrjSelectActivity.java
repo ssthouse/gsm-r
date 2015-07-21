@@ -16,7 +16,7 @@ import com.xunce.gsmr.adapter.PrjLvAdapter;
 import com.xunce.gsmr.util.DialogHelper;
 import com.xunce.gsmr.util.ToastHelper;
 import com.xunce.gsmr.util.gps.DBHelper;
-import com.xunce.gsmr.activity.PicGridActivity;
+
 
 /**
  * 主界面选择工程的Activity
@@ -39,7 +39,7 @@ public class PrjSelectActivity extends AppCompatActivity{
         //TODO---测试代码
 //        MarkerActivity.start(this);
 //        MeasureActivity.start(this, new PrjItem());
-        PicGridActivity.start(this, null);
+//        PicGridActivity.start(this, null);
     }
 
     private void initView(){
@@ -63,7 +63,7 @@ public class PrjSelectActivity extends AppCompatActivity{
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 //点击某一个prjImte的时候跳转到---具体的编辑界面(一个地图---很多按钮)
-                com.xunce.gsmr.activity.PrjEditActivity.start(PrjSelectActivity.this, adapter.getPrjItemList().get(position));
+                PrjEditActivity.start(PrjSelectActivity.this, adapter.getPrjItemList().get(position));
             }
         });
         //长按监听事件

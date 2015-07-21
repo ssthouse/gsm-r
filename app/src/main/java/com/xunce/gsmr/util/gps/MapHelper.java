@@ -24,8 +24,23 @@ public class MapHelper {
     private static BitmapDescriptor descriptorBlue = BitmapDescriptorFactory
             .fromResource(R.drawable.icon_measure_blue);
 
+    /**
+     * 动画聚焦到一个点
+     * @param baiduMap
+     * @param latLng
+     */
     public static void animateToPoint(BaiduMap baiduMap, LatLng latLng) {
         MapStatusUpdate u = MapStatusUpdateFactory.newLatLng(latLng);
+        baiduMap.animateMapStatus(u);
+    }
+
+    /**
+     * 动画放大
+     * @param baiduMap
+     * @param zoomLevel
+     */
+    public static void animateZoom(BaiduMap baiduMap, int zoomLevel){
+        MapStatusUpdate u = MapStatusUpdateFactory.zoomTo(zoomLevel);
         baiduMap.animateMapStatus(u);
     }
 

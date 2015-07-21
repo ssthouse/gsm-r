@@ -2,14 +2,22 @@ package com.xunce.gsmr.activity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.GridView;
+import android.widget.ImageButton;
+import android.widget.Toast;
 
+import com.gitonway.lee.niftymodaldialogeffects.lib.Effectstype;
+import com.gitonway.lee.niftymodaldialogeffects.lib.NiftyDialogBuilder;
 import com.xunce.gsmr.Constant;
 import com.xunce.gsmr.R;
 import com.xunce.gsmr.adapter.PicGridAdapter;
@@ -18,8 +26,8 @@ import com.xunce.gsmr.model.MarkerItem;
 import com.xunce.gsmr.util.LogHelper;
 import com.xunce.gsmr.util.PictureHelper;
 
-import java.io.File;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 /**
@@ -29,15 +37,13 @@ import java.util.List;
 public class PicGridActivity extends AppCompatActivity {
     private static final String TAG = "PicGridActivity";
 
-    /**
-     * 当前用于调试的path
-     * TODO---应该是根据MarkerItem获取的
-     */
-    private String path = "/storage/sdcard0/picture/";
+    private MarkerItem markerItem;
 
     private List<BitmapItem> selectedList = new ArrayList<>();
 
     private GridView gv;
+    private ImageButton btnAdd;
+    private Button btnDelete;
 
     private PicGridAdapter adapter;
 
@@ -55,59 +61,49 @@ public class PicGridActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pic_grid);
 
-        initView();
+        markerItem = (MarkerItem) getIntent().getSerializableExtra(Constant.EXTRA_KEY_MARKER_ITEM);
 
-        int a = new File(path).list().length;
-        LogHelper.Log(TAG, a + "个文件");
+        initView();
     }
 
 
     private void initView() {
+        btnAdd = (ImageButton) findViewById(R.id.id_btn_add);
+        btnAdd.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                PictureHelper.getPictureFromCamera(PicGridActivity.this);
+            }
+        });
+
+        btnDelete = (Button) findViewById(R.id.id_btn_delete);
+        btnDelete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showConfirmDialog();
+            }
+        });
+
         gv = (GridView) findViewById(R.id.id_gv);
-        adapter = new PicGridAdapter(this, path);
+        adapter = new PicGridAdapter(this, markerItem.getFilePath());
         gv.setAdapter(adapter);
         gv.setChoiceMode(AbsListView.CHOICE_MODE_MULTIPLE);
 
         gv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Log.e(TAG, "shenmegui");
                 //如果在编辑状态---添加选中图片
-                if(isInSelectMode){
-                    //获取点中的bitmapItem
-                    BitmapItem bitmapItem = adapter.getBitmapItemList().get(gv.indexOfChild(view));
-                    //如果已经选中了的又被点击---剔除
-                    if (selectedList.contains(bitmapItem)) {
-//                        LogHelper.Log(TAG, "将之隐藏");
-//                        selectedList.remove(bitmapItem);
-//                        view.findViewById(R.id.id_iv_pic_delete).setVisibility(View.GONE);
-                        if (selectedList.size() == 0) {
-                            isInSelectMode = false;
-                        }
-                    } else {
-                        LogHelper.Log(TAG, "我添加进来了");
-                        selectedList.add(bitmapItem);
-                        view.findViewById(R.id.id_iv_pic_delete).setVisibility(View.VISIBLE);
-                        gv.postInvalidate();
-                        gv.clearChildFocus(view);
-                        gv.clearChoices();
-                        gv.clearFocus();
-                    }
-                }
                 if (isInSelectMode) {
-                    LogHelper.Log(TAG, "我进来饿了");
                     //获取点中的bitmapItem
                     BitmapItem bitmapItem = adapter.getBitmapItemList().get(gv.indexOfChild(view));
                     //如果已经选中了的又被点击---剔除
                     if (selectedList.contains(bitmapItem)) {
-                        LogHelper.Log(TAG, "将之隐藏");
                         selectedList.remove(bitmapItem);
                         view.findViewById(R.id.id_iv_pic_delete).setVisibility(View.INVISIBLE);
                         if (selectedList.size() == 0) {
                             isInSelectMode = false;
                         }
                     } else {
-                        LogHelper.Log(TAG, "我添加进来了");
                         selectedList.add(bitmapItem);
                         view.findViewById(R.id.id_iv_pic_delete).setVisibility(View.VISIBLE);
                     }
@@ -116,6 +112,7 @@ public class PicGridActivity extends AppCompatActivity {
                     PictureHelper.showPictureInAlbum(PicGridActivity.this,
                             adapter.getBitmapItemList().get(position).getPath());
                 }
+                updateView();
             }
         });
 
@@ -129,7 +126,8 @@ public class PicGridActivity extends AppCompatActivity {
                     BitmapItem bitmapItem = adapter.getBitmapItemList().get(gv.indexOfChild(view));
                     selectedList.add(bitmapItem);
                 }
-                return false;
+                updateView();
+                return true;
             }
         });
     }
@@ -139,7 +137,17 @@ public class PicGridActivity extends AppCompatActivity {
         selectedList.clear();
         for (int i = 0; i < gv.getChildCount(); i++) {
             View child = gv.getChildAt(i);
-            child.findViewById(R.id.id_iv_pic_delete).setVisibility(View.INVISIBLE);
+            child.findViewById(R.id.id_iv_pic_delete).setVisibility(View.GONE);
+        }
+    }
+
+    private void updateView() {
+        if (isInSelectMode) {
+            btnAdd.setVisibility(View.GONE);
+            btnDelete.setVisibility(View.VISIBLE);
+        } else {
+            btnAdd.setVisibility(View.VISIBLE);
+            btnDelete.setVisibility(View.GONE);
         }
     }
 
@@ -152,9 +160,130 @@ public class PicGridActivity extends AppCompatActivity {
         super.onBackPressed();
     }
 
+    private void showAlbumOrCamera(){
+        final NiftyDialogBuilder dialogBuilder = NiftyDialogBuilder.getInstance(this);
+        View.OnClickListener confirmListener = new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                for (BitmapItem item : selectedList) {
+                    PictureHelper.deletePicture(item.getPath());
+                }
+                adapter.notifyDataSetChanged();
+                selectedList.clear();
+                removeAllSelected();
+                updateView();
+                dialogBuilder.dismiss();
+            }
+        };
+        View.OnClickListener cancelListener = new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialogBuilder.dismiss();
+            }
+        };
+        dialogBuilder.withTitle("确认删除?")             //.withTitle(null)  no title
+                .withTitleColor("#FFFFFF")
+                .withDividerColor("#11000000")
+                .withMessage("照片将从工程中删除")//.withMessage(null)  no Msg
+                .withMessageColor("#FFFFFF")
+                .withDialogColor(this.getResources().getColor(R.color.dialog_color))
+                .withEffect(Effectstype.Slidetop)       //def Effectstype.Slidetop
+                .withButton1Text("确认")                 //def gone
+                .withButton2Text("取消")                 //def gone
+                .isCancelableOnTouchOutside(false)
+                .setButton1Click(confirmListener)
+                .setButton2Click(cancelListener)
+                .show();
+    }
+
+    private void showConfirmDialog() {
+        final NiftyDialogBuilder dialogBuilder = NiftyDialogBuilder.getInstance(this);
+        View.OnClickListener confirmListener = new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                for (BitmapItem item : selectedList) {
+                    PictureHelper.deletePicture(item.getPath());
+                }
+                adapter.notifyDataSetChanged();
+                selectedList.clear();
+                removeAllSelected();
+                updateView();
+                dialogBuilder.dismiss();
+            }
+        };
+        View.OnClickListener cancelListener = new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialogBuilder.dismiss();
+            }
+        };
+        dialogBuilder.withTitle("确认删除?")             //.withTitle(null)  no title
+                .withTitleColor("#FFFFFF")
+                .withDividerColor("#11000000")
+                .withMessage("照片将从工程中删除")//.withMessage(null)  no Msg
+                .withMessageColor("#FFFFFF")
+                .withDialogColor(this.getResources().getColor(R.color.dialog_color))
+                .withEffect(Effectstype.Slidetop)       //def Effectstype.Slidetop
+                .withButton1Text("确认")                 //def gone
+                .withButton2Text("取消")                 //def gone
+                .isCancelableOnTouchOutside(false)
+                .setButton1Click(confirmListener)
+                .setButton2Click(cancelListener)
+                .show();
+    }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         //TODO---回调
+        //判断是图库---还是照相机
+        if (requestCode == Constant.REQUEST_CODE_ALBUM && null != data) {
+            //根据uri获取图片路径
+            Uri selectedImage = data.getData();
+            String[] filePathColumn = {MediaStore.Images.Media.DATA};
+            Cursor cursor = getContentResolver().query(selectedImage,
+                    filePathColumn, null, null, null);
+            cursor.moveToFirst();
+            int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
+            String srcPath = cursor.getString(columnIndex);
+            cursor.close();
+            //将照片保存到指定文件夹
+            PictureHelper.saveImage(srcPath, markerItem.getFilePath() +
+                    Calendar.getInstance().getTimeInMillis() + ".jpeg");
+            //更新界面
+            adapter.notifyDataSetChanged();
+        } else if (requestCode == Constant.REQUEST_CODE_CAMERA && null != data) {
+            Uri uri = data.getData();
+            String picPath = markerItem.getFilePath() + Calendar.getInstance().getTimeInMillis() + ".jpeg";
+            if (uri == null) {
+                LogHelper.Log(TAG, "拍照的uri是空的!!!");
+                Bundle bundle = data.getExtras();
+                if (bundle != null) {
+                    Bitmap photo = (Bitmap) bundle.get("data"); //get bitmap
+                    //直接将Bitmap保存到指定路径
+                    PictureHelper.saveImage(photo, picPath);
+                    //更新界面
+                    adapter.notifyDataSetChanged();
+                } else {
+                    Toast.makeText(getApplicationContext(), "该照片获取失败!", Toast.LENGTH_LONG).show();
+                    return;
+                }
+            } else {
+                LogHelper.Log(TAG, "拍照的uri不是空的");
+                //根据uri获取图片路径
+                Uri selectedImage = data.getData();
+                String[] filePathColumn = {MediaStore.Images.Media.DATA};
+                Cursor cursor = getContentResolver().query(selectedImage,
+                        filePathColumn, null, null, null);
+                cursor.moveToFirst();
+                int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
+                String srcPath = cursor.getString(columnIndex);
+                cursor.close();
+                //将照片保存到指定文件夹
+                PictureHelper.saveImage(srcPath, picPath);
+                //更新界面
+                adapter.notifyDataSetChanged();
+            }
+        }
         super.onActivityResult(requestCode, resultCode, data);
     }
 }

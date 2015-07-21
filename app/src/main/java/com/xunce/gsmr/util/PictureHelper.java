@@ -27,6 +27,13 @@ import java.util.List;
  */
 public class PictureHelper {
 
+    public static void deletePicture(String path){
+        File file = new File(path);
+        if(file.exists()){
+            file.delete();
+        }
+    }
+
     /**
      * 显示当前图库的所有图片---按文件名顺序
      * @param context
@@ -92,7 +99,7 @@ public class PictureHelper {
             targetFile.setWritable(true);
             targetFile.setExecutable(true);
             //复制文件
-            FileInputStream fosFrom = new java.io.FileInputStream(srcFile);
+            FileInputStream fosFrom = new FileInputStream(srcFile);
             FileOutputStream fosTo = new FileOutputStream(targetFile);
             byte bt[] = new byte[1024];
             int c;

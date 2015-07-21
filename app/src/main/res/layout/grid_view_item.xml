@@ -25,10 +25,11 @@
             android:layout_margin="4dp"
             android:visibility="gone"
             android:id="@+id/id_iv_pic_delete"
-            android:layout_width="12dp"
-            android:layout_height="12dp"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
             android:layout_gravity="right|top"
-            android:src="@drawable/pic_delete" />
+            android:src="@drawable/icon_selected" />
+
     </FrameLayout>
 
 </LinearLayout>

@@ -7,7 +7,9 @@ package com.xunce.gsmr;
 public class Constant {
 
     //app的文件夹名
-    public static  final String APP_FOLDER_NAME = "FpsTest";
+    public static  final String APP_FOLDER_NAME = "GSM";
+
+    public static final String PICTURE_PATH = "/storage/sdcard0/GSM/Picture/";
 
     //table名
     public static final String TABLE_PRJ_ITEM = "Projects";

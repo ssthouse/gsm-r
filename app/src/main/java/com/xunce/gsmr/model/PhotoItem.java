@@ -1,28 +1,19 @@
 package com.xunce.gsmr.model;
 
-import com.activeandroid.Model;
-import com.activeandroid.annotation.Column;
-import com.activeandroid.annotation.Table;
 import com.baidu.mapapi.model.LatLng;
-import com.xunce.gsmr.Constant;
 
 /**
  * 一个PhotoItem的数据
  * Created by ssthouse on 2015/7/17.
  */
-@Table(name = Constant.TABLE_PHOTO_ITEM)
-public class PhotoItem extends Model {
+public class PhotoItem{
 
-    @Column(name = "prjName")
     private String prjName;
 
-    @Column(name = "latitude")
     private double latitude;
 
-    @Column(name = "longitude")
     private double longitude;
 
-    @Column(name = "path")
     private String path;
 
     public PhotoItem(){

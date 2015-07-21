@@ -13,7 +13,6 @@ import com.xunce.gsmr.activity.PrjEditActivity;
 import com.xunce.gsmr.adapter.PrjLvAdapter;
 import com.xunce.gsmr.model.PrjItem;
 import com.xunce.gsmr.util.gps.DBHelper;
-import com.xunce.gsmr.util.ToastHelper;
 
 /**
  * Dialog的工具类
@@ -96,7 +95,7 @@ public class DialogHelper {
             public void onClick(View v) {
                 dialogBuilder.dismiss();
                 //删除数据库中的数据---prjItem
-                prjItem.delete();
+                FileHelper.deletePrjItem(prjItem);
                 //刷新视图
                 adapter.notifyDataSetChanged();
             }
@@ -161,7 +160,7 @@ public class DialogHelper {
                     if (DBHelper.isPrjExist(prjName)) {
                         ToastHelper.show(context, "该工程已存在");
                     } else {
-                        //更新数据库中的prjItem
+                        //TODO---更新数据库中的rjItemp
                         prjItem.setPrjName(prjName);
                         prjItem.save();
                         //消除Dialog

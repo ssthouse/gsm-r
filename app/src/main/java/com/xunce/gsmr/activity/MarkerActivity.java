@@ -29,6 +29,7 @@ import com.baidu.mapapi.model.LatLng;
 import com.xunce.gsmr.Constant;
 import com.xunce.gsmr.R;
 import com.xunce.gsmr.model.MarkerItem;
+import com.xunce.gsmr.model.widget.ZoomControlView;
 import com.xunce.gsmr.util.AnimHelper;
 import com.xunce.gsmr.util.gps.DBHelper;
 import com.xunce.gsmr.util.gps.LocateHelper;
@@ -106,7 +107,7 @@ public class MarkerActivity extends AppCompatActivity {
         markerItem = DBHelper.getMarkerItemInDB(wrongItem);
 
         requestCode = getIntent().getIntExtra(Constant.EXTRA_KEY_REQUEST_CODE,
-                com.xunce.gsmr.activity.PrjEditActivity.REQUEST_CODE_MARKER_ACTIVITY);
+                PrjEditActivity.REQUEST_CODE_MARKER_ACTIVITY);
 
         // 定位初始化
         mLocClient = new LocationClient(this);
@@ -133,7 +134,7 @@ public class MarkerActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         mMapView = (MapView) findViewById(R.id.id_map_view);
-
+        mMapView.showZoomControls(false);
         mBaiduMap = mMapView.getMap();
         UiSettings uiSettings = mBaiduMap.getUiSettings();
         //开启指南针
@@ -142,6 +143,10 @@ public class MarkerActivity extends AppCompatActivity {
         mBaiduMap.setMyLocationEnabled(true);
         mBaiduMap.setMyLocationConfigeration(new MyLocationConfiguration(
                 MyLocationConfiguration.LocationMode.NORMAL, true, null));
+
+        //获取缩放控件
+        ZoomControlView zcvZomm = (ZoomControlView) findViewById(R.id.id_zoom_control);
+        zcvZomm.setMapView(mMapView);//设置百度地图控件
 
         //如果是编辑---定位到编辑的点
         if (markerItem.getLatitude() != 0 && markerItem.getLongitude() != 0) {
@@ -294,7 +299,8 @@ public class MarkerActivity extends AppCompatActivity {
             case R.id.id_action_load_marker:
                 break;
             case android.R.id.home:
-                if(requestCode == com.xunce.gsmr.activity.PrjEditActivity.REQUEST_CODE_MARKER_EDIT_ACTIVITY){
+                if(requestCode == PrjEditActivity.REQUEST_CODE_MARKER_EDIT_ACTIVITY){
+                    finish();
                     return true;
                 }
                 markerItem.delete();
@@ -306,7 +312,8 @@ public class MarkerActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        if(requestCode == com.xunce.gsmr.activity.PrjEditActivity.REQUEST_CODE_MARKER_EDIT_ACTIVITY){
+        if(requestCode == PrjEditActivity.REQUEST_CODE_MARKER_EDIT_ACTIVITY){
+            finish();
             return;
         }
         //如果直接想返回---需要删除提前在数据库中保存的数据

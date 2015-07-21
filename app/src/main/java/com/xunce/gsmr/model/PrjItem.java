@@ -3,9 +3,11 @@ package com.xunce.gsmr.model;
 import com.activeandroid.Model;
 import com.activeandroid.annotation.Column;
 import com.activeandroid.annotation.Table;
+import com.activeandroid.query.Select;
 import com.xunce.gsmr.Constant;
 
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * 单个工程Item
@@ -25,6 +27,12 @@ public class PrjItem extends Model implements Serializable{
     public PrjItem() {
         super();
         prjName = "";
+    }
+
+    public List<MarkerItem> getMarkerItemList(){
+        return new Select().from(MarkerItem.class)
+                .where("prjName = "+ "' "+prjName+" '")
+                .execute();
     }
 
     //getter-----------and---------------setter---------

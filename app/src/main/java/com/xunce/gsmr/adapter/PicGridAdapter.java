@@ -10,7 +10,6 @@ import android.widget.ImageView;
 import com.xunce.gsmr.R;
 import com.xunce.gsmr.model.BitmapItem;
 import com.xunce.gsmr.model.widget.CustomImageView;
-import com.xunce.gsmr.util.LogHelper;
 import com.xunce.gsmr.util.PictureHelper;
 
 import java.util.List;
@@ -25,6 +24,8 @@ public class PicGridAdapter extends BaseAdapter {
     private Context context;
     private List<BitmapItem> bitmapItemList;
 
+    private String path;
+
     /**
      * 根据path自己获取图片
      * @param path
@@ -32,11 +33,12 @@ public class PicGridAdapter extends BaseAdapter {
     public PicGridAdapter(Context context,String path){
         this.context = context;
         bitmapItemList = PictureHelper.getBitmapItemList(path);
+        this.path = path;
     }
 
     @Override
     public int getCount() {
-        LogHelper.Log(TAG, bitmapItemList.size()+"");
+//        LogHelper.Log(TAG, bitmapItemList.size()+"");
         return bitmapItemList.size();
     }
 
@@ -78,5 +80,11 @@ public class PicGridAdapter extends BaseAdapter {
 
     public void setBitmapItemList(List<BitmapItem> bitmapItemList) {
         this.bitmapItemList = bitmapItemList;
+    }
+
+    @Override
+    public void notifyDataSetChanged() {
+        bitmapItemList = PictureHelper.getBitmapItemList(path);
+        super.notifyDataSetChanged();
     }
 }

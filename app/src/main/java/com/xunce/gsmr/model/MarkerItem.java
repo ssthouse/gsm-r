@@ -3,19 +3,17 @@ package com.xunce.gsmr.model;
 import com.activeandroid.Model;
 import com.activeandroid.annotation.Column;
 import com.activeandroid.annotation.Table;
-import com.activeandroid.query.Select;
 import com.baidu.mapapi.model.LatLng;
 import com.xunce.gsmr.Constant;
 
 import java.io.Serializable;
-import java.util.List;
 
 /**
  * 单个的Marker对象---一个
  * Created by ssthouse on 2015/7/17.
  */
 @Table(name = Constant.TABLE_MARKER_ITEM)
-public class MarkerItem extends Model implements Serializable{
+public class MarkerItem extends Model implements Serializable {
 
     @Column(name = "prjName")
     private String prjName;
@@ -41,9 +39,10 @@ public class MarkerItem extends Model implements Serializable{
 
     /**
      * 使用prjItem的构造方法
+     *
      * @param prjItem
      */
-    public MarkerItem(com.xunce.gsmr.model.PrjItem prjItem){
+    public MarkerItem(PrjItem prjItem) {
         super();
         this.prjName = prjItem.getPrjName();
         this.latitude = 0;
@@ -66,19 +65,13 @@ public class MarkerItem extends Model implements Serializable{
         super();
     }
 
-    public List<com.xunce.gsmr.model.PhotoItem> getPhotpItemList() {
-        List<com.xunce.gsmr.model.PhotoItem> photoItemList = new Select().from(com.xunce.gsmr.model.PhotoItem.class)
-                .where("latitude = " +
-                        "'" + latitude + "'" +
-                        " AND longitude = " +
-                        "'" + longitude + "'"
-                        + " AND prjName = " +
-                        "'" + prjName + "'")
-                .execute();
-        return photoItemList;
+
+    public String getFilePath() {
+        return Constant.PICTURE_PATH + prjName + "/" + latitude + "_" + longitude + "/";
     }
 
     //getter-----and------setter--------------------------
+
     public double getLatitude() {
         return latitude;
     }

@@ -8,8 +8,8 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.xunce.gsmr.R;
-import com.xunce.gsmr.util.gps.DBHelper;
 import com.xunce.gsmr.model.PrjItem;
+import com.xunce.gsmr.util.gps.DBHelper;
 
 import java.util.List;
 
