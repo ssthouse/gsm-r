@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <TextView
+        android:background="@drawable/lv_item_selector"
+        android:id="@+id/id_menu_delete"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:gravity="center"
+        android:text="删除"
+        android:textColor="@color/white"
+        android:textSize="@dimen/text_size_normal" />
+
+    <TextView
+        android:background="@drawable/lv_item_selector"
+        android:id="@+id/id_menu_edit"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:gravity="center"
+        android:text="编辑"
+        android:textColor="@color/white"
+        android:textSize="@dimen/text_size_normal" />
+
+    <TextView
+        android:background="@drawable/lv_item_selector"
+        android:id="@+id/id_menu_rename"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:gravity="center"
+        android:text="重命名"
+        android:textColor="@color/white"
+        android:textSize="@dimen/text_size_normal" />
+</LinearLayout>

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="horizontal"
+    android:padding="4dp">
+
+    <Button
+        android:id="@+id/id_btn_edit"
+        android:background="@color/gray"
+        android:textColor="@color/white"
+        android:layout_width="80dp"
+        android:layout_height="42dp"
+        android:text="修改"/>
+</LinearLayout>

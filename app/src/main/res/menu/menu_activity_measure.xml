@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/id_action_back_one_point"
+        android:icon="@drawable/back_btn"
+        android:title="上一步"
+        app:showAsAction="always" />
+
+    <item
+        android:id="@+id/id_action_delete_all"
+        android:icon="@drawable/map_delete"
+        android:title="清除"
+        app:showAsAction="always" />
+
+    <item
+        android:id="@+id/id_action_setting"
+        android:icon="@drawable/map_delete"
+        android:title="设置"
+        app:showAsAction="never" />
+</menu>
