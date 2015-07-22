@@ -231,7 +231,6 @@ public class PicGridActivity extends AppCompatActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        //TODO---回调
         //判断是图库---还是照相机
         if (requestCode == Constant.REQUEST_CODE_ALBUM && null != data) {
             //根据uri获取图片路径

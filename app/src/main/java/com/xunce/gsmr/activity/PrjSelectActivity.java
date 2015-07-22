@@ -35,11 +35,6 @@ public class PrjSelectActivity extends AppCompatActivity{
         setContentView(R.layout.activity_prj_select);
 
         initView();
-
-        //TODO---测试代码
-//        MarkerActivity.start(this);
-//        MeasureActivity.start(this, new PrjItem());
-//        PicGridActivity.start(this, null);
     }
 
     private void initView(){

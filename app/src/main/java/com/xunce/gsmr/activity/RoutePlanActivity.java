@@ -251,17 +251,17 @@ public class RoutePlanActivity extends Activity {
 
         @Override
         public void onRoutePlanYawingSuccess() {
-            // TODO Auto-generated method stub
+            ToastHelper.show(RoutePlanActivity.this, "算路成功!");
         }
 
         @Override
         public void onRoutePlanYawingFail() {
-            // TODO Auto-generated method stub
+            ToastHelper.show(RoutePlanActivity.this, "抱歉,算路失败");
         }
 
         @Override
         public void onRoutePlanSuccess() {
-            // TODO Auto-generated method stub
+            // T算路成功---导出算路数据---为开启导航做好准备
             BNMapController.getInstance().setLayerMode(
                     MapParams.Const.LayerMode.MAP_LAYER_MODE_ROUTE_DETAIL);
             mRoutePlanModel = (RoutePlanModel) NaviDataEngine.getInstance()
@@ -270,17 +270,14 @@ public class RoutePlanActivity extends Activity {
 
         @Override
         public void onRoutePlanFail() {
-            // TODO Auto-generated method stub
         }
 
         @Override
         public void onRoutePlanCanceled() {
-            // TODO Auto-generated method stub
         }
 
         @Override
         public void onRoutePlanStart() {
-            // TODO Auto-generated method stub
         }
     };
 

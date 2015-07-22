@@ -108,9 +108,6 @@ public class PrjEditActivity extends AppCompatActivity {
         initView();
 
         loadMapData(mBaiduMap, prjItem);
-
-        //TODO-------------------------测试代码
-//        NavigateHelper.initNavi(this);
     }
 
     private void initView() {
@@ -319,7 +316,6 @@ public class PrjEditActivity extends AppCompatActivity {
         switch (requestCode) {
             case REQUEST_CODE_MARKER_ACTIVITY:
                 if (resultCode == Constant.RESULT_CODE_OK) {
-                    //TODO---重新获取MarkerItem--重新画图
                     MapHelper.loadMarker(mBaiduMap, prjItem);
                     //更新当前Activity中的数据
                     loadMapData(mBaiduMap, prjItem);
@@ -327,7 +323,6 @@ public class PrjEditActivity extends AppCompatActivity {
                 break;
             case REQUEST_CODE_MARKER_EDIT_ACTIVITY:
                 if (resultCode == Constant.RESULT_CODE_OK) {
-                    //TODO---重新获取MarkerItem--重新画图
                     MapHelper.loadMarker(mBaiduMap, prjItem);
                     //更新当前Activity中的数据
                     loadMapData(mBaiduMap, prjItem);
@@ -338,7 +333,6 @@ public class PrjEditActivity extends AppCompatActivity {
             case REQUEST_CODE_PICTURE_ACTIVITY:
                 break;
         }
-        //TODO----处理各种回调时间
         super.onActivityResult(requestCode, resultCode, data);
     }
 

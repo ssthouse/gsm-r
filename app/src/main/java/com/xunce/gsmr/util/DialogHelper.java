@@ -136,7 +136,6 @@ public class DialogHelper {
      * @param prjItem
      */
     public static void showChangeNameDialog(final Context context, final PrjItem prjItem) {
-        String formername = prjItem.getPrjName();
         //导出View
         LinearLayout llPrjName = (LinearLayout) LayoutInflater.from(context).
                 inflate(R.layout.dialog_prj_name, null);
@@ -160,9 +159,7 @@ public class DialogHelper {
                     if (DBHelper.isPrjExist(prjName)) {
                         ToastHelper.show(context, "该工程已存在");
                     } else {
-                        //TODO---更新数据库中的rjItemp
-                        prjItem.setPrjName(prjName);
-                        prjItem.save();
+                        FileHelper.changePrjItemName(prjItem, prjName);
                         //消除Dialog
                         dialogBuilder.dismiss();
                         //Toast 提醒成功
@@ -185,5 +182,15 @@ public class DialogHelper {
                 .setButton1Click(confirmListener)
                 .setButton2Click(cancelListener)
                 .show();
+    }
+
+    /**
+     * 显示--用图库还是相机的Diakllog
+     * TODO---看有没有这个需求吧
+     * @param context
+     * @param path
+     */
+    public static void showAlbumOrCameraDialog(Context context, String path){
+
     }
 }

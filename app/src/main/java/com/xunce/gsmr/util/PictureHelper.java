@@ -27,6 +27,7 @@ import java.util.List;
  * Created by ssthouse on 2015/7/18.
  */
 public class PictureHelper {
+    private static String TAG = "PictureHelper";
 
     public static void deletePicture(String path) {
         File file = new File(path);
@@ -79,7 +80,6 @@ public class PictureHelper {
      * @return
      */
     public static boolean saveImage(String srcPath, String targetPath) {
-        //TODO
 //        Log.e(TAG, "我是源文件" + srcPath);
 //        Log.e(TAG, "我是目标文件" + targetPath);
         //判断路径是否为空
@@ -117,6 +117,45 @@ public class PictureHelper {
         return true;
     }
 
+    /**
+     * 按从小到大的顺序排列File数组
+     *
+     * @param files
+     */
+    private static void sortFileArray(File[] files) {
+        for (int j = 0; j < files.length - 1; j++) {
+            for (int i = j + 1; i < files.length; i++) {
+                if (getFileNameInFloat(files[j]) > getFileNameInFloat(files[i])) {
+                    File tempFile = files[i];
+                    files[i] = files[j];
+                    files[j] = tempFile;
+                }
+            }
+        }
+        for (File file : files) {
+            LogHelper.Log(TAG, file.getName());
+        }
+    }
+
+    /**
+     * 获取图片文件的float文件名----用于比较创建时间
+     *
+     * @param file
+     */
+    private static double getFileNameInFloat(File file) {
+        try {
+            String fileName = file.getName();
+            String floatString = fileName.replace(".jpg", "");
+            double time = Double.parseDouble(floatString);
+            return time;
+        } catch (Exception e) {
+            e.printStackTrace();
+            LogHelper.Log(TAG, "something is wrong");
+        }
+        return 0;
+    }
+
+
     public static List<BitmapItem> getBitmapItemList(String path) {
         //要返回的数据
         List<BitmapItem> bitmapList = new ArrayList<>();
@@ -130,7 +169,8 @@ public class PictureHelper {
             files = dir.listFiles();
         }
         //整理顺序
-        //sortFileArray(files);
+        LogHelper.Log(TAG, "我进i行了排序");
+        sortFileArray(files);
         //将每个文件转化为bitmap
         for (File file : files) {
             //获取缩略图
@@ -197,7 +237,7 @@ public class PictureHelper {
     public static void getPictureFromCamera(Activity activity, String path) {
         String state = Environment.getExternalStorageState();
         if (state.equals(Environment.MEDIA_MOUNTED)) {
-            File file = new File(path+System.currentTimeMillis()+".jpg");//localTempImgDir和localTempImageFileName是自己定义的名字
+            File file = new File(path + System.currentTimeMillis() + ".jpg");//localTempImgDir和localTempImageFileName是自己定义的名字
             Uri u = Uri.fromFile(file);
             Intent intent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
             intent.putExtra(MediaStore.Images.Media.ORIENTATION, 0);

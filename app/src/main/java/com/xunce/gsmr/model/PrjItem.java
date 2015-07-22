@@ -31,7 +31,7 @@ public class PrjItem extends Model implements Serializable{
 
     public List<MarkerItem> getMarkerItemList(){
         return new Select().from(MarkerItem.class)
-                .where("prjName = "+ "' "+prjName+" '")
+                .where("prjName = "+ "'"+prjName+"'")
                 .execute();
     }
 

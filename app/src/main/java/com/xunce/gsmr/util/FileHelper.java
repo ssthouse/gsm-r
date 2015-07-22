@@ -15,10 +15,10 @@ import java.util.List;
  * Created by ssthouse on 2015/7/16.
  */
 public class FileHelper {
+    private static final String TAG = "FileHelper";
 
     /**
      * 删除一个PrjItem的数据
-     * TODO
      *
      * @param prjItem
      */
@@ -42,11 +42,16 @@ public class FileHelper {
         prjItem.delete();
     }
 
+    /**
+     * 为PrjImte重命名
+     * @param prjItem
+     * @param newName
+     */
     public static void changePrjItemName(PrjItem prjItem, String newName) {
         if (prjItem == null || newName == null) {
             return;
         }
-        //删除照片文件
+        //修改照片文件名称
         String path = Constant.PICTURE_PATH + prjItem.getPrjName();
         File file = new File(path);
         if (file.exists()) {
@@ -56,6 +61,7 @@ public class FileHelper {
         List<MarkerItem> markerItemList = prjItem.getMarkerItemList();
         if (markerItemList != null) {
             for (MarkerItem item : markerItemList) {
+                LogHelper.Log(TAG, "我修改了MarkerItem的prjName");
                 item.setPrjName(newName);
                 item.save();
             }
