@@ -3,7 +3,6 @@ package com.xunce.gsmr.activity;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
-import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -14,7 +13,6 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.GridView;
 import android.widget.ImageButton;
-import android.widget.Toast;
 
 import com.gitonway.lee.niftymodaldialogeffects.lib.Effectstype;
 import com.gitonway.lee.niftymodaldialogeffects.lib.NiftyDialogBuilder;
@@ -23,7 +21,6 @@ import com.xunce.gsmr.R;
 import com.xunce.gsmr.adapter.PicGridAdapter;
 import com.xunce.gsmr.model.BitmapItem;
 import com.xunce.gsmr.model.MarkerItem;
-import com.xunce.gsmr.util.LogHelper;
 import com.xunce.gsmr.util.PictureHelper;
 
 import java.util.ArrayList;
@@ -72,7 +69,7 @@ public class PicGridActivity extends AppCompatActivity {
         btnAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                PictureHelper.getPictureFromCamera(PicGridActivity.this);
+                PictureHelper.getPictureFromCamera(PicGridActivity.this, markerItem.getFilePath());
             }
         });
 
@@ -160,7 +157,7 @@ public class PicGridActivity extends AppCompatActivity {
         super.onBackPressed();
     }
 
-    private void showAlbumOrCamera(){
+    private void showAlbumOrCamera() {
         final NiftyDialogBuilder dialogBuilder = NiftyDialogBuilder.getInstance(this);
         View.OnClickListener confirmListener = new View.OnClickListener() {
             @Override
@@ -251,38 +248,9 @@ public class PicGridActivity extends AppCompatActivity {
                     Calendar.getInstance().getTimeInMillis() + ".jpeg");
             //更新界面
             adapter.notifyDataSetChanged();
-        } else if (requestCode == Constant.REQUEST_CODE_CAMERA && null != data) {
-            Uri uri = data.getData();
-            String picPath = markerItem.getFilePath() + Calendar.getInstance().getTimeInMillis() + ".jpeg";
-            if (uri == null) {
-                LogHelper.Log(TAG, "拍照的uri是空的!!!");
-                Bundle bundle = data.getExtras();
-                if (bundle != null) {
-                    Bitmap photo = (Bitmap) bundle.get("data"); //get bitmap
-                    //直接将Bitmap保存到指定路径
-                    PictureHelper.saveImage(photo, picPath);
-                    //更新界面
-                    adapter.notifyDataSetChanged();
-                } else {
-                    Toast.makeText(getApplicationContext(), "该照片获取失败!", Toast.LENGTH_LONG).show();
-                    return;
-                }
-            } else {
-                LogHelper.Log(TAG, "拍照的uri不是空的");
-                //根据uri获取图片路径
-                Uri selectedImage = data.getData();
-                String[] filePathColumn = {MediaStore.Images.Media.DATA};
-                Cursor cursor = getContentResolver().query(selectedImage,
-                        filePathColumn, null, null, null);
-                cursor.moveToFirst();
-                int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
-                String srcPath = cursor.getString(columnIndex);
-                cursor.close();
-                //将照片保存到指定文件夹
-                PictureHelper.saveImage(srcPath, picPath);
-                //更新界面
-                adapter.notifyDataSetChanged();
-            }
+        } else if (requestCode == Constant.REQUEST_CODE_CAMERA) {
+            //更新界面
+            adapter.notifyDataSetChanged();
         }
         super.onActivityResult(requestCode, resultCode, data);
     }

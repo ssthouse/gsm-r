@@ -8,6 +8,7 @@ import android.graphics.BitmapFactory;
 import android.media.ThumbnailUtils;
 import android.net.Uri;
 import android.os.Environment;
+import android.provider.MediaStore;
 import android.widget.Toast;
 
 import com.xunce.gsmr.Constant;
@@ -27,15 +28,16 @@ import java.util.List;
  */
 public class PictureHelper {
 
-    public static void deletePicture(String path){
+    public static void deletePicture(String path) {
         File file = new File(path);
-        if(file.exists()){
+        if (file.exists()) {
             file.delete();
         }
     }
 
     /**
      * 显示当前图库的所有图片---按文件名顺序
+     *
      * @param context
      * @param path
      */
@@ -50,6 +52,7 @@ public class PictureHelper {
 
     /**
      * 将图片保存到指定的目录
+     *
      * @param photo
      * @param savePath
      * @return
@@ -191,11 +194,15 @@ public class PictureHelper {
      *
      * @param activity
      */
-    public static void getPictureFromCamera(Activity activity) {
+    public static void getPictureFromCamera(Activity activity, String path) {
         String state = Environment.getExternalStorageState();
         if (state.equals(Environment.MEDIA_MOUNTED)) {
-            Intent getImageByCamera = new Intent("android.media.action.IMAGE_CAPTURE");
-            activity.startActivityForResult(getImageByCamera, Constant.REQUEST_CODE_CAMERA);
+            File file = new File(path+System.currentTimeMillis()+".jpg");//localTempImgDir和localTempImageFileName是自己定义的名字
+            Uri u = Uri.fromFile(file);
+            Intent intent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+            intent.putExtra(MediaStore.Images.Media.ORIENTATION, 0);
+            intent.putExtra(MediaStore.EXTRA_OUTPUT, u);
+            activity.startActivityForResult(intent, Constant.REQUEST_CODE_CAMERA);
         } else {
             Toast.makeText(activity, "请确认已经插入SD卡", Toast.LENGTH_SHORT).show();
         }
