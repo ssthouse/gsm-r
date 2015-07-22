@@ -56,4 +56,11 @@
             android:textSize="@dimen/text_size_normal" />
     </LinearLayout>
 
+    <ProgressBar
+        android:id="@+id/id_pb_empty"
+        android:layout_width="56dp"
+        android:layout_height="56dp"
+        android:layout_gravity="center"
+        android:indeterminate="true"/>
+
 </FrameLayout>

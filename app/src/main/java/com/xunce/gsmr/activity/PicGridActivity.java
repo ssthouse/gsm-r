@@ -8,7 +8,6 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
-import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.GridView;
@@ -67,6 +66,12 @@ public class PicGridActivity extends AppCompatActivity {
         initView();
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        adapter = new PicGridAdapter(this, markerItem.getFilePath());
+        gv.setAdapter(adapter);
+    }
 
     private void initView() {
         btnAdd = (ImageButton) findViewById(R.id.id_btn_add);
@@ -96,9 +101,7 @@ public class PicGridActivity extends AppCompatActivity {
         });
 
         gv = (GridView) findViewById(R.id.id_gv);
-        adapter = new PicGridAdapter(this, markerItem.getFilePath());
-        gv.setAdapter(adapter);
-        gv.setChoiceMode(AbsListView.CHOICE_MODE_MULTIPLE);
+
 
         gv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -213,10 +216,11 @@ public class PicGridActivity extends AppCompatActivity {
         View.OnClickListener confirmListener = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                PicGridActivity.this.findViewById(R.id.id_pb_empty).setVisibility(View.VISIBLE);
                 for (BitmapItem item : selectedList) {
                     PictureHelper.deletePicture(item.getPath());
                 }
-                adapter.notifyDataSetChanged();
+                adapter.resetBitmap();
                 selectedList.clear();
                 removeAllSelected();
                 updateView();
@@ -262,10 +266,15 @@ public class PicGridActivity extends AppCompatActivity {
                     Calendar.getInstance().getTimeInMillis() + ".jpeg");
             //更新界面
             adapter.notifyDataSetChanged();
-        } else if (requestCode == Constant.REQUEST_CODE_CAMERA) {
+            return;
+        } else if (requestCode == Constant.REQUEST_CODE_CAMERA && resultCode == RESULT_OK) {
+            PicGridActivity.this.findViewById(R.id.id_pb_empty).setVisibility(View.VISIBLE);
             //更新界面
-            adapter.notifyDataSetChanged();
+            adapter.addPicture();
+            return;
         }
+//        removeAllSelected();
+//        updateView();
         super.onActivityResult(requestCode, resultCode, data);
     }
 }

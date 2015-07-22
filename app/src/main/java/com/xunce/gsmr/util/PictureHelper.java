@@ -7,6 +7,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.media.ThumbnailUtils;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.widget.Toast;
@@ -23,7 +24,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * 处理图片大小的工具类
+ * 处理图片的工具类
  * Created by ssthouse on 2015/7/18.
  */
 public class PictureHelper {
@@ -122,7 +123,7 @@ public class PictureHelper {
      *
      * @param files
      */
-    private static void sortFileArray(File[] files) {
+    public static void sortFileArray(File[] files) {
         for (int j = 0; j < files.length - 1; j++) {
             for (int i = j + 1; i < files.length; i++) {
                 if (getFileNameInFloat(files[j]) > getFileNameInFloat(files[i])) {
@@ -139,7 +140,7 @@ public class PictureHelper {
      *
      * @param file
      */
-    private static double getFileNameInFloat(File file) {
+    public static double getFileNameInFloat(File file) {
         try {
             String fileName = file.getName();
             String floatString = fileName.replace(".jpg", "");
@@ -154,26 +155,37 @@ public class PictureHelper {
 
 
     public static List<BitmapItem> getBitmapItemList(String path) {
-        //要返回的数据
-        List<BitmapItem> bitmapList = new ArrayList<>();
-        //列出picture文件
-        File[] files;
-        File dir = new File(path);
-        if (dir.exists()) {
-            files = dir.listFiles();
-        } else {
-            dir.mkdirs();
-            files = dir.listFiles();
-        }
-        //整理顺序
-        sortFileArray(files);
-        //将每个文件转化为bitmap
-        for (File file : files) {
-            //获取缩略图
-            Bitmap bitmap = getSmallBitmap(file.getAbsolutePath(), 240, 240);
-            bitmapList.add(new BitmapItem(bitmap, file.getAbsolutePath()));
-        }
-        return bitmapList;
+        new AsyncTask<String, Void, List<BitmapItem>>(){
+            @Override
+            protected List<BitmapItem> doInBackground(String... params) {
+                //要返回的数据
+                List<BitmapItem> bitmapList = new ArrayList<>();
+                //列出picture文件
+                File[] files;
+                File dir = new File(params[0]);
+                if (dir.exists()) {
+                    files = dir.listFiles();
+                } else {
+                    dir.mkdirs();
+                    files = dir.listFiles();
+                }
+                //整理顺序
+                sortFileArray(files);
+                //将每个文件转化为bitmap
+                for (File file : files) {
+                    //获取缩略图
+                    Bitmap bitmap = getSmallBitmap(file.getAbsolutePath(), 240, 240);
+                    bitmapList.add(new BitmapItem(bitmap, file.getAbsolutePath()));
+                }
+                return bitmapList;
+            }
+
+            @Override
+            protected void onPostExecute(List<BitmapItem> bitmapItems) {
+                super.onPostExecute(bitmapItems);
+            }
+        }.execute(path);
+        return null;
     }
 
     /**
