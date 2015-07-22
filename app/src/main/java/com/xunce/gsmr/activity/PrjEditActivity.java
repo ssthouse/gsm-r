@@ -296,7 +296,7 @@ public class PrjEditActivity extends AppCompatActivity {
                 break;
             //测量工具
             case R.id.id_action_measure_tool:
-                MeasureActivity.start(PrjEditActivity.this, prjItem);
+                MeasureActivity.start(PrjEditActivity.this);
                 break;
             //设置
             case R.id.id_action_setting:

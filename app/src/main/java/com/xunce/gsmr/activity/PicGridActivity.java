@@ -13,6 +13,7 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.GridView;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 
 import com.gitonway.lee.niftymodaldialogeffects.lib.Effectstype;
 import com.gitonway.lee.niftymodaldialogeffects.lib.NiftyDialogBuilder;
@@ -21,6 +22,7 @@ import com.xunce.gsmr.R;
 import com.xunce.gsmr.adapter.PicGridAdapter;
 import com.xunce.gsmr.model.BitmapItem;
 import com.xunce.gsmr.model.MarkerItem;
+import com.xunce.gsmr.util.FileHelper;
 import com.xunce.gsmr.util.PictureHelper;
 
 import java.util.ArrayList;
@@ -40,7 +42,9 @@ public class PicGridActivity extends AppCompatActivity {
 
     private GridView gv;
     private ImageButton btnAdd;
+    private LinearLayout ll;
     private Button btnDelete;
+    private Button btnShare;
 
     private PicGridAdapter adapter;
 
@@ -73,11 +77,21 @@ public class PicGridActivity extends AppCompatActivity {
             }
         });
 
+        ll = (LinearLayout) findViewById(R.id.id_ll_options);
+
         btnDelete = (Button) findViewById(R.id.id_btn_delete);
         btnDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 showConfirmDialog();
+            }
+        });
+
+        btnShare = (Button) findViewById(R.id.id_btn_share);
+        btnShare.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FileHelper.sendPicture(PicGridActivity.this, selectedList);
             }
         });
 
@@ -141,10 +155,10 @@ public class PicGridActivity extends AppCompatActivity {
     private void updateView() {
         if (isInSelectMode) {
             btnAdd.setVisibility(View.GONE);
-            btnDelete.setVisibility(View.VISIBLE);
+            ll.setVisibility(View.VISIBLE);
         } else {
             btnAdd.setVisibility(View.VISIBLE);
-            btnDelete.setVisibility(View.GONE);
+            ll.setVisibility(View.GONE);
         }
     }
 
@@ -152,6 +166,7 @@ public class PicGridActivity extends AppCompatActivity {
     public void onBackPressed() {
         if (isInSelectMode) {
             removeAllSelected();
+            updateView();
             return;
         }
         super.onBackPressed();

@@ -29,9 +29,7 @@ import com.baidu.mapapi.map.OverlayOptions;
 import com.baidu.mapapi.map.PolylineOptions;
 import com.baidu.mapapi.model.LatLng;
 import com.baidu.mapapi.utils.DistanceUtil;
-import com.xunce.gsmr.Constant;
 import com.xunce.gsmr.R;
-import com.xunce.gsmr.model.PrjItem;
 import com.xunce.gsmr.model.widget.ZoomControlView;
 import com.xunce.gsmr.util.gps.LocateHelper;
 import com.xunce.gsmr.util.gps.MapHelper;
@@ -46,9 +44,6 @@ import java.util.List;
  */
 public class MeasureActivity extends AppCompatActivity {
     private static final String TAG = "MeasureActivity";
-
-    //接收到的数据
-    private PrjItem prjItem;
 
     //地图相关
     private BaiduMap mBaiduMap;
@@ -74,9 +69,8 @@ public class MeasureActivity extends AppCompatActivity {
 
     private boolean isFistIn = true;
 
-    public static void start(Context context, PrjItem prjItem) {
+    public static void start(Context context) {
         Intent intent = new Intent(context, MeasureActivity.class);
-        intent.putExtra(Constant.EXTRA_KEY_PRJ_ITEM, prjItem);
         context.startActivity(intent);
     }
 
@@ -85,12 +79,7 @@ public class MeasureActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_measure);
 
-        //获取intent中数据
-        prjItem = (PrjItem) getIntent().getSerializableExtra(Constant.EXTRA_KEY_PRJ_ITEM);
-
         initView();
-
-       // MapHelper.loadMarker(mBaiduMap, prjItem);
 
         //初始化数据
         mLocationClient = new LocationClient(this);
@@ -98,7 +87,7 @@ public class MeasureActivity extends AppCompatActivity {
         mLocationClient.registerLocationListener(new BDLocationListener() {
             @Override
             public void onReceiveLocation(BDLocation bdLocation) {
-                if(isFistIn){
+                if (isFistIn) {
                     MapHelper.animateToPoint(mBaiduMap, new LatLng(
                             bdLocation.getLatitude(), bdLocation.getLongitude()));
                     MapHelper.animateZoom(mBaiduMap, 15);
@@ -150,7 +139,7 @@ public class MeasureActivity extends AppCompatActivity {
                 OverlayOptions options = new MarkerOptions().icon(descriptorRed).position(latLng);
                 markerList.add((Marker) mBaiduMap.addOverlay(options));
                 //添加坐标点
-                pointList.add(latLng );
+                pointList.add(latLng);
                 //重新计算总长
                 updateLength();
                 //重画
@@ -224,7 +213,7 @@ public class MeasureActivity extends AppCompatActivity {
     private void updateLength() {
         double length = 0;
         for (int i = 0; i < pointList.size() - 1; i++) {
-            double gap = DistanceUtil.getDistance(pointList.get(i), pointList.get(i+1));
+            double gap = DistanceUtil.getDistance(pointList.get(i), pointList.get(i + 1));
             length += gap;
 //            LogHelper.Log(TAG, gap + "");
         }

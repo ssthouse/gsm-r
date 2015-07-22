@@ -26,14 +26,34 @@
         fab:fab_colorPressed="@color/app_primary_pressed"
         fab:fab_colorRipple="@color/app_ripple" />
 
-    <Button
-        android:id="@+id/id_btn_delete"
-        android:layout_width="match_parent"
-        android:layout_height="56dp"
+    <LinearLayout
         android:layout_gravity="bottom"
-        android:background="@color/gray"
-        android:text="删除"
-        android:textColor="@color/white"
-        android:textSize="@dimen/text_size_normal"
-        android:visibility="gone" />
+        android:id="@+id/id_ll_options"
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:orientation="horizontal"
+        android:layout_height="56dp">
+
+        <Button
+            android:id="@+id/id_btn_delete"
+            android:layout_width="0dp"
+            android:layout_height="56dp"
+            android:layout_weight="1"
+            android:background="@color/gray"
+            android:text="删除"
+            android:textColor="@color/white"
+            android:textSize="@dimen/text_size_normal" />
+
+        <Button
+            android:id="@+id/id_btn_share"
+            android:layout_width="0dp"
+            android:layout_height="56dp"
+            android:layout_gravity="bottom"
+            android:layout_weight="1"
+            android:background="@color/gray"
+            android:text="分享"
+            android:textColor="@color/white"
+            android:textSize="@dimen/text_size_normal" />
+    </LinearLayout>
+
 </FrameLayout>

@@ -132,9 +132,6 @@ public class PictureHelper {
                 }
             }
         }
-        for (File file : files) {
-            LogHelper.Log(TAG, file.getName());
-        }
     }
 
     /**
@@ -169,7 +166,6 @@ public class PictureHelper {
             files = dir.listFiles();
         }
         //整理顺序
-        LogHelper.Log(TAG, "我进i行了排序");
         sortFileArray(files);
         //将每个文件转化为bitmap
         for (File file : files) {

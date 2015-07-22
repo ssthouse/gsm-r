@@ -1,13 +1,17 @@
 package com.xunce.gsmr.util;
 
 import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Environment;
 
 import com.xunce.gsmr.Constant;
+import com.xunce.gsmr.model.BitmapItem;
 import com.xunce.gsmr.model.MarkerItem;
 import com.xunce.gsmr.model.PrjItem;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -123,16 +127,17 @@ public class FileHelper {
         }
     }
 
-    /**
-     * 创建SD下的该app根目录
-     */
-    public static void creatAppPath() {
-        File sd = Environment.getExternalStorageDirectory();
-        if (!sd.exists())
-            sd.mkdir();
-    }
-
-    public static void creatPrjPath(String prjName) {
-
+    public static void sendPicture(Context context, List<BitmapItem> bitmapItemList) {
+        Intent intent = new Intent(android.content.Intent.ACTION_SEND_MULTIPLE);
+        ArrayList<Uri> uriList = new ArrayList<>();
+        //获取对应TourItem的文件的URL
+        for(BitmapItem item : bitmapItemList) {
+            File file = new File(item.getPath());
+            uriList.add(Uri.fromFile(file));
+        }
+        intent.putParcelableArrayListExtra(Intent.EXTRA_STREAM, uriList);
+        intent.setType("image/jpg");
+        //调用系统的----发送
+        context.startActivity(Intent.createChooser(intent, "Share　Image"));
     }
 }
