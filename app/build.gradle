@@ -47,4 +47,10 @@ dependencies {
 
     //fabButton
     compile 'com.github.clans:fab:1.5.4'
+
+    //google_support_jar
+    compile 'com.android.support:design:22.2.0'
+
+    //progressBar
+    compile 'com.github.rahatarmanahmed:circularprogressview:2.3.2'
 }

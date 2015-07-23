@@ -31,6 +31,7 @@ import com.xunce.gsmr.R;
 import com.xunce.gsmr.model.MarkerItem;
 import com.xunce.gsmr.model.PrjItem;
 import com.xunce.gsmr.model.widget.ZoomControlView;
+import com.xunce.gsmr.style.TransparentStyle;
 import com.xunce.gsmr.util.ToastHelper;
 import com.xunce.gsmr.util.gps.DBHelper;
 import com.xunce.gsmr.util.gps.LocateHelper;
@@ -91,6 +92,7 @@ public class PrjEditActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_prj_edit);
+        TransparentStyle.setAppToTransparentStyle(this, getResources().getColor(R.color.color_primary));
 
         //获取intent中数据
         prjItem = (PrjItem) getIntent().getSerializableExtra(Constant.EXTRA_KEY_PRJ_ITEM);
@@ -200,7 +202,6 @@ public class PrjEditActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 RoutePlanActivity.start(PrjEditActivity.this);
-                ToastHelper.show(PrjEditActivity.this, "路线");
             }
         });
 
@@ -212,7 +213,6 @@ public class PrjEditActivity extends AppCompatActivity {
                 MarkerItem markerItem = new MarkerItem(prjItem);
                 markerItem.save();
                 MarkerActivity.start(PrjEditActivity.this, markerItem, REQUEST_CODE_MARKER_ACTIVITY);
-                ToastHelper.show(PrjEditActivity.this, "标记");
             }
         });
 
@@ -221,7 +221,7 @@ public class PrjEditActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (currentMarker == null) {
-                    ToastHelper.show(PrjEditActivity.this, "请先选择一个基址点");
+                    ToastHelper.show(PrjEditActivity.this, ibLocate,"请先选择一个基址点");
                 } else {
                     //开启拍照模式!!!
                     PicGridActivity.start(PrjEditActivity.this,

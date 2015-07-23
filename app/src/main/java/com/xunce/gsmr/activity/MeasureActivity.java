@@ -1,6 +1,6 @@
 package com.xunce.gsmr.activity;
 
-import android.content.Context;
+import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -31,6 +31,7 @@ import com.baidu.mapapi.model.LatLng;
 import com.baidu.mapapi.utils.DistanceUtil;
 import com.xunce.gsmr.R;
 import com.xunce.gsmr.model.widget.ZoomControlView;
+import com.xunce.gsmr.style.TransparentStyle;
 import com.xunce.gsmr.util.gps.LocateHelper;
 import com.xunce.gsmr.util.gps.MapHelper;
 
@@ -69,15 +70,17 @@ public class MeasureActivity extends AppCompatActivity {
 
     private boolean isFistIn = true;
 
-    public static void start(Context context) {
-        Intent intent = new Intent(context, MeasureActivity.class);
-        context.startActivity(intent);
+    public static void start(Activity activity) {
+        Intent intent = new Intent(activity, MeasureActivity.class);
+        activity.startActivity(intent);
+        activity.overridePendingTransition(R.anim.activity_fade_in, R.anim.activity_fade_out);
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_measure);
+        TransparentStyle.setAppToTransparentStyle(this, getResources().getColor(R.color.color_primary));
 
         initView();
 

@@ -30,7 +30,9 @@ import com.xunce.gsmr.Constant;
 import com.xunce.gsmr.R;
 import com.xunce.gsmr.model.MarkerItem;
 import com.xunce.gsmr.model.widget.ZoomControlView;
+import com.xunce.gsmr.style.TransparentStyle;
 import com.xunce.gsmr.util.AnimHelper;
+import com.xunce.gsmr.util.ToastHelper;
 import com.xunce.gsmr.util.gps.DBHelper;
 import com.xunce.gsmr.util.gps.LocateHelper;
 import com.xunce.gsmr.util.gps.MapHelper;
@@ -94,12 +96,14 @@ public class MarkerActivity extends AppCompatActivity {
         intent.putExtra(Constant.EXTRA_KEY_MARKER_ITEM, markerItem);
         intent.putExtra(Constant.EXTRA_KEY_REQUEST_CODE, requestCode);
         activity.startActivityForResult(intent, requestCode);
+        activity.overridePendingTransition(R.anim.activity_fade_in, R.anim.activity_fade_out);
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mark);
+        TransparentStyle.setAppToTransparentStyle(this, getResources().getColor(R.color.color_primary));
 
         //获取数据
         MarkerItem wrongItem = (MarkerItem) getIntent()
@@ -212,6 +216,8 @@ public class MarkerActivity extends AppCompatActivity {
                     setResult(Constant.RESULT_CODE_OK);
                     //退出
                     finish();
+                }else{
+                    ToastHelper.show(MarkerActivity.this, ivMark, "请选择有效数据");
                 }
             }
         });

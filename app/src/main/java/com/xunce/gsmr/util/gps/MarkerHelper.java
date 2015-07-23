@@ -37,10 +37,10 @@ public class MarkerHelper {
             }
             double latitude = Double.parseDouble(latitudeStr);
             double longitude = Double.parseDouble(longitudeStr);
-            if (longitude > 360
-                    || longitude < 0
-                    || latitude < -90
-                    || latitude > 90) {
+            if (longitude >= 360
+                    || longitude <= 0
+                    || latitude <= -90
+                    || latitude >= 90) {
                 return false;
             }
             return true;

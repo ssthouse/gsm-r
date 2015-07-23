@@ -13,6 +13,7 @@ import android.widget.ListView;
 import com.github.clans.fab.FloatingActionButton;
 import com.xunce.gsmr.R;
 import com.xunce.gsmr.adapter.PrjLvAdapter;
+import com.xunce.gsmr.style.TransparentStyle;
 import com.xunce.gsmr.util.DialogHelper;
 import com.xunce.gsmr.util.ToastHelper;
 import com.xunce.gsmr.util.gps.DBHelper;
@@ -33,6 +34,7 @@ public class PrjSelectActivity extends AppCompatActivity{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_prj_select);
+        TransparentStyle.setAppToTransparentStyle(this, getResources().getColor(R.color.color_primary));
 
         initView();
     }
@@ -96,7 +98,7 @@ public class PrjSelectActivity extends AppCompatActivity{
                 MeasureActivity.start(PrjSelectActivity.this);
                 break;
             case R.id.id_action_setting:
-                ToastHelper.show(PrjSelectActivity.this, "设置");
+                ToastHelper.show(PrjSelectActivity.this, lv,"设置");
                 break;
         }
         return super.onOptionsItemSelected(item);

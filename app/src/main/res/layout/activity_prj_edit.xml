@@ -1,8 +1,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:andorid="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
     android:orientation="vertical"
     tools:context=".MainActivity">
 
@@ -29,27 +29,30 @@
             android:orientation="horizontal">
 
             <Button
+                android:textSize="@dimen/text_size_button"
                 android:id="@+id/id_btn_route"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:background="@drawable/selector_gray_button"
+                android:background="@drawable/btn_selector"
                 android:text="路线" />
 
             <Button
+                android:textSize="@dimen/text_size_button"
                 android:id="@+id/id_btn_mark"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:background="@drawable/selector_gray_button"
+                android:background="@drawable/btn_selector"
                 android:text="选址" />
 
             <Button
+                android:textSize="@dimen/text_size_button"
                 android:id="@+id/id_btn_take_photo"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:background="@drawable/selector_gray_button"
+                android:background="@drawable/btn_selector"
                 android:text="照片" />
         </LinearLayout>
 
@@ -64,11 +67,11 @@
 
         <com.xunce.gsmr.model.widget.ZoomControlView
             android:id="@+id/id_zoom_control"
-            android:layout_marginBottom="8dp"
-            android:layout_marginRight="8dp"
-            android:layout_gravity="bottom|right"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|right"
+            android:layout_marginBottom="8dp"
+            android:layout_marginRight="8dp" />
     </FrameLayout>
 
 </LinearLayout>

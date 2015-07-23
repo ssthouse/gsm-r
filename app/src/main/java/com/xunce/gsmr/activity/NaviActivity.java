@@ -21,9 +21,10 @@ import com.baidu.navisdk.ui.routeguide.BNavigator;
 import com.baidu.navisdk.ui.routeguide.IBNavigatorListener;
 import com.baidu.navisdk.ui.widget.RoutePlanObserver;
 import com.baidu.nplatform.comapi.map.MapGLSurfaceView;
+import com.xunce.gsmr.R;
+import com.xunce.gsmr.style.TransparentStyle;
 import com.xunce.gsmr.util.FileHelper;
 import com.xunce.gsmr.util.LogHelper;
-import com.xunce.gsmr.util.ToastHelper;
 
 
 /**
@@ -48,9 +49,10 @@ public class NaviActivity extends Activity {
         //创建导航视图
         View navigatorView = BNavigator.getInstance().init(NaviActivity.this,
                 getIntent().getExtras(), nMapView);
-
+        navigatorView.setFitsSystemWindows(true);
         //填充视图---这个视图都是导航视图
         setContentView(navigatorView);
+        TransparentStyle.setAppToTransparentStyle(this, getResources().getColor(R.color.color_primary));
 
         //设置监听器
         BNavigator.getInstance().setListener(mBNavigatorListener);
@@ -126,9 +128,9 @@ public class NaviActivity extends Activity {
             @Override
             public void onAuthResult(int status, String msg) {
                 if (0 == status) {
-                    ToastHelper.show(context, "key校验成功-----");
+//                    ToastHelper.show(context, "key校验成功-----");
                 } else {
-                    ToastHelper.show(context, "key校验失败-----");
+//                    ToastHelper.show(context, "key校验失败-----");
                 }
             }
         };

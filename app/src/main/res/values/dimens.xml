@@ -3,6 +3,7 @@
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
 
+    <dimen name="snack_bar_height">48dp</dimen>
 
     <dimen name="empty_progress_bar">48dp</dimen>
 
@@ -10,4 +11,6 @@
     <dimen name="text_size_large">24sp</dimen>
 
     <dimen name="text_size_action_title">22sp</dimen>
+
+    <dimen name="text_size_button">16dp</dimen>
 </resources>

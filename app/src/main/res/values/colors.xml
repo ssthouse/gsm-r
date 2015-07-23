@@ -6,6 +6,8 @@
     <color name="trans_color_primary">#5503a9f4</color>
     <color name="color_primary_dark">#5677fc</color>
 
+    <color name="color_ripple">#ff000000</color>
+
     <color name="button_gray">#bdbdbd</color>
     <color name="button_gray_dark">#9e9e9e</color>
 

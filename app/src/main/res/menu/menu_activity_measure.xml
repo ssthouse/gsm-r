@@ -4,7 +4,7 @@
 
     <item
         android:id="@+id/id_action_back_one_point"
-        android:icon="@drawable/back_btn"
+        android:icon="@drawable/btn_back"
         android:title="上一步"
         app:showAsAction="always" />
 

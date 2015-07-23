@@ -1,6 +1,6 @@
 package com.xunce.gsmr.activity;
 
-import android.content.Context;
+import android.app.Activity;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
@@ -21,6 +21,7 @@ import com.xunce.gsmr.R;
 import com.xunce.gsmr.adapter.PicGridAdapter;
 import com.xunce.gsmr.model.BitmapItem;
 import com.xunce.gsmr.model.MarkerItem;
+import com.xunce.gsmr.style.TransparentStyle;
 import com.xunce.gsmr.util.FileHelper;
 import com.xunce.gsmr.util.PictureHelper;
 
@@ -49,17 +50,19 @@ public class PicGridActivity extends AppCompatActivity {
 
     private boolean isInSelectMode = false;
 
-    public static void start(Context context, MarkerItem markerItem) {
+    public static void start(Activity activity, MarkerItem markerItem) {
         //从Marker中获取信息--找到Picture的目录---展示所有的图片
-        Intent intent = new Intent(context, PicGridActivity.class);
+        Intent intent = new Intent(activity, PicGridActivity.class);
         intent.putExtra(Constant.EXTRA_KEY_MARKER_ITEM, markerItem);
-        context.startActivity(intent);
+        activity.startActivity(intent);
+        activity.overridePendingTransition(R.anim.activity_fade_in, R.anim.activity_fade_out);
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pic_grid);
+        TransparentStyle.setAppToTransparentStyle(this, getResources().getColor(R.color.color_primary));
 
         markerItem = (MarkerItem) getIntent().getSerializableExtra(Constant.EXTRA_KEY_MARKER_ITEM);
 

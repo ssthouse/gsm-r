@@ -1,14 +1,12 @@
 package com.xunce.gsmr.activity;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import com.baidu.lbsapi.auth.LBSAuthManagerListener;
 import com.baidu.navisdk.BNaviEngineManager;
@@ -31,6 +29,7 @@ import com.baidu.navisdk.util.common.PreferenceHelper;
 import com.baidu.navisdk.util.common.ScreenUtil;
 import com.baidu.nplatform.comapi.map.MapGLSurfaceView;
 import com.xunce.gsmr.R;
+import com.xunce.gsmr.style.TransparentStyle;
 import com.xunce.gsmr.util.FileHelper;
 import com.xunce.gsmr.util.LogHelper;
 import com.xunce.gsmr.util.ToastHelper;
@@ -48,14 +47,16 @@ public class RoutePlanActivity extends Activity {
 
     private MapGLSurfaceView mMapView = null;
 
-    public static void start(Context context) {
-        context.startActivity(new Intent(context, RoutePlanActivity.class));
+    public static void start(Activity activity) {
+        activity.startActivity(new Intent(activity, RoutePlanActivity.class));
+        activity.overridePendingTransition(R.anim.activity_fade_in, R.anim.activity_fade_out);
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_rout_select);
+        TransparentStyle.setAppToTransparentStyle(this, getResources().getColor(R.color.color_primary));
 
         initNavi(this);
         initView();
@@ -142,9 +143,9 @@ public class RoutePlanActivity extends Activity {
             @Override
             public void onAuthResult(int status, String msg) {
                 if (0 == status) {
-                    ToastHelper.show(context, "key校验成功-----");
+//                    ToastHelper.show(context, "key校验成功-----");
                 } else {
-                    ToastHelper.show(context, "key校验失败-----");
+//                    ToastHelper.show(context, "key校验失败-----");
                 }
             }
         };
@@ -198,13 +199,13 @@ public class RoutePlanActivity extends Activity {
         boolean ret = BNRoutePlaner.getInstance().setPointsToCalcRoute(
                 nodeList, CommonParams.NL_Net_Mode.NL_Net_Mode_OnLine);
         if (!ret) {
-            Toast.makeText(this, "规划失败", Toast.LENGTH_SHORT).show();
+            ToastHelper.show(this, mMapView, "规划成功");
         }
     }
 
     private void startNavi(boolean isReal) {
         if (mRoutePlanModel == null) {
-            Toast.makeText(this, "请先算路！", Toast.LENGTH_LONG).show();
+            ToastHelper.show(this, mMapView, "请先算路");
             return;
         }
         // 获取路线规划结果起点
@@ -251,12 +252,12 @@ public class RoutePlanActivity extends Activity {
 
         @Override
         public void onRoutePlanYawingSuccess() {
-            ToastHelper.show(RoutePlanActivity.this, "算路成功!");
+            ToastHelper.show(RoutePlanActivity.this, mMapView, "算路成功!");
         }
 
         @Override
         public void onRoutePlanYawingFail() {
-            ToastHelper.show(RoutePlanActivity.this, "抱歉,算路失败");
+            ToastHelper.show(RoutePlanActivity.this,mMapView, "抱歉,算路失败");
         }
 
         @Override
