@@ -1,7 +1,6 @@
 package com.xunce.gsmr.adapter;
 
 import android.content.Context;
-import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
@@ -15,7 +14,6 @@ import com.xunce.gsmr.model.BitmapItem;
 import com.xunce.gsmr.model.widget.CustomImageView;
 import com.xunce.gsmr.util.PictureHelper;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -37,9 +35,9 @@ public class PicGridAdapter extends BaseAdapter {
      */
     public PicGridAdapter(Context context,String path){
         this.context = context;
+        this.path = path;
         bitmapItemList = new ArrayList<>();
         new Task().execute(path);
-        this.path = path;
     }
 
     @Override
@@ -90,46 +88,18 @@ public class PicGridAdapter extends BaseAdapter {
 
     @Override
     public void notifyDataSetChanged() {
+        new Task().execute(path);
         super.notifyDataSetChanged();
     }
 
-    public void resetBitmap(){
-        new Task().execute(path);
-    }
-
     public void addPicture(){
-        File dir = new File(path);
-        File files[] = dir.listFiles();
-        PictureHelper.sortFileArray(files);
-        //获取缩略图
-        Bitmap bitmap = PictureHelper.getSmallBitmap(files[files.length-1].getAbsolutePath(), 240, 240);
-        bitmapItemList.add(new BitmapItem(bitmap, files[files.length-1].getAbsolutePath()));
         notifyDataSetChanged();
     }
 
     class Task extends AsyncTask<String, Void, List<BitmapItem>>{
         @Override
         protected List<BitmapItem> doInBackground(String... params) {
-            //要返回的数据
-            List<BitmapItem> bitmapList = new ArrayList<>();
-            //列出picture文件
-            File[] files;
-            File dir = new File(params[0]);
-            if (dir.exists()) {
-                files = dir.listFiles();
-            } else {
-                dir.mkdirs();
-                files = dir.listFiles();
-            }
-            //整理顺序
-            PictureHelper.sortFileArray(files);
-            //将每个文件转化为bitmap
-            for (File file : files) {
-                //获取缩略图
-                Bitmap bitmap = PictureHelper.getSmallBitmap(file.getAbsolutePath(), 240, 240);
-                bitmapList.add(new BitmapItem(bitmap, file.getAbsolutePath()));
-            }
-            return bitmapList;
+            return PictureHelper.getBitmapItemList(path);
         }
 
         @Override

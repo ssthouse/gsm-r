@@ -10,6 +10,7 @@ public class Constant {
     public static  final String APP_FOLDER_NAME = "GSM";
 
     public static final String PICTURE_PATH = "/storage/sdcard0/GSM/Picture/";
+    public static final String TEMP_PICTURE_PATH = "/storage/sdcard0/GSM/Temp/";
 
     //table名
     public static final String TABLE_PRJ_ITEM = "Projects";

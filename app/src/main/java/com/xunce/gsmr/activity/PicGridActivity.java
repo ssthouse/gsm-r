@@ -220,7 +220,7 @@ public class PicGridActivity extends AppCompatActivity {
                 for (BitmapItem item : selectedList) {
                     PictureHelper.deletePicture(item.getPath());
                 }
-                adapter.resetBitmap();
+                adapter.notifyDataSetChanged();
                 selectedList.clear();
                 removeAllSelected();
                 updateView();

@@ -7,7 +7,6 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.media.ThumbnailUtils;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.widget.Toast;
@@ -61,13 +60,21 @@ public class PictureHelper {
      */
     public static boolean saveImage(Bitmap photo, String savePath) {
         try {
+            File file = new File(savePath);
+            file.getParentFile().mkdirs();
+            if (!file.exists()) {
+                file.createNewFile();
+            }
             BufferedOutputStream bos = new BufferedOutputStream(
                     new FileOutputStream(savePath, false));
             photo.compress(Bitmap.CompressFormat.JPEG, 100, bos);
             bos.flush();
             bos.close();
+//            LogHelper.Log(TAG, "我在保存临时的照片");
         } catch (Exception e) {
             e.printStackTrace();
+
+            LogHelper.Log(TAG, "something is wrong");
             return false;
         }
         return true;
@@ -95,8 +102,10 @@ public class PictureHelper {
             }
             //如果目标文件不存在---创建
             File targetFile = new File(targetPath);
+            targetFile.getParentFile().mkdirs();
             if (!targetFile.exists()) {
                 targetFile.createNewFile();
+//                LogHelper.Log(TAG, targetPath);
             }
             //设置目标文件权限
             targetFile.setReadable(true);
@@ -114,6 +123,7 @@ public class PictureHelper {
             fosTo.close();
         } catch (IOException e) {
             e.printStackTrace();
+            LogHelper.Log(TAG, "something is wrong" + e.toString());
         }
         return true;
     }
@@ -153,39 +163,48 @@ public class PictureHelper {
         return 0;
     }
 
+    private static boolean hasTempPicture(File file) {
+        File tempFile = new File(Constant.TEMP_PICTURE_PATH + file.getName());
+        if (tempFile.exists()) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    private static File getTempPicture(File file) {
+        return new File(Constant.TEMP_PICTURE_PATH + file.getName());
+    }
 
     public static List<BitmapItem> getBitmapItemList(String path) {
-        new AsyncTask<String, Void, List<BitmapItem>>(){
-            @Override
-            protected List<BitmapItem> doInBackground(String... params) {
-                //要返回的数据
-                List<BitmapItem> bitmapList = new ArrayList<>();
-                //列出picture文件
-                File[] files;
-                File dir = new File(params[0]);
-                if (dir.exists()) {
-                    files = dir.listFiles();
-                } else {
-                    dir.mkdirs();
-                    files = dir.listFiles();
-                }
-                //整理顺序
-                sortFileArray(files);
-                //将每个文件转化为bitmap
-                for (File file : files) {
-                    //获取缩略图
-                    Bitmap bitmap = getSmallBitmap(file.getAbsolutePath(), 240, 240);
-                    bitmapList.add(new BitmapItem(bitmap, file.getAbsolutePath()));
-                }
-                return bitmapList;
+        //要返回的数据
+        List<BitmapItem> bitmapList = new ArrayList<>();
+        //列出picture文件
+        File[] files;
+        File dir = new File(path);
+        if (dir.exists()) {
+            files = dir.listFiles();
+        } else {
+            dir.mkdirs();
+            files = dir.listFiles();
+        }
+        //整理顺序
+        sortFileArray(files);
+        //将每个文件转化为bitmap
+        for (File file : files) {
+            //对于每个文件---不一定都要重新decode--可能在缓存文件夹里面就哟
+            if (hasTempPicture(file)) {
+                Bitmap bitmap = BitmapFactory.decodeFile(Constant.TEMP_PICTURE_PATH + file.getName());
+                bitmapList.add(new BitmapItem(bitmap, file.getAbsolutePath()));
+            } else {
+                //获取缩略图
+                Bitmap bitmap = getSmallBitmap(file.getAbsolutePath(), 120, 120);
+                bitmapList.add(new BitmapItem(bitmap, file.getAbsolutePath()));
+                //将其缓存
+                saveImage(bitmap, Constant.TEMP_PICTURE_PATH + file.getName());
             }
-
-            @Override
-            protected void onPostExecute(List<BitmapItem> bitmapItems) {
-                super.onPostExecute(bitmapItems);
-            }
-        }.execute(path);
-        return null;
+        }
+        return bitmapList;
     }
 
     /**
