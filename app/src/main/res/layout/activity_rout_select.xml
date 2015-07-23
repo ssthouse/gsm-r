@@ -7,9 +7,9 @@
 
     <!--起点-->
     <LinearLayout
-        android:background="@color/trans_color_primary"
         android:layout_width="match_parent"
-        android:layout_height="48dp"
+        android:layout_height="56dp"
+        android:background="@color/trans_color_primary"
         android:orientation="horizontal">
 
         <TextView
@@ -18,28 +18,40 @@
             android:gravity="center"
             android:text="起点:" />
 
-        <EditText
-            android:id="@+id/id_et_begin_latitude"
+        <android.support.design.widget.TextInputLayout
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:text="2254357" />
+            android:layout_weight="1">
 
-        <EditText
-            android:id="@+id/id_et_begin_longitude"
+            <EditText
+                android:id="@+id/id_et_begin_latitude"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:hint="纬度" />
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.design.widget.TextInputLayout
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:text="11394122" />
+            android:layout_weight="1">
+
+            <EditText
+                android:inputType="number"
+                android:id="@+id/id_et_begin_longitude"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:hint="经度" />
+
+        </android.support.design.widget.TextInputLayout>
     </LinearLayout>
 
     <!--终点-->
     <LinearLayout
-        android:background="@color/trans_color_primary"
         android:layout_width="match_parent"
-        android:layout_height="48dp"
+        android:layout_height="56dp"
+        android:background="@color/trans_color_primary"
         android:orientation="horizontal">
 
         <TextView
@@ -48,58 +60,70 @@
             android:gravity="center"
             android:text="终点:" />
 
-        <EditText
-            android:id="@+id/id_et_end_latitude"
+        <android.support.design.widget.TextInputLayout
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:text="2281307" />
+            android:layout_weight="1">
 
-        <EditText
-            android:id="@+id/id_et_end_longitude"
+            <EditText
+                android:inputType="number"
+                android:id="@+id/id_et_end_latitude"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:hint="纬度" />
+
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.design.widget.TextInputLayout
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:text="11380124" />
+            android:layout_weight="1">
+
+            <EditText
+                android:id="@+id/id_et_end_longitude"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:hint="经度" />
+        </android.support.design.widget.TextInputLayout>
     </LinearLayout>
 
     <LinearLayout
-        android:background="@color/trans_color_primary"
         android:layout_width="match_parent"
         android:layout_height="48dp"
+        android:background="@color/trans_color_primary"
         android:orientation="horizontal">
 
         <Button
-            android:layout_margin="1dp"
-            android:textSize="@dimen/text_size_button"
-            android:background="@drawable/btn_selector"
             android:id="@+id/id_btn_calculate"
             android:layout_width="0dp"
             android:layout_height="match_parent"
+            android:layout_margin="1dp"
             android:layout_weight="1"
-            android:text="在线规划" />
+            android:background="@drawable/btn_selector"
+            android:text="在线规划"
+            android:textSize="@dimen/text_size_button" />
 
         <Button
-            android:layout_margin="1dp"
-            android:textSize="@dimen/text_size_button"
-            android:background="@drawable/btn_selector"
             android:id="@+id/id_btn_simulate"
             android:layout_width="0dp"
             android:layout_height="match_parent"
+            android:layout_margin="1dp"
             android:layout_weight="1"
-            android:text="模拟导航" />
+            android:background="@drawable/btn_selector"
+            android:text="模拟导航"
+            android:textSize="@dimen/text_size_button" />
 
         <Button
-            android:layout_margin="1dp"
-            android:textSize="@dimen/text_size_button"
-            android:background="@drawable/btn_selector"
             android:id="@+id/id_btn_real_guide"
             android:layout_width="0dp"
             android:layout_height="match_parent"
+            android:layout_margin="1dp"
             android:layout_weight="1"
-            android:text="真实导航" />
+            android:background="@drawable/btn_selector"
+            android:text="真实导航"
+            android:textSize="@dimen/text_size_button" />
     </LinearLayout>
 
     <FrameLayout

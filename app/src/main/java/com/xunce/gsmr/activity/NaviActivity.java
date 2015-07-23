@@ -1,10 +1,10 @@
 package com.xunce.gsmr.activity;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.View;
 
 import com.baidu.lbsapi.auth.LBSAuthManagerListener;
@@ -34,8 +34,9 @@ import com.xunce.gsmr.util.LogHelper;
 public class NaviActivity extends Activity {
     private static final String TAG = "NaviActivity";
 
-    public static void start(Context context){
-        context.startActivity(new Intent(context, NaviActivity.class));
+    public static void start(Activity activity){
+        activity.startActivity(new Intent(activity, NaviActivity.class));
+        activity.overridePendingTransition(R.anim.activity_fade_in, R.anim.activity_fade_out);
     }
 
     @Override
@@ -216,5 +217,13 @@ public class NaviActivity extends Activity {
         BNavigator.destory();
         BNRoutePlaner.getInstance().setObserver(null);
         super.onDestroy();
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if(keyCode == KeyEvent.KEYCODE_MENU){
+            return true;
+        }
+        return super.onKeyDown(keyCode, event);
     }
 }

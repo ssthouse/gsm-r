@@ -12,6 +12,7 @@ import android.provider.MediaStore;
 import android.widget.Toast;
 
 import com.xunce.gsmr.Constant;
+import com.xunce.gsmr.R;
 import com.xunce.gsmr.model.BitmapItem;
 
 import java.io.BufferedOutputStream;
@@ -270,6 +271,7 @@ public class PictureHelper {
             intent.putExtra(MediaStore.Images.Media.ORIENTATION, 0);
             intent.putExtra(MediaStore.EXTRA_OUTPUT, u);
             activity.startActivityForResult(intent, Constant.REQUEST_CODE_CAMERA);
+            activity.overridePendingTransition(R.anim.activity_fade_in, R.anim.activity_fade_out);
         } else {
             Toast.makeText(activity, "请确认已经插入SD卡", Toast.LENGTH_SHORT).show();
         }

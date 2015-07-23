@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
@@ -220,10 +221,10 @@ public class PrjEditActivity extends AppCompatActivity {
         findViewById(R.id.id_btn_take_photo).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (currentMarker == null) {
-                    ToastHelper.show(PrjEditActivity.this, ibLocate,"请先选择一个基址点");
+                //TODO---不知道这里为什么会有-1产生
+                if (currentMarker == null || markerList.indexOf(currentMarker) == -1) {
+                    ToastHelper.show(PrjEditActivity.this, ibLocate, "请先选择一个基址点");
                 } else {
-                    //开启拍照模式!!!
                     PicGridActivity.start(PrjEditActivity.this,
                             markerItemList.get(markerList.indexOf(currentMarker)));
                 }
@@ -361,4 +362,12 @@ public class PrjEditActivity extends AppCompatActivity {
         descriptorBlue.recycle();
         descriptorRed.recycle();
     }
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if(keyCode == KeyEvent.KEYCODE_MENU){
+            return true;
+        }
+        return super.onKeyDown(keyCode, event);
+    }
+
 }

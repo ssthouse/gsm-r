@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.baidu.lbsapi.auth.LBSAuthManagerListener;
 import com.baidu.navisdk.BNaviEngineManager;
@@ -66,6 +67,7 @@ public class RoutePlanActivity extends Activity {
     private void initView() {
         //初始化mapView
 
+        initMapView();
 
         //计算路线
         findViewById(R.id.id_btn_calculate).setOnClickListener(new View.OnClickListener() {
@@ -110,7 +112,6 @@ public class RoutePlanActivity extends Activity {
         BNMapController.getInstance().setLayerMode(
                 MapParams.Const.LayerMode.MAP_LAYER_MODE_BROWSE_MAP);
         updateCompassPosition();
-
     }
 
     /**
@@ -205,7 +206,7 @@ public class RoutePlanActivity extends Activity {
 
     private void startNavi(boolean isReal) {
         if (mRoutePlanModel == null) {
-            ToastHelper.show(this, mMapView, "请先算路");
+            Toast.makeText(RoutePlanActivity.this, "请先算路", Toast.LENGTH_SHORT).show();
             return;
         }
         // 获取路线规划结果起点
@@ -257,7 +258,7 @@ public class RoutePlanActivity extends Activity {
 
         @Override
         public void onRoutePlanYawingFail() {
-            ToastHelper.show(RoutePlanActivity.this,mMapView, "抱歉,算路失败");
+            ToastHelper.show(RoutePlanActivity.this, mMapView, "抱歉,算路失败");
         }
 
         @Override
@@ -298,7 +299,6 @@ public class RoutePlanActivity extends Activity {
 
     @Override
     public void onResume() {
-        initMapView();
         ((ViewGroup) (findViewById(R.id.id_map_view))).addView(mMapView);
         BNMapController.getInstance().onResume();
         super.onResume();
