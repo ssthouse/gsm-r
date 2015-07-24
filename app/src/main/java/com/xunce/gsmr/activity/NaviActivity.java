@@ -34,7 +34,7 @@ import com.xunce.gsmr.util.LogHelper;
 public class NaviActivity extends Activity {
     private static final String TAG = "NaviActivity";
 
-    public static void start(Activity activity){
+    public static void start(Activity activity) {
         activity.startActivity(new Intent(activity, NaviActivity.class));
         activity.overridePendingTransition(R.anim.activity_fade_in, R.anim.activity_fade_out);
     }
@@ -90,19 +90,20 @@ public class NaviActivity extends Activity {
             }
         });
 
-        BNRoutePlaner.getInstance().setObserver(new RoutePlanObserver(this, new RoutePlanObserver.IJumpToDownloadListener() {
+        BNRoutePlaner.getInstance().setObserver(new RoutePlanObserver(this,
+                new RoutePlanObserver.IJumpToDownloadListener() {
 
-            @Override
-            public void onJumpToDownloadOfflineData() {
-                // TODO Auto-generated method stub
-            }
-        }));
+                    @Override
+                    public void onJumpToDownloadOfflineData() {
+                        // TODO Auto-generated method stub
+                    }
+                }));
     }
 
     /**
      * 初始化导航功能
      */
-    public static  void initNavi(final Activity context) {
+    public static void initNavi(final Activity context) {
         BNaviEngineManager.NaviEngineInitListener naviListener = new BNaviEngineManager.NaviEngineInitListener() {
 
             @Override
@@ -155,9 +156,9 @@ public class NaviActivity extends Activity {
         @Override
         public void onPageJump(int jumpTiming, Object arg) {
             // TODO 页面跳转回调
-            if(IBNavigatorListener.PAGE_JUMP_WHEN_GUIDE_END == jumpTiming){
+            if (IBNavigatorListener.PAGE_JUMP_WHEN_GUIDE_END == jumpTiming) {
                 finish();
-            }else if(IBNavigatorListener.PAGE_JUMP_WHEN_ROUTE_PLAN_FAIL == jumpTiming){
+            } else if (IBNavigatorListener.PAGE_JUMP_WHEN_ROUTE_PLAN_FAIL == jumpTiming) {
                 finish();
             }
         }
@@ -193,7 +194,9 @@ public class NaviActivity extends Activity {
         BNavigator.getInstance().resume();
         super.onResume();
         BNMapController.getInstance().onResume();
-    };
+    }
+
+    ;
 
     @Override
     public void onPause() {
@@ -208,12 +211,12 @@ public class NaviActivity extends Activity {
         super.onConfigurationChanged(newConfig);
     }
 
-    public void onBackPressed(){
+    public void onBackPressed() {
         BNavigator.getInstance().onBackPressed();
     }
 
     @Override
-    public void onDestroy(){
+    public void onDestroy() {
         BNavigator.destory();
         BNRoutePlaner.getInstance().setObserver(null);
         super.onDestroy();
@@ -221,7 +224,7 @@ public class NaviActivity extends Activity {
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if(keyCode == KeyEvent.KEYCODE_MENU){
+        if (keyCode == KeyEvent.KEYCODE_MENU) {
             return true;
         }
         return super.onKeyDown(keyCode, event);

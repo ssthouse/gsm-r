@@ -66,7 +66,6 @@ public class RoutePlanActivity extends Activity {
 
     private void initView() {
         //初始化mapView
-
         initMapView();
 
         //计算路线
@@ -171,22 +170,23 @@ public class RoutePlanActivity extends Activity {
         EditText startYEditText = (EditText) findViewById(R.id.id_et_begin_longitude);
         EditText endXEditText = (EditText) findViewById(R.id.id_et_end_latitude);
         EditText endYEditText = (EditText) findViewById(R.id.id_et_end_longitude);
-        int sX = 0, sY = 0, eX = 0, eY = 0;
+        double sX = 0, sY = 0, eX = 0, eY = 0;
         try {
-            sX = Integer.parseInt(startXEditText.getText().toString());
+            sX = Double.parseDouble(startXEditText.getText().toString());
             sY = Integer.parseInt(startYEditText.getText().toString());
             eX = Integer.parseInt(endXEditText.getText().toString());
             eY = Integer.parseInt(endYEditText.getText().toString());
         } catch (Exception e) {
+            Toast.makeText(this, "计算出错!", Toast.LENGTH_SHORT);
             e.printStackTrace();
         }
 
         //起点
-        RoutePlanNode startNode = new RoutePlanNode(sX, sY,
-                RoutePlanNode.FROM_MAP_POINT, "华侨城", "华侨城");
+        RoutePlanNode startNode = new RoutePlanNode((int) (sX * 1e5), (int) (sY * 1e5),
+                RoutePlanNode.FROM_MAP_POINT, "", "");
         //终点
-        RoutePlanNode endNode = new RoutePlanNode(eX, eY,
-                RoutePlanNode.FROM_MAP_POINT, "滨海苑", "滨海苑");
+        RoutePlanNode endNode = new RoutePlanNode((int) (eX * 1e5), (int) (eY * 1e5),
+                RoutePlanNode.FROM_MAP_POINT, "", "");
         //将起终点添加到nodeList
         ArrayList<RoutePlanNode> nodeList = new ArrayList<RoutePlanNode>(2);
         nodeList.add(startNode);
@@ -200,7 +200,7 @@ public class RoutePlanActivity extends Activity {
         boolean ret = BNRoutePlaner.getInstance().setPointsToCalcRoute(
                 nodeList, CommonParams.NL_Net_Mode.NL_Net_Mode_OnLine);
         if (!ret) {
-            ToastHelper.show(this, mMapView, "规划成功");
+            Toast.makeText(this, "规划成功!", Toast.LENGTH_SHORT);
         }
     }
 

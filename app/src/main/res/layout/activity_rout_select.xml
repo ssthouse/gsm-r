@@ -37,12 +37,12 @@
             android:layout_weight="1">
 
             <EditText
-                android:inputType="number"
                 android:id="@+id/id_et_begin_longitude"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:gravity="center"
-                android:hint="经度" />
+                android:hint="经度"
+                android:inputType="number" />
 
         </android.support.design.widget.TextInputLayout>
     </LinearLayout>
@@ -66,12 +66,12 @@
             android:layout_weight="1">
 
             <EditText
-                android:inputType="number"
                 android:id="@+id/id_et_end_latitude"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:gravity="center"
-                android:hint="纬度" />
+                android:hint="纬度"
+                android:inputType="number" />
 
         </android.support.design.widget.TextInputLayout>
 
@@ -85,7 +85,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:gravity="center"
-                android:hint="经度" />
+                android:hint="经度"
+                android:inputType="number" />
         </android.support.design.widget.TextInputLayout>
     </LinearLayout>
 
