@@ -16,6 +16,7 @@ import com.xunce.gsmr.R;
 import com.xunce.gsmr.adapter.PrjLvAdapter;
 import com.xunce.gsmr.style.TransparentStyle;
 import com.xunce.gsmr.util.DialogHelper;
+import com.xunce.gsmr.util.FileHelper;
 import com.xunce.gsmr.util.ToastHelper;
 import com.xunce.gsmr.util.gps.DBHelper;
 
@@ -97,6 +98,9 @@ public class PrjSelectActivity extends AppCompatActivity{
         switch (item.getItemId()){
             case R.id.id_action_measure_tool:
                 MeasureActivity.start(PrjSelectActivity.this);
+                break;
+            case R.id.id_action_export_data:
+                FileHelper.sendDbFile(PrjSelectActivity.this);
                 break;
             case R.id.id_action_setting:
                 ToastHelper.show(PrjSelectActivity.this, lv,"设置");

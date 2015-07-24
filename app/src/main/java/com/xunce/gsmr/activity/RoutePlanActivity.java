@@ -6,10 +6,12 @@ import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
 import com.baidu.lbsapi.auth.LBSAuthManagerListener;
+import com.baidu.mapapi.model.LatLng;
 import com.baidu.navisdk.BNaviEngineManager;
 import com.baidu.navisdk.BaiduNaviManager;
 import com.baidu.navisdk.CommonParams;
@@ -20,6 +22,9 @@ import com.baidu.navisdk.comapi.routeplan.BNRoutePlaner;
 import com.baidu.navisdk.comapi.routeplan.IRouteResultObserver;
 import com.baidu.navisdk.comapi.routeplan.RoutePlanParams;
 import com.baidu.navisdk.comapi.setting.SettingParams;
+import com.baidu.navisdk.comapi.tts.BNTTSPlayer;
+import com.baidu.navisdk.comapi.tts.BNavigatorTTSPlayer;
+import com.baidu.navisdk.comapi.tts.IBNTTSPlayerListener;
 import com.baidu.navisdk.model.NaviDataEngine;
 import com.baidu.navisdk.model.RoutePlanModel;
 import com.baidu.navisdk.model.datastruct.RoutePlanNode;
@@ -29,6 +34,7 @@ import com.baidu.navisdk.ui.widget.RoutePlanObserver;
 import com.baidu.navisdk.util.common.PreferenceHelper;
 import com.baidu.navisdk.util.common.ScreenUtil;
 import com.baidu.nplatform.comapi.map.MapGLSurfaceView;
+import com.xunce.gsmr.Constant;
 import com.xunce.gsmr.R;
 import com.xunce.gsmr.style.TransparentStyle;
 import com.xunce.gsmr.util.FileHelper;
@@ -48,6 +54,16 @@ public class RoutePlanActivity extends Activity {
 
     private MapGLSurfaceView mMapView = null;
 
+    public static int requestCodeStart = 1001;
+    public static int requestCodeEnd = 1002;
+
+    private LatLng latLngStart, latLngEnd;
+
+    private EditText etLatitudeStart, etLongitudeStart;
+    private EditText etLatitudeEnd, etLongitudeEnd;
+
+    private Button btnGetStartPoint, btnGetEndPOint;
+
     public static void start(Activity activity) {
         activity.startActivity(new Intent(activity, RoutePlanActivity.class));
         activity.overridePendingTransition(R.anim.activity_fade_in, R.anim.activity_fade_out);
@@ -59,12 +75,62 @@ public class RoutePlanActivity extends Activity {
         setContentView(R.layout.activity_rout_select);
         TransparentStyle.setAppToTransparentStyle(this, getResources().getColor(R.color.color_primary));
 
+        latLngStart = new LatLng(0, 0);
+        latLngEnd = new LatLng(0, 0);
         initNavi(this);
         initView();
+        BNTTSPlayer.initPlayer();
+        //设置TTS播放回调
+        BNavigatorTTSPlayer.setTTSPlayerListener(new IBNTTSPlayerListener() {
+
+            @Override
+            public int playTTSText(String arg0, int arg1) {
+                //开发者可以使用其他TTS的API
+                return BNTTSPlayer.playTTSText(arg0, arg1);
+            }
+
+            @Override
+            public void phoneHangUp() {
+                //手机挂断
+            }
+
+            @Override
+            public void phoneCalling() {
+                //通话中
+            }
+
+            @Override
+            public int getTTSState() {
+                //开发者可以使用其他TTS的API,
+                return BNTTSPlayer.getTTSState();
+            }
+        });
     }
 
 
     private void initView() {
+
+        btnGetStartPoint = (Button) findViewById(R.id.id_btn_choose_start);
+        btnGetStartPoint.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                GetLatLngActivity.start(RoutePlanActivity.this, requestCodeStart);
+            }
+        });
+
+        btnGetEndPOint = (Button) findViewById(R.id.id_btn_choose_end);
+        btnGetEndPOint.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                GetLatLngActivity.start(RoutePlanActivity.this, requestCodeEnd);
+            }
+        });
+
+        etLatitudeStart = (EditText) findViewById(R.id.id_et_begin_latitude);
+        etLongitudeStart = (EditText) findViewById(R.id.id_et_begin_longitude);
+        etLatitudeEnd = (EditText) findViewById(R.id.id_et_end_latitude);
+        etLongitudeEnd = (EditText) findViewById(R.id.id_et_end_longitude);
+
         //初始化mapView
         initMapView();
 
@@ -98,6 +164,13 @@ public class RoutePlanActivity extends Activity {
                 startNavi(true);
             }
         });
+    }
+
+    private void updateEditText(){
+        etLatitudeStart.setText(latLngStart.latitude+"");
+        etLongitudeStart.setText(latLngStart.longitude+"");
+        etLatitudeEnd.setText(latLngEnd.latitude+"");
+        etLongitudeEnd.setText(latLngEnd.longitude+"");
     }
 
 
@@ -166,16 +239,12 @@ public class RoutePlanActivity extends Activity {
 
     private void startCalcRoute(int netmode) {
         //获取输入的起终点
-        EditText startXEditText = (EditText) findViewById(R.id.id_et_begin_latitude);
-        EditText startYEditText = (EditText) findViewById(R.id.id_et_begin_longitude);
-        EditText endXEditText = (EditText) findViewById(R.id.id_et_end_latitude);
-        EditText endYEditText = (EditText) findViewById(R.id.id_et_end_longitude);
         double sX = 0, sY = 0, eX = 0, eY = 0;
         try {
-            sX = Double.parseDouble(startXEditText.getText().toString());
-            sY = Integer.parseInt(startYEditText.getText().toString());
-            eX = Integer.parseInt(endXEditText.getText().toString());
-            eY = Integer.parseInt(endYEditText.getText().toString());
+            sX = latLngStart.latitude;
+            sY = latLngStart.longitude;
+            eX = latLngEnd.latitude;
+            eY = latLngEnd.longitude;
         } catch (Exception e) {
             Toast.makeText(this, "计算出错!", Toast.LENGTH_SHORT);
             e.printStackTrace();
@@ -282,6 +351,19 @@ public class RoutePlanActivity extends Activity {
         public void onRoutePlanStart() {
         }
     };
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == requestCodeStart && resultCode == RESULT_OK && data != null) {
+            latLngStart = new LatLng(data.getDoubleExtra(Constant.EXTRA_KEY_LATITUDE, 0),
+                    data.getDoubleExtra(Constant.EXTRA_KEY_LONGITUDE, 0));
+        } else if (requestCode == requestCodeEnd) {
+            latLngEnd = new LatLng(data.getDoubleExtra(Constant.EXTRA_KEY_LATITUDE, 0),
+                    data.getDoubleExtra(Constant.EXTRA_KEY_LONGITUDE, 0));
+        }
+        updateEditText();
+        super.onActivityResult(requestCode, resultCode, data);
+    }
 
     //生命周期***********************************************************
     @Override

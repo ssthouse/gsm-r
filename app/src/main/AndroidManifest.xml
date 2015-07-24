@@ -83,6 +83,8 @@
         <activity android:name=".activity.MeasureActivity"/>
 
         <activity android:name=".activity.PicGridActivity"/>
+
+        <activity android:name=".activity.GetLatLngActivity"/>
     </application>
 
 </manifest>

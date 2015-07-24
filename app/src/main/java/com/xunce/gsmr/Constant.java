@@ -9,6 +9,9 @@ public class Constant {
     //app的文件夹名
     public static  final String APP_FOLDER_NAME = "GSM";
 
+    //数据库文件的路径
+    public static final String DbPath = "data/data/com.xunce.gsmr/Location.db";
+
     public static final String PICTURE_PATH = "/storage/sdcard0/GSM/Picture/";
     public static final String TEMP_PICTURE_PATH = "/storage/sdcard0/GSM/Temp/";
 
@@ -21,6 +24,9 @@ public class Constant {
     public static final String EXTRA_KEY_PRJ_ITEM = "prjItem";
     public static final String EXTRA_KEY_MARKER_ITEM = "markerItem";
     public static final String EXTRA_KEY_REQUEST_CODE = "requestCode";
+    public static final String EXTRA_KEY_LATITUDE = "latitude";
+    public static final String EXTRA_KEY_LONGITUDE = "longitude";
+
 
     //result_code
     public static final int RESULT_CODE_OK = 2000;

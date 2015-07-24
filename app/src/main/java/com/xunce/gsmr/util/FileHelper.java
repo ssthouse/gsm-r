@@ -48,6 +48,7 @@ public class FileHelper {
 
     /**
      * 为PrjImte重命名
+     *
      * @param prjItem
      * @param newName
      */
@@ -131,7 +132,7 @@ public class FileHelper {
         Intent intent = new Intent(android.content.Intent.ACTION_SEND_MULTIPLE);
         ArrayList<Uri> uriList = new ArrayList<>();
         //获取对应TourItem的文件的URL
-        for(BitmapItem item : bitmapItemList) {
+        for (BitmapItem item : bitmapItemList) {
             File file = new File(item.getPath());
             uriList.add(Uri.fromFile(file));
         }
@@ -139,5 +140,20 @@ public class FileHelper {
         intent.setType("image/jpg");
         //调用系统的----发送
         context.startActivity(Intent.createChooser(intent, "Share　Image"));
+    }
+
+    public static void sendDbFile(Context context) {
+        File dbFile = new File(Constant.DbPath);
+        dbFile.setReadable(true, false);
+        dbFile.setWritable(true, false);
+        dbFile.setExecutable(true, false);
+        if(dbFile.exists()){
+            LogHelper.Log(TAG, "我是存在的!!!!!");
+        }
+        LogHelper.Log(TAG, dbFile.getAbsolutePath());
+        Intent intent = new Intent(Intent.ACTION_SEND);
+        intent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(dbFile));
+        intent.setType("*/*");
+        context.startActivity(intent);
     }
 }
