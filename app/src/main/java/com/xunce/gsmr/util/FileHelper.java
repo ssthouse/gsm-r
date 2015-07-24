@@ -1,9 +1,11 @@
 package com.xunce.gsmr.util;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Environment;
+import android.util.Log;
 
 import com.xunce.gsmr.Constant;
 import com.xunce.gsmr.model.BitmapItem;
@@ -11,6 +13,10 @@ import com.xunce.gsmr.model.MarkerItem;
 import com.xunce.gsmr.model.PrjItem;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -142,18 +148,49 @@ public class FileHelper {
         context.startActivity(Intent.createChooser(intent, "Share　Image"));
     }
 
-    public static void sendDbFile(Context context) {
-        File dbFile = new File(Constant.DbPath);
-        dbFile.setReadable(true, false);
-        dbFile.setWritable(true, false);
-        dbFile.setExecutable(true, false);
-        if(dbFile.exists()){
+    public static void sendDbFile(Activity context) {
+        File tempDbFile = new File(Constant.TEMP_FILE_PATH, System.currentTimeMillis() + ".db");
+        try {
+            tempDbFile.createNewFile();
+        } catch (IOException e) {
+            Log.e(TAG, "creat new file is worng");
+            e.printStackTrace();
+        }
+        try {
+            copyFile(new FileInputStream(new File("/data/data/com.xunce.gsmr/databases/Location.db")), tempDbFile.getAbsolutePath());
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+            Log.e(TAG, "somehing is worng");
+        }
+        if (tempDbFile.exists()) {
             LogHelper.Log(TAG, "我是存在的!!!!!");
         }
-        LogHelper.Log(TAG, dbFile.getAbsolutePath());
+        LogHelper.Log(TAG, tempDbFile.getAbsolutePath());
         Intent intent = new Intent(Intent.ACTION_SEND);
-        intent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(dbFile));
+        intent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(tempDbFile));
         intent.setType("*/*");
         context.startActivity(intent);
+    }
+
+    /**
+     * 复制单个文件
+     *
+     * @return boolean
+     */
+    public static void copyFile(FileInputStream fis, String newPath) {
+        try {
+            int bytesum = 0;
+            int byteread = 0;
+            FileOutputStream fs = new FileOutputStream(newPath);
+            byte[] buffer = new byte[1444];
+            while ((byteread = fis.read(buffer)) != -1) {
+                bytesum += byteread; //字节数 文件大小
+                fs.write(buffer, 0, byteread);
+            }
+            fis.close();
+        } catch (Exception e) {
+            System.out.println("复制单个文件操作出错");
+            e.printStackTrace();
+        }
     }
 }

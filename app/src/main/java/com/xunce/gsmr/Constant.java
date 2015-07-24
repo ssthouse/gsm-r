@@ -13,7 +13,7 @@ public class Constant {
     public static final String DbPath = "data/data/com.xunce.gsmr/Location.db";
 
     public static final String PICTURE_PATH = "/storage/sdcard0/GSM/Picture/";
-    public static final String TEMP_PICTURE_PATH = "/storage/sdcard0/GSM/Temp/";
+    public static final String TEMP_FILE_PATH = "/storage/sdcard0/GSM/Temp/";
 
     //table名
     public static final String TABLE_PRJ_ITEM = "Projects";

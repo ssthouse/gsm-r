@@ -165,7 +165,7 @@ public class PictureHelper {
     }
 
     private static boolean hasTempPicture(File file) {
-        File tempFile = new File(Constant.TEMP_PICTURE_PATH + file.getName());
+        File tempFile = new File(Constant.TEMP_FILE_PATH + file.getName());
         if (tempFile.exists()) {
             return true;
         } else {
@@ -174,7 +174,7 @@ public class PictureHelper {
     }
 
     private static File getTempPicture(File file) {
-        return new File(Constant.TEMP_PICTURE_PATH + file.getName());
+        return new File(Constant.TEMP_FILE_PATH + file.getName());
     }
 
     public static List<BitmapItem> getBitmapItemList(String path) {
@@ -195,14 +195,14 @@ public class PictureHelper {
         for (File file : files) {
             //对于每个文件---不一定都要重新decode--可能在缓存文件夹里面就哟
             if (hasTempPicture(file)) {
-                Bitmap bitmap = BitmapFactory.decodeFile(Constant.TEMP_PICTURE_PATH + file.getName());
+                Bitmap bitmap = BitmapFactory.decodeFile(Constant.TEMP_FILE_PATH + file.getName());
                 bitmapList.add(new BitmapItem(bitmap, file.getAbsolutePath()));
             } else {
                 //获取缩略图
                 Bitmap bitmap = getSmallBitmap(file.getAbsolutePath(), 120, 120);
                 bitmapList.add(new BitmapItem(bitmap, file.getAbsolutePath()));
                 //将其缓存
-                saveImage(bitmap, Constant.TEMP_PICTURE_PATH + file.getName());
+                saveImage(bitmap, Constant.TEMP_FILE_PATH + file.getName());
             }
         }
         return bitmapList;
