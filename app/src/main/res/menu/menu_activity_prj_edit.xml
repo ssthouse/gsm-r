@@ -4,6 +4,12 @@
     tools:context=".MainActivity">
 
     <item
+        android:id="@+id/id_action_change_project"
+        android:orderInCategory="100"
+        android:title="切换工程"
+        app:showAsAction="never" />
+
+    <item
         android:id="@+id/id_action_load_map"
         android:orderInCategory="100"
         android:title="加载铁路地图"

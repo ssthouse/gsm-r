@@ -17,6 +17,7 @@ import com.xunce.gsmr.adapter.PrjLvAdapter;
 import com.xunce.gsmr.style.TransparentStyle;
 import com.xunce.gsmr.util.DialogHelper;
 import com.xunce.gsmr.util.FileHelper;
+import com.xunce.gsmr.util.PreferenceHelper;
 import com.xunce.gsmr.util.ToastHelper;
 import com.xunce.gsmr.util.gps.DBHelper;
 
@@ -62,6 +63,10 @@ public class PrjSelectActivity extends AppCompatActivity{
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 //点击某一个prjImte的时候跳转到---具体的编辑界面(一个地图---很多按钮)
+                //保存当前要编辑的Prjname到preference
+                PreferenceHelper.saveLstEditPrjName(PrjSelectActivity.this,
+                        adapter.getPrjItemList().get(position).getPrjName());
+                finish();
                 PrjEditActivity.start(PrjSelectActivity.this, adapter.getPrjItemList().get(position));
             }
         });

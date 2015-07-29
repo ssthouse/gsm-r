@@ -33,6 +33,7 @@ import com.xunce.gsmr.model.MarkerItem;
 import com.xunce.gsmr.model.PrjItem;
 import com.xunce.gsmr.model.widget.ZoomControlView;
 import com.xunce.gsmr.style.TransparentStyle;
+import com.xunce.gsmr.util.PreferenceHelper;
 import com.xunce.gsmr.util.ToastHelper;
 import com.xunce.gsmr.util.gps.DBHelper;
 import com.xunce.gsmr.util.gps.LocateHelper;
@@ -95,8 +96,16 @@ public class PrjEditActivity extends AppCompatActivity {
         setContentView(R.layout.activity_prj_edit);
         TransparentStyle.setAppToTransparentStyle(this, getResources().getColor(R.color.color_primary));
 
-        //获取intent中数据
-        prjItem = (PrjItem) getIntent().getSerializableExtra(Constant.EXTRA_KEY_PRJ_ITEM);
+//        //获取intent中数据
+//        prjItem = (PrjItem) getIntent().getSerializableExtra(Constant.EXTRA_KEY_PRJ_ITEM);
+        //这里改为---看prefrence中有没有已经编辑过的prjName
+        if (PreferenceHelper.hasLastEditPrjItem(this)) {
+            prjItem = new PrjItem(PreferenceHelper.getLastEditPrjName(this));
+        } else {
+            finish();
+            startActivity(new Intent(this, PrjSelectActivity.class));
+            return;
+        }
 
         //初始化数据
         mLocationClient = new LocationClient(this);
@@ -123,7 +132,8 @@ public class PrjEditActivity extends AppCompatActivity {
         toolbar.setBackgroundDrawable(getResources().getDrawable(R.drawable.action_bar_background));
         //init ActionBar
         setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        //不在需要返回按钮
+        //getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         mMapView = (MapView) findViewById(R.id.id_baidu_map);
         mMapView.showZoomControls(false);
@@ -291,7 +301,11 @@ public class PrjEditActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            //加载铁路地图
+            //切换工程
+            case R.id.id_action_change_project:
+                finish();
+                startActivity(new Intent(this, PrjSelectActivity.class));
+                //加载铁路地图
             case R.id.id_action_load_map:
                 //TODO---在MapHelper中实现
                 break;
@@ -340,31 +354,38 @@ public class PrjEditActivity extends AppCompatActivity {
     //生命周期***********************************************************
     @Override
     protected void onPause() {
-        // activity 暂停时同时暂停地图控件
-        mMapView.onPause();
+        if (mMapView != null) {
+            // activity 暂停时同时暂停地图控件
+            mMapView.onPause();
+        }
         super.onPause();
     }
 
     @Override
     protected void onResume() {
-        // activity 恢复时同时恢复地图控件
-        mMapView.onResume();
+        if (mMapView != null) {
+            // activity 恢复时同时恢复地图控件
+            mMapView.onResume();
+        }
         super.onResume();
     }
 
     @Override
     protected void onDestroy() {
-        // 退出时销毁定位
-        mLocationClient.stop();
-        // activity 销毁时同时销毁地图控件
-        mMapView.onDestroy();
+        if (mMapView != null && mLocationClient != null) {
+            // 退出时销毁定位
+            mLocationClient.stop();
+            // activity 销毁时同时销毁地图控件
+            mMapView.onDestroy();
+            descriptorBlue.recycle();
+            descriptorRed.recycle();
+        }
         super.onDestroy();
-        descriptorBlue.recycle();
-        descriptorRed.recycle();
     }
+
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if(keyCode == KeyEvent.KEYCODE_MENU){
+        if (keyCode == KeyEvent.KEYCODE_MENU) {
             return true;
         }
         return super.onKeyDown(keyCode, event);
