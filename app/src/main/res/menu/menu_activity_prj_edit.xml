@@ -15,11 +15,12 @@
         android:title="加载铁路地图"
         app:showAsAction="never" />
 
-    <item
-        android:id="@+id/id_action_measure_tool"
-        android:orderInCategory="100"
-        android:title="测量工具"
-        app:showAsAction="never" />
+    <!--将测距放在地图上面-->
+    <!--<item-->
+        <!--android:id="@+id/id_action_measure_tool"-->
+        <!--android:orderInCategory="100"-->
+        <!--android:title="测量工具"-->
+        <!--app:showAsAction="never" />-->
 
     <item
         android:id="@+id/id_action_export_data"

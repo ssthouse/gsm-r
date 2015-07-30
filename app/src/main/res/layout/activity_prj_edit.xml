@@ -28,14 +28,14 @@
             android:layout_margin="4dp"
             android:orientation="horizontal">
 
-            <Button
-                android:textSize="@dimen/text_size_button"
-                android:id="@+id/id_btn_route"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:background="@drawable/btn_selector"
-                android:text="路线" />
+            <!--<Button-->
+                <!--android:textSize="@dimen/text_size_button"-->
+                <!--android:id="@+id/id_btn_route"-->
+                <!--android:layout_width="0dp"-->
+                <!--android:layout_height="match_parent"-->
+                <!--android:layout_weight="1"-->
+                <!--android:background="@drawable/btn_selector"-->
+                <!--android:text="路线" />-->
 
             <Button
                 android:textSize="@dimen/text_size_button"
@@ -56,6 +56,7 @@
                 android:text="照片" />
         </LinearLayout>
 
+        <!--定位按钮-->
         <ImageButton
             android:id="@+id/id_ib_locate"
             android:layout_width="36dp"
@@ -64,6 +65,17 @@
             android:layout_margin="8dp"
             android:background="@color/white"
             android:src="@drawable/locate2" />
+
+        <!--标尺测量按钮-->
+        <ImageButton
+            android:id="@+id/id_ib_measure"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:layout_gravity="bottom|left"
+            android:layout_marginLeft="52dp"
+            android:layout_marginBottom="8dp"
+            android:background="@color/white"
+            android:src="@drawable/icon_measure" />
 
         <com.xunce.gsmr.model.widget.ZoomControlView
             android:id="@+id/id_zoom_control"

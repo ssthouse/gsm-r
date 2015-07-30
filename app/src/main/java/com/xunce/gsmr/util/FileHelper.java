@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Environment;
+import android.provider.ContactsContract;
 import android.util.Log;
 
 import com.xunce.gsmr.Constant;
@@ -26,6 +27,17 @@ import java.util.List;
  */
 public class FileHelper {
     private static final String TAG = "FileHelper";
+
+    /**
+     * TODO---开启Intent获取.db文件----然后加载文件中的数据
+     *
+     * @param activity
+     */
+    public static void loadDbFile(Activity activity) {
+        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+        intent.setType(ContactsContract.Contacts.CONTENT_TYPE);
+        activity.startActivityForResult(intent, Constant.REQUEST_CODE_DB_FILE);
+    }
 
     /**
      * 删除一个PrjItem的数据

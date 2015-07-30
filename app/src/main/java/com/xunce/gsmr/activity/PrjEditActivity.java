@@ -2,6 +2,7 @@ package com.xunce.gsmr.activity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -33,6 +34,7 @@ import com.xunce.gsmr.model.MarkerItem;
 import com.xunce.gsmr.model.PrjItem;
 import com.xunce.gsmr.model.widget.ZoomControlView;
 import com.xunce.gsmr.style.TransparentStyle;
+import com.xunce.gsmr.util.LogHelper;
 import com.xunce.gsmr.util.PreferenceHelper;
 import com.xunce.gsmr.util.ToastHelper;
 import com.xunce.gsmr.util.gps.DBHelper;
@@ -208,13 +210,13 @@ public class PrjEditActivity extends AppCompatActivity {
             }
         });
 
-        //路线
-        findViewById(R.id.id_btn_route).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                RoutePlanActivity.start(PrjEditActivity.this);
-            }
-        });
+//        //路线---暂时隐藏
+//        findViewById(R.id.id_btn_route).setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                RoutePlanActivity.start(PrjEditActivity.this);
+//            }
+//        });
 
         //选址
         findViewById(R.id.id_btn_mark).setOnClickListener(new View.OnClickListener() {
@@ -224,6 +226,14 @@ public class PrjEditActivity extends AppCompatActivity {
                 MarkerItem markerItem = new MarkerItem(prjItem);
                 markerItem.save();
                 MarkerActivity.start(PrjEditActivity.this, markerItem, REQUEST_CODE_MARKER_ACTIVITY);
+            }
+        });
+
+        //测量按钮
+        findViewById(R.id.id_ib_measure).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                MeasureActivity.start(PrjEditActivity.this);
             }
         });
 
@@ -308,11 +318,14 @@ public class PrjEditActivity extends AppCompatActivity {
                 //加载铁路地图
             case R.id.id_action_load_map:
                 //TODO---在MapHelper中实现
+//                FileHelper.loadDbFile(this);
+                MapHelper.drawText(mBaiduMap, "hialuglwieaughlweiughlwe", new LatLng(34, 114), 30);
+                MapHelper.loadMap(this, mBaiduMap, prjItem);
                 break;
-            //测量工具
-            case R.id.id_action_measure_tool:
-                MeasureActivity.start(PrjEditActivity.this);
-                break;
+//            //测量工具---TODO--移动到浮动按钮
+//            case R.id.id_action_measure_tool:
+//                MeasureActivity.start(PrjEditActivity.this);
+//                break;
             //设置
             case R.id.id_action_setting:
 
@@ -342,6 +355,12 @@ public class PrjEditActivity extends AppCompatActivity {
                     //更新当前Activity中的数据
                     loadMapData(mBaiduMap, prjItem);
                 }
+                break;
+            //如果是加载.db文件
+            case Constant.REQUEST_CODE_DB_FILE:
+                Uri uri = data.getData();
+                LogHelper.Log(TAG, uri.getEncodedPath());
+
                 break;
             case REQUEST_CODE_ROUTE_ACTIVITY:
                 break;
