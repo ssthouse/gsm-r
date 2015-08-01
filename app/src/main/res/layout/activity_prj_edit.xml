@@ -29,31 +29,31 @@
             android:orientation="horizontal">
 
             <!--<Button-->
-                <!--android:textSize="@dimen/text_size_button"-->
-                <!--android:id="@+id/id_btn_route"-->
-                <!--android:layout_width="0dp"-->
-                <!--android:layout_height="match_parent"-->
-                <!--android:layout_weight="1"-->
-                <!--android:background="@drawable/btn_selector"-->
-                <!--android:text="路线" />-->
+            <!--android:textSize="@dimen/text_size_button"-->
+            <!--android:id="@+id/id_btn_route"-->
+            <!--android:layout_width="0dp"-->
+            <!--android:layout_height="match_parent"-->
+            <!--android:layout_weight="1"-->
+            <!--android:background="@drawable/btn_selector"-->
+            <!--android:text="路线" />-->
 
             <Button
-                android:textSize="@dimen/text_size_button"
                 android:id="@+id/id_btn_mark"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:background="@drawable/btn_selector"
-                android:text="选址" />
+                android:text="选址"
+                android:textSize="@dimen/text_size_button" />
 
             <Button
-                android:textSize="@dimen/text_size_button"
                 android:id="@+id/id_btn_take_photo"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:background="@drawable/btn_selector"
-                android:text="照片" />
+                android:text="照片"
+                android:textSize="@dimen/text_size_button" />
         </LinearLayout>
 
         <!--定位按钮-->
@@ -72,10 +72,26 @@
             android:layout_width="36dp"
             android:layout_height="36dp"
             android:layout_gravity="bottom|left"
-            android:layout_marginLeft="52dp"
             android:layout_marginBottom="8dp"
+            android:layout_marginLeft="52dp"
             android:background="@color/white"
             android:src="@drawable/icon_measure" />
+
+        <!--公里标视图开启按钮-->
+        <ImageButton
+            android:scaleType="fitCenter"
+            android:id="@+id/id_ib_position"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:layout_gravity="bottom|left"
+            android:layout_marginBottom="8dp"
+            android:layout_marginLeft="96dp"
+            android:background="@color/white"
+            android:src="@drawable/icon_position" />
+
+        <!--公里标输入框-->
+        <include layout="@layout/view_position" />
+
 
         <com.xunce.gsmr.model.widget.ZoomControlView
             android:id="@+id/id_zoom_control"

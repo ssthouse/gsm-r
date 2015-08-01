@@ -11,6 +11,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.animation.AnimationUtils;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 
@@ -70,6 +72,10 @@ public class PrjEditActivity extends AppCompatActivity {
     private boolean isLocated = false;
 
     private ImageButton ibLocate;
+    //公里标VIew
+    private LinearLayout llPosition;
+    private EditText etPosition;
+    private boolean isPositionShowed = false;
 
     private List<LatLng> pointList = new ArrayList<>();
     private List<Marker> markerList = new ArrayList<>();
@@ -185,7 +191,7 @@ public class PrjEditActivity extends AppCompatActivity {
                                 REQUEST_CODE_MARKER_EDIT_ACTIVITY);
                     }
                 };
-                LatLng latLng = marker.getPosition();
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       LatLng latLng = marker.getPosition();
                 mInfoWindow = new InfoWindow(BitmapDescriptorFactory.fromView(ll), latLng, -47, listener);
                 mBaiduMap.showInfoWindow(mInfoWindow);
                 currentMarker = marker;
@@ -237,6 +243,27 @@ public class PrjEditActivity extends AppCompatActivity {
             }
         });
 
+        //公里标开关按钮
+        findViewById(R.id.id_ib_position).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(isPositionShowed){
+                    hideLlPosition();
+                }else{
+                    showLlPosition();
+                }
+            }
+        });
+        llPosition = (LinearLayout) findViewById(R.id.id_ll_position);
+        etPosition = (EditText) llPosition.findViewById(R.id.id_et);
+        llPosition.findViewById(R.id.id_btn_confirm).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //TODO---地图定位到指定的DK文字位置去...
+                hideLlPosition();
+            }
+        });
+
         //拍照---拍照前要选中一个Marker
         findViewById(R.id.id_btn_take_photo).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -263,6 +290,18 @@ public class PrjEditActivity extends AppCompatActivity {
         LatLng ll = new LatLng(location.getLatitude(),
                 location.getLongitude());
         MapHelper.animateToPoint(mBaiduMap, ll);
+    }
+
+   private void showLlPosition(){
+       isPositionShowed = true;
+       llPosition.setVisibility(View.VISIBLE);
+       llPosition.startAnimation(AnimationUtils.loadAnimation(this, R.anim.pop_up));
+   }
+
+    private void hideLlPosition(){
+        isPositionShowed = false;
+        llPosition.startAnimation(AnimationUtils.loadAnimation(this, R.anim.drop_down));
+        llPosition.setVisibility(View.GONE);
     }
 
     /**
@@ -409,5 +448,4 @@ public class PrjEditActivity extends AppCompatActivity {
         }
         return super.onKeyDown(keyCode, event);
     }
-
 }
