@@ -46,14 +46,14 @@
                 android:text="选址"
                 android:textSize="@dimen/text_size_button" />
 
-            <Button
-                android:id="@+id/id_btn_take_photo"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:background="@drawable/btn_selector"
-                android:text="照片"
-                android:textSize="@dimen/text_size_button" />
+            <!--<Button-->
+                <!--android:id="@+id/id_btn_take_photo"-->
+                <!--android:layout_width="0dp"-->
+                <!--android:layout_height="match_parent"-->
+                <!--android:layout_weight="1"-->
+                <!--android:background="@drawable/btn_selector"-->
+                <!--android:text="照片"-->
+                <!--android:textSize="@dimen/text_size_button" />-->
         </LinearLayout>
 
         <!--定位按钮-->

@@ -8,6 +8,7 @@ import android.os.Environment;
 import android.provider.ContactsContract;
 import android.util.Log;
 
+import com.baidu.mapapi.model.LatLng;
 import com.xunce.gsmr.Constant;
 import com.xunce.gsmr.model.BitmapItem;
 import com.xunce.gsmr.model.MarkerItem;
@@ -91,6 +92,25 @@ public class FileHelper {
         }
         prjItem.setPrjName(newName);
         prjItem.save();
+    }
+
+    /**
+     * 改变MarkerItem的数据库中的数据---以及照片文件夹的名称
+     *
+     * @param markerItem
+     * @param latLng
+     */
+    public static void changeMarkerItemName(MarkerItem markerItem, LatLng latLng) {
+        //先改变文件路径
+        File file = new File(Constant.PICTURE_PATH + markerItem.getPrjName()+"/"+
+                + markerItem.getLatitude() + "_" + markerItem.getLongitude());
+        file.renameTo(new File(Constant.PICTURE_PATH + markerItem.getPrjName()+"/"+
+                + latLng.latitude + "_" +latLng.longitude));
+        //修改数据
+        markerItem.setLatitude(latLng.latitude);
+        markerItem.setLongitude(latLng.longitude);
+        //保存数据
+        markerItem.save();
     }
 
     /**

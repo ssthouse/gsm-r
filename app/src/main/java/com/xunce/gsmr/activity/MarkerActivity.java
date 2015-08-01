@@ -33,6 +33,7 @@ import com.xunce.gsmr.model.MarkerItem;
 import com.xunce.gsmr.model.widget.ZoomControlView;
 import com.xunce.gsmr.style.TransparentStyle;
 import com.xunce.gsmr.util.AnimHelper;
+import com.xunce.gsmr.util.FileHelper;
 import com.xunce.gsmr.util.ToastHelper;
 import com.xunce.gsmr.util.gps.DBHelper;
 import com.xunce.gsmr.util.gps.LocateHelper;
@@ -203,16 +204,17 @@ public class MarkerActivity extends AppCompatActivity {
         etLatitude = (EditText) findViewById(R.id.id_et_latitude);
         etLongitude = (EditText) findViewById(R.id.id_et_longitude);
 
+        //确认按钮
         Button btnSubmit = (Button) findViewById(R.id.id_btn_submit);
         btnSubmit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (MarkerHelper.isDataValid(etLatitude, etLongitude)) {
-                    //修改数据
-                    markerItem.setLatitude(MarkerHelper.getLatitude(etLatitude));
-                    markerItem.setLongitude(MarkerHelper.getLongitude(etLongitude));
-                    //保存数据
-                    markerItem.save();
+
+                    //保存数据---并改变原来的照片的文件夹的名称
+                    LatLng latLng = new LatLng(MarkerHelper.getLatitude(etLatitude),
+                            MarkerHelper.getLongitude(etLongitude));
+                    FileHelper.changeMarkerItemName(markerItem, latLng);
                     //设置返回值
                     setResult(Constant.RESULT_CODE_OK);
                     //退出

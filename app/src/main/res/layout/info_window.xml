@@ -6,10 +6,20 @@
     android:padding="4dp">
 
     <Button
+        android:onClick="clickEdit"
         android:id="@+id/id_btn_edit"
         android:background="@color/gray"
         android:textColor="@color/white"
         android:layout_width="80dp"
         android:layout_height="42dp"
         android:text="修改"/>
+
+    <Button
+        android:onClick="clickPhoto"
+        android:id="@+id/id_btn_photo"
+        android:background="@color/gray"
+        android:textColor="@color/white"
+        android:layout_width="80dp"
+        android:layout_height="42dp"
+        android:text="照片"/>
 </LinearLayout>

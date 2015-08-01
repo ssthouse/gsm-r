@@ -3,12 +3,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:id="@+id/id_action_measure_tool"
-        android:orderInCategory="100"
-        android:title="测量工具"
-        app:showAsAction="never" />
-
-    <item
         android:id="@+id/id_action_export_data"
         app:showAsAction="never"
         android:title="导出数据" />

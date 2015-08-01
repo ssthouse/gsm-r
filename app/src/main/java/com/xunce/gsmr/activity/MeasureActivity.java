@@ -34,6 +34,7 @@ import com.xunce.gsmr.Constant;
 import com.xunce.gsmr.R;
 import com.xunce.gsmr.model.widget.ZoomControlView;
 import com.xunce.gsmr.style.TransparentStyle;
+import com.xunce.gsmr.util.LogHelper;
 import com.xunce.gsmr.util.gps.LocateHelper;
 import com.xunce.gsmr.util.gps.MapHelper;
 
@@ -80,6 +81,7 @@ public class MeasureActivity extends AppCompatActivity {
             intent.putExtra(Constant.EXTRA_KEY_LATITUDE, latLng.latitude);
             intent.putExtra(Constant.EXTRA_KEY_LONGITUDE, latLng.longitude);
         }
+        LogHelper.Log(TAG, latLng.latitude+ " : " + latLng.longitude);
         activity.startActivity(intent);
         activity.overridePendingTransition(R.anim.activity_fade_in, R.anim.activity_fade_out);
     }

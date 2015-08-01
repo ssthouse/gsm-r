@@ -182,16 +182,8 @@ public class PrjEditActivity extends AppCompatActivity {
                 marker.setIcon(descriptorRed);
                 //填充一个Button到marker上方的对话框中---WindowInfo
                 LinearLayout ll = (LinearLayout) getLayoutInflater().inflate(R.layout.info_window, null);
-                InfoWindow.OnInfoWindowClickListener listener = new InfoWindow.OnInfoWindowClickListener() {
-                    public void onInfoWindowClick() {
-                        mBaiduMap.hideInfoWindow();
-                        MarkerActivity.start(PrjEditActivity.this,
-                                DBHelper.getMarkerList(prjItem).get(markerList.indexOf(marker)),
-                                REQUEST_CODE_MARKER_EDIT_ACTIVITY);
-                    }
-                };
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       LatLng latLng = marker.getPosition();
-                mInfoWindow = new InfoWindow(BitmapDescriptorFactory.fromView(ll), latLng, -47, listener);
+                LatLng latLng = marker.getPosition();
+                mInfoWindow = new InfoWindow(ll, latLng, -47);
                 mBaiduMap.showInfoWindow(mInfoWindow);
                 currentMarker = marker;
                 return true;
@@ -266,19 +258,44 @@ public class PrjEditActivity extends AppCompatActivity {
             }
         });
 
-        //拍照---拍照前要选中一个Marker
-        findViewById(R.id.id_btn_take_photo).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //TODO---不知道这里为什么会有-1产生
-                if (currentMarker == null || markerList.indexOf(currentMarker) == -1) {
-                    ToastHelper.show(PrjEditActivity.this, ibLocate, "请先选择一个基址点");
-                } else {
-                    PicGridActivity.start(PrjEditActivity.this,
-                            markerItemList.get(markerList.indexOf(currentMarker)));
-                }
-            }
-        });
+//        //拍照---拍照前要选中一个Marker
+//        findViewById(R.id.id_btn_take_photo).setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                //TODO---不知道这里为什么会有-1产生
+//                if (currentMarker == null || markerList.indexOf(currentMarker) == -1) {
+//                    ToastHelper.show(PrjEditActivity.this, ibLocate, "请先选择一个基址点");
+//                } else {
+//                    PicGridActivity.start(PrjEditActivity.this,
+//                            markerItemList.get(markerList.indexOf(currentMarker)));
+//                }
+//            }
+//        });
+    }
+
+    public void clickEdit(View v){
+        LogHelper.Log(TAG, "edit");
+        if (currentMarker == null || markerList.indexOf(currentMarker) == -1) {
+            ToastHelper.show(PrjEditActivity.this, ibLocate, "请先选择一个基址点");
+            return;
+        }
+        mBaiduMap.hideInfoWindow();
+        MarkerActivity.start(PrjEditActivity.this,
+                DBHelper.getMarkerList(prjItem).get(markerList.indexOf(currentMarker)),
+                REQUEST_CODE_MARKER_EDIT_ACTIVITY);
+    }
+
+
+    public void clickPhoto(View v){
+        LogHelper.Log(TAG, "photo");
+        mBaiduMap.hideInfoWindow();
+        if (currentMarker == null || markerList.indexOf(currentMarker) == -1) {
+            ToastHelper.show(PrjEditActivity.this, ibLocate, "请先选择一个基址点");
+            return;
+        } else {
+            PicGridActivity.start(PrjEditActivity.this,
+                    markerItemList.get(markerList.indexOf(currentMarker)));
+        }
     }
 
     private void locate(BDLocation location) {
@@ -409,6 +426,15 @@ public class PrjEditActivity extends AppCompatActivity {
                 break;
         }
         super.onActivityResult(requestCode, resultCode, data);
+    }
+
+    @Override
+    public void onBackPressed() {
+        if(isPositionShowed){
+            hideLlPosition();
+        }else{
+            super.onBackPressed();
+        }
     }
 
     //生命周期***********************************************************
