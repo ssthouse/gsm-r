@@ -30,6 +30,7 @@ import com.baidu.mapapi.map.OverlayOptions;
 import com.baidu.mapapi.map.PolylineOptions;
 import com.baidu.mapapi.model.LatLng;
 import com.baidu.mapapi.utils.DistanceUtil;
+import com.xunce.gsmr.Constant;
 import com.xunce.gsmr.R;
 import com.xunce.gsmr.model.widget.ZoomControlView;
 import com.xunce.gsmr.style.TransparentStyle;
@@ -40,12 +41,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * 测距Activity---开启需要一个PrjItme
+ * 测距Activity---开启需要一个Latlng
  * --需要显示出所有的已经标记的点的位置--便于测量距离--还有地图
  * Created by ssthouse on 2015/7/19.
  */
 public class MeasureActivity extends AppCompatActivity {
     private static final String TAG = "MeasureActivity";
+
+    private LatLng latLng;
 
     //地图相关
     private BaiduMap mBaiduMap;
@@ -71,8 +74,12 @@ public class MeasureActivity extends AppCompatActivity {
 
     private boolean isFistIn = true;
 
-    public static void start(Activity activity) {
+    public static void start(Activity activity, LatLng latLng) {
         Intent intent = new Intent(activity, MeasureActivity.class);
+        if (latLng != null) {
+            intent.putExtra(Constant.EXTRA_KEY_LATITUDE, latLng.latitude);
+            intent.putExtra(Constant.EXTRA_KEY_LONGITUDE, latLng.longitude);
+        }
         activity.startActivity(intent);
         activity.overridePendingTransition(R.anim.activity_fade_in, R.anim.activity_fade_out);
     }
@@ -82,6 +89,11 @@ public class MeasureActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_measure);
         TransparentStyle.setAppToTransparentStyle(this, getResources().getColor(R.color.color_primary));
+
+        //接收intent中的数据
+        Intent intent = getIntent();
+        latLng = new LatLng(intent.getDoubleExtra(Constant.EXTRA_KEY_LATITUDE, 0),
+                intent.getDoubleExtra(Constant.EXTRA_KEY_LONGITUDE, 0));
 
         initView();
 
@@ -121,6 +133,8 @@ public class MeasureActivity extends AppCompatActivity {
         mBaiduMap.setMyLocationEnabled(true);
         mBaiduMap.setMyLocationConfigeration(new MyLocationConfiguration(
                 MyLocationConfiguration.LocationMode.NORMAL, true, null));
+        //定位到中心点
+        MapHelper.animateToPoint(mBaiduMap, latLng);
 
         //获取缩放控件
         ZoomControlView zcvZomm = (ZoomControlView) findViewById(R.id.id_zoom_control);
@@ -287,7 +301,7 @@ public class MeasureActivity extends AppCompatActivity {
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if(keyCode == KeyEvent.KEYCODE_MENU){
+        if (keyCode == KeyEvent.KEYCODE_MENU) {
             return true;
         }
         return super.onKeyDown(keyCode, event);

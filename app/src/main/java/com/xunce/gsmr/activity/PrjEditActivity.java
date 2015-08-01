@@ -103,7 +103,6 @@ public class PrjEditActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_prj_edit);
         TransparentStyle.setAppToTransparentStyle(this, getResources().getColor(R.color.color_primary));
-
 //        //获取intent中数据
 //        prjItem = (PrjItem) getIntent().getSerializableExtra(Constant.EXTRA_KEY_PRJ_ITEM);
         //这里改为---看prefrence中有没有已经编辑过的prjName
@@ -239,7 +238,10 @@ public class PrjEditActivity extends AppCompatActivity {
         findViewById(R.id.id_ib_measure).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                MeasureActivity.start(PrjEditActivity.this);
+                //将当前地图的中心点传给MeasureActivity
+                LatLng latLng = mBaiduMap.getMapStatus().target;
+                //将中心点传递过去
+                MeasureActivity.start(PrjEditActivity.this,latLng);
             }
         });
 

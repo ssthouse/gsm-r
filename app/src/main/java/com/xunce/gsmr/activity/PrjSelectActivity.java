@@ -101,9 +101,9 @@ public class PrjSelectActivity extends AppCompatActivity{
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()){
-            case R.id.id_action_measure_tool:
-                MeasureActivity.start(PrjSelectActivity.this);
-                break;
+//            case R.id.id_action_measure_tool:
+//                MeasureActivity.start(PrjSelectActivity.this);
+//                break;
             case R.id.id_action_export_data:
                 FileHelper.sendDbFile(PrjSelectActivity.this);
                 break;
