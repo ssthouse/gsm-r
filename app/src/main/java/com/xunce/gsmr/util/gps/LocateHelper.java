@@ -23,7 +23,8 @@ public class LocateHelper {
             return;
         }
         LocationClientOption locateOptions = new LocationClientOption();
-        locateOptions.setLocationMode(LocationClientOption.LocationMode.Hight_Accuracy);//设置定位模式
+        //TODO---这里需要判断一下--是否有网络
+//        locateOptions.setLocationMode(LocationClientOption.LocationMode.Device_Sensors);//设置定位模式
         locateOptions.setCoorType("bd09ll");    //返回的定位结果是百度经纬度,默认值gcj02
         locateOptions.setScanSpan(1000);        //设置发起定位请求的间隔时间为5000ms
         locateOptions.setIsNeedAddress(true);   //返回的定位结果包含地址信息

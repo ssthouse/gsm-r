@@ -36,6 +36,7 @@ import com.xunce.gsmr.model.MarkerItem;
 import com.xunce.gsmr.model.PrjItem;
 import com.xunce.gsmr.model.widget.ZoomControlView;
 import com.xunce.gsmr.style.TransparentStyle;
+import com.xunce.gsmr.test.OfflineActivity;
 import com.xunce.gsmr.util.LogHelper;
 import com.xunce.gsmr.util.PreferenceHelper;
 import com.xunce.gsmr.util.ToastHelper;
@@ -384,6 +385,11 @@ public class PrjEditActivity extends AppCompatActivity {
 //            case R.id.id_action_measure_tool:
 //                MeasureActivity.start(PrjEditActivity.this);
 //                break;
+            case R.id.id_action_offline_map:
+                //TODO
+                //开启离线地图管理Acitvity
+                startActivity(new Intent(this, OfflineActivity.class));
+                break;
             //设置
             case R.id.id_action_setting:
 

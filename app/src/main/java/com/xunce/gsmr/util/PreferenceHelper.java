@@ -23,10 +23,10 @@ public class PreferenceHelper {
         }
         String prjName = sharedPreferences.getString(PREFERENCE_PRJNAME, "");
         if (prjName.length() > 0) {
-            LogHelper.Log(TAG, "wofanhui de true");
+//            LogHelper.Log(TAG, "wofanhui de true");
             return true;
         } else {
-            LogHelper.Log(TAG, "wofanhui de false");
+//            LogHelper.Log(TAG, "wofanhui de false");
             return false;
         }
     }

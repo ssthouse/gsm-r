@@ -64,9 +64,7 @@
             android:enabled="true"
             android:process=":remote" />
 
-        <activity android:name=".activity.PrjSelectActivity">
-
-        </activity>
+        <activity android:name=".activity.PrjSelectActivity"/>
 
         <activity android:name=".activity.PrjEditActivity">
             <intent-filter>
@@ -87,6 +85,12 @@
         <activity android:name=".activity.PicGridActivity"/>
 
         <activity android:name=".activity.GetLatLngActivity"/>
+
+        <!--TODO-->
+        <activity android:name=".test.OfflineActivity">
+
+        </activity>
+
     </application>
 
 </manifest>
