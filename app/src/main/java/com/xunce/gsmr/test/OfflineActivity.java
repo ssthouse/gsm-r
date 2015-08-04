@@ -3,16 +3,16 @@ package com.xunce.gsmr.test;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
-import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -22,58 +22,108 @@ import com.baidu.mapapi.map.offline.MKOLUpdateElement;
 import com.baidu.mapapi.map.offline.MKOfflineMap;
 import com.baidu.mapapi.map.offline.MKOfflineMapListener;
 import com.xunce.gsmr.R;
+import com.xunce.gsmr.util.ToastHelper;
 
 import java.util.ArrayList;
 
+/**
+ * 管理离线地图的Activity
+ */
 public class OfflineActivity extends Activity implements MKOfflineMapListener {
 
+    //离线地图管理器
     private MKOfflineMap mOffline = null;
-    private TextView cidView;
-    private TextView stateView;
-    private EditText cityNameView;
+
+    private Button btnDownloadList;
+    private Button btnCityList;
+
+    /**
+     * 当前搜索的City的list
+     */
+    private ArrayList<MKOLSearchRecord> currentCityList = null;
+    private CurrentCityAdapter currentCityAdapter = null;
+
     /**
      * 已下载的离线地图信息列表
      */
     private ArrayList<MKOLUpdateElement> localMapList = null;
-    private LocalMapAdapter lAdapter = null;
+    private LocalMapAdapter localMapAdapter = null;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_offline);
+
+        //初始化一个离线地图管理器
         mOffline = new MKOfflineMap();
         mOffline.init(this);
-        initView();
 
+        initView();
     }
 
     private void initView() {
-        cidView = (TextView) findViewById(R.id.cityid);
-        cityNameView = (EditText) findViewById(R.id.city);
-        stateView = (TextView) findViewById(R.id.state);
-
-        ArrayList<String> hotCities = new ArrayList<>();
-        // 获取热闹城市列表
-        ArrayList<MKOLSearchRecord> records1 = mOffline.getHotCityList();
-        if (records1 != null) {
-            for (MKOLSearchRecord r : records1) {
-                hotCities.add(r.cityName + "(" + r.cityID + ")" + "   --"
-                        + this.formatDataSize(r.size));
+        //界面切换按钮
+        btnDownloadList = (Button) findViewById(R.id.id_btn_download_list);
+        btnDownloadList.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                LinearLayout cl = (LinearLayout) findViewById(R.id.citylist_layout);
+                LinearLayout lm = (LinearLayout) findViewById(R.id.localmap_layout);
+                lm.setVisibility(View.VISIBLE);
+                cl.setVisibility(View.GONE);
+                btnDownloadList.setBackgroundColor(0xffffffff);
+                btnCityList.setBackgroundColor(0x00ffffff);
             }
-        }
+        });
+        btnCityList = (Button) findViewById(R.id.id_btn_city_list);
+        btnCityList.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                LinearLayout cl = (LinearLayout) findViewById(R.id.citylist_layout);
+                LinearLayout lm = (LinearLayout) findViewById(R.id.localmap_layout);
+                lm.setVisibility(View.GONE);
+                cl.setVisibility(View.VISIBLE);
+                btnCityList.setBackgroundColor(0xffffffff);
+                btnDownloadList.setBackgroundColor(0x00ffffff);
+            }
+        });
 
-        ListView allCityList = (ListView) findViewById(R.id.allcitylist);
+        //初始化将city查询列表设置为所有的可以离线的列表
+        ListView allCityList = (ListView) findViewById(R.id.lv_all_city);
         // 获取所有支持离线地图的城市
         ArrayList<String> allCities = new ArrayList<String>();
-        ArrayList<MKOLSearchRecord> records2 = mOffline.getOfflineCityList();
-        if (records1 != null) {
-            for (MKOLSearchRecord r : records2) {
-                allCities.add(r.cityName + "(" + r.cityID + ")" + "   --"
-                        + this.formatDataSize(r.size));
-            }
+        currentCityList = mOffline.getOfflineCityList();
+        for (MKOLSearchRecord r : currentCityList) {
+            allCities.add(r.cityName + "(" + r.cityID + ")" + "   --"
+                    + this.formatDataSize(r.size));
         }
-        ListAdapter aAdapter = new ArrayAdapter<>(this,
-                android.R.layout.simple_list_item_1, allCities);
-        allCityList.setAdapter(aAdapter);
+        currentCityAdapter = new CurrentCityAdapter();
+        allCityList.setAdapter(currentCityAdapter);
+
+        //城市搜索框的EditText监听事件
+        EditText etSearchCity = (EditText) findViewById(R.id.id_et_city);
+        etSearchCity.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if(s == null && !s.toString().isEmpty()){
+                    return;
+                }
+                //一旦文字发生变化----更新下面的listView中的数据--
+                if(mOffline.searchCity(s.toString()) == null){
+                    currentCityList = mOffline.getOfflineCityList();
+                }else {
+                    currentCityList = mOffline.searchCity(s.toString());
+                }
+                currentCityAdapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+            }
+        });
 
         LinearLayout cl = (LinearLayout) findViewById(R.id.citylist_layout);
         LinearLayout lm = (LinearLayout) findViewById(R.id.localmap_layout);
@@ -86,88 +136,25 @@ public class OfflineActivity extends Activity implements MKOfflineMapListener {
             localMapList = new ArrayList<MKOLUpdateElement>();
         }
 
-        ListView localMapListView = (ListView) findViewById(R.id.localmaplist);
-        lAdapter = new LocalMapAdapter();
-        localMapListView.setAdapter(lAdapter);
-
+        //本地已经下载的地图文件
+        ListView localMapListView = (ListView) findViewById(R.id.lv_local_maps);
+        localMapAdapter = new LocalMapAdapter();
+        localMapListView.setAdapter(localMapAdapter);
     }
 
-    /**
-     * 切换至城市列表
-     *
-     * @param view
-     */
-    public void clickCityListButton(View view) {
-        LinearLayout cl = (LinearLayout) findViewById(R.id.citylist_layout);
-        LinearLayout lm = (LinearLayout) findViewById(R.id.localmap_layout);
-        lm.setVisibility(View.GONE);
-        cl.setVisibility(View.VISIBLE);
-
-    }
-
-    /**
-     * 切换至下载管理列表
-     *
-     * @param view
-     */
-    public void clickLocalMapListButton(View view) {
-        LinearLayout cl = (LinearLayout) findViewById(R.id.citylist_layout);
-        LinearLayout lm = (LinearLayout) findViewById(R.id.localmap_layout);
-        lm.setVisibility(View.VISIBLE);
-        cl.setVisibility(View.GONE);
-    }
-
-    /**
-     * 搜索离线需市
-     *
-     * @param view
-     */
-    public void search(View view) {
-        ArrayList<MKOLSearchRecord> records = mOffline.searchCity(cityNameView
-                .getText().toString());
-        if (records == null || records.size() != 1)
-            return;
-        cidView.setText(String.valueOf(records.get(0).cityID));
-    }
 
     /**
      * 开始下载
-     *
-     * @param view
+     * @param mkolSearchRecord
      */
-    public void start(View view) {
-        int cityid = Integer.parseInt(cidView.getText().toString());
-        mOffline.start(cityid);
-        clickLocalMapListButton(null);
-        Toast.makeText(this, "开始下载离线地图. cityid: " + cityid, Toast.LENGTH_SHORT)
-                .show();
+    private void startDownload(MKOLSearchRecord mkolSearchRecord){
+        if(mkolSearchRecord == null){
+            return;
+        }
+        mOffline.start(mkolSearchRecord.cityID);
+        btnDownloadList.performClick();
         updateView();
-    }
-
-    /**
-     * 暂停下载
-     *
-     * @param view
-     */
-    public void stop(View view) {
-        int cityid = Integer.parseInt(cidView.getText().toString());
-        mOffline.pause(cityid);
-        Toast.makeText(this, "暂停下载离线地图. cityid: " + cityid, Toast.LENGTH_SHORT)
-                .show();
-        updateView();
-    }
-
-    /**
-     * 删除离线地图
-     *
-     * @param view
-     */
-    public void remove(View view) {
-        int cityid = Integer.parseInt(cidView.getText().toString());
-        mOffline.remove(cityid);
-        Toast.makeText(this, "删除离线地图. cityid: " + cityid, Toast.LENGTH_SHORT)
-                .show();
-        updateView();
+        ToastHelper.show(this, btnDownloadList, mkolSearchRecord.cityName + "开始下载");
     }
 
     /**
@@ -195,16 +182,11 @@ public class OfflineActivity extends Activity implements MKOfflineMapListener {
         if (localMapList == null) {
             localMapList = new ArrayList<MKOLUpdateElement>();
         }
-        lAdapter.notifyDataSetChanged();
+        localMapAdapter.notifyDataSetChanged();
     }
 
     @Override
     protected void onPause() {
-        int cityid = Integer.parseInt(cidView.getText().toString());
-        MKOLUpdateElement temp = mOffline.getUpdateInfo(cityid);
-        if (temp != null && temp.status == MKOLUpdateElement.DOWNLOADING) {
-            mOffline.pause(cityid);
-        }
         super.onPause();
     }
 
@@ -232,6 +214,12 @@ public class OfflineActivity extends Activity implements MKOfflineMapListener {
         super.onDestroy();
     }
 
+    /**
+     * 更新下载状态
+     *
+     * @param type
+     * @param state
+     */
     @Override
     public void onGetOfflineMapState(int type, int state) {
         switch (type) {
@@ -239,8 +227,6 @@ public class OfflineActivity extends Activity implements MKOfflineMapListener {
                 MKOLUpdateElement update = mOffline.getUpdateInfo(state);
                 // 处理下载进度更新提示
                 if (update != null) {
-                    stateView.setText(String.format("%s : %d%%", update.cityName,
-                            update.ratio));
                     updateView();
                 }
             }
@@ -252,10 +238,8 @@ public class OfflineActivity extends Activity implements MKOfflineMapListener {
             case MKOfflineMap.TYPE_VER_UPDATE:
                 // 版本更新提示
                 // MKOLUpdateElement e = mOffline.getUpdateInfo(state);
-
                 break;
         }
-
     }
 
     /**
@@ -280,10 +264,10 @@ public class OfflineActivity extends Activity implements MKOfflineMapListener {
 
         @Override
         public View getView(int index, View view, ViewGroup arg2) {
-            MKOLUpdateElement e = (MKOLUpdateElement) getItem(index);
+            MKOLUpdateElement updateElement = (MKOLUpdateElement) getItem(index);
             view = View.inflate(OfflineActivity.this,
                     R.layout.offline_localmap_list, null);
-            initViewItem(view, e);
+            initViewItem(view, updateElement);
             return view;
         }
 
@@ -322,6 +306,56 @@ public class OfflineActivity extends Activity implements MKOfflineMapListener {
                     startActivity(intent);
                 }
             });
+        }
+    }
+
+    //当前搜索的City的Adapter
+    public class CurrentCityAdapter extends BaseAdapter{
+
+        @Override
+        public int getCount() {
+            return currentCityList.size();
+        }
+
+        @Override
+        public Object getItem(int position) {
+            return currentCityList.get(position);
+        }
+
+        @Override
+        public long getItemId(int position) {
+            return position;
+        }
+
+        @Override
+        public View getView(final int position, View convertView, ViewGroup parent) {
+            ViewHolder viewHolder;
+            if(convertView == null){
+                convertView = View.inflate(OfflineActivity.this, R.layout.list_item_current_city, null);
+                viewHolder = new ViewHolder();
+                viewHolder.tv = (TextView) convertView.findViewById(R.id.id_tv);
+                viewHolder.btn = (Button) convertView.findViewById(R.id.id_btn_down_load);
+                convertView.setTag(viewHolder);
+            }else{
+                viewHolder = (ViewHolder) convertView.getTag();
+            }
+            //填充数据
+            MKOLSearchRecord r = currentCityList.get(position);
+            viewHolder.tv.setText(r.cityName + "(" + r.cityID + ")" + "   --"
+                    + formatDataSize(r.size));
+            viewHolder.btn.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    //点击下载
+                    startDownload(currentCityList.get(position));
+                }
+            });
+            return convertView;
+        }
+
+        class ViewHolder{
+            TextView tv;
+            Button btn;
         }
     }
 }

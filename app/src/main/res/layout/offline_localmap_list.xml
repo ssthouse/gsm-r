@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="horizontal"
-    android:padding="10dip" >
+    android:padding="4dp" >
 
     <TextView
         android:id="@+id/title"
@@ -28,6 +28,7 @@
         android:text="" />
 
     <Button
+        android:background="@drawable/btn_selector"
         android:id="@+id/display"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
@@ -35,6 +36,7 @@
         android:text="查看" />
 
     <Button
+        android:background="@drawable/btn_selector"
         android:id="@+id/remove"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
