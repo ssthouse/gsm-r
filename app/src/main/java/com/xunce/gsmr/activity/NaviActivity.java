@@ -22,7 +22,7 @@ import com.baidu.navisdk.ui.routeguide.IBNavigatorListener;
 import com.baidu.navisdk.ui.widget.RoutePlanObserver;
 import com.baidu.nplatform.comapi.map.MapGLSurfaceView;
 import com.xunce.gsmr.R;
-import com.xunce.gsmr.style.TransparentStyle;
+import com.xunce.gsmr.view.style.TransparentStyle;
 import com.xunce.gsmr.util.FileHelper;
 import com.xunce.gsmr.util.LogHelper;
 

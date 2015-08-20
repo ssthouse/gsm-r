@@ -51,7 +51,7 @@
             android:background="@color/white"
             android:src="@drawable/location_mode_1" />
 
-        <com.xunce.gsmr.model.widget.ZoomControlView
+        <com.xunce.gsmr.view.widget.ZoomControlView
             android:id="@+id/id_zoom_control"
             android:layout_marginBottom="8dp"
             android:layout_marginRight="8dp"

@@ -1,4 +1,4 @@
-package com.xunce.gsmr.style;
+package com.xunce.gsmr.view.style;
 
 
 import android.app.Activity;

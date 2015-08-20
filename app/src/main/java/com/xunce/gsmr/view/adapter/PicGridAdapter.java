@@ -1,4 +1,4 @@
-package com.xunce.gsmr.adapter;
+package com.xunce.gsmr.view.adapter;
 
 import android.content.Context;
 import android.os.AsyncTask;
@@ -11,7 +11,7 @@ import android.widget.ImageView;
 
 import com.xunce.gsmr.R;
 import com.xunce.gsmr.model.BitmapItem;
-import com.xunce.gsmr.model.widget.CustomImageView;
+import com.xunce.gsmr.view.widget.CustomImageView;
 import com.xunce.gsmr.util.PictureHelper;
 
 import java.util.ArrayList;

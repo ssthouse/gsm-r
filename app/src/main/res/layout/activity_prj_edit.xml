@@ -88,7 +88,7 @@
         <include layout="@layout/view_position" />
 
 
-        <com.xunce.gsmr.model.widget.ZoomControlView
+        <com.xunce.gsmr.view.widget.ZoomControlView
             android:id="@+id/id_zoom_control"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

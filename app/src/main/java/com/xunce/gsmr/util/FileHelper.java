@@ -9,7 +9,7 @@ import android.provider.ContactsContract;
 import android.util.Log;
 
 import com.baidu.mapapi.model.LatLng;
-import com.xunce.gsmr.Constant;
+import com.xunce.gsmr.app.Constant;
 import com.xunce.gsmr.model.BitmapItem;
 import com.xunce.gsmr.model.MarkerItem;
 import com.xunce.gsmr.model.PrjItem;

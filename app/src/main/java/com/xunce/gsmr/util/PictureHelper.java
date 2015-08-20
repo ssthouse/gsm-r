@@ -11,7 +11,7 @@ import android.os.Environment;
 import android.provider.MediaStore;
 import android.widget.Toast;
 
-import com.xunce.gsmr.Constant;
+import com.xunce.gsmr.app.Constant;
 import com.xunce.gsmr.R;
 import com.xunce.gsmr.model.BitmapItem;
 

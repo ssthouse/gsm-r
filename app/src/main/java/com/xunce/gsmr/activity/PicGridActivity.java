@@ -17,12 +17,12 @@ import android.widget.LinearLayout;
 
 import com.gitonway.lee.niftymodaldialogeffects.lib.Effectstype;
 import com.gitonway.lee.niftymodaldialogeffects.lib.NiftyDialogBuilder;
-import com.xunce.gsmr.Constant;
+import com.xunce.gsmr.app.Constant;
 import com.xunce.gsmr.R;
-import com.xunce.gsmr.adapter.PicGridAdapter;
+import com.xunce.gsmr.view.adapter.PicGridAdapter;
 import com.xunce.gsmr.model.BitmapItem;
 import com.xunce.gsmr.model.MarkerItem;
-import com.xunce.gsmr.style.TransparentStyle;
+import com.xunce.gsmr.view.style.TransparentStyle;
 import com.xunce.gsmr.util.FileHelper;
 import com.xunce.gsmr.util.PictureHelper;
 

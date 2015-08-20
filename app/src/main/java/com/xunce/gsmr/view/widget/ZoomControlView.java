@@ -1,4 +1,4 @@
-package com.xunce.gsmr.model.widget;
+package com.xunce.gsmr.view.widget;
 
 import android.content.Context;
 import android.util.AttributeSet;

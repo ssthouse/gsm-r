@@ -4,7 +4,7 @@ import com.activeandroid.Model;
 import com.activeandroid.annotation.Column;
 import com.activeandroid.annotation.Table;
 import com.baidu.mapapi.model.LatLng;
-import com.xunce.gsmr.Constant;
+import com.xunce.gsmr.app.Constant;
 
 import java.io.Serializable;
 

@@ -1,4 +1,4 @@
-package com.xunce.gsmr.adapter;
+package com.xunce.gsmr.view.adapter;
 
 import android.content.Context;
 import android.view.LayoutInflater;

@@ -1,4 +1,4 @@
-package com.xunce.gsmr;
+package com.xunce.gsmr.app;
 
 /**
  * 常量

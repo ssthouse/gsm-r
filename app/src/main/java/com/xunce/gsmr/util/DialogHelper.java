@@ -10,7 +10,7 @@ import com.gitonway.lee.niftymodaldialogeffects.lib.Effectstype;
 import com.gitonway.lee.niftymodaldialogeffects.lib.NiftyDialogBuilder;
 import com.xunce.gsmr.R;
 import com.xunce.gsmr.activity.PrjEditActivity;
-import com.xunce.gsmr.adapter.PrjLvAdapter;
+import com.xunce.gsmr.view.adapter.PrjLvAdapter;
 import com.xunce.gsmr.model.PrjItem;
 import com.xunce.gsmr.util.gps.DBHelper;
 

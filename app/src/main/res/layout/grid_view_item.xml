@@ -11,7 +11,7 @@
         android:layout_gravity="center">
 
         <!--图片-->
-        <com.xunce.gsmr.model.widget.CustomImageView
+        <com.xunce.gsmr.view.widget.CustomImageView
             android:clickable="false"
             android:id="@+id/id_iv_pic"
             android:layout_width="match_parent"
