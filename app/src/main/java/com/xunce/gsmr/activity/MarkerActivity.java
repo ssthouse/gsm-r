@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -35,6 +34,7 @@ import com.xunce.gsmr.style.TransparentStyle;
 import com.xunce.gsmr.util.AnimHelper;
 import com.xunce.gsmr.util.FileHelper;
 import com.xunce.gsmr.util.ToastHelper;
+import com.xunce.gsmr.util.ViewHelper;
 import com.xunce.gsmr.util.gps.DBHelper;
 import com.xunce.gsmr.util.gps.LocateHelper;
 import com.xunce.gsmr.util.gps.MapHelper;
@@ -128,16 +128,7 @@ public class MarkerActivity extends AppCompatActivity {
     }
 
     private void initView() {
-        Toolbar toolbar = (Toolbar) findViewById(R.id.id_tb);
-        //title
-        toolbar.setTitle("选址");
-        toolbar.setTitleTextColor(getResources().getColor(R.color.white));
-        //logo
-        toolbar.setLogo(R.mipmap.ic_launcher);
-        toolbar.setBackgroundDrawable(getResources().getDrawable(R.drawable.action_bar_background));
-        //back
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        ViewHelper.initActionBar(this, getSupportActionBar(), "选址");
 
         mMapView = (MapView) findViewById(R.id.id_map_view);
         mMapView.showZoomControls(false);

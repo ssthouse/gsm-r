@@ -35,6 +35,7 @@ import com.xunce.gsmr.R;
 import com.xunce.gsmr.model.widget.ZoomControlView;
 import com.xunce.gsmr.style.TransparentStyle;
 import com.xunce.gsmr.util.LogHelper;
+import com.xunce.gsmr.util.ViewHelper;
 import com.xunce.gsmr.util.gps.LocateHelper;
 import com.xunce.gsmr.util.gps.MapHelper;
 
@@ -117,14 +118,7 @@ public class MeasureActivity extends AppCompatActivity {
     }
 
     private void initView() {
-        toolbar = (Toolbar) findViewById(R.id.id_tb);
-        //设置Title
-        toolbar.setTitle("测量工具");
-        toolbar.setTitleTextColor(getResources().getColor(R.color.white));
-        //logo--background
-        toolbar.setBackgroundDrawable(getResources().getDrawable(R.drawable.action_bar_background));
-        //init ActionBar
-        setSupportActionBar(toolbar);
+        ViewHelper.initActionBar(this, getSupportActionBar(), "测距");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         tvLength = (TextView) findViewById(R.id.id_tv_length);

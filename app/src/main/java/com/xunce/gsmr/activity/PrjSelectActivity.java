@@ -1,9 +1,7 @@
 package com.xunce.gsmr.activity;
 
 import android.os.Bundle;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -19,6 +17,7 @@ import com.xunce.gsmr.util.DialogHelper;
 import com.xunce.gsmr.util.FileHelper;
 import com.xunce.gsmr.util.PreferenceHelper;
 import com.xunce.gsmr.util.ToastHelper;
+import com.xunce.gsmr.util.ViewHelper;
 import com.xunce.gsmr.util.gps.DBHelper;
 
 
@@ -43,17 +42,7 @@ public class PrjSelectActivity extends AppCompatActivity{
     }
 
     private void initView(){
-        Toolbar toolbar = (Toolbar) findViewById(R.id.id_tb);
-        setSupportActionBar(toolbar);
-        ActionBar actionBar = getSupportActionBar();
-        if(actionBar != null){
-            //set logo
-            actionBar.setLogo(R.mipmap.ic_launcher);
-            actionBar.setBackgroundDrawable(getResources().getDrawable(R.drawable.action_bar_background));
-            //设置Title
-            toolbar.setTitle("基址勘察");
-            toolbar.setTitleTextColor(getResources().getColor(R.color.white));
-        }
+        ViewHelper.initActionBar(this, getSupportActionBar(), "基址勘察");
 
         lv = (ListView) findViewById(R.id.id_lv);
         adapter = new PrjLvAdapter(this, DBHelper.getPrjItemList());

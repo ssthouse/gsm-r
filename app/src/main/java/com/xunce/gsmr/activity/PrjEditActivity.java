@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -40,6 +39,7 @@ import com.xunce.gsmr.test.OfflineActivity;
 import com.xunce.gsmr.util.LogHelper;
 import com.xunce.gsmr.util.PreferenceHelper;
 import com.xunce.gsmr.util.ToastHelper;
+import com.xunce.gsmr.util.ViewHelper;
 import com.xunce.gsmr.util.gps.DBHelper;
 import com.xunce.gsmr.util.gps.LocateHelper;
 import com.xunce.gsmr.util.gps.MapHelper;
@@ -131,17 +131,7 @@ public class PrjEditActivity extends AppCompatActivity {
     }
 
     private void initView() {
-        Toolbar toolbar = (Toolbar) findViewById(R.id.id_tb);
-        //设置Title
-        toolbar.setTitle(prjItem.getPrjName());
-        toolbar.setTitleTextColor(getResources().getColor(R.color.white));
-        //logo--background
-        toolbar.setLogo(R.mipmap.ic_launcher);
-        toolbar.setBackgroundDrawable(getResources().getDrawable(R.drawable.action_bar_background));
-        //init ActionBar
-        setSupportActionBar(toolbar);
-        //不在需要返回按钮
-        //getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        ViewHelper.initActionBar(this, getSupportActionBar(), prjItem.getPrjName());
 
         mMapView = (MapView) findViewById(R.id.id_baidu_map);
         mMapView.showZoomControls(false);
