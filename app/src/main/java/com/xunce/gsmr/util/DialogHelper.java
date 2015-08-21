@@ -45,10 +45,10 @@ public class DialogHelper {
             public void onClick(View v) {
                 String prjName = etPrjName.getText().toString();
                 if (prjName.equals("")) {
-                    ToastHelper.show(context,v, "工程名不可为空");
+                    ToastHelper.showSnack(context, v, "工程名不可为空");
                 } else {
                     if (DBHelper.isPrjExist(prjName)) {
-                        ToastHelper.show(context, v,"该工程已存在");
+                        ToastHelper.showSnack(context, v, "该工程已存在");
                     } else {
                         //将新的prjItem保存进数据库
                         new PrjItem(prjName).save();
@@ -57,7 +57,7 @@ public class DialogHelper {
                         //消除Dialog
                         dialogBuilder.dismiss();
                         //Toast 提醒成功
-                        ToastHelper.show(context, v,"工程创建成功!");
+                        ToastHelper.showSnack(context, v, "工程创建成功!");
                     }
                 }
             }
@@ -154,16 +154,16 @@ public class DialogHelper {
             public void onClick(View v) {
                 String prjName = etPrjName.getText().toString();
                 if (prjName.equals("")) {
-                    ToastHelper.show(context,v, "工程名不可为空");
+                    ToastHelper.showSnack(context, v, "工程名不可为空");
                 } else {
                     if (DBHelper.isPrjExist(prjName)) {
-                        ToastHelper.show(context, v,"该工程已存在");
+                        ToastHelper.showSnack(context, v, "该工程已存在");
                     } else {
                         FileHelper.changePrjItemName(prjItem, prjName);
                         //消除Dialog
                         dialogBuilder.dismiss();
                         //Toast 提醒成功
-                        ToastHelper.show(context, v,"重命名成功!");
+                        ToastHelper.showSnack(context, v, "重命名成功!");
                     }
                 }
             }

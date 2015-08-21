@@ -24,7 +24,7 @@
         android:layout_marginBottom="8dp"
         android:layout_marginRight="8dp"
         android:src="@drawable/fab_add"
-        fab:fab_colorNormal="@color/app_primary"
+        fab:fab_colorNormal="@color/color_primary"
         fab:fab_colorPressed="@color/app_primary_pressed"
         fab:fab_colorRipple="@color/app_ripple" />
 

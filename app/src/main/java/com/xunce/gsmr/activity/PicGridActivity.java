@@ -7,7 +7,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
-import android.view.KeyEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -17,14 +16,15 @@ import android.widget.LinearLayout;
 
 import com.gitonway.lee.niftymodaldialogeffects.lib.Effectstype;
 import com.gitonway.lee.niftymodaldialogeffects.lib.NiftyDialogBuilder;
-import com.xunce.gsmr.app.Constant;
 import com.xunce.gsmr.R;
-import com.xunce.gsmr.view.adapter.PicGridAdapter;
+import com.xunce.gsmr.app.Constant;
 import com.xunce.gsmr.model.BitmapItem;
 import com.xunce.gsmr.model.MarkerItem;
-import com.xunce.gsmr.view.style.TransparentStyle;
 import com.xunce.gsmr.util.FileHelper;
 import com.xunce.gsmr.util.PictureHelper;
+import com.xunce.gsmr.util.VibrateHelper;
+import com.xunce.gsmr.view.adapter.PicGridAdapter;
+import com.xunce.gsmr.view.style.TransparentStyle;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -63,7 +63,7 @@ public class PicGridActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pic_grid);
-        TransparentStyle.setTransparentStyle(this,R.color.color_primary);
+        TransparentStyle.setTransparentStyle(this, R.color.color_primary);
 
         markerItem = (MarkerItem) getIntent().getSerializableExtra(Constant.EXTRA_KEY_MARKER_ITEM);
 
@@ -137,6 +137,8 @@ public class PicGridActivity extends AppCompatActivity {
         gv.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                //震动
+                VibrateHelper.shortVibrate(PicGridActivity.this);
                 //如果不在编辑状态---选中---并进入编辑状态
                 if (!isInSelectMode) {
                     view.findViewById(R.id.id_iv_pic_delete).setVisibility(View.VISIBLE);
@@ -280,13 +282,5 @@ public class PicGridActivity extends AppCompatActivity {
 //        removeAllSelected();
 //        updateView();
         super.onActivityResult(requestCode, resultCode, data);
-    }
-
-    @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if(keyCode == KeyEvent.KEYCODE_MENU){
-            return true;
-        }
-        return super.onKeyDown(keyCode, event);
     }
 }

@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
-import android.view.KeyEvent;
 import android.view.View;
 
 import com.baidu.lbsapi.auth.LBSAuthManagerListener;
@@ -22,9 +21,9 @@ import com.baidu.navisdk.ui.routeguide.IBNavigatorListener;
 import com.baidu.navisdk.ui.widget.RoutePlanObserver;
 import com.baidu.nplatform.comapi.map.MapGLSurfaceView;
 import com.xunce.gsmr.R;
-import com.xunce.gsmr.view.style.TransparentStyle;
 import com.xunce.gsmr.util.FileHelper;
 import com.xunce.gsmr.util.LogHelper;
+import com.xunce.gsmr.view.style.TransparentStyle;
 
 
 /**
@@ -130,9 +129,9 @@ public class NaviActivity extends Activity {
             @Override
             public void onAuthResult(int status, String msg) {
                 if (0 == status) {
-//                    ToastHelper.show(context, "key校验成功-----");
+//                    ToastHelper.showSnack(context, "key校验成功-----");
                 } else {
-//                    ToastHelper.show(context, "key校验失败-----");
+//                    ToastHelper.showSnack(context, "key校验失败-----");
                 }
             }
         };
@@ -220,13 +219,5 @@ public class NaviActivity extends Activity {
         BNavigator.destory();
         BNRoutePlaner.getInstance().setObserver(null);
         super.onDestroy();
-    }
-
-    @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if (keyCode == KeyEvent.KEYCODE_MENU) {
-            return true;
-        }
-        return super.onKeyDown(keyCode, event);
     }
 }

@@ -108,7 +108,7 @@ public class PrjEditActivity extends AppCompatActivity {
         setContentView(R.layout.activity_prj_edit);
         TransparentStyle.setTransparentStyle(this,R.color.color_primary);
 
-        //这里改为---看prefrence中有没有已经编辑过的prjName
+        //判断是否有上次编辑的project
         if (PreferenceHelper.hasLastEditPrjItem(this)) {
             prjItem = new PrjItem(PreferenceHelper.getLastEditPrjName(this));
         } else {
@@ -117,7 +117,7 @@ public class PrjEditActivity extends AppCompatActivity {
             return;
         }
 
-        //初始化数据
+        //初始化定位Client
         mLocationClient = new LocationClient(this);
         LocateHelper.initLocationClient(mLocationClient);
         mLocationClient.registerLocationListener(new BDLocationListener() {
@@ -129,7 +129,6 @@ public class PrjEditActivity extends AppCompatActivity {
 
         initView();
 
-        loadMapData(mBaiduMap, prjItem);
     }
 
     private void initView() {
@@ -252,25 +251,14 @@ public class PrjEditActivity extends AppCompatActivity {
             }
         });
 
-//        //拍照---拍照前要选中一个Marker
-//        findViewById(R.id.id_btn_take_photo).setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                //TODO---不知道这里为什么会有-1产生
-//                if (currentMarker == null || markerList.indexOf(currentMarker) == -1) {
-//                    ToastHelper.show(PrjEditActivity.this, ibLocate, "请先选择一个基址点");
-//                } else {
-//                    PicGridActivity.start(PrjEditActivity.this,
-//                            markerItemList.get(markerList.indexOf(currentMarker)));
-//                }
-//            }
-//        });
+        //加载一次地图数据
+        loadMapData(mBaiduMap, prjItem);
     }
 
     public void clickEdit(View v){
         LogHelper.Log(TAG, "edit");
         if (currentMarker == null || markerList.indexOf(currentMarker) == -1) {
-            ToastHelper.show(PrjEditActivity.this, ibLocate, "请先选择一个基址点");
+            ToastHelper.showSnack(PrjEditActivity.this, ibLocate, "请先选择一个基址点");
             return;
         }
         mBaiduMap.hideInfoWindow();
@@ -284,7 +272,7 @@ public class PrjEditActivity extends AppCompatActivity {
         LogHelper.Log(TAG, "photo");
         mBaiduMap.hideInfoWindow();
         if (currentMarker == null || markerList.indexOf(currentMarker) == -1) {
-            ToastHelper.show(PrjEditActivity.this, ibLocate, "请先选择一个基址点");
+            ToastHelper.showSnack(PrjEditActivity.this, ibLocate, "请先选择一个基址点");
             return;
         } else {
             PicGridActivity.start(PrjEditActivity.this,

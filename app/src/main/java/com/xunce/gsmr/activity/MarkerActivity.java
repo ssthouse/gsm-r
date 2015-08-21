@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
@@ -26,11 +25,9 @@ import com.baidu.mapapi.map.MyLocationConfiguration;
 import com.baidu.mapapi.map.MyLocationData;
 import com.baidu.mapapi.map.UiSettings;
 import com.baidu.mapapi.model.LatLng;
-import com.xunce.gsmr.app.Constant;
 import com.xunce.gsmr.R;
+import com.xunce.gsmr.app.Constant;
 import com.xunce.gsmr.model.MarkerItem;
-import com.xunce.gsmr.view.widget.ZoomControlView;
-import com.xunce.gsmr.view.style.TransparentStyle;
 import com.xunce.gsmr.util.AnimHelper;
 import com.xunce.gsmr.util.FileHelper;
 import com.xunce.gsmr.util.ToastHelper;
@@ -39,6 +36,8 @@ import com.xunce.gsmr.util.gps.DBHelper;
 import com.xunce.gsmr.util.gps.LocateHelper;
 import com.xunce.gsmr.util.gps.MapHelper;
 import com.xunce.gsmr.util.gps.MarkerHelper;
+import com.xunce.gsmr.view.style.TransparentStyle;
+import com.xunce.gsmr.view.widget.ZoomControlView;
 
 /**
  * 用于选址的Activity---开启当前的Acitcvity需要传递一个MarkerItem
@@ -211,7 +210,7 @@ public class MarkerActivity extends AppCompatActivity {
                     //退出
                     finish();
                 }else{
-                    ToastHelper.show(MarkerActivity.this, ivMark, "请选择有效数据");
+                    ToastHelper.showSnack(MarkerActivity.this, ivMark, "请选择有效数据");
                 }
             }
         });
@@ -344,13 +343,5 @@ public class MarkerActivity extends AppCompatActivity {
         mMapView.onDestroy();
         mMapView = null;
         super.onDestroy();
-    }
-
-    @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if(keyCode == KeyEvent.KEYCODE_MENU){
-            return true;
-        }
-        return super.onKeyDown(keyCode, event);
     }
 }

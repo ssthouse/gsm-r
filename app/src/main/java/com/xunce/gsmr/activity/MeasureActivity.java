@@ -6,7 +6,6 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
@@ -30,14 +29,14 @@ import com.baidu.mapapi.map.OverlayOptions;
 import com.baidu.mapapi.map.PolylineOptions;
 import com.baidu.mapapi.model.LatLng;
 import com.baidu.mapapi.utils.DistanceUtil;
-import com.xunce.gsmr.app.Constant;
 import com.xunce.gsmr.R;
-import com.xunce.gsmr.view.widget.ZoomControlView;
-import com.xunce.gsmr.view.style.TransparentStyle;
+import com.xunce.gsmr.app.Constant;
 import com.xunce.gsmr.util.LogHelper;
 import com.xunce.gsmr.util.ViewHelper;
 import com.xunce.gsmr.util.gps.LocateHelper;
 import com.xunce.gsmr.util.gps.MapHelper;
+import com.xunce.gsmr.view.style.TransparentStyle;
+import com.xunce.gsmr.view.widget.ZoomControlView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -293,13 +292,5 @@ public class MeasureActivity extends AppCompatActivity {
         super.onDestroy();
         descriptorBlue.recycle();
         descriptorRed.recycle();
-    }
-
-    @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if (keyCode == KeyEvent.KEYCODE_MENU) {
-            return true;
-        }
-        return super.onKeyDown(keyCode, event);
     }
 }

@@ -216,9 +216,9 @@ public class RoutePlanActivity extends Activity {
             @Override
             public void onAuthResult(int status, String msg) {
                 if (0 == status) {
-//                    ToastHelper.show(context, "key校验成功-----");
+//                    ToastHelper.showSnack(context, "key校验成功-----");
                 } else {
-//                    ToastHelper.show(context, "key校验失败-----");
+//                    ToastHelper.showSnack(context, "key校验失败-----");
                 }
             }
         };
@@ -322,12 +322,12 @@ public class RoutePlanActivity extends Activity {
 
         @Override
         public void onRoutePlanYawingSuccess() {
-            ToastHelper.show(RoutePlanActivity.this, mMapView, "算路成功!");
+            ToastHelper.showSnack(RoutePlanActivity.this, mMapView, "算路成功!");
         }
 
         @Override
         public void onRoutePlanYawingFail() {
-            ToastHelper.show(RoutePlanActivity.this, mMapView, "抱歉,算路失败");
+            ToastHelper.showSnack(RoutePlanActivity.this, mMapView, "抱歉,算路失败");
         }
 
         @Override

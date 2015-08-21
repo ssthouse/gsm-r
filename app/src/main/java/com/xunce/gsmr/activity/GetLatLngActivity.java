@@ -178,7 +178,7 @@ public class GetLatLngActivity extends AppCompatActivity {
                     //退出
                     finish();
                 } else {
-                    ToastHelper.show(GetLatLngActivity.this, ivMark, "请选择有效数据");
+                    ToastHelper.showSnack(GetLatLngActivity.this, ivMark, "请选择有效数据");
                 }
             }
         });

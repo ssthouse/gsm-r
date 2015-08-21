@@ -10,11 +10,12 @@ import com.baidu.location.BDLocation;
 import com.xunce.gsmr.R;
 
 /**
+ * Toast工具类
  * Created by ssthouse on 2015/7/15.
  */
 public class ToastHelper {
 
-    public static void show(Context context, View view, String toastStr) {
+    public static void showSnack(Context context, View view, String toastStr) {
         Snackbar snackbar = Snackbar.make(view, toastStr, Snackbar.LENGTH_SHORT);
         snackbar.getView().getLayoutParams().height = (int) context.getResources()
                 .getDimension(R.dimen.snack_bar_height);

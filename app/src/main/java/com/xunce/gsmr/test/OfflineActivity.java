@@ -154,7 +154,7 @@ public class OfflineActivity extends Activity implements MKOfflineMapListener {
         mOffline.start(mkolSearchRecord.cityID);
         btnDownloadList.performClick();
         updateView();
-        ToastHelper.show(this, btnDownloadList, mkolSearchRecord.cityName + "开始下载");
+        ToastHelper.showSnack(this, btnDownloadList, mkolSearchRecord.cityName + "开始下载");
     }
 
     /**

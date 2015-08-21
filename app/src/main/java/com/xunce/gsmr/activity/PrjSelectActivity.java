@@ -11,6 +11,7 @@ import android.widget.ListView;
 
 import com.github.clans.fab.FloatingActionButton;
 import com.xunce.gsmr.R;
+import com.xunce.gsmr.util.VibrateHelper;
 import com.xunce.gsmr.view.adapter.PrjLvAdapter;
 import com.xunce.gsmr.view.style.TransparentStyle;
 import com.xunce.gsmr.util.DialogHelper;
@@ -63,6 +64,8 @@ public class PrjSelectActivity extends AppCompatActivity{
         lv.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                //震动
+                VibrateHelper.shortVibrate(PrjSelectActivity.this);
                 //显示长按的菜单Dialog
                 DialogHelper.showLvLongClickDialog(PrjSelectActivity.this,
                         adapter.getPrjItemList().get(position), adapter);
@@ -94,17 +97,9 @@ public class PrjSelectActivity extends AppCompatActivity{
                 FileHelper.sendDbFile(PrjSelectActivity.this);
                 break;
             case R.id.id_action_setting:
-                ToastHelper.show(PrjSelectActivity.this, lv,"设置");
+                ToastHelper.showSnack(PrjSelectActivity.this, lv, "设置");
                 break;
         }
         return super.onOptionsItemSelected(item);
-    }
-
-    @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if(keyCode == KeyEvent.KEYCODE_MENU){
-            return true;
-        }
-        return super.onKeyDown(keyCode, event);
     }
 }
