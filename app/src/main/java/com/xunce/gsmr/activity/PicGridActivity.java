@@ -51,11 +51,11 @@ public class PicGridActivity extends AppCompatActivity {
 
     private boolean isInSelectMode = false;
 
-    public static void start(Activity activity, MarkerItem markerItem) {
+    public static void start(Activity activity, MarkerItem markerItem, int requestCode) {
         //从Marker中获取信息--找到Picture的目录---展示所有的图片
         Intent intent = new Intent(activity, PicGridActivity.class);
         intent.putExtra(Constant.EXTRA_KEY_MARKER_ITEM, markerItem);
-        activity.startActivity(intent);
+        activity.startActivityForResult(intent, requestCode);
         activity.overridePendingTransition(R.anim.activity_fade_in, R.anim.activity_fade_out);
     }
 
@@ -177,8 +177,9 @@ public class PicGridActivity extends AppCompatActivity {
             removeAllSelected();
             updateView();
             return;
+        }else{
+            finish();
         }
-        super.onBackPressed();
     }
 
     private void showAlbumOrCamera() {

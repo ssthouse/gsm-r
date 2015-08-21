@@ -50,7 +50,7 @@ public class PrjLvAdapter extends BaseAdapter {
         ViewHolder viewHolder;
         if(convertView == null){
             //初始话ConvertView
-            convertView = inflater.inflate(R.layout.lv_item_prj_select, null);
+            convertView = inflater.inflate(R.layout.view_lv_item_prj_select, null);
             //初始化ViewHoler
             viewHolder = new ViewHolder();
             viewHolder.tv = (TextView) convertView.findViewById(R.id.id_tv_prj_name);

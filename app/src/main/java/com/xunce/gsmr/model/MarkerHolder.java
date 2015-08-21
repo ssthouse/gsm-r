@@ -28,15 +28,21 @@ public class MarkerHolder {
             .fromResource(R.drawable.icon_measure_red);
 
     private Marker currentMarker;
-
     private List<Marker> markerList;
-
     private BaiduMap baiduMap;
+    private PrjItem prjItem;
 
-    public MarkerHolder(PrjItem prjItem, BaiduMap baiduMap){
+    public MarkerHolder(PrjItem prjItem, BaiduMap baiduMap) {
+        this.prjItem = prjItem;
         this.baiduMap = baiduMap;
         markerList = new ArrayList<>();
 
+        initMarkerList();
+    }
+
+    public void initMarkerList() {
+        //清空markerList
+        markerList.clear();
         //初始化markerList
         List<MarkerItem> markerItems = DBHelper.getMarkerList(prjItem);
         for (int i = 0; i < markerItems.size(); i++) {
@@ -45,17 +51,26 @@ public class MarkerHolder {
             OverlayOptions redOverlay = new MarkerOptions()
                     .position(latLng)
                     .icon(descriptorBlue)
-                    .zIndex(9)
+                    .zIndex(12)
                     .draggable(false);
             markerList.add((Marker) baiduMap.addOverlay(redOverlay));
+        }
+        if (markerItems.size() != 0) {
+            MapHelper.animateToPoint(baiduMap,
+                    new LatLng(markerList.get(markerList.size() - 1).getPosition().latitude,
+                            markerList.get(markerList.size() - 1).getPosition().latitude));
+            MapHelper.animateZoom(baiduMap, 15);
         }
     }
 
     /**
      * 画出所有的Marker---并移动到一地个点为中点
      */
-    public void drawMarkers(){
-        for(Marker marker : markerList){
+    public void drawMarkers() {
+        if (markerList.size() == 0) {
+            return;
+        }
+        for (Marker marker : markerList) {
             OverlayOptions options = new MarkerOptions()
                     .position(marker.getPosition())
                     .icon(descriptorBlue)
@@ -63,24 +78,26 @@ public class MarkerHolder {
                     .draggable(false);
             baiduMap.addOverlay(options);
         }
-        MapHelper.animateToPoint(baiduMap,
-                new LatLng(markerList.get(0).getPosition().latitude,
-                        markerList.get(0).getPosition().latitude));
-        MapHelper.animateZoom(baiduMap, 15);
     }
 
     /**
      * 取消当前选中的Marker
      */
-    public void clearSelection(){
+    public void clearSelection() {
         currentMarker.setIcon(descriptorBlue);
         //没有当前选中的Marker
         currentMarker = null;
     }
 
-    public void setAll2Blue(){
-        for(Marker marker : markerList){
+    public void setAll2Blue() {
+        for (Marker marker : markerList) {
             marker.setIcon(descriptorBlue);
+        }
+    }
+
+    public void setAll2Red() {
+        for (Marker marker : markerList) {
+            marker.setIcon(descriptorRed);
         }
     }
 
@@ -88,12 +105,15 @@ public class MarkerHolder {
     public Marker getCurrentMarker() {
         return currentMarker;
     }
+
     public void setCurrentMarker(Marker currentMarker) {
         this.currentMarker = currentMarker;
     }
+
     public List<Marker> getMarkerList() {
         return markerList;
     }
+
     public void setMarkerList(List<Marker> markerList) {
         this.markerList = markerList;
     }

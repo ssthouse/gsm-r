@@ -40,7 +40,7 @@ public class ZoomControlView extends LinearLayout implements View.OnClickListene
     private void init(){
         //获取布局视图
         LinearLayout view=(LinearLayout) LayoutInflater.from(getContext())
-                .inflate(R.layout.zoom_control, null);
+                .inflate(R.layout.widget_zoom_control, null);
         //获取放大按钮
         inBtn=(ImageView) view.findViewById(R.id.btn_zoom_in);
         //获取缩小按钮

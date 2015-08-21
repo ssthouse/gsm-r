@@ -271,7 +271,7 @@ public class OfflineActivity extends Activity implements MKOfflineMapListener {
         public View getView(int index, View view, ViewGroup arg2) {
             MKOLUpdateElement updateElement = (MKOLUpdateElement) getItem(index);
             view = View.inflate(OfflineActivity.this,
-                    R.layout.offline_localmap_list, null);
+                    R.layout.view_lv_offline_localmap, null);
             initViewItem(view, updateElement);
             return view;
         }
@@ -336,7 +336,7 @@ public class OfflineActivity extends Activity implements MKOfflineMapListener {
         public View getView(final int position, View convertView, ViewGroup parent) {
             ViewHolder viewHolder;
             if(convertView == null){
-                convertView = View.inflate(OfflineActivity.this, R.layout.list_item_current_city, null);
+                convertView = View.inflate(OfflineActivity.this, R.layout.view_list_item_current_city, null);
                 viewHolder = new ViewHolder();
                 viewHolder.tv = (TextView) convertView.findViewById(R.id.id_tv);
                 viewHolder.btn = (Button) convertView.findViewById(R.id.id_btn_down_load);

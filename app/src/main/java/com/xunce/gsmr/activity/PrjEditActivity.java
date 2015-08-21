@@ -163,7 +163,8 @@ public class PrjEditActivity extends AppCompatActivity {
                     //选中了Marker
                     markerHolder.setCurrentMarker(marker);
                     //弹出InfoWindow
-                    LinearLayout ll = (LinearLayout) getLayoutInflater().inflate(R.layout.info_window, null);
+                    LinearLayout ll = (LinearLayout) getLayoutInflater()
+                            .inflate(R.layout.view_info_window, null);
                     LatLng latLng = marker.getPosition();
                     mInfoWindow = new InfoWindow(ll, latLng, -47);
                     mBaiduMap.showInfoWindow(mInfoWindow);
@@ -241,7 +242,6 @@ public class PrjEditActivity extends AppCompatActivity {
     }
 
     public void clickEdit(View v){
-//        LogHelper.Log(TAG, "edit");
         if (markerHolder.getCurrentMarker()== null) {
             ToastHelper.showSnack(PrjEditActivity.this, ibLocate, "请先选择一个基址点");
             return;
@@ -254,16 +254,15 @@ public class PrjEditActivity extends AppCompatActivity {
                 REQUEST_CODE_MARKER_EDIT_ACTIVITY);
     }
 
-
     public void clickPhoto(View v){
-//        LogHelper.Log(TAG, "photo");
         mBaiduMap.hideInfoWindow();
         if (markerHolder.getCurrentMarker()== null) {
             ToastHelper.showSnack(PrjEditActivity.this, ibLocate, "请先选择一个基址点");
         } else {
             LatLng latLng = markerHolder.getCurrentMarker().getPosition();
             PicGridActivity.start(PrjEditActivity.this,
-                    new MarkerItem(prjItem.getPrjName(), latLng));
+                    new MarkerItem(prjItem.getPrjName(), latLng),
+                    REQUEST_CODE_PICTURE_ACTIVITY);
         }
     }
 
@@ -303,14 +302,11 @@ public class PrjEditActivity extends AppCompatActivity {
      * @return
      */
     public void loadMapData(BaiduMap baiduMap, PrjItem prjItem) {
-        if (prjItem == null || baiduMap == null) {
-            return ;
-        }
         if (DBHelper.isPrjEmpty(prjItem)) {
             return;
         }
-        //加载marker
-        markerHolder.drawMarkers();
+        //更新Marker数据
+        markerHolder.initMarkerList();
     }
 
     @Override
@@ -371,8 +367,8 @@ public class PrjEditActivity extends AppCompatActivity {
                     loadMapData(mBaiduMap, prjItem);
                 }
                 break;
-            //如果是加载.db文件
             case Constant.REQUEST_CODE_DB_FILE:
+                //如果是加载.db文件
                 Uri uri = data.getData();
                 LogHelper.Log(TAG, uri.getEncodedPath());
                 break;
@@ -390,6 +386,7 @@ public class PrjEditActivity extends AppCompatActivity {
         if(isPositionShowed){
             hideLlPosition();
         }else{
+            markerHolder.setAll2Red();
             if ((System.currentTimeMillis() - mExitTime) > 2000) {
                 Toast.makeText(this, "再按一次退出程序", Toast.LENGTH_SHORT).show();
                 mExitTime = System.currentTimeMillis();

@@ -61,7 +61,7 @@ public class PicGridAdapter extends BaseAdapter {
         ViewHolder viewHolder;
         if(convertView == null){
             viewHolder = new ViewHolder();
-            convertView = LayoutInflater.from(context).inflate(R.layout.grid_view_item, null);
+            convertView = LayoutInflater.from(context).inflate(R.layout.view_grid_item, null);
             viewHolder.ivPic = (CustomImageView) convertView.findViewById(R.id.id_iv_pic);
             viewHolder.ivDelete = (ImageView) convertView.findViewById(R.id.id_iv_pic_delete);
             viewHolder.ivPic.setImageBitmap(bitmapItemList.get(position).getBitmap());
