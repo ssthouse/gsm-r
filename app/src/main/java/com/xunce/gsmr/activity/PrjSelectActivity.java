@@ -36,7 +36,7 @@ public class PrjSelectActivity extends AppCompatActivity{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_prj_select);
-        TransparentStyle.setAppToTransparentStyle(this, getResources().getColor(R.color.color_primary));
+        TransparentStyle.setTransparentStyle(this,R.color.color_primary);
 
         initView();
     }
@@ -90,9 +90,6 @@ public class PrjSelectActivity extends AppCompatActivity{
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()){
-//            case R.id.id_action_measure_tool:
-//                MeasureActivity.start(PrjSelectActivity.this);
-//                break;
             case R.id.id_action_export_data:
                 FileHelper.sendDbFile(PrjSelectActivity.this);
                 break;

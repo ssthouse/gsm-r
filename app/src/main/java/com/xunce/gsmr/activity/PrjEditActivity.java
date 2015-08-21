@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
@@ -29,12 +28,10 @@ import com.baidu.mapapi.map.MyLocationConfiguration;
 import com.baidu.mapapi.map.MyLocationData;
 import com.baidu.mapapi.map.OverlayOptions;
 import com.baidu.mapapi.model.LatLng;
-import com.xunce.gsmr.app.Constant;
 import com.xunce.gsmr.R;
+import com.xunce.gsmr.app.Constant;
 import com.xunce.gsmr.model.MarkerItem;
 import com.xunce.gsmr.model.PrjItem;
-import com.xunce.gsmr.view.widget.ZoomControlView;
-import com.xunce.gsmr.view.style.TransparentStyle;
 import com.xunce.gsmr.test.OfflineActivity;
 import com.xunce.gsmr.util.LogHelper;
 import com.xunce.gsmr.util.PreferenceHelper;
@@ -43,6 +40,8 @@ import com.xunce.gsmr.util.ViewHelper;
 import com.xunce.gsmr.util.gps.DBHelper;
 import com.xunce.gsmr.util.gps.LocateHelper;
 import com.xunce.gsmr.util.gps.MapHelper;
+import com.xunce.gsmr.view.style.TransparentStyle;
+import com.xunce.gsmr.view.widget.ZoomControlView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -67,12 +66,16 @@ public class PrjEditActivity extends AppCompatActivity {
     //接收到的数据
     private PrjItem prjItem;
 
+    //地图----定位client
     private BaiduMap mBaiduMap;
     private MapView mMapView;
     private LocationClient mLocationClient;
+
+    //定位按钮
+    private ImageButton ibLocate;
+    //是否已经定位的标志位
     private boolean isLocated = false;
 
-    private ImageButton ibLocate;
     //公里标VIew
     private LinearLayout llPosition;
     private EditText etPosition;
@@ -103,9 +106,8 @@ public class PrjEditActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_prj_edit);
-        TransparentStyle.setAppToTransparentStyle(this, getResources().getColor(R.color.color_primary));
-//        //获取intent中数据
-//        prjItem = (PrjItem) getIntent().getSerializableExtra(Constant.EXTRA_KEY_PRJ_ITEM);
+        TransparentStyle.setTransparentStyle(this,R.color.color_primary);
+
         //这里改为---看prefrence中有没有已经编辑过的prjName
         if (PreferenceHelper.hasLastEditPrjItem(this)) {
             prjItem = new PrjItem(PreferenceHelper.getLastEditPrjName(this));
@@ -145,6 +147,7 @@ public class PrjEditActivity extends AppCompatActivity {
         ZoomControlView zcvZomm = (ZoomControlView) findViewById(R.id.id_zoom_control);
         zcvZomm.setMapView(mMapView);//设置百度地图控件
 
+        //触摸屏幕则---定位失效
         mBaiduMap.setOnMapTouchListener(new BaiduMap.OnMapTouchListener() {
             @Override
             public void onTouch(MotionEvent motionEvent) {
@@ -463,13 +466,5 @@ public class PrjEditActivity extends AppCompatActivity {
             descriptorRed.recycle();
         }
         super.onDestroy();
-    }
-
-    @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if (keyCode == KeyEvent.KEYCODE_MENU) {
-            return true;
-        }
-        return super.onKeyDown(keyCode, event);
     }
 }

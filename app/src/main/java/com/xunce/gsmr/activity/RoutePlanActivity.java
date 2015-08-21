@@ -73,7 +73,7 @@ public class RoutePlanActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_rout_select);
-        TransparentStyle.setAppToTransparentStyle(this, getResources().getColor(R.color.color_primary));
+        TransparentStyle.setTransparentStyle(this, R.color.color_primary);
 
         latLngStart = new LatLng(0, 0);
         latLngEnd = new LatLng(0, 0);

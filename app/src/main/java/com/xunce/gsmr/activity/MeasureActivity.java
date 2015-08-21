@@ -91,7 +91,7 @@ public class MeasureActivity extends AppCompatActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_measure);
-        TransparentStyle.setAppToTransparentStyle(this, getResources().getColor(R.color.color_primary));
+        TransparentStyle.setTransparentStyle(this,R.color.color_primary);
 
         //接收intent中的数据
         Intent intent = getIntent();

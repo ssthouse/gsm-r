@@ -63,7 +63,7 @@ public class PicGridActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pic_grid);
-        TransparentStyle.setAppToTransparentStyle(this, getResources().getColor(R.color.color_primary));
+        TransparentStyle.setTransparentStyle(this,R.color.color_primary);
 
         markerItem = (MarkerItem) getIntent().getSerializableExtra(Constant.EXTRA_KEY_MARKER_ITEM);
 

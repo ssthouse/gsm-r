@@ -25,6 +25,7 @@ import com.baidu.mapapi.map.UiSettings;
 import com.baidu.mapapi.model.LatLng;
 import com.xunce.gsmr.app.Constant;
 import com.xunce.gsmr.R;
+import com.xunce.gsmr.view.style.TransparentStyle;
 import com.xunce.gsmr.view.widget.ZoomControlView;
 import com.xunce.gsmr.util.AnimHelper;
 import com.xunce.gsmr.util.ToastHelper;
@@ -89,6 +90,8 @@ public class GetLatLngActivity extends AppCompatActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_get_latlng);
+        TransparentStyle.setTransparentStyle(this, R.color.color_primary);
+
         // 定位初始化
         mLocClient = new LocationClient(this);
         mLocClient.registerLocationListener(myListener);

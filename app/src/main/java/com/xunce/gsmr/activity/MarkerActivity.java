@@ -105,7 +105,7 @@ public class MarkerActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mark);
-        TransparentStyle.setAppToTransparentStyle(this, getResources().getColor(R.color.color_primary));
+        TransparentStyle.setTransparentStyle(this,R.color.color_primary);
 
         //获取数据
         MarkerItem wrongItem = (MarkerItem) getIntent()

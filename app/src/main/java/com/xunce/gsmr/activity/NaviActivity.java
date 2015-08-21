@@ -53,7 +53,7 @@ public class NaviActivity extends Activity {
         navigatorView.setFitsSystemWindows(true);
         //填充视图---这个视图都是导航视图
         setContentView(navigatorView);
-        TransparentStyle.setAppToTransparentStyle(this, getResources().getColor(R.color.color_primary));
+        TransparentStyle.setTransparentStyle(this,R.color.color_primary);
 
         //设置监听器
         BNavigator.getInstance().setListener(mBNavigatorListener);
