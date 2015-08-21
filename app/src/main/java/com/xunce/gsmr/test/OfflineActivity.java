@@ -1,6 +1,7 @@
 package com.xunce.gsmr.test;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
@@ -48,6 +49,10 @@ public class OfflineActivity extends Activity implements MKOfflineMapListener {
      */
     private ArrayList<MKOLUpdateElement> localMapList = null;
     private LocalMapAdapter localMapAdapter = null;
+
+    public static void start(Context context){
+        context.startActivity(new Intent(context, OfflineActivity.class));
+    }
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

@@ -20,7 +20,9 @@ import java.util.List;
  */
 public class MapHelper {
 
-
+    //标记点相关的
+    private static BitmapDescriptor descriptorBlue = BitmapDescriptorFactory
+            .fromResource(R.drawable.icon_measure_blue);
 
     /**
      * 动画放大
@@ -61,11 +63,7 @@ public class MapHelper {
                         markerList.get(0).getLongitude()));
         return true;
     }
-
-    //标记点相关的
-    private static BitmapDescriptor descriptorBlue = BitmapDescriptorFactory
-            .fromResource(R.drawable.icon_measure_blue);
-
+    
     /**
      * 动画聚焦到一个点
      * @param baiduMap

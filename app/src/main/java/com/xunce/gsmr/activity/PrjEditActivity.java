@@ -32,6 +32,7 @@ import com.xunce.gsmr.R;
 import com.xunce.gsmr.app.Constant;
 import com.xunce.gsmr.model.MarkerItem;
 import com.xunce.gsmr.model.PrjItem;
+import com.xunce.gsmr.model.map.RailWay;
 import com.xunce.gsmr.test.OfflineActivity;
 import com.xunce.gsmr.util.LogHelper;
 import com.xunce.gsmr.util.PreferenceHelper;
@@ -66,6 +67,9 @@ public class PrjEditActivity extends AppCompatActivity {
     //接收到的数据
     private PrjItem prjItem;
 
+    //加载的铁路数据
+    private RailWay railWay;
+
     //地图----定位client
     private BaiduMap mBaiduMap;
     private MapView mMapView;
@@ -94,9 +98,6 @@ public class PrjEditActivity extends AppCompatActivity {
      * @param context
      */
     public static void start(Context context, PrjItem prjItem) {
-        if (context == null || prjItem == null) {
-            return;
-        }
         Intent intent = new Intent(context, PrjEditActivity.class);
         intent.putExtra(Constant.EXTRA_KEY_PRJ_ITEM, prjItem);
         context.startActivity(intent);
@@ -182,7 +183,6 @@ public class PrjEditActivity extends AppCompatActivity {
                 return true;
             }
         });
-
 
         ibLocate = (ImageButton) findViewById(R.id.id_ib_locate);
         ibLocate.setOnClickListener(new View.OnClickListener() {
@@ -357,15 +357,18 @@ public class PrjEditActivity extends AppCompatActivity {
                 startActivity(new Intent(this, PrjSelectActivity.class));
                 //加载铁路地图
             case R.id.id_action_load_map:
-                //TODO---在MapHelper中实现
-//                FileHelper.loadDbFile(this);
-//                MapHelper.drawText(mBaiduMap, "hialuglwieaughlweiughlwe", new LatLng(34, 114), 30);
-//                MapHelper.loadMap(this, mBaiduMap, prjItem);
+                //TODO---加载铁路地图
+                if(railWay == null){
+                    railWay = new RailWay(this, prjItem);
+                    railWay.draw(mBaiduMap);
+                }else{
+                    ToastHelper.showToast(this, "铁路已加载");
+                }
                 break;
             case R.id.id_action_offline_map:
                 //TODO
                 //开启离线地图管理Acitvity
-                startActivity(new Intent(this, OfflineActivity.class));
+                OfflineActivity.start(this);
                 break;
             //设置
             case R.id.id_action_setting:

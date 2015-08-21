@@ -28,7 +28,7 @@ public class Text extends Graph{
     }
 
     public Text(LatLng latLng, String string) {
-        super();
+
     }
 
     @Override
