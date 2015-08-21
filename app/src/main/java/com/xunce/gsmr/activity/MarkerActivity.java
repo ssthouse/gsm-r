@@ -158,7 +158,6 @@ public class MarkerActivity extends AppCompatActivity {
                 if (motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
                     isLocated = false;
                     ibMode.setImageResource(R.drawable.locate1);
-//                    LogHelper.Log(TAG, "我摸到了---地图");
                 }
 
                 if (motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
@@ -236,7 +235,6 @@ public class MarkerActivity extends AppCompatActivity {
                 } else {
                     //手动定位
                     locate(mLocClient.getLastKnownLocation());
-//                    uiSettings.setCompassEnabled(true);
                    // LogHelper.Log(TAG, "located!!!");
                     isLocated = true;
                     //判断当前状态---切换图标
@@ -256,6 +254,9 @@ public class MarkerActivity extends AppCompatActivity {
      * @param location
      */
     private void locate(BDLocation location) {
+        if(location == null){
+            return;
+        }
         //更新我的位置
         MyLocationData locData = new MyLocationData.Builder()
                 .accuracy(location.getRadius())

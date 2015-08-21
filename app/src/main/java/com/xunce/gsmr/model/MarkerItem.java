@@ -3,7 +3,13 @@ package com.xunce.gsmr.model;
 import com.activeandroid.Model;
 import com.activeandroid.annotation.Column;
 import com.activeandroid.annotation.Table;
+import com.baidu.mapapi.map.BaiduMap;
+import com.baidu.mapapi.map.BitmapDescriptor;
+import com.baidu.mapapi.map.BitmapDescriptorFactory;
+import com.baidu.mapapi.map.MarkerOptions;
+import com.baidu.mapapi.map.OverlayOptions;
 import com.baidu.mapapi.model.LatLng;
+import com.xunce.gsmr.R;
 import com.xunce.gsmr.app.Constant;
 
 import java.io.Serializable;
@@ -70,8 +76,26 @@ public class MarkerItem extends Model implements Serializable {
         return Constant.PICTURE_PATH + prjName + "/" + latitude + "_" + longitude + "/";
     }
 
-    //getter-----and------setter--------------------------
+    public void draw(BaiduMap baiduMap) {
+        if (latitude == 0 || longitude == 0) {
+            return;
+        }
+        //构建Marker图标
+        BitmapDescriptor bitmap = BitmapDescriptorFactory
+                .fromResource(R.mipmap.ic_launcher);
+        //构建MarkerOption，用于在地图上添加Marker
+        OverlayOptions option = new MarkerOptions()
+                .position(new LatLng(latitude, longitude))
+                .icon(bitmap)
+                .title("hahaha")
+                .zIndex(10)
+                .draggable(true);
 
+        //在地图上添加Marker，并显示
+        baiduMap.addOverlay(option);
+    }
+
+    //getter-----and------setter--------------------------
     public double getLatitude() {
         return latitude;
     }

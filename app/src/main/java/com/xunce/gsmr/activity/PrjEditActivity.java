@@ -281,6 +281,9 @@ public class PrjEditActivity extends AppCompatActivity {
     }
 
     private void locate(BDLocation location) {
+        if(location == null){
+            return;
+        }
         //更新我的位置
         MyLocationData locData = new MyLocationData.Builder()
                 .accuracy(location.getRadius())
