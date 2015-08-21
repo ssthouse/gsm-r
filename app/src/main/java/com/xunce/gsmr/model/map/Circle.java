@@ -1,34 +1,54 @@
 package com.xunce.gsmr.model.map;
 
+import com.baidu.mapapi.map.BaiduMap;
+import com.baidu.mapapi.map.CircleOptions;
+import com.baidu.mapapi.map.OverlayOptions;
+import com.baidu.mapapi.map.Stroke;
 import com.baidu.mapapi.model.LatLng;
 
 /**
+ * 地图上的圆
  * Created by ssthouse on 2015/7/30.
  */
-public class Circle {
+public class Circle extends Graph{
+    private static final String TAG = "Circle";
 
-    private LatLng latLng;
+    //圆圈的参数
+    private static Stroke circleStroke = new Stroke(5, 0xAA000000);
 
-    private float radius;
+    private LatLng latlngCenter;
+    private int radius;
 
-    public Circle(LatLng latLng, float radius) {
-        this.latLng = latLng;
+    public Circle(LatLng latlngCenter, int radius) {
+        this.latlngCenter = latlngCenter;
         this.radius = radius;
     }
 
-    public LatLng getLatLng() {
-        return latLng;
+    @Override
+    public void draw(BaiduMap baiduMap) {
+        OverlayOptions ooCircle = new CircleOptions()
+                .fillColor(0x000000FF)
+                .center(latlngCenter)
+                .stroke(circleStroke)
+                .radius(radius);
+        baiduMap.addOverlay(ooCircle);
     }
 
-    public void setLatLng(LatLng latLng) {
-        this.latLng = latLng;
+    public LatLng getLatlngCenter() {
+        return latlngCenter;
     }
 
-    public float getRadius() {
+    public void setLatlngCenter(LatLng latlngCenter) {
+        this.latlngCenter = latlngCenter;
+    }
+
+    public int getRadius() {
         return radius;
     }
 
-    public void setRadius(float radius) {
+    public void setRadius(int radius) {
         this.radius = radius;
     }
+
+
 }

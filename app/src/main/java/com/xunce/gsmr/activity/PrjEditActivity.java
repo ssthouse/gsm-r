@@ -359,13 +359,9 @@ public class PrjEditActivity extends AppCompatActivity {
             case R.id.id_action_load_map:
                 //TODO---在MapHelper中实现
 //                FileHelper.loadDbFile(this);
-                MapHelper.drawText(mBaiduMap, "hialuglwieaughlweiughlwe", new LatLng(34, 114), 30);
-                MapHelper.loadMap(this, mBaiduMap, prjItem);
+//                MapHelper.drawText(mBaiduMap, "hialuglwieaughlweiughlwe", new LatLng(34, 114), 30);
+//                MapHelper.loadMap(this, mBaiduMap, prjItem);
                 break;
-//            //测量工具---TODO--移动到浮动按钮
-//            case R.id.id_action_measure_tool:
-//                MeasureActivity.start(PrjEditActivity.this);
-//                break;
             case R.id.id_action_offline_map:
                 //TODO
                 //开启离线地图管理Acitvity

@@ -70,7 +70,7 @@ public class DBHelper {
         cursor.moveToFirst();
         for (int i = 0; i < cursor.getCount(); i++) {
             LatLng latLng = new LatLng(cursor.getFloat(1), cursor.getFloat(2));
-            circleList.add(new Circle(latLng, cursor.getFloat(3)));
+            circleList.add(new Circle(latLng, (int) cursor.getFloat(3)));
             LogHelper.Log(TAG, cursor.getFloat(1) + ":" + cursor.getFloat(2) + ":" +
                     cursor.getFloat(3));
             cursor.moveToNext();

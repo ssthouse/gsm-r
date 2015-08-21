@@ -1,24 +1,17 @@
 package com.xunce.gsmr.util.gps;
 
-import android.content.Context;
-
 import com.baidu.mapapi.map.BaiduMap;
 import com.baidu.mapapi.map.BitmapDescriptor;
 import com.baidu.mapapi.map.BitmapDescriptorFactory;
-import com.baidu.mapapi.map.CircleOptions;
 import com.baidu.mapapi.map.MapStatusUpdate;
 import com.baidu.mapapi.map.MapStatusUpdateFactory;
 import com.baidu.mapapi.map.MarkerOptions;
 import com.baidu.mapapi.map.OverlayOptions;
-import com.baidu.mapapi.map.PolylineOptions;
-import com.baidu.mapapi.map.Stroke;
-import com.baidu.mapapi.map.TextOptions;
 import com.baidu.mapapi.model.LatLng;
 import com.xunce.gsmr.R;
 import com.xunce.gsmr.model.MarkerItem;
 import com.xunce.gsmr.model.PrjItem;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -27,15 +20,7 @@ import java.util.List;
  */
 public class MapHelper {
 
-    //直线的参数
-    private static int lineColor =  0xAAFF0000;
-    private static int lineWidth = 10;
-    //圆圈的参数
-    private static Stroke circleStroke = new Stroke(5, 0xAA000000);
-    //文字的参数
-    private static int textColor = 0xFFFF00FF;
-    private static int textBgColor = 0x00FF00FF;
-    private static int textSize = 24;
+
 
     /**
      * 动画放大
@@ -45,71 +30,6 @@ public class MapHelper {
     public static void animateZoom(BaiduMap baiduMap, int zoomLevel){
         MapStatusUpdate u = MapStatusUpdateFactory.zoomTo(zoomLevel);
         baiduMap.animateMapStatus(u);
-    }
-
-    /**
-     * 在地图中画出直线----point的数据是经纬度!!!
-     * @param baiduMap
-     * @param latlngBegin
-     * @param latlngEnd
-     */
-    public static void drawLine(BaiduMap baiduMap, LatLng latlngBegin, LatLng latlngEnd){
-        // 添加折线
-        List<LatLng> points = new ArrayList<LatLng>();
-        points.add(latlngBegin);
-        points.add(latlngEnd);
-        OverlayOptions ooPolyline = new PolylineOptions()
-                .width(lineWidth)
-                .color(lineColor)
-                .points(points);
-        baiduMap.addOverlay(ooPolyline);
-    }
-
-    /**
-     * 画出圆
-     * @param baiduMap
-     * @param latlngCenter
-     * @param radius
-     */
-    public static void drawCircle(BaiduMap baiduMap, LatLng latlngCenter, int radius){
-        // 添加圆
-        OverlayOptions ooCircle = new CircleOptions()
-                .fillColor(0x000000FF)
-                .center(latlngCenter)
-                .stroke(circleStroke)
-                .radius(radius);
-        baiduMap.addOverlay(ooCircle);
-    }
-
-    /**
-     * 画出文字
-     * @param baiduMap
-     * @param text
-     * @param latLng
-     * @param rotate
-     */
-    public static void drawText(BaiduMap baiduMap, String text, LatLng latLng, int rotate){
-        // 添加文字
-        OverlayOptions ooText = new TextOptions()
-                .bgColor(textBgColor)
-                .fontSize(textSize)
-                .fontColor(textColor)
-                .text(text)
-                .rotate(-rotate)
-                .position(latLng);
-        baiduMap.addOverlay(ooText);
-    }
-
-    /**
-     * TODO---在各种地图上加载铁路地图
-     * 加载铁路地图
-     *
-     * @return
-     */
-    public static boolean loadMap(Context context, BaiduMap baiduMap, PrjItem prjItem) {
-        //TODO---这里直接将制定路径的文件读取出来就好
-        DBHelper.openExternalDbFile(context);
-        return true;
     }
 
     /**

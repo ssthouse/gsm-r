@@ -246,7 +246,7 @@ public class RoutePlanActivity extends Activity {
             eX = latLngEnd.latitude;
             eY = latLngEnd.longitude;
         } catch (Exception e) {
-            Toast.makeText(this, "计算出错!", Toast.LENGTH_SHORT);
+            ToastHelper.showToast(this, "计算失败");
             e.printStackTrace();
         }
 
@@ -269,7 +269,7 @@ public class RoutePlanActivity extends Activity {
         boolean ret = BNRoutePlaner.getInstance().setPointsToCalcRoute(
                 nodeList, CommonParams.NL_Net_Mode.NL_Net_Mode_OnLine);
         if (!ret) {
-            Toast.makeText(this, "规划成功!", Toast.LENGTH_SHORT);
+            ToastHelper.showToast(this, "计算成功");
         }
     }
 
