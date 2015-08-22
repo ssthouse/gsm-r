@@ -90,11 +90,8 @@
 
         <activity android:name=".activity.GetLatLngActivity"/>
 
-        <!--TODO-->
-        <activity android:name=".test.OfflineActivity">
-
-        </activity>
-        <activity android:name=".test.BaseMapDemo"/>
+        <!--离线地图-->
+        <activity android:name=".activity.OfflineActivity"/>
 
     </application>
 

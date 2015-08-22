@@ -31,7 +31,6 @@ import com.xunce.gsmr.model.MarkerHolder;
 import com.xunce.gsmr.model.MarkerItem;
 import com.xunce.gsmr.model.PrjItem;
 import com.xunce.gsmr.model.map.RailWay;
-import com.xunce.gsmr.test.OfflineActivity;
 import com.xunce.gsmr.util.FileHelper;
 import com.xunce.gsmr.util.LogHelper;
 import com.xunce.gsmr.util.PreferenceHelper;
@@ -325,6 +324,8 @@ public class PrjEditActivity extends AppCompatActivity {
                 //加载铁路地图
             case R.id.id_action_load_map:
                 //TODO---加载铁路地图
+                //首先判断数据库是否绑定
+
                 if(railWay == null){
                     railWay = new RailWay(this, prjItem);
                     railWay.draw(mBaiduMap);

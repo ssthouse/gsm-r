@@ -1,4 +1,4 @@
-package com.xunce.gsmr.test;
+package com.xunce.gsmr.activity;
 
 import android.app.Activity;
 import android.content.Context;
@@ -24,7 +24,6 @@ import com.baidu.mapapi.map.offline.MKOLUpdateElement;
 import com.baidu.mapapi.map.offline.MKOfflineMap;
 import com.baidu.mapapi.map.offline.MKOfflineMapListener;
 import com.xunce.gsmr.R;
-import com.xunce.gsmr.util.LogHelper;
 import com.xunce.gsmr.util.ToastHelper;
 
 import java.util.ArrayList;
@@ -123,11 +122,9 @@ public class OfflineActivity extends Activity implements MKOfflineMapListener {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 if(s == null){
-                    LogHelper.Log(TAG, "空的");
                     return;
                 }
                 if(TextUtils.isEmpty(s)){
-                    LogHelper.Log(TAG, "显示所有");
                     currentCityList = mOffline.getOfflineCityList();
                     return;
                 }
@@ -316,16 +313,16 @@ public class OfflineActivity extends Activity implements MKOfflineMapListener {
                     updateView();
                 }
             });
-            display.setOnClickListener(new OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent intent = new Intent();
-                    intent.putExtra("y", e.geoPt.latitude);
-                    intent.putExtra("x", e.geoPt.longitude);
-                    intent.setClass(OfflineActivity.this, BaseMapDemo.class);
-                    startActivity(intent);
-                }
-            });
+//            display.setOnClickListener(new OnClickListener() {
+//                @Override
+//                public void onClick(View v) {
+//                    Intent intent = new Intent();
+//                    intent.putExtra("y", e.geoPt.latitude);
+//                    intent.putExtra("x", e.geoPt.longitude);
+//                    intent.setClass(OfflineActivity.this, BaseMapDemo.class);
+//                    startActivity(intent);
+//                }
+//            });
         }
     }
 
