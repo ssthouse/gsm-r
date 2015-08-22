@@ -40,6 +40,9 @@ public class MarkerHolder {
         initMarkerList();
     }
 
+    /**
+     * 初始化并且画出Marker
+     */
     public void initMarkerList() {
         //清空markerList
         markerList.clear();
@@ -51,7 +54,7 @@ public class MarkerHolder {
             OverlayOptions redOverlay = new MarkerOptions()
                     .position(latLng)
                     .icon(descriptorBlue)
-                    .zIndex(12)
+                    .zIndex(16)
                     .draggable(false);
             markerList.add((Marker) baiduMap.addOverlay(redOverlay));
         }
@@ -60,23 +63,6 @@ public class MarkerHolder {
                     new LatLng(markerList.get(markerList.size() - 1).getPosition().latitude,
                             markerList.get(markerList.size() - 1).getPosition().latitude));
             MapHelper.animateZoom(baiduMap, 15);
-        }
-    }
-
-    /**
-     * 画出所有的Marker---并移动到一地个点为中点
-     */
-    public void drawMarkers() {
-        if (markerList.size() == 0) {
-            return;
-        }
-        for (Marker marker : markerList) {
-            OverlayOptions options = new MarkerOptions()
-                    .position(marker.getPosition())
-                    .icon(descriptorBlue)
-                    .zIndex(9)
-                    .draggable(false);
-            baiduMap.addOverlay(options);
         }
     }
 

@@ -6,7 +6,7 @@
     <item
         android:id="@+id/id_action_change_project"
         android:orderInCategory="100"
-        android:title="切换工程"
+        android:title="项目管理"
         app:showAsAction="never" />
 
     <item

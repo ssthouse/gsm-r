@@ -2,7 +2,6 @@ package com.xunce.gsmr.activity;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -11,15 +10,15 @@ import android.widget.ListView;
 
 import com.github.clans.fab.FloatingActionButton;
 import com.xunce.gsmr.R;
-import com.xunce.gsmr.util.VibrateHelper;
-import com.xunce.gsmr.view.adapter.PrjLvAdapter;
-import com.xunce.gsmr.view.style.TransparentStyle;
 import com.xunce.gsmr.util.DialogHelper;
 import com.xunce.gsmr.util.FileHelper;
 import com.xunce.gsmr.util.PreferenceHelper;
 import com.xunce.gsmr.util.ToastHelper;
+import com.xunce.gsmr.util.VibrateHelper;
 import com.xunce.gsmr.util.ViewHelper;
 import com.xunce.gsmr.util.gps.DBHelper;
+import com.xunce.gsmr.view.adapter.PrjLvAdapter;
+import com.xunce.gsmr.view.style.TransparentStyle;
 
 
 /**
@@ -94,6 +93,7 @@ public class PrjSelectActivity extends AppCompatActivity{
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()){
             case R.id.id_action_export_data:
+                //
                 FileHelper.sendDbFile(PrjSelectActivity.this);
                 break;
             case R.id.id_action_setting:

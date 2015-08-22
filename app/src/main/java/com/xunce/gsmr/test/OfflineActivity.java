@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
@@ -23,6 +24,7 @@ import com.baidu.mapapi.map.offline.MKOLUpdateElement;
 import com.baidu.mapapi.map.offline.MKOfflineMap;
 import com.baidu.mapapi.map.offline.MKOfflineMapListener;
 import com.xunce.gsmr.R;
+import com.xunce.gsmr.util.LogHelper;
 import com.xunce.gsmr.util.ToastHelper;
 
 import java.util.ArrayList;
@@ -31,6 +33,7 @@ import java.util.ArrayList;
  * 管理离线地图的Activity
  */
 public class OfflineActivity extends Activity implements MKOfflineMapListener {
+    private static final String TAG = "OffLineActivity";
 
     //离线地图管理器
     private MKOfflineMap mOffline = null;
@@ -75,8 +78,11 @@ public class OfflineActivity extends Activity implements MKOfflineMapListener {
                 LinearLayout lm = (LinearLayout) findViewById(R.id.localmap_layout);
                 lm.setVisibility(View.VISIBLE);
                 cl.setVisibility(View.GONE);
+                //改变按钮颜色
                 btnDownloadList.setBackgroundColor(0xffffffff);
-                btnCityList.setBackgroundColor(0x00ffffff);
+                btnDownloadList.setTextColor(0xff424242);
+                btnCityList.setBackgroundColor(0x00000000);
+                btnCityList.setTextColor(0xffffffff);
             }
         });
         btnCityList = (Button) findViewById(R.id.id_btn_city_list);
@@ -87,15 +93,18 @@ public class OfflineActivity extends Activity implements MKOfflineMapListener {
                 LinearLayout lm = (LinearLayout) findViewById(R.id.localmap_layout);
                 lm.setVisibility(View.GONE);
                 cl.setVisibility(View.VISIBLE);
+                //改变按钮颜色
                 btnCityList.setBackgroundColor(0xffffffff);
-                btnDownloadList.setBackgroundColor(0x00ffffff);
+                btnCityList.setTextColor(0xff424242);
+                btnDownloadList.setBackgroundColor(0x00000000);
+                btnDownloadList.setTextColor(0xffffffff);
             }
         });
 
         //初始化将city查询列表设置为所有的可以离线的列表
         ListView allCityList = (ListView) findViewById(R.id.lv_all_city);
         // 获取所有支持离线地图的城市
-        ArrayList<String> allCities = new ArrayList<String>();
+        ArrayList<String> allCities = new ArrayList<>();
         currentCityList = mOffline.getOfflineCityList();
         for (MKOLSearchRecord r : currentCityList) {
             allCities.add(r.cityName + "(" + r.cityID + ")" + "   --"
@@ -113,12 +122,18 @@ public class OfflineActivity extends Activity implements MKOfflineMapListener {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if(s == null && !s.toString().isEmpty()){
+                if(s == null){
+                    LogHelper.Log(TAG, "空的");
+                    return;
+                }
+                if(TextUtils.isEmpty(s)){
+                    LogHelper.Log(TAG, "显示所有");
+                    currentCityList = mOffline.getOfflineCityList();
                     return;
                 }
                 //一旦文字发生变化----更新下面的listView中的数据--
                 if(mOffline.searchCity(s.toString()) == null){
-                    currentCityList = mOffline.getOfflineCityList();
+                    currentCityList.clear();
                 }else {
                     currentCityList = mOffline.searchCity(s.toString());
                 }
@@ -138,7 +153,7 @@ public class OfflineActivity extends Activity implements MKOfflineMapListener {
         // 获取已下过的离线地图信息
         localMapList = mOffline.getAllUpdateInfo();
         if (localMapList == null) {
-            localMapList = new ArrayList<MKOLUpdateElement>();
+            localMapList = new ArrayList<>();
         }
 
         //本地已经下载的地图文件
@@ -169,7 +184,7 @@ public class OfflineActivity extends Activity implements MKOfflineMapListener {
      */
     public void importFromSDCard(View view) {
         int num = mOffline.importOfflineData();
-        String msg = "";
+        String msg;
         if (num == 0) {
             msg = "没有导入离线包，这可能是离线包放置位置不正确，或离线包已经导入过";
         } else {
@@ -185,7 +200,7 @@ public class OfflineActivity extends Activity implements MKOfflineMapListener {
     public void updateView() {
         localMapList = mOffline.getAllUpdateInfo();
         if (localMapList == null) {
-            localMapList = new ArrayList<MKOLUpdateElement>();
+            localMapList = new ArrayList<>();
         }
         localMapAdapter.notifyDataSetChanged();
     }

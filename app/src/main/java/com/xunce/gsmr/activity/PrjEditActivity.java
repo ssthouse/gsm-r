@@ -32,6 +32,7 @@ import com.xunce.gsmr.model.MarkerItem;
 import com.xunce.gsmr.model.PrjItem;
 import com.xunce.gsmr.model.map.RailWay;
 import com.xunce.gsmr.test.OfflineActivity;
+import com.xunce.gsmr.util.FileHelper;
 import com.xunce.gsmr.util.LogHelper;
 import com.xunce.gsmr.util.PreferenceHelper;
 import com.xunce.gsmr.util.ToastHelper;
@@ -114,7 +115,6 @@ public class PrjEditActivity extends AppCompatActivity {
             }
         });
         mLocationClient.start();
-
 
         initView();
 
@@ -332,9 +332,14 @@ public class PrjEditActivity extends AppCompatActivity {
                     ToastHelper.showToast(this, "铁路已加载");
                 }
                 break;
+            //数据导出
+            case R.id.id_action_export_data:
+                //TODO
+                FileHelper.sendDbFile(this);
+                break;
             case R.id.id_action_offline_map:
                 //TODO
-                //开启离线地图管理Acitvity
+                //开启离线地图管理Activity
                 OfflineActivity.start(this);
                 break;
             //设置
@@ -386,7 +391,6 @@ public class PrjEditActivity extends AppCompatActivity {
         if(isPositionShowed){
             hideLlPosition();
         }else{
-            markerHolder.setAll2Red();
             if ((System.currentTimeMillis() - mExitTime) > 2000) {
                 Toast.makeText(this, "再按一次退出程序", Toast.LENGTH_SHORT).show();
                 mExitTime = System.currentTimeMillis();
