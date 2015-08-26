@@ -127,8 +127,7 @@ public class PicGridActivity extends AppCompatActivity {
                     }
                 } else {
                     //否则---开启系统图库查看图片
-                    PictureHelper.showPictureInAlbum(PicGridActivity.this,
-                            adapter.getBitmapItemList().get(position).getPath());
+                    adapter.getBitmapItemList().get(position).showInAlbum(PicGridActivity.this);
                 }
                 updateView();
             }
@@ -177,7 +176,7 @@ public class PicGridActivity extends AppCompatActivity {
             removeAllSelected();
             updateView();
             return;
-        }else{
+        } else {
             finish();
         }
     }

@@ -28,7 +28,9 @@ public class Text extends Graph{
     }
 
     public Text(LatLng latLng, String string) {
-
+        this.latLng = latLng;
+        this.text = string;
+        this.rotate = 0;
     }
 
     @Override

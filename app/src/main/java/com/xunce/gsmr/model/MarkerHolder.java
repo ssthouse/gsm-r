@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * 持有一个baiduMap的引用
  * 承载PrjEditActivity中的所有Marker
  * Created by ssthouse on 2015/8/21.
  */

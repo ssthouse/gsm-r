@@ -5,6 +5,8 @@ import android.util.AttributeSet;
 import android.widget.ImageView;
 
 /**
+ * 自定义的宽度和高度一样的ImageView
+ * 放在GirdView中还挺好用的
  * Created by ssthouse on 2015/7/20.
  */
 public class CustomImageView extends ImageView {

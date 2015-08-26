@@ -102,10 +102,10 @@ public class FileHelper {
      */
     public static void changeMarkerItemName(MarkerItem markerItem, LatLng latLng) {
         //先改变文件路径
-        File file = new File(Constant.PICTURE_PATH + markerItem.getPrjName()+"/"+
-                + markerItem.getLatitude() + "_" + markerItem.getLongitude());
-        file.renameTo(new File(Constant.PICTURE_PATH + markerItem.getPrjName()+"/"+
-                + latLng.latitude + "_" +latLng.longitude));
+        File file = new File(Constant.PICTURE_PATH + markerItem.getPrjName() + "/" +
+                +markerItem.getLatitude() + "_" + markerItem.getLongitude());
+        file.renameTo(new File(Constant.PICTURE_PATH + markerItem.getPrjName() + "/" +
+                +latLng.latitude + "_" + latLng.longitude));
         //修改数据
         markerItem.setLatitude(latLng.latitude);
         markerItem.setLongitude(latLng.longitude);
@@ -182,6 +182,7 @@ public class FileHelper {
 
     /**
      * 将本地的数据库文件发送出去
+     *
      * @param context
      */
     public static void sendDbFile(Activity context) {

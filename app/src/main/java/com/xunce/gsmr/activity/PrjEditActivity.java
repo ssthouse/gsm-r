@@ -134,8 +134,8 @@ public class PrjEditActivity extends AppCompatActivity {
                 MyLocationConfiguration.LocationMode.NORMAL, true, null));
 
         //获取缩放控件
-        ZoomControlView zcvZomm = (ZoomControlView) findViewById(R.id.id_zoom_control);
-        zcvZomm.setMapView(mMapView);//设置百度地图控件
+        ZoomControlView zoomView = (ZoomControlView) findViewById(R.id.id_zoom_control);
+        zoomView.setMapView(mMapView);//设置百度地图控件
 
         //触摸屏幕则---定位失效
         mBaiduMap.setOnMapTouchListener(new BaiduMap.OnMapTouchListener() {
@@ -144,6 +144,9 @@ public class PrjEditActivity extends AppCompatActivity {
                 if (motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
                     ibLocate.setImageResource(R.drawable.locate2);
                     isLocated = false;
+                }
+                if(isPositionShowed == true){
+                    hideLlPosition();
                 }
             }
         });
@@ -240,6 +243,10 @@ public class PrjEditActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * 和InfoWindow绑定的点击事件
+     * @param v
+     */
     public void clickEdit(View v){
         if (markerHolder.getCurrentMarker()== null) {
             ToastHelper.showSnack(PrjEditActivity.this, ibLocate, "请先选择一个基址点");
@@ -252,7 +259,10 @@ public class PrjEditActivity extends AppCompatActivity {
                 new MarkerItem(prjItem.getPrjName(), latLng),
                 REQUEST_CODE_MARKER_EDIT_ACTIVITY);
     }
-
+    /**
+     * 和InfoWindow绑定的点击事件
+     * @param v
+     */
     public void clickPhoto(View v){
         mBaiduMap.hideInfoWindow();
         if (markerHolder.getCurrentMarker()== null) {
@@ -335,11 +345,9 @@ public class PrjEditActivity extends AppCompatActivity {
                 break;
             //数据导出
             case R.id.id_action_export_data:
-                //TODO
                 FileHelper.sendDbFile(this);
                 break;
             case R.id.id_action_offline_map:
-                //TODO
                 //开启离线地图管理Activity
                 OfflineActivity.start(this);
                 break;
