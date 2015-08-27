@@ -1,6 +1,6 @@
 package com.xunce.gsmr.activity;
 
-import android.content.Context;
+import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -82,19 +82,20 @@ public class PrjEditActivity extends AppCompatActivity {
      * 用于更加方便的开启Activity
      * 后面几个参数可以用来传递-----放入intent 的数据
      *
-     * @param context
+     * @param activity
      */
-    public static void start(Context context, PrjItem prjItem) {
-        Intent intent = new Intent(context, PrjEditActivity.class);
+    public static void start(Activity activity, PrjItem prjItem) {
+        Intent intent = new Intent(activity, PrjEditActivity.class);
         intent.putExtra(Constant.EXTRA_KEY_PRJ_ITEM, prjItem);
-        context.startActivity(intent);
+        activity.startActivity(intent);
+        activity.overridePendingTransition(R.anim.activity_fade_in, R.anim.activity_fade_out);
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_prj_edit);
-        TransparentStyle.setTransparentStyle(this,R.color.color_primary);
+        TransparentStyle.setTransparentStyle(this, R.color.color_primary);
 
         //判断是否有上次编辑的project
         if (PreferenceHelper.hasLastEditPrjItem(this)) {
@@ -145,7 +146,7 @@ public class PrjEditActivity extends AppCompatActivity {
                     ibLocate.setImageResource(R.drawable.locate2);
                     isLocated = false;
                 }
-                if(isPositionShowed == true){
+                if (isPositionShowed == true) {
                     hideLlPosition();
                 }
             }
@@ -159,7 +160,7 @@ public class PrjEditActivity extends AppCompatActivity {
                 if (marker == markerHolder.getCurrentMarker()) {
                     markerHolder.clearSelection();
                     mBaiduMap.hideInfoWindow();
-                }else {
+                } else {
                     markerHolder.setAll2Blue();
                     marker.setIcon(MarkerHolder.descriptorRed);
                     //选中了Marker
@@ -217,7 +218,7 @@ public class PrjEditActivity extends AppCompatActivity {
                 //将当前地图的中心点传给MeasureActivity
                 LatLng latLng = mBaiduMap.getMapStatus().target;
                 //将中心点传递过去
-                MeasureActivity.start(PrjEditActivity.this,latLng);
+                MeasureActivity.start(PrjEditActivity.this, latLng);
             }
         });
 
@@ -225,9 +226,9 @@ public class PrjEditActivity extends AppCompatActivity {
         findViewById(R.id.id_ib_position).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(isPositionShowed){
+                if (isPositionShowed) {
                     hideLlPosition();
-                }else{
+                } else {
                     showLlPosition();
                 }
             }
@@ -245,10 +246,11 @@ public class PrjEditActivity extends AppCompatActivity {
 
     /**
      * 和InfoWindow绑定的点击事件
+     *
      * @param v
      */
-    public void clickEdit(View v){
-        if (markerHolder.getCurrentMarker()== null) {
+    public void clickEdit(View v) {
+        if (markerHolder.getCurrentMarker() == null) {
             ToastHelper.showSnack(PrjEditActivity.this, ibLocate, "请先选择一个基址点");
             return;
         }
@@ -259,13 +261,15 @@ public class PrjEditActivity extends AppCompatActivity {
                 new MarkerItem(prjItem.getPrjName(), latLng),
                 REQUEST_CODE_MARKER_EDIT_ACTIVITY);
     }
+
     /**
      * 和InfoWindow绑定的点击事件
+     *
      * @param v
      */
-    public void clickPhoto(View v){
+    public void clickPhoto(View v) {
         mBaiduMap.hideInfoWindow();
-        if (markerHolder.getCurrentMarker()== null) {
+        if (markerHolder.getCurrentMarker() == null) {
             ToastHelper.showSnack(PrjEditActivity.this, ibLocate, "请先选择一个基址点");
         } else {
             LatLng latLng = markerHolder.getCurrentMarker().getPosition();
@@ -276,7 +280,7 @@ public class PrjEditActivity extends AppCompatActivity {
     }
 
     private void locate(BDLocation location) {
-        if(location == null){
+        if (location == null) {
             return;
         }
         //更新我的位置
@@ -291,13 +295,13 @@ public class PrjEditActivity extends AppCompatActivity {
         MapHelper.animateToPoint(mBaiduMap, ll);
     }
 
-   private void showLlPosition(){
-       isPositionShowed = true;
-       llPosition.setVisibility(View.VISIBLE);
-       llPosition.startAnimation(AnimationUtils.loadAnimation(this, R.anim.pop_up));
-   }
+    private void showLlPosition() {
+        isPositionShowed = true;
+        llPosition.setVisibility(View.VISIBLE);
+        llPosition.startAnimation(AnimationUtils.loadAnimation(this, R.anim.pop_up));
+    }
 
-    private void hideLlPosition(){
+    private void hideLlPosition() {
         isPositionShowed = false;
         llPosition.startAnimation(AnimationUtils.loadAnimation(this, R.anim.drop_down));
         llPosition.setVisibility(View.GONE);
@@ -330,16 +334,16 @@ public class PrjEditActivity extends AppCompatActivity {
             //切换工程
             case R.id.id_action_change_project:
                 finish();
-                startActivity(new Intent(this, PrjSelectActivity.class));
+                PrjSelectActivity.start(this);
                 //加载铁路地图
             case R.id.id_action_load_map:
                 //TODO---加载铁路地图
                 //首先判断数据库是否绑定
 
-                if(railWay == null){
+                if (railWay == null) {
                     railWay = new RailWay(this, prjItem);
                     railWay.draw(mBaiduMap);
-                }else{
+                } else {
                     ToastHelper.showToast(this, "铁路已加载");
                 }
                 break;
@@ -397,9 +401,9 @@ public class PrjEditActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        if(isPositionShowed){
+        if (isPositionShowed) {
             hideLlPosition();
-        }else{
+        } else {
             if ((System.currentTimeMillis() - mExitTime) > 2000) {
                 Toast.makeText(this, "再按一次退出程序", Toast.LENGTH_SHORT).show();
                 mExitTime = System.currentTimeMillis();

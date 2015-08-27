@@ -81,7 +81,7 @@ public class MeasureActivity extends AppCompatActivity {
             intent.putExtra(Constant.EXTRA_KEY_LATITUDE, latLng.latitude);
             intent.putExtra(Constant.EXTRA_KEY_LONGITUDE, latLng.longitude);
         }
-        LogHelper.Log(TAG, latLng.latitude+ " : " + latLng.longitude);
+        LogHelper.Log(TAG, latLng.latitude + " : " + latLng.longitude);
         activity.startActivity(intent);
         activity.overridePendingTransition(R.anim.activity_fade_in, R.anim.activity_fade_out);
     }
@@ -90,7 +90,7 @@ public class MeasureActivity extends AppCompatActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_measure);
-        TransparentStyle.setTransparentStyle(this,R.color.color_primary);
+        TransparentStyle.setTransparentStyle(this, R.color.color_primary);
 
         //接收intent中的数据
         Intent intent = getIntent();
@@ -292,5 +292,11 @@ public class MeasureActivity extends AppCompatActivity {
         super.onDestroy();
         descriptorBlue.recycle();
         descriptorRed.recycle();
+    }
+
+    @Override
+    public void finish() {
+        super.finish();
+        overridePendingTransition(R.anim.activity_fade_in, R.anim.activity_fade_out);
     }
 }

@@ -1,5 +1,7 @@
 package com.xunce.gsmr.activity;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
@@ -31,6 +33,11 @@ public class PrjSelectActivity extends AppCompatActivity{
     private ListView lv;
 
     private PrjLvAdapter adapter;
+
+    public static void start(Activity activity){
+        activity.startActivity(new Intent(activity, PrjSelectActivity.class));
+        activity.overridePendingTransition(R.anim.activity_fade_in, R.anim.activity_fade_out);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

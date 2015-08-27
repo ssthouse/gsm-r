@@ -1,5 +1,6 @@
 package com.xunce.gsmr.util;
 
+import android.app.Activity;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -105,7 +106,7 @@ public class DialogHelper {
             public void onClick(View v) {
                 dialogBuilder.dismiss();
                 //开启编辑PrjItem的Activity
-                PrjEditActivity.start(context, prjItem);
+                PrjEditActivity.start((Activity) context, prjItem);
             }
         });
         ll.findViewById(R.id.id_menu_rename).setOnClickListener(new View.OnClickListener() {
