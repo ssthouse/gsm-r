@@ -28,7 +28,6 @@ import com.baidu.mapapi.model.LatLng;
 import com.xunce.gsmr.R;
 import com.xunce.gsmr.app.Constant;
 import com.xunce.gsmr.model.MarkerItem;
-import com.xunce.gsmr.util.FileHelper;
 import com.xunce.gsmr.util.ToastHelper;
 import com.xunce.gsmr.util.ViewHelper;
 import com.xunce.gsmr.util.gps.DBHelper;
@@ -203,7 +202,7 @@ public class MarkerActivity extends AppCompatActivity {
                     //保存数据---并改变原来的照片的文件夹的名称
                     LatLng latLng = new LatLng(MarkerHelper.getLatitude(etLatitude),
                             MarkerHelper.getLongitude(etLongitude));
-                    FileHelper.changeMarkerItemName(markerItem, latLng);
+                    markerItem.changeName(latLng);
                     //设置返回值
                     setResult(Constant.RESULT_CODE_OK);
                     //退出

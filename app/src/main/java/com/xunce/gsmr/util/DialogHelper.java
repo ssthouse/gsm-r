@@ -11,9 +11,9 @@ import com.gitonway.lee.niftymodaldialogeffects.lib.Effectstype;
 import com.gitonway.lee.niftymodaldialogeffects.lib.NiftyDialogBuilder;
 import com.xunce.gsmr.R;
 import com.xunce.gsmr.activity.PrjEditActivity;
-import com.xunce.gsmr.view.adapter.PrjLvAdapter;
 import com.xunce.gsmr.model.PrjItem;
 import com.xunce.gsmr.util.gps.DBHelper;
+import com.xunce.gsmr.view.adapter.PrjLvAdapter;
 
 /**
  * Dialog的工具类
@@ -95,8 +95,7 @@ public class DialogHelper {
             @Override
             public void onClick(View v) {
                 dialogBuilder.dismiss();
-                //删除数据库中的数据---prjItem
-                FileHelper.deletePrjItem(prjItem);
+                prjItem.deletePrj(context);
                 //刷新视图
                 adapter.notifyDataSetChanged();
             }
@@ -160,7 +159,7 @@ public class DialogHelper {
                     if (DBHelper.isPrjExist(prjName)) {
                         ToastHelper.showSnack(context, v, "该工程已存在");
                     } else {
-                        FileHelper.changePrjItemName(prjItem, prjName);
+                        prjItem.changeName(context, prjName);
                         //消除Dialog
                         dialogBuilder.dismiss();
                         //Toast 提醒成功

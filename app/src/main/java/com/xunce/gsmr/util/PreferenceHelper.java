@@ -21,8 +21,8 @@ public class PreferenceHelper {
         if (sharedPreferences == null) {
             sharedPreferences = context.getSharedPreferences(PREFERENCE, Context.MODE_PRIVATE);
         }
-        String prjName = sharedPreferences.getString(PREFERENCE_PRJNAME, "");
-        if (prjName.length() > 0) {
+        String prjName = sharedPreferences.getString(PREFERENCE_PRJNAME, null);
+        if (prjName != null) {
 //            LogHelper.Log(TAG, "wofanhui de true");
             return true;
         } else {
@@ -38,7 +38,7 @@ public class PreferenceHelper {
         return sharedPreferences.getString(PREFERENCE_PRJNAME, "");
     }
 
-    public static void saveLstEditPrjName(Context context, String prjName){
+    public static void setLastEditPrjName(Context context, String prjName){
         if(context == null || prjName == null){
             return;
         }
@@ -49,4 +49,17 @@ public class PreferenceHelper {
         editor.putString(PREFERENCE_PRJNAME, prjName);
         editor.commit();
     }
+
+    public static void deleteLastEditPrjName(Context context){
+        if(context == null){
+            return;
+        }
+        if (sharedPreferences == null) {
+            sharedPreferences = context.getSharedPreferences(PREFERENCE, Context.MODE_PRIVATE);
+        }
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.remove(PREFERENCE_PRJNAME);
+        editor.commit();
+    }
+
 }

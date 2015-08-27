@@ -6,6 +6,7 @@ import com.activeandroid.annotation.Table;
 import com.baidu.mapapi.model.LatLng;
 import com.xunce.gsmr.app.Constant;
 
+import java.io.File;
 import java.io.Serializable;
 
 /**
@@ -70,6 +71,19 @@ public class MarkerItem extends Model implements Serializable {
         return Constant.PICTURE_PATH + prjName + "/" + latitude + "_" + longitude + "/";
     }
 
+
+    public void changeName(LatLng latLng) {
+        //先改变文件路径
+        File file = new File(Constant.PICTURE_PATH + this.getPrjName() + "/" +
+                +this.getLatitude() + "_" + this.getLongitude());
+        file.renameTo(new File(Constant.PICTURE_PATH + this.getPrjName() + "/" +
+                +latLng.latitude + "_" + latLng.longitude));
+        //修改数据
+        this.setLatitude(latLng.latitude);
+        this.setLongitude(latLng.longitude);
+        //保存数据
+        this.save();
+    }
 
     //getter-----and------setter--------------------------
     public double getLatitude() {

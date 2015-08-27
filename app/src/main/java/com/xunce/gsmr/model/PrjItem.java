@@ -1,11 +1,15 @@
 package com.xunce.gsmr.model;
 
+import android.content.Context;
+
 import com.activeandroid.Model;
 import com.activeandroid.annotation.Column;
 import com.activeandroid.annotation.Table;
 import com.activeandroid.query.Select;
 import com.xunce.gsmr.app.Constant;
+import com.xunce.gsmr.util.PreferenceHelper;
 
+import java.io.File;
 import java.io.Serializable;
 import java.util.List;
 
@@ -15,6 +19,7 @@ import java.util.List;
  */
 @Table(name = Constant.TABLE_PRJ_ITEM)
 public class PrjItem extends Model implements Serializable{
+    private static final String TAG = "PrjItem";
 
     @Column(name = "prjName")
     private String prjName;
@@ -33,6 +38,57 @@ public class PrjItem extends Model implements Serializable{
         return new Select().from(MarkerItem.class)
                 .where("prjName = "+ "'"+prjName+"'")
                 .execute();
+    }
+
+
+    /**
+     * 删除一个PrjItem的所有数据
+     */
+    public void deletePrj(Context context){
+        //首先要判断Preference中保存的是不是当前工程
+        //如果是要删除Preference
+        if(PreferenceHelper.getLastEditPrjName(context).equals(getPrjName())){
+            PreferenceHelper.deleteLastEditPrjName(context);
+        }
+        //删除照片文件
+        String path = Constant.PICTURE_PATH + this.getPrjName();
+        File file = new File(path);
+        if (file.exists()) {
+            file.delete();
+        }
+        //删除数据库文件
+        List<MarkerItem> markerItemList = this.getMarkerItemList();
+        if (markerItemList != null) {
+            for (MarkerItem item : markerItemList) {
+                item.delete();
+            }
+        }
+        this.delete();
+    }
+
+    public void changeName(Context context, String newName){
+        //首先要判断Preference中保存的是不是当前工程
+        //如果是要修改Preference
+        if(PreferenceHelper.getLastEditPrjName(context).equals(getPrjName())){
+            PreferenceHelper.setLastEditPrjName(context, newName);
+        }
+        //修改照片文件名称
+        String path = Constant.PICTURE_PATH + this.getPrjName();
+        File file = new File(path);
+        if (file.exists()) {
+            file.renameTo(new File(Constant.PICTURE_PATH + newName));
+        }
+        //修改数据库文件
+        List<MarkerItem> markerItemList = this.getMarkerItemList();
+        if (markerItemList != null) {
+            for (MarkerItem item : markerItemList) {
+//                LogHelper.Log(TAG, "我修改了MarkerItem的prjName");
+                item.setPrjName(newName);
+                item.save();
+            }
+        }
+        this.setPrjName(newName);
+        this.save();
     }
 
     //getter-----------and---------------setter---------

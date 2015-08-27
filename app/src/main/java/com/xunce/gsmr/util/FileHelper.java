@@ -12,7 +12,6 @@ import com.baidu.mapapi.model.LatLng;
 import com.xunce.gsmr.app.Constant;
 import com.xunce.gsmr.model.BitmapItem;
 import com.xunce.gsmr.model.MarkerItem;
-import com.xunce.gsmr.model.PrjItem;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -38,60 +37,6 @@ public class FileHelper {
         Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
         intent.setType(ContactsContract.Contacts.CONTENT_TYPE);
         activity.startActivityForResult(intent, Constant.REQUEST_CODE_DB_FILE);
-    }
-
-    /**
-     * 删除一个PrjItem的数据
-     *
-     * @param prjItem
-     */
-    public static void deletePrjItem(PrjItem prjItem) {
-        if (prjItem == null) {
-            return;
-        }
-        //删除照片文件
-        String path = Constant.PICTURE_PATH + prjItem.getPrjName();
-        File file = new File(path);
-        if (file.exists()) {
-            file.delete();
-        }
-        //删除数据库文件
-        List<MarkerItem> markerItemList = prjItem.getMarkerItemList();
-        if (markerItemList != null) {
-            for (MarkerItem item : markerItemList) {
-                item.delete();
-            }
-        }
-        prjItem.delete();
-    }
-
-    /**
-     * 为PrjImte重命名
-     *
-     * @param prjItem
-     * @param newName
-     */
-    public static void changePrjItemName(PrjItem prjItem, String newName) {
-        if (prjItem == null || newName == null) {
-            return;
-        }
-        //修改照片文件名称
-        String path = Constant.PICTURE_PATH + prjItem.getPrjName();
-        File file = new File(path);
-        if (file.exists()) {
-            file.renameTo(new File(Constant.PICTURE_PATH + newName));
-        }
-        //修改数据库文件
-        List<MarkerItem> markerItemList = prjItem.getMarkerItemList();
-        if (markerItemList != null) {
-            for (MarkerItem item : markerItemList) {
-                LogHelper.Log(TAG, "我修改了MarkerItem的prjName");
-                item.setPrjName(newName);
-                item.save();
-            }
-        }
-        prjItem.setPrjName(newName);
-        prjItem.save();
     }
 
     /**

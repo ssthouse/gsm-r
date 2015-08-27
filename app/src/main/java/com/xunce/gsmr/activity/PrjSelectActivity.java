@@ -60,7 +60,7 @@ public class PrjSelectActivity extends AppCompatActivity{
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 //点击某一个prjImte的时候跳转到---具体的编辑界面(一个地图---很多按钮)
                 //保存当前要编辑的Prjname到preference
-                PreferenceHelper.saveLstEditPrjName(PrjSelectActivity.this,
+                PreferenceHelper.setLastEditPrjName(PrjSelectActivity.this,
                         adapter.getPrjItemList().get(position).getPrjName());
                 finish();
                 PrjEditActivity.start(PrjSelectActivity.this, adapter.getPrjItemList().get(position));
