@@ -28,7 +28,6 @@ import com.baidu.mapapi.model.LatLng;
 import com.xunce.gsmr.R;
 import com.xunce.gsmr.app.Constant;
 import com.xunce.gsmr.model.MarkerItem;
-import com.xunce.gsmr.util.AnimHelper;
 import com.xunce.gsmr.util.FileHelper;
 import com.xunce.gsmr.util.ToastHelper;
 import com.xunce.gsmr.util.ViewHelper;
@@ -160,12 +159,13 @@ public class MarkerActivity extends AppCompatActivity {
                     ibMode.setImageResource(R.drawable.locate1);
                 }
 
-                if (motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
-                    AnimHelper.rotateBigAnim(MarkerActivity.this, ivMark);
-                }
-                if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
-                    AnimHelper.rotateSmallAnim(MarkerActivity.this, ivMark);
-                }
+//                //去除动画效果
+//                if (motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
+//                    AnimHelper.rotateBigAnim(MarkerActivity.this, ivMark);
+//                }
+//                if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
+//                    AnimHelper.rotateSmallAnim(MarkerActivity.this, ivMark);
+//                }
             }
         });
 

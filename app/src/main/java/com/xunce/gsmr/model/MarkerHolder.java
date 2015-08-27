@@ -9,7 +9,6 @@ import com.baidu.mapapi.map.OverlayOptions;
 import com.baidu.mapapi.model.LatLng;
 import com.xunce.gsmr.R;
 import com.xunce.gsmr.util.gps.DBHelper;
-import com.xunce.gsmr.util.gps.MapHelper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -59,12 +58,13 @@ public class MarkerHolder {
                     .draggable(false);
             markerList.add((Marker) baiduMap.addOverlay(redOverlay));
         }
-        if (markerItems.size() != 0) {
-            MapHelper.animateToPoint(baiduMap,
-                    new LatLng(markerList.get(markerList.size() - 1).getPosition().latitude,
-                            markerList.get(markerList.size() - 1).getPosition().latitude));
-            MapHelper.animateZoom(baiduMap, 15);
-        }
+        //TODO---看要不要这个功能
+//        if (markerItems.size() != 0) {
+//            MapHelper.animateToPoint(baiduMap,
+//                    new LatLng(markerList.get(markerList.size() - 1).getPosition().latitude,
+//                            markerList.get(markerList.size() - 1).getPosition().latitude));
+//            MapHelper.animateZoom(baiduMap, 15);
+//        }
     }
 
     /**

@@ -67,9 +67,13 @@
             android:enabled="true"
             android:process=":remote" />
 
-        <activity android:name=".activity.PrjSelectActivity"/>
+        <activity
+            android:screenOrientation="portrait"
+            android:name=".activity.PrjSelectActivity"/>
 
-        <activity android:name=".activity.PrjEditActivity">
+        <activity
+            android:screenOrientation="portrait"
+            android:name=".activity.PrjEditActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -77,21 +81,35 @@
         </activity>
 
         <!--用于选址-->
-        <activity android:name=".activity.MarkerActivity"/>
+        <activity
+            android:screenOrientation="portrait"
+            android:name=".activity.MarkerActivity"/>
 
-        <activity android:name=".activity.NaviActivity" />
+        <activity
+            android:screenOrientation="portrait"
+            android:name=".activity.NaviActivity" />
 
-        <activity android:name=".activity.RoutePlanActivity" />
+        <activity
+            android:screenOrientation="portrait"
+            android:name=".activity.RoutePlanActivity" />
 
-        <activity android:name=".activity.MeasureActivity"/>
+        <activity
+            android:screenOrientation="portrait"
+            android:name=".activity.MeasureActivity"/>
 
-        <activity android:name=".activity.PicGridActivity"
+        <activity
+            android:screenOrientation="portrait"
+            android:name=".activity.PicGridActivity"
             android:theme="@style/CustomNoActionbarStyle"/>
 
-        <activity android:name=".activity.GetLatLngActivity"/>
+        <activity
+            android:screenOrientation="portrait"
+            android:name=".activity.GetLatLngActivity"/>
 
         <!--离线地图-->
-        <activity android:name=".activity.OfflineActivity"/>
+        <activity
+            android:screenOrientation="portrait"
+            android:name=".activity.OfflineActivity"/>
 
     </application>
 

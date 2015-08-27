@@ -47,7 +47,10 @@ import com.xunce.gsmr.view.widget.ZoomControlView;
  */
 public class PrjEditActivity extends AppCompatActivity {
     private static final String TAG = "PrjEditActivity";
+    //用于点击两次退出
     private long mExitTime;
+
+    private boolean isFistIn = true;
 
     public static final int REQUEST_CODE_ROUTE_ACTIVITY = 1000;
     public static final int REQUEST_CODE_MARKER_ACTIVITY = 1001;
@@ -112,6 +115,10 @@ public class PrjEditActivity extends AppCompatActivity {
         mLocationClient.registerLocationListener(new BDLocationListener() {
             @Override
             public void onReceiveLocation(BDLocation bdLocation) {
+                if (bdLocation != null && isFistIn) {
+                    isFistIn = false;
+                    locate(bdLocation);
+                }
             }
         });
         mLocationClient.start();
@@ -146,7 +153,8 @@ public class PrjEditActivity extends AppCompatActivity {
                     ibLocate.setImageResource(R.drawable.locate2);
                     isLocated = false;
                 }
-                if (isPositionShowed == true) {
+                //如果摸屏幕的时候, 公里标是看的见的, 隐藏掉
+                if (isPositionShowed) {
                     hideLlPosition();
                 }
             }
@@ -159,7 +167,7 @@ public class PrjEditActivity extends AppCompatActivity {
                 //如果点的是已经选中了的Marker---变回未选中状态
                 if (marker == markerHolder.getCurrentMarker()) {
                     markerHolder.clearSelection();
-                    mBaiduMap.hideInfoWindow();
+                    hideInfoWindow();
                 } else {
                     markerHolder.setAll2Blue();
                     marker.setIcon(MarkerHolder.descriptorRed);
@@ -170,7 +178,7 @@ public class PrjEditActivity extends AppCompatActivity {
                             .inflate(R.layout.view_info_window, null);
                     LatLng latLng = marker.getPosition();
                     mInfoWindow = new InfoWindow(ll, latLng, -47);
-                    mBaiduMap.showInfoWindow(mInfoWindow);
+                    showInfoWindow();
                 }
                 return true;
             }
@@ -305,6 +313,14 @@ public class PrjEditActivity extends AppCompatActivity {
         isPositionShowed = false;
         llPosition.startAnimation(AnimationUtils.loadAnimation(this, R.anim.drop_down));
         llPosition.setVisibility(View.GONE);
+    }
+
+    private void showInfoWindow(){
+        mBaiduMap.showInfoWindow(mInfoWindow);
+    }
+
+    private void hideInfoWindow(){
+        mBaiduMap.hideInfoWindow();
     }
 
     /**
