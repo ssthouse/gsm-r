@@ -1,19 +1,9 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".MainActivity">
 
-    <item
-        android:id="@+id/id_action_change_project"
-        android:orderInCategory="100"
-        android:title="项目管理"
-        app:showAsAction="never" />
 
-    <item
-        android:id="@+id/id_action_load_map"
-        android:orderInCategory="100"
-        android:title="加载铁路地图"
-        app:showAsAction="never" />
 
     <!--将测距放在地图上面-->
     <!--<item-->
@@ -22,21 +12,44 @@
         <!--android:title="测量工具"-->
         <!--app:showAsAction="never" />-->
 
-    <item
-        android:id="@+id/id_action_export_data"
-        android:orderInCategory="100"
-        android:title="数据导出"
-        app:showAsAction="never" />
+    <item android:id="@+id/id_action_over_flow"
+        app:showAsAction="always"
+        android:title="菜单"
+        android:icon="@drawable/ic_action_overflow">
+        <menu>
 
-    <item
-        android:id="@+id/id_action_offline_map"
-        android:orderInCategory="100"
-        android:title="离线地图"
-        app:showAsAction="never" />
+            <item
+                android:id="@+id/id_action_change_project"
+                android:orderInCategory="100"
+                android:title="项目管理"
+                app:showAsAction="never" />
 
-    <item
-        android:id="@+id/id_action_setting"
-        android:orderInCategory="100"
-        android:title="设置"
-        app:showAsAction="never" />
+            <item
+                android:id="@+id/id_action_load_map"
+                android:orderInCategory="100"
+                android:title="加载铁路地图"
+                app:showAsAction="never" />
+
+
+            <item
+                android:id="@+id/id_action_export_data"
+                android:orderInCategory="100"
+                android:title="数据导出"
+                app:showAsAction="never" />
+
+            <item
+                android:id="@+id/id_action_offline_map"
+                android:orderInCategory="100"
+                android:title="离线地图"
+                app:showAsAction="never" />
+
+            <item
+                android:id="@+id/id_action_setting"
+                android:orderInCategory="100"
+                android:title="设置"
+                app:showAsAction="never" />
+        </menu>
+    </item>
+
+
 </menu>

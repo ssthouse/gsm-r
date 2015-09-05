@@ -9,16 +9,16 @@
         android:background="@drawable/zoom_button_background"
         android:scaleType="center"
         android:id="@+id/btn_zoom_in"
-        android:layout_width="36dp"
-        android:layout_height="36dp"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
         android:src="@drawable/zoom_control_in" />
 
     <ImageView
         android:background="@drawable/zoom_button_background"
         android:scaleType="center"
         android:id="@+id/btn_zoom_out"
-        android:layout_width="36dp"
-        android:layout_height="36dp"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
         android:src="@drawable/zoom_control_out" />
 
 </LinearLayout>

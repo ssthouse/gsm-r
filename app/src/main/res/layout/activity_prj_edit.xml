@@ -54,8 +54,8 @@
         <!--定位按钮-->
         <ImageButton
             android:id="@+id/id_ib_locate"
-            android:layout_width="36dp"
-            android:layout_height="36dp"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
             android:layout_gravity="bottom|left"
             android:layout_margin="8dp"
             android:background="@color/white"
@@ -64,11 +64,11 @@
         <!--标尺测量按钮-->
         <ImageButton
             android:id="@+id/id_ib_measure"
-            android:layout_width="36dp"
-            android:layout_height="36dp"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
             android:layout_gravity="bottom|left"
             android:layout_marginBottom="8dp"
-            android:layout_marginLeft="52dp"
+            android:layout_marginLeft="72dp"
             android:background="@color/white"
             android:src="@drawable/icon_measure" />
 
@@ -76,11 +76,11 @@
         <ImageButton
             android:scaleType="fitCenter"
             android:id="@+id/id_ib_position"
-            android:layout_width="36dp"
-            android:layout_height="36dp"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
             android:layout_gravity="bottom|left"
             android:layout_marginBottom="8dp"
-            android:layout_marginLeft="96dp"
+            android:layout_marginLeft="136dp"
             android:background="@color/white"
             android:src="@drawable/icon_position" />
 
