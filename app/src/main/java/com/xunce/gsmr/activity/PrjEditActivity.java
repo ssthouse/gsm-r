@@ -100,9 +100,6 @@ public class PrjEditActivity extends AppCompatActivity {
         setContentView(R.layout.activity_prj_edit);
         TransparentStyle.setTransparentStyle(this, R.color.color_primary);
 
-        //TODO
-        LogHelper.Log(TAG, this.getDatabasePath("location.db").getAbsolutePath());
-
         //判断是否有上次编辑的project
         if (PreferenceHelper.hasLastEditPrjItem(this)) {
             prjItem = new PrjItem(PreferenceHelper.getLastEditPrjName(this));
