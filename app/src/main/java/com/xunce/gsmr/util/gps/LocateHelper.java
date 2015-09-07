@@ -24,7 +24,7 @@ public class LocateHelper {
         }
         LocationClientOption locateOptions = new LocationClientOption();
         //TODO---设置定位模式----用的那个设备,应该是用gps定位
-        locateOptions.setLocationMode(LocationClientOption.LocationMode.Hight_Accuracy);//设置定位模式
+        locateOptions.setLocationMode(LocationClientOption.LocationMode.Device_Sensors);//设置定位模式
         locateOptions.setCoorType("bd09ll");    //返回的定位结果是百度经纬度,默认值gcj02
         locateOptions.setScanSpan(1000);        //设置发起定位请求的间隔时间为5000ms
         locateOptions.setIsNeedAddress(true);   //返回的定位结果包含地址信息

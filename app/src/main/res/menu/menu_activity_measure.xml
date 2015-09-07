@@ -14,9 +14,9 @@
         android:title="清除"
         app:showAsAction="always" />
 
-    <item
-        android:id="@+id/id_action_setting"
-        android:icon="@drawable/map_delete"
-        android:title="设置"
-        app:showAsAction="never" />
+    <!--<item-->
+        <!--android:id="@+id/id_action_setting"-->
+        <!--android:icon="@drawable/map_delete"-->
+        <!--android:title="设置"-->
+        <!--app:showAsAction="never" />-->
 </menu>

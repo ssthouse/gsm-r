@@ -2,14 +2,23 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <item
-        android:id="@+id/id_action_export_data"
-        app:showAsAction="never"
-        android:title="导出数据" />
 
+    <!--将overflow的menu改为手动实现-->
     <item
-        android:id="@+id/id_action_setting"
-        app:showAsAction="never"
-        android:title="设置" />
+        android:id="@+id/id_action_over_flow"
+        android:icon="@drawable/ic_action_overflow"
+        android:title="菜单"
+        app:showAsAction="always">
+        <menu>
+            <item
+                android:id="@+id/id_action_export_data"
+                android:title="导出数据"
+                app:showAsAction="never" />
 
+            <item
+                android:id="@+id/id_action_setting"
+                android:title="设置"
+                app:showAsAction="never" />
+        </menu>
+    </item>
 </menu>
