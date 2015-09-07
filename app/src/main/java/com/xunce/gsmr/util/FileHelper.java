@@ -104,13 +104,15 @@ public class FileHelper {
         context.startActivity(Intent.createChooser(intent, "Share　Image"));
     }
 
+    private static final String DB_FILE_NAME = "Location.db";
+
     /**
      * 将本地的数据库文件发送出去
      *
      * @param context
      */
     public static void sendDbFile(Activity context) {
-        File tempDbFile = new File(Constant.TEMP_FILE_PATH, "temp.db");
+        File tempDbFile = new File(Constant.TEMP_FILE_PATH, DB_FILE_NAME);
         try {
             tempDbFile.createNewFile();
         } catch (IOException e) {
@@ -118,15 +120,12 @@ public class FileHelper {
             e.printStackTrace();
         }
         try {
-            copyFile(new FileInputStream(new File("/data/data/com.xunce.gsmr/databases/Location.db")), tempDbFile.getAbsolutePath());
+            copyFile(new FileInputStream(new File(context.getDatabasePath(DB_FILE_NAME).getAbsolutePath())),
+                    tempDbFile.getAbsolutePath());
         } catch (FileNotFoundException e) {
             e.printStackTrace();
             Log.e(TAG, "copy file wrong");
         }
-//        if (tempDbFile.exists()) {
-//            LogHelper.Log(TAG, "我是存在的!!!!!");
-//        }
-//        LogHelper.Log(TAG, tempDbFile.getAbsolutePath());
         Intent intent = new Intent(Intent.ACTION_SEND);
         intent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(tempDbFile));
         intent.setType("*/*");
