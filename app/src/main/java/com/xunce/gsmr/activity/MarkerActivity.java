@@ -116,7 +116,7 @@ public class MarkerActivity extends AppCompatActivity {
         mLocClient = new LocationClient(this);
         mLocClient.registerLocationListener(myListener);
         //初始化定位---设置
-        LocateHelper.initLocationClient(mLocClient);
+        LocateHelper.initLocationClient(this, mLocClient);
         //开启定位
         mLocClient.start();
 

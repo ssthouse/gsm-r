@@ -11,7 +11,6 @@ public class PreferenceHelper {
     private static final String TAG = "PreferenceHelper";
 
     private static SharedPreferences sharedPreferences;
-
     private static final String PREFERENCE = "preference";
 
     //用于保存上一次编辑的prjItem的key
@@ -23,23 +22,21 @@ public class PreferenceHelper {
         }
         String prjName = sharedPreferences.getString(PREFERENCE_PRJNAME, null);
         if (prjName != null) {
-//            LogHelper.Log(TAG, "wofanhui de true");
             return true;
         } else {
-//            LogHelper.Log(TAG, "wofanhui de false");
             return false;
         }
     }
 
-    public static String getLastEditPrjName(Context context){
+    public static String getLastEditPrjName(Context context) {
         if (sharedPreferences == null) {
             sharedPreferences = context.getSharedPreferences(PREFERENCE, Context.MODE_PRIVATE);
         }
         return sharedPreferences.getString(PREFERENCE_PRJNAME, "");
     }
 
-    public static void setLastEditPrjName(Context context, String prjName){
-        if(context == null || prjName == null){
+    public static void setLastEditPrjName(Context context, String prjName) {
+        if (context == null || prjName == null) {
             return;
         }
         if (sharedPreferences == null) {
@@ -50,8 +47,8 @@ public class PreferenceHelper {
         editor.commit();
     }
 
-    public static void deleteLastEditPrjName(Context context){
-        if(context == null){
+    public static void deleteLastEditPrjName(Context context) {
+        if (context == null) {
             return;
         }
         if (sharedPreferences == null) {
@@ -62,4 +59,32 @@ public class PreferenceHelper {
         editor.commit();
     }
 
+    //设置百度地图的定位方式
+    private static final String PREFERENCE_LOCATE_MODE_USE_WIFI = "locate_mode_use_wifi";
+
+    /**
+     * 改变百度地图的定位方式
+     * @param context
+     * @param isWifiMode
+     */
+    public static void setLocateMode(Context context, boolean isWifiMode) {
+        if (sharedPreferences == null) {
+            sharedPreferences = context.getSharedPreferences(PREFERENCE, Context.MODE_PRIVATE);
+        }
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putBoolean(PREFERENCE_LOCATE_MODE_USE_WIFI, isWifiMode);
+        editor.commit();
+    }
+
+    /**
+     * 获取定位方式
+     * @param context
+     * @return
+     */
+    public static boolean getIsWifiLocateMode(Context context){
+        if (sharedPreferences == null) {
+            sharedPreferences = context.getSharedPreferences(PREFERENCE, Context.MODE_PRIVATE);
+        }
+        return sharedPreferences.getBoolean(PREFERENCE_LOCATE_MODE_USE_WIFI, false);
+    }
 }

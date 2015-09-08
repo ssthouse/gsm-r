@@ -101,7 +101,7 @@ public class MeasureActivity extends AppCompatActivity {
 
         //初始化数据
         mLocationClient = new LocationClient(this);
-        LocateHelper.initLocationClient(mLocationClient);
+        LocateHelper.initLocationClient(this, mLocationClient);
         mLocationClient.registerLocationListener(new BDLocationListener() {
             @Override
             public void onReceiveLocation(BDLocation bdLocation) {

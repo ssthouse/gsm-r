@@ -23,15 +23,15 @@ import com.baidu.mapapi.map.MyLocationConfiguration;
 import com.baidu.mapapi.map.MyLocationData;
 import com.baidu.mapapi.map.UiSettings;
 import com.baidu.mapapi.model.LatLng;
-import com.xunce.gsmr.app.Constant;
 import com.xunce.gsmr.R;
-import com.xunce.gsmr.view.style.TransparentStyle;
-import com.xunce.gsmr.view.widget.ZoomControlView;
+import com.xunce.gsmr.app.Constant;
 import com.xunce.gsmr.util.AnimHelper;
 import com.xunce.gsmr.util.ToastHelper;
 import com.xunce.gsmr.util.gps.LocateHelper;
 import com.xunce.gsmr.util.gps.MapHelper;
 import com.xunce.gsmr.util.gps.MarkerHelper;
+import com.xunce.gsmr.view.style.TransparentStyle;
+import com.xunce.gsmr.view.widget.ZoomControlView;
 
 /**
  * 取点Activity
@@ -96,7 +96,7 @@ public class GetLatLngActivity extends AppCompatActivity {
         mLocClient = new LocationClient(this);
         mLocClient.registerLocationListener(myListener);
         //初始化定位---设置
-        LocateHelper.initLocationClient(mLocClient);
+        LocateHelper.initLocationClient(this, mLocClient);
         //开启定位
         mLocClient.start();
 

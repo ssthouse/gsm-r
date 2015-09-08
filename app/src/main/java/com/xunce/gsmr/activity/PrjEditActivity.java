@@ -111,7 +111,7 @@ public class PrjEditActivity extends AppCompatActivity {
 
         //初始化定位Client
         mLocationClient = new LocationClient(this);
-        LocateHelper.initLocationClient(mLocationClient);
+        LocateHelper.initLocationClient(this, mLocationClient);
         mLocationClient.registerLocationListener(new BDLocationListener() {
             @Override
             public void onReceiveLocation(BDLocation bdLocation) {
@@ -287,6 +287,10 @@ public class PrjEditActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * 手动定位
+     * @param location
+     */
     private void locate(BDLocation location) {
         if (location == null) {
             return;
@@ -303,12 +307,18 @@ public class PrjEditActivity extends AppCompatActivity {
         MapHelper.animateToPoint(mBaiduMap, ll);
     }
 
+    /**
+     * 显示公里标输入框
+     */
     private void showLlPosition() {
         isPositionShowed = true;
         llPosition.setVisibility(View.VISIBLE);
         llPosition.startAnimation(AnimationUtils.loadAnimation(this, R.anim.pop_up));
     }
 
+    /**
+     * 隐藏公里标输入框
+     */
     private void hideLlPosition() {
         isPositionShowed = false;
         llPosition.startAnimation(AnimationUtils.loadAnimation(this, R.anim.drop_down));
@@ -373,7 +383,7 @@ public class PrjEditActivity extends AppCompatActivity {
                 break;
             //设置
             case R.id.id_action_setting:
-
+                SettingActivity.start(this);
                 break;
             //返回
             case android.R.id.home:

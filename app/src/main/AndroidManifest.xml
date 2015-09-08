@@ -106,6 +106,10 @@
             android:screenOrientation="portrait"
             android:name=".activity.GetLatLngActivity"/>
 
+        <activity
+            android:screenOrientation="portrait"
+            android:name=".activity.SettingActivity"/>
+
         <!--离线地图-->
         <activity
             android:screenOrientation="portrait"
