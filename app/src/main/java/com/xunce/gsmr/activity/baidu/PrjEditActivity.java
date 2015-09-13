@@ -51,7 +51,9 @@ import com.xunce.gsmr.view.widget.ZoomControlView;
 public class PrjEditActivity extends AppCompatActivity {
     private static final String TAG = "PrjEditActivity";
 
-    //用于点击两次退出
+    /**
+     * 用于点击两次退出
+     */
     private long mExitTime;
 
     /**
@@ -67,17 +69,22 @@ public class PrjEditActivity extends AppCompatActivity {
 
     //用于控制地图上的Marker
     private MarkerHolder markerHolder;
+    private InfoWindow mInfoWindow;
     //加载的铁路数据
     private RailWayHolder railWayHolder;
     //接收到的数据
     private PrjItem prjItem;
 
-    //地图----定位client
+    /**
+     * 地图----定位client
+     */
     private BaiduMap mBaiduMap;
     private MapView mMapView;
     private LocationClient mLocationClient;
 
-    //定位按钮
+    /**
+     * 定位按钮相关
+     */
     private ImageButton ibLocate;
     //是否已经定位的标志位
     private boolean isLocated = false;
@@ -86,8 +93,6 @@ public class PrjEditActivity extends AppCompatActivity {
     private LinearLayout llPosition;
     private EditText etPosition;
     private boolean isPositionShowed = false;
-
-    private InfoWindow mInfoWindow;
 
     /**
      * 用于更加方便的开启Activity
@@ -138,6 +143,9 @@ public class PrjEditActivity extends AppCompatActivity {
         loadMapData(mBaiduMap, prjItem);
     }
 
+    /**
+     * 初始化View
+     */
     private void initView() {
         ViewHelper.initActionBar(this, getSupportActionBar(), prjItem.getPrjName());
 
@@ -433,6 +441,9 @@ public class PrjEditActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
     }
 
+    /**
+     * 实现两次返回退出程序
+     */
     @Override
     public void onBackPressed() {
         if (isPositionShowed) {
