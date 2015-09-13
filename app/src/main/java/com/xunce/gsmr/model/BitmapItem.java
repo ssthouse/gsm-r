@@ -8,6 +8,7 @@ import android.net.Uri;
 import java.io.File;
 
 /**
+ * Bitmap加Path
  * Created by ssthouse on 2015/7/20.
  */
 public class BitmapItem {

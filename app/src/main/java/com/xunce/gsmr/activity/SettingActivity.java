@@ -8,6 +8,7 @@ import android.widget.CompoundButton;
 import android.widget.Switch;
 
 import com.xunce.gsmr.R;
+import com.xunce.gsmr.util.LogHelper;
 import com.xunce.gsmr.util.PreferenceHelper;
 import com.xunce.gsmr.util.ViewHelper;
 import com.xunce.gsmr.view.style.TransparentStyle;
@@ -17,8 +18,9 @@ import com.xunce.gsmr.view.style.TransparentStyle;
  * Created by ssthouse on 2015/9/8.
  */
 public class SettingActivity extends AppCompatActivity {
+    private static final String TAG = "SettingActivity";
 
-    public static void start(Activity activity){
+    public static void start(Activity activity) {
         activity.startActivity(new Intent(activity, SettingActivity.class));
         activity.overridePendingTransition(R.anim.activity_fade_in, R.anim.activity_fade_out);
     }
@@ -43,13 +45,13 @@ public class SettingActivity extends AppCompatActivity {
 
         //首先设置为preference中的状态
         sw.setChecked(PreferenceHelper.getIsWifiLocateMode(this));
+        LogHelper.Log(TAG, PreferenceHelper.getIsWifiLocateMode(this) + "");
 
         sw.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if(isChecked){
-                    PreferenceHelper.setLocateMode(SettingActivity.this, isChecked);
-                }
+                PreferenceHelper.setLocateMode(SettingActivity.this, isChecked);
+                LogHelper.Log(TAG, isChecked + "");
             }
         });
     }

@@ -1,4 +1,4 @@
-package com.xunce.gsmr.activity;
+package com.xunce.gsmr.activity.baidu;
 
 import android.app.Activity;
 import android.content.Context;

@@ -1,4 +1,4 @@
-package com.xunce.gsmr.activity;
+package com.xunce.gsmr.activity.baidu;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -26,11 +26,14 @@ import com.baidu.mapapi.map.MyLocationConfiguration;
 import com.baidu.mapapi.map.MyLocationData;
 import com.baidu.mapapi.model.LatLng;
 import com.xunce.gsmr.R;
+import com.xunce.gsmr.activity.PicGridActivity;
+import com.xunce.gsmr.activity.PrjSelectActivity;
+import com.xunce.gsmr.activity.SettingActivity;
 import com.xunce.gsmr.app.Constant;
-import com.xunce.gsmr.model.MarkerHolder;
 import com.xunce.gsmr.model.MarkerItem;
 import com.xunce.gsmr.model.PrjItem;
-import com.xunce.gsmr.model.map.RailWay;
+import com.xunce.gsmr.model.baidumap.MarkerHolder;
+import com.xunce.gsmr.model.baidumap.RailWayHolder;
 import com.xunce.gsmr.util.FileHelper;
 import com.xunce.gsmr.util.LogHelper;
 import com.xunce.gsmr.util.PreferenceHelper;
@@ -47,11 +50,16 @@ import com.xunce.gsmr.view.widget.ZoomControlView;
  */
 public class PrjEditActivity extends AppCompatActivity {
     private static final String TAG = "PrjEditActivity";
+
     //用于点击两次退出
     private long mExitTime;
 
+    /**
+     * 是否首次进入
+     */
     private boolean isFistIn = true;
 
+    //Activity请求码
     public static final int REQUEST_CODE_ROUTE_ACTIVITY = 1000;
     public static final int REQUEST_CODE_MARKER_ACTIVITY = 1001;
     public static final int REQUEST_CODE_PICTURE_ACTIVITY = 1002;
@@ -60,7 +68,7 @@ public class PrjEditActivity extends AppCompatActivity {
     //用于控制地图上的Marker
     private MarkerHolder markerHolder;
     //加载的铁路数据
-    private RailWay railWay;
+    private RailWayHolder railWayHolder;
     //接收到的数据
     private PrjItem prjItem;
 
@@ -366,9 +374,9 @@ public class PrjEditActivity extends AppCompatActivity {
                 //TODO---加载铁路地图
                 //首先判断数据库是否绑定
 
-                if (railWay == null) {
-                    railWay = new RailWay(this, prjItem);
-                    railWay.draw(mBaiduMap);
+                if (railWayHolder == null) {
+                    railWayHolder = new RailWayHolder(this, prjItem);
+                    railWayHolder.draw(mBaiduMap);
                 } else {
                     ToastHelper.showToast(this, "铁路已加载");
                 }

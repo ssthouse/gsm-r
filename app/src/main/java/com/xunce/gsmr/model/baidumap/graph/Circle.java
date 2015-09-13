@@ -1,4 +1,4 @@
-package com.xunce.gsmr.model.map;
+package com.xunce.gsmr.model.baidumap.graph;
 
 import com.baidu.mapapi.map.BaiduMap;
 import com.baidu.mapapi.map.CircleOptions;
@@ -10,7 +10,7 @@ import com.baidu.mapapi.model.LatLng;
  * 地图上的圆
  * Created by ssthouse on 2015/7/30.
  */
-public class Circle extends Graph{
+public class Circle extends Graph {
     private static final String TAG = "Circle";
 
     //圆圈的参数

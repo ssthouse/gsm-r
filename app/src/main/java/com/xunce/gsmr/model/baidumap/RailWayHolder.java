@@ -1,4 +1,4 @@
-package com.xunce.gsmr.model.map;
+package com.xunce.gsmr.model.baidumap;
 
 import android.content.Context;
 import android.database.Cursor;
@@ -7,6 +7,9 @@ import android.database.sqlite.SQLiteDatabase;
 import com.baidu.mapapi.map.BaiduMap;
 import com.baidu.mapapi.model.LatLng;
 import com.xunce.gsmr.model.PrjItem;
+import com.xunce.gsmr.model.baidumap.graph.Circle;
+import com.xunce.gsmr.model.baidumap.graph.Line;
+import com.xunce.gsmr.model.baidumap.graph.Text;
 import com.xunce.gsmr.util.LogHelper;
 import com.xunce.gsmr.util.gps.DBHelper;
 
@@ -18,8 +21,8 @@ import java.util.List;
  * 1.一条铁路应该是对应的一个数据库中的数据
  * Created by ssthouse on 2015/8/21.
  */
-public class RailWay {
-    private static final String TAG = "RailWay";
+public class RailWayHolder {
+    private static final String TAG = "RailWayHolder";
 
     private List<Circle> circles;
 
@@ -27,7 +30,7 @@ public class RailWay {
 
     private List<Text> texts;
 
-    public RailWay(Context context, PrjItem prjItem){
+    public RailWayHolder(Context context, PrjItem prjItem){
         circles = new ArrayList<>();
         lines = new ArrayList<>();
         texts = new ArrayList<>();

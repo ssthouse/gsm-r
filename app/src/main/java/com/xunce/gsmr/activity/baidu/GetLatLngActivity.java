@@ -1,4 +1,4 @@
-package com.xunce.gsmr.activity;
+package com.xunce.gsmr.activity.baidu;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -38,7 +38,6 @@ import com.xunce.gsmr.view.widget.ZoomControlView;
  * Created by ssthouse on 2015/7/24.
  */
 public class GetLatLngActivity extends AppCompatActivity {
-
     private static final String TAG = "GetLatLngActivity";
 
     //地图View

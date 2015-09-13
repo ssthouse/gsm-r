@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!--地图类型-->
+    <array name="array_map_type">
+        <item >百度地图</item>
+        <item>高德地图</item>
+    </array>
+
+</resources>

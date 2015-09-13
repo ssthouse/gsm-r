@@ -1,4 +1,4 @@
-package com.xunce.gsmr.model;
+package com.xunce.gsmr.model.baidumap;
 
 import com.baidu.mapapi.map.BaiduMap;
 import com.baidu.mapapi.map.BitmapDescriptor;
@@ -8,6 +8,8 @@ import com.baidu.mapapi.map.MarkerOptions;
 import com.baidu.mapapi.map.OverlayOptions;
 import com.baidu.mapapi.model.LatLng;
 import com.xunce.gsmr.R;
+import com.xunce.gsmr.model.MarkerItem;
+import com.xunce.gsmr.model.PrjItem;
 import com.xunce.gsmr.util.gps.DBHelper;
 
 import java.util.ArrayList;

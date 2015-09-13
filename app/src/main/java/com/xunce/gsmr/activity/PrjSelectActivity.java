@@ -12,6 +12,7 @@ import android.widget.ListView;
 
 import com.github.clans.fab.FloatingActionButton;
 import com.xunce.gsmr.R;
+import com.xunce.gsmr.activity.baidu.PrjEditActivity;
 import com.xunce.gsmr.util.DialogHelper;
 import com.xunce.gsmr.util.FileHelper;
 import com.xunce.gsmr.util.PreferenceHelper;

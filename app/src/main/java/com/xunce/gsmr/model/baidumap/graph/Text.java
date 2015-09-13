@@ -1,4 +1,4 @@
-package com.xunce.gsmr.model.map;
+package com.xunce.gsmr.model.baidumap.graph;
 
 import com.baidu.mapapi.map.BaiduMap;
 import com.baidu.mapapi.map.OverlayOptions;
@@ -9,7 +9,7 @@ import com.baidu.mapapi.model.LatLng;
  * 地图上的文字
  * Created by ssthouse on 2015/7/30.
  */
-public class Text extends Graph{
+public class Text extends Graph {
     private static final String TAG = "Text";
 
     //文字的参数

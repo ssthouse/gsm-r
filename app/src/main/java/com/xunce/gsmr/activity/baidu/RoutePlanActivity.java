@@ -1,4 +1,4 @@
-package com.xunce.gsmr.activity;
+package com.xunce.gsmr.activity.baidu;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -34,12 +34,12 @@ import com.baidu.navisdk.ui.widget.RoutePlanObserver;
 import com.baidu.navisdk.util.common.PreferenceHelper;
 import com.baidu.navisdk.util.common.ScreenUtil;
 import com.baidu.nplatform.comapi.map.MapGLSurfaceView;
-import com.xunce.gsmr.app.Constant;
 import com.xunce.gsmr.R;
-import com.xunce.gsmr.view.style.TransparentStyle;
+import com.xunce.gsmr.app.Constant;
 import com.xunce.gsmr.util.FileHelper;
 import com.xunce.gsmr.util.LogHelper;
 import com.xunce.gsmr.util.ToastHelper;
+import com.xunce.gsmr.view.style.TransparentStyle;
 
 import java.util.ArrayList;
 

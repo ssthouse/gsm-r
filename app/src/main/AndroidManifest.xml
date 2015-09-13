@@ -73,7 +73,7 @@
 
         <activity
             android:screenOrientation="portrait"
-            android:name=".activity.PrjEditActivity">
+            android:name=".activity.baidu.PrjEditActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -83,19 +83,19 @@
         <!--用于选址-->
         <activity
             android:screenOrientation="portrait"
-            android:name=".activity.MarkerActivity"/>
+            android:name=".activity.baidu.MarkerActivity"/>
 
         <activity
             android:screenOrientation="portrait"
-            android:name=".activity.NaviActivity" />
+            android:name=".activity.baidu.NaviActivity" />
 
         <activity
             android:screenOrientation="portrait"
-            android:name=".activity.RoutePlanActivity" />
+            android:name=".activity.baidu.RoutePlanActivity" />
 
         <activity
             android:screenOrientation="portrait"
-            android:name=".activity.MeasureActivity"/>
+            android:name=".activity.baidu.MeasureActivity"/>
 
         <activity
             android:screenOrientation="portrait"
@@ -104,7 +104,7 @@
 
         <activity
             android:screenOrientation="portrait"
-            android:name=".activity.GetLatLngActivity"/>
+            android:name=".activity.baidu.GetLatLngActivity"/>
 
         <activity
             android:screenOrientation="portrait"
@@ -113,7 +113,7 @@
         <!--离线地图-->
         <activity
             android:screenOrientation="portrait"
-            android:name=".activity.OfflineActivity"/>
+            android:name=".activity.baidu.OfflineActivity"/>
 
     </application>
 

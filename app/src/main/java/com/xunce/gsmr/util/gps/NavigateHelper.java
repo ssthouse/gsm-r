@@ -13,9 +13,11 @@ import com.baidu.mapapi.navi.NaviParaOption;
 public class NavigateHelper {
     private static final String TAG = "NavigateHelper";
 
-
-
-
+    /**
+     * 调用百度自带的导航功能
+     * @param context
+     * @param baiduMap
+     */
     public static void startNavigate(Context context, BaiduMap baiduMap){
         BaiduMapNavigation.openBaiduMapNavi(new NaviParaOption(), context);
     }

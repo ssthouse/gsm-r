@@ -1,4 +1,4 @@
-package com.xunce.gsmr.model.map;
+package com.xunce.gsmr.model.baidumap.graph;
 
 import com.baidu.mapapi.map.BaiduMap;
 import com.baidu.mapapi.map.OverlayOptions;
@@ -12,7 +12,7 @@ import java.util.List;
  * 地图上的直线
  * Created by ssthouse on 2015/7/30.
  */
-public class Line extends Graph{
+public class Line extends Graph {
     private static final String TAG = "Line";
 
     //直线的参数
