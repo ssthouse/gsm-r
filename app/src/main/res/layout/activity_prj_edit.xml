@@ -10,11 +10,10 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <com.baidu.mapapi.map.MapView
-            android:id="@+id/id_baidu_map"
+        <FrameLayout
+            android:id="@+id/id_fragment_container"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:clickable="true" />
+            android:layout_height="match_parent"/>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -22,15 +21,6 @@
             android:layout_gravity="top"
             android:layout_margin="4dp"
             android:orientation="horizontal">
-
-            <!--<Button-->
-            <!--android:textSize="@dimen/text_size_button"-->
-            <!--android:id="@+id/id_btn_route"-->
-            <!--android:layout_width="0dp"-->
-            <!--android:layout_height="match_parent"-->
-            <!--android:layout_weight="1"-->
-            <!--android:background="@drawable/btn_selector"-->
-            <!--android:text="路线" />-->
 
             <Button
                 android:id="@+id/id_btn_mark"
@@ -41,62 +31,7 @@
                 android:text="选址"
                 android:textSize="@dimen/text_size_button" />
 
-            <!--<Button-->
-                <!--android:id="@+id/id_btn_take_photo"-->
-                <!--android:layout_width="0dp"-->
-                <!--android:layout_height="match_parent"-->
-                <!--android:layout_weight="1"-->
-                <!--android:background="@drawable/btn_selector"-->
-                <!--android:text="照片"-->
-                <!--android:textSize="@dimen/text_size_button" />-->
         </LinearLayout>
-
-        <!--下方功能按钮-->
-        <LinearLayout
-            android:layout_gravity="bottom"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <!--定位按钮-->
-            <ImageButton
-                android:id="@+id/id_ib_locate"
-                android:layout_width="48dp"
-                android:layout_height="48dp"
-                android:layout_margin="8dp"
-                android:background="@color/white"
-                android:src="@drawable/locate2" />
-
-            <!--标尺测量按钮-->
-            <ImageButton
-                android:id="@+id/id_ib_measure"
-                android:layout_width="48dp"
-                android:layout_height="48dp"
-                android:layout_margin="8dp"
-                android:background="@color/white"
-                android:src="@drawable/icon_measure" />
-
-            <!--公里标视图开启按钮-->
-            <ImageButton
-                android:scaleType="fitCenter"
-                android:id="@+id/id_ib_position"
-                android:layout_width="48dp"
-                android:layout_height="48dp"
-                android:layout_margin="8dp"
-                android:background="@color/white"
-                android:src="@drawable/icon_position" />
-        </LinearLayout>
-
-        <!--公里标输入框-->
-        <include layout="@layout/view_position" />
-
-        <com.xunce.gsmr.view.widget.ZoomControlView
-            android:id="@+id/id_zoom_control"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom|right"
-            android:layout_marginBottom="8dp"
-            android:layout_marginRight="8dp" />
     </FrameLayout>
 
 </LinearLayout>

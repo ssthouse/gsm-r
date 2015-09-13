@@ -53,4 +53,8 @@ dependencies {
 
     //progressBar
     compile 'com.github.rahatarmanahmed:circularprogressview:2.3.2'
+
+    //event_bus
+    compile 'de.greenrobot:eventbus:2.4.0'
+
 }

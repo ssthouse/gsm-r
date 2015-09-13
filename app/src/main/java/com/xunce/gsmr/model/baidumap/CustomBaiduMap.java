@@ -1,13 +1,16 @@
 package com.xunce.gsmr.model.baidumap;
 
+import android.app.Activity;
+import android.app.Fragment;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AnimationUtils;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 
@@ -25,6 +28,8 @@ import com.baidu.mapapi.map.MyLocationConfiguration;
 import com.baidu.mapapi.map.MyLocationData;
 import com.baidu.mapapi.model.LatLng;
 import com.xunce.gsmr.R;
+import com.xunce.gsmr.activity.baidu.MeasureActivity;
+import com.xunce.gsmr.model.CustomMap;
 import com.xunce.gsmr.model.PrjItem;
 import com.xunce.gsmr.util.PreferenceHelper;
 import com.xunce.gsmr.util.gps.MapHelper;
@@ -34,13 +39,18 @@ import com.xunce.gsmr.util.gps.MapHelper;
  * 简化Activity代码
  * Created by ssthouse on 2015/9/13.
  */
-public class CustomBaiduMap extends Fragment {
+public class CustomBaiduMap extends Fragment implements CustomMap {
     private static final String TAG = "CustomBaiduMap";
 
     /**
      * 上下文
      */
     private Context context;
+
+    /**
+     * Fragment的layout
+     */
+    private View layout;
 
     /**
      * 控制的百度地图
@@ -78,6 +88,19 @@ public class CustomBaiduMap extends Fragment {
     private ImageButton btnLocate;
 
     /**
+     * 是否首次进入
+     */
+    private boolean isFistIn = true;
+
+
+    /**
+     * 公里标VIew
+     */
+    private LinearLayout llPosition;
+    private EditText etPosition;
+    private boolean isPositionShowed = false;
+
+    /**
      * 获取Instance
      *
      * @param bundle
@@ -92,7 +115,7 @@ public class CustomBaiduMap extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View layout = inflater.inflate(R.layout.fragment_custom_baidu_map, null);
+        layout = inflater.inflate(R.layout.fragment_custom_baidu_map, null);
         //初始化数据
         mapView = (MapView) layout.findViewById(R.id.id_map_view);
         context = getActivity();
@@ -106,7 +129,6 @@ public class CustomBaiduMap extends Fragment {
 
     /**
      * 正式初始化
-     *
      */
     private void init() {
         //初始化数据
@@ -164,6 +186,62 @@ public class CustomBaiduMap extends Fragment {
                 return true;
             }
         });
+
+        //定位按钮点击事件
+        layout.findViewById(R.id.id_ib_locate).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                locate();
+            }
+        });
+
+        //启动测量的按钮
+        layout.findViewById(R.id.id_ib_measure).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //开启测量Activity
+                MeasureActivity.start((Activity) context, baiduMap.getMapStatus().target);
+            }
+        });
+
+        //公里标开关按钮
+        layout.findViewById(R.id.id_ib_position).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (isPositionShowed) {
+                    hideLlPosition();
+                } else {
+                    showLlPosition();
+                }
+            }
+        });
+        llPosition = (LinearLayout) layout.findViewById(R.id.id_ll_position);
+        etPosition = (EditText) llPosition.findViewById(R.id.id_et);
+        llPosition.findViewById(R.id.id_btn_confirm).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //TODO---地图定位到指定的DK文字位置去...
+                hideLlPosition();
+            }
+        });
+    }
+
+    /**
+     * 显示公里标输入框
+     */
+    private void showLlPosition() {
+        isPositionShowed = true;
+        llPosition.setVisibility(View.VISIBLE);
+        llPosition.startAnimation(AnimationUtils.loadAnimation(context, R.anim.pop_up));
+    }
+
+    /**
+     * 隐藏公里标输入框
+     */
+    private void hideLlPosition() {
+        isPositionShowed = false;
+        llPosition.startAnimation(AnimationUtils.loadAnimation(context, R.anim.drop_down));
+        llPosition.setVisibility(View.GONE);
     }
 
     /**
@@ -171,24 +249,61 @@ public class CustomBaiduMap extends Fragment {
      *
      * @param latLng
      */
-    private void showInfoWindow(LatLng latLng) {
+    @Override
+    public void showInfoWindow(LatLng latLng) {
         infoWindow = new InfoWindow(llInfoWindow, latLng, -47);
         baiduMap.showInfoWindow(infoWindow);
     }
 
+    @Override
+    public LatLng getCurrentMarkerLatLng() {
+        return markerHolder.getCurrentMarker().getPosition();
+    }
+
+    @Override
+    public void hideInfoWindow() {
+        baiduMap.hideInfoWindow();
+    }
+
     /**
-     * 动画放大
-     *
-     * @param zoomLevel
+     * 初始化LocationClient
      */
-    public void animateZoom(int zoomLevel) {
-        MapStatusUpdate u = MapStatusUpdateFactory.zoomTo(zoomLevel);
-        baiduMap.animateMapStatus(u);
+    private void initLocationClient() {
+        //创建client
+        locationClient = new LocationClient(context);
+        final LocationClientOption locateOptions = new LocationClientOption();
+        //设置Options
+        if (PreferenceHelper.getIsWifiLocateMode(context)) {
+            locateOptions.setLocationMode(LocationClientOption.LocationMode.Hight_Accuracy);
+        } else {
+            locateOptions.setLocationMode(LocationClientOption.LocationMode.Device_Sensors);
+        }
+        locateOptions.setCoorType("bd09ll");    //返回的定位结果是百度经纬度,默认值gcj02
+        locateOptions.setScanSpan(1000);        //设置发起定位请求的间隔时间为5000ms
+        locateOptions.setIsNeedAddress(true);   //返回的定位结果包含地址信息
+        locateOptions.setNeedDeviceDirect(true);//返回的定位结果包含手机机头的方向
+        locationClient.setLocOption(locateOptions);
+        //注册监听事件
+        locationClient.registerLocationListener(new BDLocationListener() {
+            @Override
+            public void onReceiveLocation(BDLocation bdLocation) {
+                if (bdLocation != null) {
+                    //如果是第一次获取到数据----将地图定位到改点
+                    currentBDLocation = bdLocation;
+                    if (isFistIn) {
+                        locate();
+                        isFistIn = false;
+                    }
+                }
+            }
+        });
+        locationClient.start();
     }
 
     /**
      * 定位到当前接收到的定位点
      */
+    @Override
     public void locate() {
         if (currentBDLocation != null) {
             //更新我的位置
@@ -205,63 +320,66 @@ public class CustomBaiduMap extends Fragment {
     }
 
     /**
-     * 初始化LocationClient
+     * 动画聚焦到一个点
+     *
+     * @param latLng
      */
-    private void initLocationClient() {
-        //创建client
-        locationClient = new LocationClient(context);
-        LocationClientOption locateOptions = new LocationClientOption();
-        //设置Options
-        //TODO---设置定位模式
-        if (PreferenceHelper.getIsWifiLocateMode(context)) {
-            locateOptions.setLocationMode(LocationClientOption.LocationMode.Hight_Accuracy);
-        } else {
-            locateOptions.setLocationMode(LocationClientOption.LocationMode.Device_Sensors);
-        }
-        locateOptions.setCoorType("bd09ll");    //返回的定位结果是百度经纬度,默认值gcj02
-        locateOptions.setScanSpan(1000);        //设置发起定位请求的间隔时间为5000ms
-        locateOptions.setIsNeedAddress(true);   //返回的定位结果包含地址信息
-        locateOptions.setNeedDeviceDirect(true);//返回的定位结果包含手机机头的方向
-        locationClient.setLocOption(locateOptions);
-        //注册监听事件
-        locationClient.registerLocationListener(new BDLocationListener() {
-            @Override
-            public void onReceiveLocation(BDLocation bdLocation) {
-                if (bdLocation != null) {
-                    currentBDLocation = bdLocation;
-                }
-            }
-        });
+    @Override
+    public void animateToPoint(LatLng latLng) {
+        MapStatusUpdate u = MapStatusUpdateFactory.newLatLng(latLng);
+        baiduMap.animateMapStatus(u);
     }
+
+    /**
+     * 动画放大
+     *
+     * @param zoomLevel
+     */
+    @Override
+    public void animateZoom(int zoomLevel) {
+        MapStatusUpdate u = MapStatusUpdateFactory.zoomTo(zoomLevel);
+        baiduMap.animateMapStatus(u);
+    }
+
 
     /**
      * 加载Marker图标
      */
+    @Override
     public void loadMarker() {
         markerHolder.initMarkerList();
+    }
+
+    @Override
+    public LatLng getTarget() {
+        return baiduMap.getMapStatus().target;
     }
 
     /**
      * 加载Rail的图形数据
      */
+    @Override
     public void loadRail() {
         railWayHolder.draw(baiduMap);
     }
 
     //--------------生命周期--------------------------------------------
-    public void onPause() {
+    @Override
+    public void pause() {
         if (mapView != null) {
             mapView.onPause();
         }
     }
 
-    public void onResume() {
+    @Override
+    public void resume() {
         if (mapView != null) {
             mapView.onResume();
         }
     }
 
-    public void onDestory() {
+    @Override
+    public void destory() {
         if (mapView != null) {
             mapView.onDestroy();
         }

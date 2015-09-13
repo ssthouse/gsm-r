@@ -3,6 +3,8 @@ package com.xunce.gsmr.model.baidumap;
 import com.baidu.mapapi.map.BaiduMap;
 import com.baidu.mapapi.map.BitmapDescriptor;
 import com.baidu.mapapi.map.BitmapDescriptorFactory;
+import com.baidu.mapapi.map.MapStatusUpdate;
+import com.baidu.mapapi.map.MapStatusUpdateFactory;
 import com.baidu.mapapi.map.Marker;
 import com.baidu.mapapi.map.MarkerOptions;
 import com.baidu.mapapi.map.OverlayOptions;
@@ -46,13 +48,14 @@ public class MarkerHolder {
      * 初始化并且画出Marker
      */
     public void initMarkerList() {
+        baiduMap.clear();
         //清空markerList
         markerList.clear();
         //初始化markerList
-        List<MarkerItem> markerItems = DBHelper.getMarkerList(prjItem);
-        for (int i = 0; i < markerItems.size(); i++) {
-            LatLng latLng = new LatLng(markerItems.get(i).getLatitude(),
-                    markerItems.get(i).getLongitude());
+        List<MarkerItem> markerItemList = DBHelper.getMarkerList(prjItem);
+        for (int i = 0; i < markerItemList.size(); i++) {
+            LatLng latLng = new LatLng(markerItemList.get(i).getLatitude(),
+                    markerItemList.get(i).getLongitude());
             OverlayOptions redOverlay = new MarkerOptions()
                     .position(latLng)
                     .icon(descriptorBlue)
@@ -60,13 +63,10 @@ public class MarkerHolder {
                     .draggable(false);
             markerList.add((Marker) baiduMap.addOverlay(redOverlay));
         }
-        //TODO---看要不要这个功能
-//        if (markerItems.size() != 0) {
-//            MapHelper.animateToPoint(baiduMap,
-//                    new LatLng(markerList.get(markerList.size() - 1).getPosition().latitude,
-//                            markerList.get(markerList.size() - 1).getPosition().latitude));
-//            MapHelper.animateZoom(baiduMap, 15);
-//        }
+        //动画移动过去
+        MapStatusUpdate u = MapStatusUpdateFactory.newLatLng(
+                new LatLng(markerItemList.get(0).getLatitude(), markerItemList.get(0).getLongitude()));
+        baiduMap.animateMapStatus(u);
     }
 
     /**

@@ -1,16 +1,50 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:layout_height="match_parent">
 
+    <!--主map控件-->
     <com.baidu.mapapi.map.MapView
         android:id="@+id/id_map_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
-    <ImageButton
-        android:id="@+id/id_ib_locate"
-        android:layout_width="48dp"
-        android:layout_height="48dp" />
+    <!--下方功能按钮-->
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:orientation="horizontal">
+
+        <!--定位按钮-->
+        <ImageButton
+            android:id="@+id/id_ib_locate"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_margin="8dp"
+            android:background="@color/white"
+            android:src="@drawable/locate2" />
+
+        <!--标尺测量按钮-->
+        <ImageButton
+            android:id="@+id/id_ib_measure"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_margin="8dp"
+            android:background="@color/white"
+            android:src="@drawable/icon_measure" />
+
+        <!--公里标视图开启按钮-->
+        <ImageButton
+            android:id="@+id/id_ib_position"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_margin="8dp"
+            android:background="@color/white"
+            android:scaleType="fitCenter"
+            android:src="@drawable/icon_position" />
+    </LinearLayout>
+
+    <!--公里标输入框-->
+    <include layout="@layout/view_position" />
 </FrameLayout>
