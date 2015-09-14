@@ -23,6 +23,7 @@ import com.xunce.gsmr.util.ViewHelper;
 import com.xunce.gsmr.view.activity.PicGridActivity;
 import com.xunce.gsmr.view.activity.PrjSelectActivity;
 import com.xunce.gsmr.view.activity.SettingActivity;
+import com.xunce.gsmr.view.activity.gaode.GaodePrjEditActivity;
 import com.xunce.gsmr.view.fragment.CustomMap;
 import com.xunce.gsmr.view.fragment.baidu.CustomBaiduMap;
 import com.xunce.gsmr.view.fragment.gaode.CustomGaodeMap;
@@ -85,6 +86,10 @@ public class PrjEditActivity extends AppCompatActivity {
 
         //初始化View
         initView();
+
+
+        //TODO---
+        startActivity(new Intent(this, GaodePrjEditActivity.class));
     }
 
     /**
@@ -96,9 +101,9 @@ public class PrjEditActivity extends AppCompatActivity {
         //启动Map的片段
         Bundle bundle = new Bundle();
         bundle.putSerializable("prjItem", prjItem);
-        if(PreferenceHelper.getInstance(this).getMapType() == PreferenceHelper.MapType.BAIDU_MAP){
+        if (PreferenceHelper.getInstance(this).getMapType() == PreferenceHelper.MapType.BAIDU_MAP) {
             customMap = CustomBaiduMap.getInstance(bundle);
-        }else{
+        } else {
             customMap = CustomGaodeMap.getInstance(bundle);
         }
         getFragmentManager().beginTransaction().replace(R.id.id_fragment_container,
@@ -222,21 +227,25 @@ public class PrjEditActivity extends AppCompatActivity {
     //生命周期***********************************************************
     @Override
     protected void onPause() {
-        customMap.pause();
         super.onPause();
+        customMap.pause();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        if (customMap != null) {
-            customMap.resume();
-        }
+        customMap.resume();
     }
 
     @Override
     protected void onDestroy() {
-        customMap.destory();
         super.onDestroy();
+        customMap.destory();
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        customMap.saveInstanceState(outState);
+        super.onSaveInstanceState(outState);
     }
 }

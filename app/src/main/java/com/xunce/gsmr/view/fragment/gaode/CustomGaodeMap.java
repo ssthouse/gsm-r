@@ -1,6 +1,5 @@
 package com.xunce.gsmr.view.fragment.gaode;
 
-import android.app.Fragment;
 import android.content.Context;
 import android.location.Location;
 import android.os.Bundle;
@@ -8,6 +7,8 @@ import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CompoundButton;
+import android.widget.Switch;
 
 import com.amap.api.location.AMapLocation;
 import com.amap.api.location.AMapLocationListener;
@@ -15,6 +16,7 @@ import com.amap.api.location.LocationManagerProxy;
 import com.amap.api.location.LocationProviderProxy;
 import com.amap.api.maps.AMap;
 import com.amap.api.maps.LocationSource;
+import com.amap.api.maps.MapFragment;
 import com.amap.api.maps.MapView;
 import com.amap.api.maps.UiSettings;
 import com.amap.api.maps.model.Marker;
@@ -27,7 +29,8 @@ import com.xunce.gsmr.view.fragment.CustomMap;
  * 高德地图的PrjEditFragment
  * Created by ssthouse on 2015/9/14.
  */
-public class CustomGaodeMap extends Fragment implements CustomMap {
+public class CustomGaodeMap extends MapFragment implements CustomMap , LocationSource,
+        AMapLocationListener{
     private static final String TAG = "CustomGaodeMap";
 
     /**
@@ -52,9 +55,8 @@ public class CustomGaodeMap extends Fragment implements CustomMap {
     /**
      * 定位相关
      */
-    private LocationSource.OnLocationChangedListener locationListener;
-    private LocationManagerProxy locationManager;
-    private AMapLocationListener aMapLocationListener;
+    private OnLocationChangedListener mListener;
+    private LocationManagerProxy aMapManager;
 
     /**
      * 获取Instance
@@ -74,84 +76,32 @@ public class CustomGaodeMap extends Fragment implements CustomMap {
         layout = inflater.inflate(R.layout.fragment_prj_edit_gaode, null);
         mapView = (MapView) layout.findViewById(R.id.id_map_view);
         mapView.onCreate(savedInstanceState);
-        //获取控件
         aMap = mapView.getMap();
-        uiSettings = aMap.getUiSettings();
+//        uiSettings = aMap.getUiSettings();
         //初始化定位
-        initLocate();
+//        initLocate();
+
+        //初始化View
+        initView();
 
         return layout;
     }
 
     /**
-     * 初始化定位
+     * 初始化View
      */
-    private void initLocate() {
-        //初始化监听器
-        aMapLocationListener = new AMapLocationListener() {
-            //只有这个有用...................
+    private void initView(){
+        Switch sw = (Switch) layout.findViewById(R.id.id_sw_locate);
+        sw.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
-            public void onLocationChanged(AMapLocation aMapLocation) {
-                //TODO---接收到位置应该怎么处理??
-                LogHelper.Log(TAG, "我接受到了数据");
-                if (aMapLocation.getAMapException().getErrorCode() == 0) {
-                    // 显示系统小蓝点
-                    locationListener.onLocationChanged(aMapLocation);
-                }
-            }
-
-            @Override
-            public void onLocationChanged(Location location) {
-            }
-
-            @Override
-            public void onStatusChanged(String provider, int status, Bundle extras) {
-            }
-
-            @Override
-            public void onProviderEnabled(String provider) {
-            }
-
-            @Override
-            public void onProviderDisabled(String provider) {
-            }
-        };
-        //开启定位
-        aMap.setLocationSource(new LocationSource() {
-            @Override
-            public void activate(OnLocationChangedListener listener) {
-                LogHelper.Log(TAG, "我开启了定位");
-                locationListener = listener;
-                if (locationManager == null) {
-                    locationManager = LocationManagerProxy.getInstance(context);
-                    /*
-                     * mAMapLocManager.setGpsEnable(false);
-                     * 1.0.2版本新增方法，设置true表示混合定位中包含gps定位，false表示纯网络定位，默认是true Location
-                     * API定位采用GPS和网络混合定位方式
-                     * ，第一个参数是定位provider，第二个参数时间最短是2000毫秒，第三个参数距离间隔单位是米，第四个参数是定位监听者
-                     */
-                    locationManager.setGpsEnable(true);
-                    locationManager.requestLocationData(
-                            LocationProviderProxy.AMapNetwork, 1000, 10, aMapLocationListener);
-                }
-            }
-
-            @Override
-            public void deactivate() {
-                locationListener = null;
-                if (locationManager != null) {
-                    locationManager.removeUpdates(aMapLocationListener);
-                    locationManager.destroy();
-                }
-                locationManager = null;
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                aMap.setLocationSource(CustomGaodeMap.this);// 设置定位监听
+                aMap.getUiSettings().setMyLocationButtonEnabled(isChecked); // 是否显示默认的定位按钮
+                aMap.setMyLocationEnabled(isChecked);// 是否可触发定位并显示定位层
             }
         });
-        // 设置定位监听
-        uiSettings.setMyLocationButtonEnabled(true);// 设置默认定位按钮是否显示
-        aMap.setMyLocationEnabled(true);
-        //设置定位的类型为定位模式 ，可以由定位、跟随或地图根据面向方向旋转几种
-        aMap.setMyLocationType(AMap.LOCATION_TYPE_LOCATE);
     }
+
 
     @Override
     public LatLng getCurrentMarkerLatLng() {
@@ -186,34 +136,136 @@ public class CustomGaodeMap extends Fragment implements CustomMap {
     //----生命周期----------------------------------------------
     @Override
     public void create(Bundle savedInstanceState) {
-        if (mapView != null) {
-            mapView.onCreate(savedInstanceState);
-        }
+//        if (mapView != null) {
+//            mapView.onCreate(savedInstanceState);
+//        }
     }
 
     @Override
     public void pause() {
-        if (mapView != null) {
-            mapView.onPause();
-        }
+//        if (mapView != null) {
+//            mapView.onPause();
+//            deactivate();
+//        }
     }
 
     @Override
     public void resume() {
-        if (mapView != null) {
-            mapView.onResume();
-        }
+//        if (mapView != null) {
+//            mapView.onResume();
+//        }
     }
 
     @Override
     public void destory() {
-        if (mapView != null) {
-            mapView.onDestroy();
-        }
+//        if (mapView != null) {
+//            mapView.onDestroy();
+//        }
     }
 
     @Override
     public void saveInstanceState(Bundle state) {
         mapView.onSaveInstanceState(state);
     }
+
+    /**
+     * 定位成功后回调函数
+     */
+    @Override
+    public void onLocationChanged(AMapLocation aLocation) {
+        LogHelper.Log(TAG, "收到数据");
+        if (mListener != null) {
+            mListener.onLocationChanged(aLocation);// 显示系统小蓝点
+        }
+    }
+
+    @Override
+    public void onLocationChanged(Location location) {
+
+    }
+
+    @Override
+    public void onStatusChanged(String provider, int status, Bundle extras) {
+
+    }
+
+    @Override
+    public void onProviderEnabled(String provider) {
+
+    }
+
+    @Override
+    public void onProviderDisabled(String provider) {
+
+    }
+
+    /**
+     * 激活定位
+     */
+    @Override
+    public void activate(OnLocationChangedListener listener) {
+        mListener = listener;
+        if (aMapManager == null) {
+            aMapManager = LocationManagerProxy.getInstance(context);
+			/*
+			 * mAMapLocManager.setGpsEnable(false);//
+			 * 1.0.2版本新增方法，设置true表示混合定位中包含gps定位，false表示纯网络定位，默认是true
+			 */
+            // Location API定位采用GPS和网络混合定位方式，时间最短是2000毫秒
+            aMapManager.requestLocationData(
+                    LocationProviderProxy.AMapNetwork, 2000, 10, this);
+        }
+    }
+
+    /**
+     * 停止定位
+     */
+    @Override
+    public void deactivate() {
+        mListener = null;
+        if (aMapManager != null) {
+            aMapManager.removeUpdates(this);
+            aMapManager.destroy();
+        }
+        aMapManager = null;
+    }
+
+    //------------------------------------------------------------------
+//    /**
+//     * 方法必须重写
+//     */
+//    @Override
+//    public void onResume() {
+//        super.onResume();
+//        mapView.onResume();
+//    }
+//
+//    /**
+//     * 方法必须重写
+//     */
+//    @Override
+//    public void onPause() {
+//        super.onPause();
+//        mapView.onPause();
+//        deactivate();
+//    }
+//
+//    /**
+//     * 方法必须重写
+//     */
+//    @Override
+//    public void onSaveInstanceState(Bundle outState) {
+//        super.onSaveInstanceState(outState);
+//        mapView.onSaveInstanceState(outState);
+//    }
+//
+//    /**
+//     * 方法必须重写
+//     */
+//    @Override
+//    public void onDestroy() {
+//        super.onDestroy();
+//        mapView.onDestroy();
+//    }
+
 }
