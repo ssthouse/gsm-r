@@ -75,18 +75,10 @@ public class PrjEditActivity extends AppCompatActivity {
         setContentView(R.layout.activity_prj_edit);
         TransparentStyle.setTransparentStyle(this, R.color.color_primary);
 
-        //判断是否有上次编辑的project
-        if (PreferenceHelper.getInstance(this).hasLastEditPrjItem(this)) {
-            prjItem = new PrjItem(PreferenceHelper.getInstance(this).getLastEditPrjName(this));
-        } else {
-            finish();
-            startActivity(new Intent(this, PrjSelectActivity.class));
-            return;
-        }
+        prjItem = (PrjItem) getIntent().getSerializableExtra(Constant.EXTRA_KEY_PRJ_ITEM);
 
         //初始化View
         initView();
-
 
         //TODO---
         startActivity(new Intent(this, GaodePrjEditActivity.class));

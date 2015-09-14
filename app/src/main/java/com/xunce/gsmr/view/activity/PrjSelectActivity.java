@@ -12,6 +12,7 @@ import android.widget.ListView;
 
 import com.github.clans.fab.FloatingActionButton;
 import com.xunce.gsmr.R;
+import com.xunce.gsmr.model.PrjItem;
 import com.xunce.gsmr.util.DialogHelper;
 import com.xunce.gsmr.util.FileHelper;
 import com.xunce.gsmr.util.PreferenceHelper;
@@ -45,6 +46,16 @@ public class PrjSelectActivity extends AppCompatActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_prj_select);
         TransparentStyle.setTransparentStyle(this,R.color.color_primary);
+
+        //判断---如果有上次打开的Project---就直接跳转
+        //判断是否有上次编辑的project
+        if (PreferenceHelper.getInstance(this).hasLastEditPrjItem(this)) {
+            PrjItem prjItem = new PrjItem(PreferenceHelper.getInstance(this).getLastEditPrjName(this));
+
+            //判断MapType
+            PrjEditActivity.start(this, prjItem);
+            finish();
+        }
 
         initView();
     }

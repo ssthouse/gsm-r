@@ -74,19 +74,21 @@
             android:enabled="true"
             android:process=":remote" />
 
-        <!--工程选择Activity-->
+        <!--Project选择Activity-->
         <activity
             android:screenOrientation="portrait"
-            android:name="com.xunce.gsmr.view.activity.PrjSelectActivity"/>
+            android:name="com.xunce.gsmr.view.activity.PrjSelectActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
 
         <!--工程编辑Activity-->
         <activity
             android:screenOrientation="portrait"
             android:name="com.xunce.gsmr.view.activity.baidu.PrjEditActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+
         </activity>
 
         <!--选址-->
@@ -121,7 +123,6 @@
         <activity
             android:screenOrientation="portrait"
             android:name="com.xunce.gsmr.view.activity.baidu.OfflineActivity"/>
-
 
         <!--TODO-高德地图-->
         <activity android:name="com.xunce.gsmr.view.activity.gaode.GaodeBaseActivity"/>
