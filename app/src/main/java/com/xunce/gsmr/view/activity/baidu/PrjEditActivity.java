@@ -1,4 +1,4 @@
-package com.xunce.gsmr.activity.baidu;
+package com.xunce.gsmr.view.activity.baidu;
 
 import android.app.Activity;
 import android.app.Fragment;
@@ -13,22 +13,20 @@ import android.widget.Toast;
 
 import com.baidu.mapapi.model.LatLng;
 import com.xunce.gsmr.R;
-import com.xunce.gsmr.activity.PicGridActivity;
-import com.xunce.gsmr.activity.PrjSelectActivity;
-import com.xunce.gsmr.activity.SettingActivity;
 import com.xunce.gsmr.app.Constant;
-import com.xunce.gsmr.model.CustomMap;
 import com.xunce.gsmr.model.MarkerItem;
 import com.xunce.gsmr.model.PrjItem;
-import com.xunce.gsmr.model.baidumap.CustomBaiduMap;
-import com.xunce.gsmr.model.event.PrjEditActivityEvent;
 import com.xunce.gsmr.util.FileHelper;
 import com.xunce.gsmr.util.LogHelper;
 import com.xunce.gsmr.util.PreferenceHelper;
 import com.xunce.gsmr.util.ViewHelper;
+import com.xunce.gsmr.view.activity.PicGridActivity;
+import com.xunce.gsmr.view.activity.PrjSelectActivity;
+import com.xunce.gsmr.view.activity.SettingActivity;
+import com.xunce.gsmr.view.fragment.CustomMap;
+import com.xunce.gsmr.view.fragment.baidu.CustomBaiduMap;
+import com.xunce.gsmr.view.fragment.gaode.CustomGaodeMap;
 import com.xunce.gsmr.view.style.TransparentStyle;
-
-import de.greenrobot.event.EventBus;
 
 /**
  * 开启时会接收到一个PrjItem---intent中
@@ -57,7 +55,6 @@ public class PrjEditActivity extends AppCompatActivity {
      */
     private PrjItem prjItem;
 
-
     /**
      * 用于更加方便的开启Activity
      * 后面几个参数可以用来传递-----放入intent 的数据
@@ -76,12 +73,10 @@ public class PrjEditActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_prj_edit);
         TransparentStyle.setTransparentStyle(this, R.color.color_primary);
-        //注册EventBus
-        EventBus.getDefault().register(this);
 
         //判断是否有上次编辑的project
-        if (PreferenceHelper.hasLastEditPrjItem(this)) {
-            prjItem = new PrjItem(PreferenceHelper.getLastEditPrjName(this));
+        if (PreferenceHelper.getInstance(this).hasLastEditPrjItem(this)) {
+            prjItem = new PrjItem(PreferenceHelper.getInstance(this).getLastEditPrjName(this));
         } else {
             finish();
             startActivity(new Intent(this, PrjSelectActivity.class));
@@ -98,10 +93,14 @@ public class PrjEditActivity extends AppCompatActivity {
     private void initView() {
         ViewHelper.initActionBar(this, getSupportActionBar(), prjItem.getPrjName());
 
-        //导入Fragment
+        //启动Map的片段
         Bundle bundle = new Bundle();
         bundle.putSerializable("prjItem", prjItem);
-        customMap = CustomBaiduMap.getInstance(bundle);
+        if(PreferenceHelper.getInstance(this).getMapType() == PreferenceHelper.MapType.BAIDU_MAP){
+            customMap = CustomBaiduMap.getInstance(bundle);
+        }else{
+            customMap = CustomGaodeMap.getInstance(bundle);
+        }
         getFragmentManager().beginTransaction().replace(R.id.id_fragment_container,
                 (Fragment) customMap).commit();
 
@@ -140,23 +139,6 @@ public class PrjEditActivity extends AppCompatActivity {
         LatLng latLng = customMap.getCurrentMarkerLatLng();
         PicGridActivity.start(this, new MarkerItem(prjItem.getPrjName(), latLng),
                 PrjEditActivity.REQUEST_CODE_PICTURE_ACTIVITY);
-    }
-
-    /**
-     * 接收消息
-     *
-     * @param event
-     */
-    public void onEventMainThread(PrjEditActivityEvent event) {
-        //TODO---处理消息
-        switch (event.eventType) {
-            case MEASURE:
-                //将当前地图的中心点传给MeasureActivity
-                LatLng latLng = customMap.getTarget();
-                //将中心点传递过去
-                MeasureActivity.start(PrjEditActivity.this, latLng);
-                break;
-        }
     }
 
     @Override
@@ -219,7 +201,6 @@ public class PrjEditActivity extends AppCompatActivity {
             case REQUEST_CODE_ROUTE_ACTIVITY:
                 break;
             case REQUEST_CODE_PICTURE_ACTIVITY:
-//                markerHolder.clearSelection();
                 break;
         }
         super.onActivityResult(requestCode, resultCode, data);

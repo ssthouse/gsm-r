@@ -1,4 +1,4 @@
-package com.xunce.gsmr.activity.baidu;
+package com.xunce.gsmr.view.activity.baidu;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -103,7 +103,9 @@ public class GetLatLngActivity extends AppCompatActivity {
         initView();
     }
 
-
+    /**
+     * 初始化视图
+     */
     private void initView() {
         mMapView = (MapView) findViewById(R.id.id_map_view);
         mMapView.showZoomControls(false);
@@ -128,9 +130,7 @@ public class GetLatLngActivity extends AppCompatActivity {
                 if (motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
                     isLocated = false;
                     ibMode.setImageResource(R.drawable.locate1);
-//                    LogHelper.Log(TAG, "我摸到了---地图");
                 }
-
                 if (motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
                     AnimHelper.rotateBigAnim(GetLatLngActivity.this, ivMark);
                 }
@@ -205,8 +205,6 @@ public class GetLatLngActivity extends AppCompatActivity {
                     if (mLocClient.getLastKnownLocation() != null) {
                         locate(mLocClient.getLastKnownLocation());
                     }
-//                    uiSettings.setCompassEnabled(true);
-                    // LogHelper.Log(TAG, "located!!!");
                     isLocated = true;
                     //判断当前状态---切换图标
                     if (mCurrentMode == MyLocationConfiguration.LocationMode.NORMAL) {

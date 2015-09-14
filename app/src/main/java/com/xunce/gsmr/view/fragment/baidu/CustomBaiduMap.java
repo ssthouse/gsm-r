@@ -1,4 +1,4 @@
-package com.xunce.gsmr.model.baidumap;
+package com.xunce.gsmr.view.fragment.baidu;
 
 import android.app.Activity;
 import android.app.Fragment;
@@ -28,11 +28,13 @@ import com.baidu.mapapi.map.MyLocationConfiguration;
 import com.baidu.mapapi.map.MyLocationData;
 import com.baidu.mapapi.model.LatLng;
 import com.xunce.gsmr.R;
-import com.xunce.gsmr.activity.baidu.MeasureActivity;
-import com.xunce.gsmr.model.CustomMap;
 import com.xunce.gsmr.model.PrjItem;
+import com.xunce.gsmr.model.baidumap.MarkerHolder;
+import com.xunce.gsmr.model.baidumap.RailWayHolder;
 import com.xunce.gsmr.util.PreferenceHelper;
 import com.xunce.gsmr.util.gps.MapHelper;
+import com.xunce.gsmr.view.activity.baidu.MeasureActivity;
+import com.xunce.gsmr.view.fragment.CustomMap;
 
 /**
  * 包含百度地图的一些组件
@@ -92,7 +94,6 @@ public class CustomBaiduMap extends Fragment implements CustomMap {
      */
     private boolean isFistIn = true;
 
-
     /**
      * 公里标VIew
      */
@@ -115,7 +116,7 @@ public class CustomBaiduMap extends Fragment implements CustomMap {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        layout = inflater.inflate(R.layout.fragment_custom_baidu_map, null);
+        layout = inflater.inflate(R.layout.fragment_prj_edit_baidu, null);
         //初始化数据
         mapView = (MapView) layout.findViewById(R.id.id_map_view);
         context = getActivity();
@@ -249,20 +250,20 @@ public class CustomBaiduMap extends Fragment implements CustomMap {
      *
      * @param latLng
      */
-    @Override
     public void showInfoWindow(LatLng latLng) {
         infoWindow = new InfoWindow(llInfoWindow, latLng, -47);
         baiduMap.showInfoWindow(infoWindow);
     }
 
+    public void hideInfoWindow() {
+        baiduMap.hideInfoWindow();
+    }
+
+
+
     @Override
     public LatLng getCurrentMarkerLatLng() {
         return markerHolder.getCurrentMarker().getPosition();
-    }
-
-    @Override
-    public void hideInfoWindow() {
-        baiduMap.hideInfoWindow();
     }
 
     /**
@@ -273,7 +274,7 @@ public class CustomBaiduMap extends Fragment implements CustomMap {
         locationClient = new LocationClient(context);
         final LocationClientOption locateOptions = new LocationClientOption();
         //设置Options
-        if (PreferenceHelper.getIsWifiLocateMode(context)) {
+        if (PreferenceHelper.getInstance(context).getIsWifiLocateMode(context)) {
             locateOptions.setLocationMode(LocationClientOption.LocationMode.Hight_Accuracy);
         } else {
             locateOptions.setLocationMode(LocationClientOption.LocationMode.Device_Sensors);
@@ -319,12 +320,12 @@ public class CustomBaiduMap extends Fragment implements CustomMap {
         }
     }
 
+
     /**
      * 动画聚焦到一个点
      *
      * @param latLng
      */
-    @Override
     public void animateToPoint(LatLng latLng) {
         MapStatusUpdate u = MapStatusUpdateFactory.newLatLng(latLng);
         baiduMap.animateMapStatus(u);
@@ -335,12 +336,10 @@ public class CustomBaiduMap extends Fragment implements CustomMap {
      *
      * @param zoomLevel
      */
-    @Override
     public void animateZoom(int zoomLevel) {
         MapStatusUpdate u = MapStatusUpdateFactory.zoomTo(zoomLevel);
         baiduMap.animateMapStatus(u);
     }
-
 
     /**
      * 加载Marker图标
@@ -365,6 +364,11 @@ public class CustomBaiduMap extends Fragment implements CustomMap {
 
     //--------------生命周期--------------------------------------------
     @Override
+    public void create(Bundle savedInstanceState) {
+
+    }
+
+    @Override
     public void pause() {
         if (mapView != null) {
             mapView.onPause();
@@ -387,4 +391,8 @@ public class CustomBaiduMap extends Fragment implements CustomMap {
             locationClient.stop();
         }
     }
+    @Override
+    public void saveInstanceState(Bundle state) {
+    }
+
 }

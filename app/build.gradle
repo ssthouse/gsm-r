@@ -31,30 +31,29 @@ android {
         }
     }
 
-
+    packagingOptions {
+        exclude 'assets/lineDashTexture.png'
+    }
 }
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
-
     compile 'com.android.support:appcompat-v7:22.2.0'
     compile 'com.android.support:support-v4:22.2.0'
+    //依赖注入
     compile 'com.jakewharton:butterknife:7.0.1'
-
-    //    Material dialog
+    //Material dialog
     compile 'com.nineoldandroids:library:2.4.0'
     compile 'com.github.sd6352051.niftydialogeffects:niftydialogeffects:1.0.0@aar'
-
     //fabButton
     compile 'com.github.clans:fab:1.5.4'
-
     //google_support_jar
     compile 'com.android.support:design:22.2.0'
-
     //progressBar
     compile 'com.github.rahatarmanahmed:circularprogressview:2.3.2'
-
     //event_bus
     compile 'de.greenrobot:eventbus:2.4.0'
-
+    compile files('libs/Android_Map_2.5.1.20150827.jar')
+    compile files('libs/MapApiServices.jar')
+    compile files('libs/AMap_ Location_v1.4.0.1_20150910.jar')
 }

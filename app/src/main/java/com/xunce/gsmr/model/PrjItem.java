@@ -47,8 +47,8 @@ public class PrjItem extends Model implements Serializable{
     public void deletePrj(Context context){
         //首先要判断Preference中保存的是不是当前工程
         //如果是要删除Preference
-        if(PreferenceHelper.getLastEditPrjName(context).equals(getPrjName())){
-            PreferenceHelper.deleteLastEditPrjName(context);
+        if(PreferenceHelper.getInstance(context).getLastEditPrjName(context).equals(getPrjName())){
+            PreferenceHelper.getInstance(context).deleteLastEditPrjName(context);
         }
         //删除照片文件
         String path = Constant.PICTURE_PATH + this.getPrjName();
@@ -69,8 +69,8 @@ public class PrjItem extends Model implements Serializable{
     public void changeName(Context context, String newName){
         //首先要判断Preference中保存的是不是当前工程
         //如果是要修改Preference
-        if(PreferenceHelper.getLastEditPrjName(context).equals(getPrjName())){
-            PreferenceHelper.setLastEditPrjName(context, newName);
+        if(PreferenceHelper.getInstance(context).getLastEditPrjName(context).equals(getPrjName())){
+            PreferenceHelper.getInstance(context).setLastEditPrjName(context, newName);
         }
         //修改照片文件名称
         String path = Constant.PICTURE_PATH + this.getPrjName();

@@ -1,4 +1,6 @@
-package com.xunce.gsmr.model;
+package com.xunce.gsmr.view.fragment;
+
+import android.os.Bundle;
 
 import com.baidu.mapapi.model.LatLng;
 
@@ -7,16 +9,6 @@ import com.baidu.mapapi.model.LatLng;
  * Created by ssthouse on 2015/9/13.
  */
 public interface CustomMap {
-
-    //动画定位到一个点
-    void animateZoom(int level);
-
-    //动画聚焦到一个点
-    void animateToPoint(LatLng latLng);
-
-    //InfoWindow
-    void hideInfoWindow();
-    void showInfoWindow(LatLng latLng);
 
     //获取当前选中点的位置
     LatLng getCurrentMarkerLatLng();
@@ -34,7 +26,12 @@ public interface CustomMap {
     void locate();
 
     //生命周期
+    void create(Bundle savedInstanceState);
     void pause();
     void resume();
     void destory();
+
+    void hideInfoWindow();
+
+    void saveInstanceState(Bundle state);
 }

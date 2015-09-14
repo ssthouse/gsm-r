@@ -27,7 +27,7 @@ public class LocateHelper {
         }
         LocationClientOption locateOptions = new LocationClientOption();
         //TODO---设置定位模式----用的那个设备,应该是用gps定位
-        if(PreferenceHelper.getIsWifiLocateMode(context)) {
+        if(PreferenceHelper.getInstance(context).getIsWifiLocateMode(context)) {
             locateOptions.setLocationMode(LocationClientOption.LocationMode.Hight_Accuracy);
         }else{
             locateOptions.setLocationMode(LocationClientOption.LocationMode.Device_Sensors);

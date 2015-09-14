@@ -1,4 +1,4 @@
-package com.xunce.gsmr.activity.gaode;
+package com.xunce.gsmr.view.activity.gaode;
 
 import android.support.v7.app.AppCompatActivity;
 

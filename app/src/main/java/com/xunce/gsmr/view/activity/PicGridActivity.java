@@ -1,4 +1,4 @@
-package com.xunce.gsmr.activity;
+package com.xunce.gsmr.view.activity;
 
 import android.app.Activity;
 import android.content.Intent;

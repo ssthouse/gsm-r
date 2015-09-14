@@ -10,13 +10,43 @@ import android.content.SharedPreferences;
 public class PreferenceHelper {
     private static final String TAG = "PreferenceHelper";
 
-    private static SharedPreferences sharedPreferences;
-    private static final String PREFERENCE = "preference";
+    private static PreferenceHelper preferenceHelper;
+
+    private SharedPreferences sharedPreferences;
+    private SharedPreferences.Editor editor;
+
+    private final String PREFERENCE = "preference";
 
     //用于保存上一次编辑的prjItem的key
     private static final String PREFERENCE_PRJNAME = "prjName";
 
-    public static boolean hasLastEditPrjItem(Context context) {
+    /**
+     * 获取唯一的单例
+     * @param context
+     * @return
+     */
+    public static PreferenceHelper getInstance(Context context){
+        if(preferenceHelper == null){
+            preferenceHelper = new PreferenceHelper(context);
+        }
+        return preferenceHelper;
+    }
+
+    /**
+     * 构造方法
+     * @param context
+     */
+    private PreferenceHelper(Context context){
+        sharedPreferences = context.getSharedPreferences(PREFERENCE, Context.MODE_PRIVATE);
+        editor = sharedPreferences.edit();
+    }
+
+    /**
+     * 是否有上一次编辑的工程
+     * @param context
+     * @return
+     */
+    public boolean hasLastEditPrjItem(Context context) {
         if (sharedPreferences == null) {
             sharedPreferences = context.getSharedPreferences(PREFERENCE, Context.MODE_PRIVATE);
         }
@@ -28,14 +58,24 @@ public class PreferenceHelper {
         }
     }
 
-    public static String getLastEditPrjName(Context context) {
+    /**
+     * 获取上一次编辑的工程的名称
+     * @param context
+     * @return
+     */
+    public String getLastEditPrjName(Context context) {
         if (sharedPreferences == null) {
             sharedPreferences = context.getSharedPreferences(PREFERENCE, Context.MODE_PRIVATE);
         }
         return sharedPreferences.getString(PREFERENCE_PRJNAME, "");
     }
 
-    public static void setLastEditPrjName(Context context, String prjName) {
+    /**
+     * 设置上一次编辑的工程名称
+     * @param context
+     * @param prjName
+     */
+    public void setLastEditPrjName(Context context, String prjName) {
         if (context == null || prjName == null) {
             return;
         }
@@ -47,7 +87,11 @@ public class PreferenceHelper {
         editor.commit();
     }
 
-    public static void deleteLastEditPrjName(Context context) {
+    /**
+     * 删除上一次编辑的Project的记录
+     * @param context
+     */
+    public void deleteLastEditPrjName(Context context) {
         if (context == null) {
             return;
         }
@@ -67,7 +111,7 @@ public class PreferenceHelper {
      * @param context
      * @param isWifiMode
      */
-    public static void setLocateMode(Context context, boolean isWifiMode) {
+    public void setLocateMode(Context context, boolean isWifiMode) {
         if (sharedPreferences == null) {
             sharedPreferences = context.getSharedPreferences(PREFERENCE, Context.MODE_PRIVATE);
         }
@@ -81,10 +125,37 @@ public class PreferenceHelper {
      * @param context
      * @return
      */
-    public static boolean getIsWifiLocateMode(Context context){
+    public boolean getIsWifiLocateMode(Context context){
         if (sharedPreferences == null) {
             sharedPreferences = context.getSharedPreferences(PREFERENCE, Context.MODE_PRIVATE);
         }
         return sharedPreferences.getBoolean(PREFERENCE_LOCATE_MODE_USE_WIFI, false);
+    }
+
+    /**
+     * 获取地图类型
+     * @return
+     */
+    public int getMapType(){
+        int mapType = sharedPreferences.getInt(MapType.KEY, MapType.BAIDU_MAP);
+        return mapType;
+    }
+
+    /**
+     * 设置map类型
+     * @param mapType
+     */
+    public void setMapType(int mapType){
+        editor.putInt(MapType.KEY, mapType);
+        editor.commit();
+    }
+
+    /**
+     * 地图类型
+     */
+    public interface MapType {
+        String KEY = "map_type";
+        int BAIDU_MAP = 1001;
+        int GAODE_MAP = 1002;
     }
 }

@@ -1,4 +1,4 @@
-package com.xunce.gsmr.activity;
+package com.xunce.gsmr.view.activity;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -12,7 +12,6 @@ import android.widget.ListView;
 
 import com.github.clans.fab.FloatingActionButton;
 import com.xunce.gsmr.R;
-import com.xunce.gsmr.activity.baidu.PrjEditActivity;
 import com.xunce.gsmr.util.DialogHelper;
 import com.xunce.gsmr.util.FileHelper;
 import com.xunce.gsmr.util.PreferenceHelper;
@@ -20,6 +19,7 @@ import com.xunce.gsmr.util.ToastHelper;
 import com.xunce.gsmr.util.VibrateHelper;
 import com.xunce.gsmr.util.ViewHelper;
 import com.xunce.gsmr.util.gps.DBHelper;
+import com.xunce.gsmr.view.activity.baidu.PrjEditActivity;
 import com.xunce.gsmr.view.adapter.PrjLvAdapter;
 import com.xunce.gsmr.view.style.TransparentStyle;
 
@@ -61,8 +61,9 @@ public class PrjSelectActivity extends AppCompatActivity{
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 //点击某一个prjImte的时候跳转到---具体的编辑界面(一个地图---很多按钮)
                 //保存当前要编辑的Prjname到preference
-                PreferenceHelper.setLastEditPrjName(PrjSelectActivity.this,
-                        adapter.getPrjItemList().get(position).getPrjName());
+                PreferenceHelper.getInstance(PrjSelectActivity.this)
+                        .setLastEditPrjName(PrjSelectActivity.this,
+                                adapter.getPrjItemList().get(position).getPrjName());
                 finish();
                 PrjEditActivity.start(PrjSelectActivity.this, adapter.getPrjItemList().get(position));
             }
