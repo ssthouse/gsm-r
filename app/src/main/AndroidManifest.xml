@@ -87,7 +87,7 @@
         <!--工程编辑Activity-->
         <activity
             android:screenOrientation="portrait"
-            android:name="com.xunce.gsmr.view.activity.baidu.PrjEditActivity">
+            android:name=".view.activity.baidu.BaiduPrjEditActivity">
 
         </activity>
 

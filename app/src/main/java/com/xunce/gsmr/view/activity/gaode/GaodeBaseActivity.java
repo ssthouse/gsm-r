@@ -9,10 +9,16 @@ import com.amap.api.location.AMapLocationListener;
 import com.amap.api.location.LocationManagerProxy;
 import com.amap.api.location.LocationProviderProxy;
 import com.amap.api.maps.AMap;
+import com.amap.api.maps.CameraUpdate;
+import com.amap.api.maps.CameraUpdateFactory;
 import com.amap.api.maps.LocationSource;
 import com.amap.api.maps.MapView;
 import com.amap.api.maps.UiSettings;
+import com.amap.api.maps.model.LatLng;
 import com.xunce.gsmr.R;
+import com.xunce.gsmr.model.PrjItem;
+import com.xunce.gsmr.model.gaodemap.GaodeRailWayHolder;
+import com.xunce.gsmr.model.gaodemap.MarkerHolder;
 
 /**
  * 必须有一个R.id.id_map的高德地图控件
@@ -20,19 +26,36 @@ import com.xunce.gsmr.R;
  * 高德基础地图Activity
  * Created by ssthouse on 2015/9/14.
  */
-public class GaodeBaseActivity extends AppCompatActivity  implements LocationSource,
+public class GaodeBaseActivity extends AppCompatActivity implements LocationSource,
         AMapLocationListener {
 
+    /**
+     * 地图
+     */
     private AMap aMap;
     private MapView mapView;
     private UiSettings mUiSettings;
+
+    /**
+     * 定位
+     */
     private OnLocationChangedListener mListener;
     private LocationManagerProxy aMapManager;
+    private AMapLocation currentAMapLocation;
+
+    /**
+     * 地图上的标记点
+     */
+    private MarkerHolder markerHolder;
+
+    /**
+     * 铁路绘图管理器
+     */
+    private GaodeRailWayHolder railWayHolder;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
     }
 
     /**
@@ -40,7 +63,7 @@ public class GaodeBaseActivity extends AppCompatActivity  implements LocationSou
      */
     public void init(Bundle savedInstanceState) {
         /*
-		 * 设置离线地图存储目录，在下载离线地图或初始化地图设置; 使用过程中可自行设置, 若自行设置了离线地图存储的路径，
+         * 设置离线地图存储目录，在下载离线地图或初始化地图设置; 使用过程中可自行设置, 若自行设置了离线地图存储的路径，
 		 * 则需要在离线地图下载和使用地图页面都进行路径设置
 		 */
         // Demo中为了其他界面可以使用下载的离线地图，使用默认位置存储，屏蔽了自定义设置
@@ -54,9 +77,50 @@ public class GaodeBaseActivity extends AppCompatActivity  implements LocationSou
     }
 
     /**
+     * TODO
+     * 加载铁路地图
+     */
+    public void loadRail(PrjItem prjItem){
+        if(railWayHolder == null){
+            railWayHolder = new GaodeRailWayHolder(this, prjItem);
+        }
+        railWayHolder.draw(aMap);
+    }
+
+    /**
+     * TODO
+     * 加载marker
+     */
+    public void loadMarker(PrjItem prjItem){
+        if(markerHolder == null){
+            //MarkerHolder模块
+            markerHolder = new MarkerHolder(this, prjItem, getaMap());
+        }
+    }
+
+    /**
+     * 地图中心移动到一个点
+     * @param latLng
+     */
+    public void animateToPoint(LatLng latLng){
+        CameraUpdate cameraUpdate = CameraUpdateFactory.changeLatLng(latLng);
+        aMap.animateCamera(cameraUpdate);
+    }
+
+    /**
+     * 定位到我的位置
+     */
+    public void animateToMyLocation(){
+        LatLng latLng = new LatLng(currentAMapLocation.getLatitude(),
+                currentAMapLocation.getLongitude());
+        animateToPoint(latLng);
+    }
+
+    //定位相关-------------------------------------------------------------
+    /**
      * 隐藏定位
      */
-    public void hideLocate(){
+    public void hideLocate() {
         aMap.setLocationSource(this);// 设置定位监听
         aMap.getUiSettings().setMyLocationButtonEnabled(false); // 是否显示默认的定位按钮
         aMap.setMyLocationEnabled(false);// 是否可触发定位并显示定位层
@@ -65,7 +129,7 @@ public class GaodeBaseActivity extends AppCompatActivity  implements LocationSou
     /**
      * 显示定位
      */
-    public void showLocate(){
+    public void showLocate() {
         aMap.setLocationSource(this);// 设置定位监听
         aMap.getUiSettings().setMyLocationButtonEnabled(true); // 是否显示默认的定位按钮
         aMap.setMyLocationEnabled(true);// 是否可触发定位并显示定位层
@@ -76,7 +140,8 @@ public class GaodeBaseActivity extends AppCompatActivity  implements LocationSou
      */
     @Override
     public void onLocationChanged(AMapLocation aLocation) {
-        if (mListener != null) {
+        if (mListener != null && aLocation !=null) {
+            currentAMapLocation = aLocation;
             mListener.onLocationChanged(aLocation);// 显示系统小蓝点
         }
     }
@@ -116,26 +181,34 @@ public class GaodeBaseActivity extends AppCompatActivity  implements LocationSou
     @Override
     protected void onResume() {
         super.onResume();
-        mapView.onResume();
+        if (mapView != null) {
+            mapView.onResume();
+        }
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        mapView.onPause();
-        deactivate();
+        if (mapView != null) {
+            mapView.onPause();
+            deactivate();
+        }
     }
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        mapView.onSaveInstanceState(outState);
+        if (mapView != null) {
+            mapView.onSaveInstanceState(outState);
+        }
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        mapView.onDestroy();
+        if (mapView != null) {
+            mapView.onDestroy();
+        }
     }
 
     //废弃方法---------------------------------------------
@@ -157,5 +230,30 @@ public class GaodeBaseActivity extends AppCompatActivity  implements LocationSou
     @Override
     public void onStatusChanged(String provider, int status, Bundle extras) {
 
+    }
+
+    //getter----and----setter--------------------------------------
+    public AMap getaMap() {
+        return aMap;
+    }
+
+    public void setaMap(AMap aMap) {
+        this.aMap = aMap;
+    }
+
+    public MapView getMapView() {
+        return mapView;
+    }
+
+    public void setMapView(MapView mapView) {
+        this.mapView = mapView;
+    }
+
+    public MarkerHolder getMarkerHolder() {
+        return markerHolder;
+    }
+
+    public GaodeRailWayHolder getRailWayHolder() {
+        return railWayHolder;
     }
 }

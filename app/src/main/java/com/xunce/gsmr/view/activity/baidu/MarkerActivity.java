@@ -110,7 +110,7 @@ public class MarkerActivity extends AppCompatActivity {
         markerItem = DBHelper.getMarkerItemInDB(wrongItem);
 
         requestCode = getIntent().getIntExtra(Constant.EXTRA_KEY_REQUEST_CODE,
-                PrjEditActivity.REQUEST_CODE_MARKER_ACTIVITY);
+                BaiduPrjEditActivity.REQUEST_CODE_MARKER_ACTIVITY);
 
         // 定位初始化
         mLocClient = new LocationClient(this);
@@ -124,6 +124,9 @@ public class MarkerActivity extends AppCompatActivity {
         initView();
     }
 
+    /**
+     * 初始化View
+     */
     private void initView() {
         ViewHelper.initActionBar(this, getSupportActionBar(), "选址");
 
@@ -298,7 +301,7 @@ public class MarkerActivity extends AppCompatActivity {
             case R.id.id_action_load_marker:
                 break;
             case android.R.id.home:
-                if(requestCode == PrjEditActivity.REQUEST_CODE_MARKER_EDIT_ACTIVITY){
+                if(requestCode == BaiduPrjEditActivity.REQUEST_CODE_MARKER_EDIT_ACTIVITY){
                     finish();
                     return true;
                 }
@@ -311,7 +314,7 @@ public class MarkerActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        if(requestCode == PrjEditActivity.REQUEST_CODE_MARKER_EDIT_ACTIVITY){
+        if(requestCode == BaiduPrjEditActivity.REQUEST_CODE_MARKER_EDIT_ACTIVITY){
             finish();
             return;
         }

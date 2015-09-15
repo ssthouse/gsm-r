@@ -11,28 +11,20 @@
         android:layout_height="match_parent"
         android:layout_weight="1">
 
+        <!--承放Fragment-->
         <FrameLayout
             android:id="@+id/id_fragment_container"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
 
-        <LinearLayout
+        <!--选址按钮-->
+        <Button
+            android:id="@+id/id_btn_mark"
             android:layout_width="match_parent"
+            android:layout_marginRight="100dp"
             android:layout_height="48dp"
-            android:layout_gravity="top"
-            android:layout_margin="4dp"
-            android:orientation="horizontal">
-
-            <Button
-                android:layout_marginRight="100dp"
-                android:id="@+id/id_btn_mark"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:background="@drawable/btn_selector"
-                android:text="选址"
-                android:textSize="@dimen/text_size_button" />
-
-        </LinearLayout>
+            android:background="@drawable/btn_selector"
+            android:text="选址"
+            android:textSize="@dimen/text_size_button" />
     </FrameLayout>
 </LinearLayout>

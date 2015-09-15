@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <!-- 地图 -->
+    <com.amap.api.maps.MapView
+        android:id="@+id/id_map_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <!--选址按钮-->
+    <Button
+        android:id="@+id/id_btn_mark"
+        android:layout_width="match_parent"
+        android:layout_marginRight="100dp"
+        android:layout_height="48dp"
+        android:background="@drawable/btn_selector"
+        android:text="选址"
+        android:textSize="@dimen/text_size_button" />
+
+    <!--下面的功能键-->
+    <include
+        android:layout_gravity="bottom"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        layout="@layout/activity_prj_edit_function"/>
+
+    <!--公里标输入框-->
+    <include layout="@layout/view_position" />
+
+</FrameLayout>

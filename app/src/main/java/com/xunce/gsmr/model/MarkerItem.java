@@ -51,7 +51,7 @@ public class MarkerItem extends Model implements Serializable {
     }
 
     /**
-     * 传入一个LatLng的构造方法
+     * 百度LatLng的构造方法
      *
      * @param latLng
      */
@@ -62,10 +62,37 @@ public class MarkerItem extends Model implements Serializable {
         this.longitude = latLng.longitude;
     }
 
+    /**
+     * 高德地图LatLng的构造方法
+     *
+     * @param latLng
+     */
+    public MarkerItem(String prjName, com.amap.api.maps.model.LatLng latLng) {
+        super();
+        this.prjName = prjName;
+        this.latitude = latLng.latitude;
+        this.longitude = latLng.longitude;
+    }
+
     public MarkerItem() {
         super();
     }
 
+    /**
+     * 获取百度LatLng
+     * @return
+     */
+    public LatLng getBaiduLatLng(){
+        return new LatLng(latitude, longitude);
+    }
+
+    /**
+     * 获取高德LatLng
+     * @return
+     */
+    public com.amap.api.maps.model.LatLng getGaodeLatLng(){
+        return new com.amap.api.maps.model.LatLng(latitude, longitude);
+    }
 
     public String getFilePath() {
         return Constant.PICTURE_PATH + prjName + "/" + latitude + "_" + longitude + "/";

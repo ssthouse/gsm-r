@@ -58,7 +58,7 @@ public class OfflineActivity extends Activity implements MKOfflineMapListener {
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_offline);
+        setContentView(R.layout.activity_baidu_offline);
 
         //初始化一个离线地图管理器
         mOffline = new MKOfflineMap();

@@ -34,6 +34,8 @@ public class Circle extends Graph {
         baiduMap.addOverlay(ooCircle);
     }
 
+
+    //getter---and---setter----------------------------------------------
     public LatLng getLatlngCenter() {
         return latlngCenter;
     }

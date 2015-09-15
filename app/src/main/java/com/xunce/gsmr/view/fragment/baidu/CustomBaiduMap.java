@@ -6,12 +6,10 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AnimationUtils;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.LinearLayout;
 
 import com.baidu.location.BDLocation;
@@ -29,8 +27,8 @@ import com.baidu.mapapi.map.MyLocationData;
 import com.baidu.mapapi.model.LatLng;
 import com.xunce.gsmr.R;
 import com.xunce.gsmr.model.PrjItem;
+import com.xunce.gsmr.model.baidumap.BaiduRailWayHolder;
 import com.xunce.gsmr.model.baidumap.MarkerHolder;
-import com.xunce.gsmr.model.baidumap.RailWayHolder;
 import com.xunce.gsmr.util.PreferenceHelper;
 import com.xunce.gsmr.util.gps.MapHelper;
 import com.xunce.gsmr.view.activity.baidu.MeasureActivity;
@@ -76,7 +74,7 @@ public class CustomBaiduMap extends Fragment implements CustomMap {
     /**
      * 地图Graph的控制器
      */
-    private RailWayHolder railWayHolder;
+    private BaiduRailWayHolder baiduRailWayHolder;
 
     /**
      * 控制定位
@@ -84,10 +82,6 @@ public class CustomBaiduMap extends Fragment implements CustomMap {
     private LocationClient locationClient;
     //当前获取的定位位置
     private BDLocation currentBDLocation;
-    //是否已经定位
-    private boolean isLocated;
-    //定位按钮
-    private ImageButton btnLocate;
 
     /**
      * 是否首次进入
@@ -116,11 +110,10 @@ public class CustomBaiduMap extends Fragment implements CustomMap {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        layout = inflater.inflate(R.layout.fragment_prj_edit_baidu, null);
+        layout = inflater.inflate(R.layout.fragment_baidu_prj_edit_baidu, null);
         //初始化数据
         mapView = (MapView) layout.findViewById(R.id.id_map_view);
         context = getActivity();
-        btnLocate = (ImageButton) layout.findViewById(R.id.id_ib_locate);
         prjItem = (PrjItem) getArguments().getSerializable("prjItem");
 
         //正式初始化
@@ -139,7 +132,7 @@ public class CustomBaiduMap extends Fragment implements CustomMap {
         //初始化marker控制器
         markerHolder = new MarkerHolder(prjItem, baiduMap);
         //初始化Graph控制器
-        railWayHolder = new RailWayHolder(context, prjItem);
+        baiduRailWayHolder = new BaiduRailWayHolder(context, prjItem);
         //初始化定位控制器
         initLocationClient();
     }
@@ -152,17 +145,6 @@ public class CustomBaiduMap extends Fragment implements CustomMap {
         MapHelper.animateZoom(baiduMap, 15);
         baiduMap.setMyLocationConfigeration(new MyLocationConfiguration(
                 MyLocationConfiguration.LocationMode.NORMAL, true, null));
-
-        //触摸屏幕则---定位失效
-        baiduMap.setOnMapTouchListener(new BaiduMap.OnMapTouchListener() {
-            @Override
-            public void onTouch(MotionEvent motionEvent) {
-                if (motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
-                    btnLocate.setImageResource(R.drawable.locate2);
-                    isLocated = false;
-                }
-            }
-        });
 
         //初始化InfoWindow内容
         llInfoWindow = (LinearLayout) LayoutInflater.from(context)
@@ -291,6 +273,13 @@ public class CustomBaiduMap extends Fragment implements CustomMap {
                 if (bdLocation != null) {
                     //如果是第一次获取到数据----将地图定位到改点
                     currentBDLocation = bdLocation;
+                    //更新我的位置
+                    MyLocationData locData = new MyLocationData.Builder()
+                            .accuracy(currentBDLocation.getRadius())
+                            .latitude(currentBDLocation.getLatitude())
+                            .longitude(currentBDLocation.getLongitude()).build();
+                    baiduMap.setMyLocationData(locData);
+                    //如果是第一次进入---地图定位到我的位置
                     if (isFistIn) {
                         locate();
                         isFistIn = false;
@@ -298,6 +287,7 @@ public class CustomBaiduMap extends Fragment implements CustomMap {
                 }
             }
         });
+        //启动定位
         locationClient.start();
     }
 
@@ -319,7 +309,6 @@ public class CustomBaiduMap extends Fragment implements CustomMap {
             MapHelper.animateToPoint(baiduMap, ll);
         }
     }
-
 
     /**
      * 动画聚焦到一个点
@@ -359,7 +348,7 @@ public class CustomBaiduMap extends Fragment implements CustomMap {
      */
     @Override
     public void loadRail() {
-        railWayHolder.draw(baiduMap);
+        baiduRailWayHolder.draw(baiduMap);
     }
 
     //--------------生命周期--------------------------------------------

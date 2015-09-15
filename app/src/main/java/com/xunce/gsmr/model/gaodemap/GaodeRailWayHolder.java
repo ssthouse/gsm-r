@@ -1,15 +1,15 @@
-package com.xunce.gsmr.model.baidumap;
+package com.xunce.gsmr.model.gaodemap;
 
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
-import com.baidu.mapapi.map.BaiduMap;
-import com.baidu.mapapi.model.LatLng;
+import com.amap.api.maps.AMap;
+import com.amap.api.maps.model.LatLng;
 import com.xunce.gsmr.model.PrjItem;
-import com.xunce.gsmr.model.baidumap.graph.Circle;
-import com.xunce.gsmr.model.baidumap.graph.Line;
-import com.xunce.gsmr.model.baidumap.graph.Text;
+import com.xunce.gsmr.model.gaodemap.graph.Circle;
+import com.xunce.gsmr.model.gaodemap.graph.Line;
+import com.xunce.gsmr.model.gaodemap.graph.Text;
 import com.xunce.gsmr.util.LogHelper;
 import com.xunce.gsmr.util.gps.DBHelper;
 
@@ -17,20 +17,25 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * 铁路的管理类
- * 1.一条铁路应该是对应的一个数据库中的数据
- * Created by ssthouse on 2015/8/21.
+ * 高德地图地图铁路绘图管理器
+ * Created by ssthouse on 2015/9/15.
  */
-public class RailWayHolder {
-    private static final String TAG = "RailWayHolder";
+public class GaodeRailWayHolder {
+    private static final String TAG = "GaodeRailWayHolder";
 
+    /**
+     * 所有绘图数据
+     */
     private List<Circle> circles;
-
     private List<Line> lines;
-
     private List<Text> texts;
 
-    public RailWayHolder(Context context, PrjItem prjItem){
+    /**
+     * 构造方法
+     * @param context
+     * @param prjItem
+     */
+    public GaodeRailWayHolder(Context context, PrjItem prjItem){
         circles = new ArrayList<>();
         lines = new ArrayList<>();
         texts = new ArrayList<>();
@@ -45,23 +50,29 @@ public class RailWayHolder {
         circles.add(new Circle(new LatLng(30.51667, 114.31667), 60));
         lines.add(new Line(new LatLng(30.51667, 114.31667), new LatLng(30.52667, 114.33667)));
 
-        texts.add(new Text(new LatLng(30.51667, 114.31667), "哈哈哈哈哈哈哈"));
+        texts.add(new Text(new LatLng(30.51667, 114.31667), 20, "哈哈哈哈哈哈哈"));
     }
 
     /**
      * 画出自己
      */
-    public void draw(BaiduMap baiduMap){
+    public void draw(AMap aMap){
         for(Circle circle : circles){
-            circle.draw(baiduMap);
+            circle.draw(aMap);
         }
         for(Line line :lines){
-            line.draw(baiduMap);
+            line.draw(aMap);
         }
         for(Text text : texts){
-            text.draw(baiduMap);
+            text.draw(aMap);
         }
     }
+
+    /**
+     * 获取LineList
+     * @param database
+     * @return
+     */
     private static List<Line> getLineList(SQLiteDatabase database) {
         List<Line> lineList = new ArrayList<>();
         Cursor cursor = database.query("Line", null, null, null, null, null, null);
@@ -80,6 +91,11 @@ public class RailWayHolder {
         return lineList;
     }
 
+    /**
+     * 获取Circle列表
+     * @param database
+     * @return
+     */
     private static List<Circle> getCircleList(SQLiteDatabase database){
         List<Circle> circleList = new ArrayList<>();
         Cursor cursor = database.query("Circle", null, null, null, null, null, null);
@@ -97,6 +113,11 @@ public class RailWayHolder {
         return circleList;
     }
 
+    /**
+     * 获取文字List
+     * @param database
+     * @return
+     */
     private static List<Text> getTextList(SQLiteDatabase database){
         List<Text> circleList = new ArrayList<>();
         Cursor cursor = database.query("Text", null, null, null, null, null, null);
@@ -114,3 +135,4 @@ public class RailWayHolder {
         return circleList;
     }
 }
+

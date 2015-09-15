@@ -46,6 +46,8 @@ public class Text extends Graph {
         baiduMap.addOverlay(ooText);
     }
 
+
+    //getter----and---setter------------------------------------------------
     public LatLng getLatLng() {
         return latLng;
     }

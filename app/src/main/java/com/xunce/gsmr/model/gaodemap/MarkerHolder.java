@@ -1,14 +1,12 @@
-package com.xunce.gsmr.model.baidumap;
+package com.xunce.gsmr.model.gaodemap;
 
-import com.baidu.mapapi.map.BaiduMap;
-import com.baidu.mapapi.map.BitmapDescriptor;
-import com.baidu.mapapi.map.BitmapDescriptorFactory;
-import com.baidu.mapapi.map.MapStatusUpdate;
-import com.baidu.mapapi.map.MapStatusUpdateFactory;
-import com.baidu.mapapi.map.Marker;
-import com.baidu.mapapi.map.MarkerOptions;
-import com.baidu.mapapi.map.OverlayOptions;
-import com.baidu.mapapi.model.LatLng;
+import android.content.Context;
+
+import com.amap.api.maps.AMap;
+import com.amap.api.maps.model.BitmapDescriptor;
+import com.amap.api.maps.model.BitmapDescriptorFactory;
+import com.amap.api.maps.model.Marker;
+import com.amap.api.maps.model.MarkerOptions;
 import com.xunce.gsmr.R;
 import com.xunce.gsmr.model.MarkerItem;
 import com.xunce.gsmr.model.PrjItem;
@@ -19,9 +17,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * 持有一个baiduMap的引用
+ * 持有一个AMap的引用
  * 承载PrjEditActivity中的所有Marker
- * Created by ssthouse on 2015/8/21.
+ * Created by ssthouse on 2015/9/15.
  */
 public class MarkerHolder {
     private static final String TAG = "MarkerHolder";
@@ -32,72 +30,80 @@ public class MarkerHolder {
     public static BitmapDescriptor descriptorRed = BitmapDescriptorFactory
             .fromResource(R.drawable.icon_measure_red);
 
+    /**
+     * 上下文
+     */
+    private Context context;
+
+    /**
+     * 地图--主要数据
+     */
+    private AMap aMap;
+    private PrjItem prjItem;
+
+    /**
+     * Marker控制
+     */
     private Marker currentMarker;
     private List<Marker> markerList;
-    private BaiduMap baiduMap;
-    private PrjItem prjItem;
 
     /**
      * 构造方法
      *
      * @param prjItem
-     * @param baiduMap
+     * @param aMap
      */
-    public MarkerHolder(PrjItem prjItem, BaiduMap baiduMap) {
+    public MarkerHolder(Context context, PrjItem prjItem, AMap aMap) {
+        this.context = context;
         this.prjItem = prjItem;
-        this.baiduMap = baiduMap;
+        this.aMap = aMap;
         markerList = new ArrayList<>();
 
+        //初始化MarkerList数据
         initMarkerList();
     }
 
     /**
-     * 初始化并且画出Marker
+     * 初始化MarkerList数据
      */
-    public void initMarkerList() {
-        baiduMap.clear();
-        //清空markerList
+    private void initMarkerList() {
+        //清除地图图像---清空marker数据
+        aMap.clear();
         markerList.clear();
-        //初始化markerList
+        //填充MarkerList
         List<MarkerItem> markerItemList = DBHelper.getMarkerList(prjItem);
         for (int i = 0; i < markerItemList.size(); i++) {
-            LatLng latLng = markerItemList.get(i).getBaiduLatLng();
-            OverlayOptions redOverlay = new MarkerOptions()
+            com.amap.api.maps.model.LatLng latLng = markerItemList.get(i).getGaodeLatLng();
+            MarkerOptions markerOptions = new MarkerOptions();
+            markerOptions.icon(descriptorBlue)
                     .position(latLng)
-                    .icon(descriptorBlue)
-                    .zIndex(16)
-                    .draggable(false);
-            markerList.add((Marker) baiduMap.addOverlay(redOverlay));
+                    .title("hahaha");
+            markerList.add(aMap.addMarker(markerOptions));
             LogHelper.Log(TAG, "我添加了一个点:    " + latLng.latitude + ":" + latLng.longitude);
         }
-        //动画移动过去
-        MapStatusUpdate u = MapStatusUpdateFactory.newLatLng(
-                new LatLng(markerItemList.get(0).getLatitude(), markerItemList.get(0).getLongitude()));
-        baiduMap.animateMapStatus(u);
     }
 
     /**
      * 取消当前选中的Marker
      */
     public void clearSelection() {
-        currentMarker.setIcon(descriptorBlue);
+        setAll2Blue();
         //没有当前选中的Marker
         currentMarker = null;
     }
 
+    /**
+     * 全部图标变为蓝色
+     */
     public void setAll2Blue() {
         for (Marker marker : markerList) {
-            marker.setIcon(descriptorBlue);
+            if (marker != null) {
+                marker.setIcon(descriptorBlue);
+            }
         }
     }
 
-    public void setAll2Red() {
-        for (Marker marker : markerList) {
-            marker.setIcon(descriptorRed);
-        }
-    }
-
-    //getter------------and------------setter-----------------
+    //getter---and--setter--------------------------------------------
     public Marker getCurrentMarker() {
         return currentMarker;
     }

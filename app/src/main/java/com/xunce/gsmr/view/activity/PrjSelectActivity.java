@@ -20,7 +20,8 @@ import com.xunce.gsmr.util.ToastHelper;
 import com.xunce.gsmr.util.VibrateHelper;
 import com.xunce.gsmr.util.ViewHelper;
 import com.xunce.gsmr.util.gps.DBHelper;
-import com.xunce.gsmr.view.activity.baidu.PrjEditActivity;
+import com.xunce.gsmr.view.activity.baidu.BaiduPrjEditActivity;
+import com.xunce.gsmr.view.activity.gaode.GaodePrjEditActivity;
 import com.xunce.gsmr.view.adapter.PrjLvAdapter;
 import com.xunce.gsmr.view.style.TransparentStyle;
 
@@ -32,12 +33,16 @@ import com.xunce.gsmr.view.style.TransparentStyle;
 public class PrjSelectActivity extends AppCompatActivity{
     private static final String TAG = "PrjSelectActivity";
 
+    private static String EXTRA_KEY_IS_CALLED = "is_called_by_prj_edit";
+
     private ListView lv;
 
     private PrjLvAdapter adapter;
 
-    public static void start(Activity activity){
-        activity.startActivity(new Intent(activity, PrjSelectActivity.class));
+    public static void start(Activity activity, boolean isCalledByPrjEditAty){
+        Intent intent = new Intent(activity, PrjSelectActivity.class);
+        intent.putExtra(EXTRA_KEY_IS_CALLED, isCalledByPrjEditAty);
+        activity.startActivity(intent);
         activity.overridePendingTransition(R.anim.activity_fade_in, R.anim.activity_fade_out);
     }
 
@@ -47,36 +52,61 @@ public class PrjSelectActivity extends AppCompatActivity{
         setContentView(R.layout.activity_prj_select);
         TransparentStyle.setTransparentStyle(this,R.color.color_primary);
 
+        //监测是否为PrjEditActivity调用
+        boolean isCalled = getIntent().getBooleanExtra(EXTRA_KEY_IS_CALLED, false);
+        if(isCalled){
+            initView();
+            return;
+        }
+
         //判断---如果有上次打开的Project---就直接跳转
         //判断是否有上次编辑的project
         if (PreferenceHelper.getInstance(this).hasLastEditPrjItem(this)) {
             PrjItem prjItem = new PrjItem(PreferenceHelper.getInstance(this).getLastEditPrjName(this));
 
             //判断MapType
-            PrjEditActivity.start(this, prjItem);
+            //判断地图类型--启动Activity
+            if(PreferenceHelper.getInstance(PrjSelectActivity.this).getMapType()
+                    == PreferenceHelper.MapType.BAIDU_MAP) {
+                BaiduPrjEditActivity.start(PrjSelectActivity.this, prjItem);
+            }else{
+                GaodePrjEditActivity.start(PrjSelectActivity.this, prjItem);
+            }
             finish();
         }
 
+        //初始化View
         initView();
     }
 
+    /**
+     * 初始化View
+     */
     private void initView(){
         ViewHelper.initActionBar(this, getSupportActionBar(), "基址勘察");
 
         lv = (ListView) findViewById(R.id.id_lv);
         adapter = new PrjLvAdapter(this, DBHelper.getPrjItemList());
         lv.setAdapter(adapter);
-        //开启工程编辑Acvivity
+        //开启工程编辑Activity
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                //点击某一个prjImte的时候跳转到---具体的编辑界面(一个地图---很多按钮)
-                //保存当前要编辑的Prjname到preference
+                //点击某一个prjItem的时候跳转到---具体的编辑界面(一个地图---很多按钮)
+                //保存当前要编辑的PrjName到preference
                 PreferenceHelper.getInstance(PrjSelectActivity.this)
                         .setLastEditPrjName(PrjSelectActivity.this,
                                 adapter.getPrjItemList().get(position).getPrjName());
                 finish();
-                PrjEditActivity.start(PrjSelectActivity.this, adapter.getPrjItemList().get(position));
+                //判断地图类型--启动Activity
+                if(PreferenceHelper.getInstance(PrjSelectActivity.this).getMapType()
+                        == PreferenceHelper.MapType.BAIDU_MAP) {
+                    BaiduPrjEditActivity.start(PrjSelectActivity.this, adapter.getPrjItemList()
+                            .get(position));
+                }else{
+                    GaodePrjEditActivity.start(PrjSelectActivity.this, adapter.getPrjItemList()
+                            .get(position));
+                }
             }
         });
         //长按监听事件

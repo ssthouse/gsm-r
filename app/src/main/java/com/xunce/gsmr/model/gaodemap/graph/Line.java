@@ -1,46 +1,48 @@
-package com.xunce.gsmr.model.baidumap.graph;
+package com.xunce.gsmr.model.gaodemap.graph;
 
-import com.baidu.mapapi.map.BaiduMap;
-import com.baidu.mapapi.map.OverlayOptions;
-import com.baidu.mapapi.map.PolylineOptions;
-import com.baidu.mapapi.model.LatLng;
-
-import java.util.ArrayList;
-import java.util.List;
+import com.amap.api.maps.AMap;
+import com.amap.api.maps.model.LatLng;
+import com.amap.api.maps.model.PolylineOptions;
 
 /**
- * 地图上的直线
- * Created by ssthouse on 2015/7/30.
+ * 高德地图的Line
+ * Created by ssthouse on 2015/9/15.
  */
 public class Line extends Graph {
     private static final String TAG = "Line";
 
     //直线的参数
-    private static int lineColor =  0xAAFF0000;
+    private static int lineColor = 0xAAFF0000;
     private static int lineWidth = 10;
 
+    /**
+     * 坐标点
+     */
     private LatLng latLngBegin;
-
     private LatLng latLngEnd;
 
+    /**
+     * 构造方法
+     * @param latLngBegin
+     * @param latLngEnd
+     */
     public Line(LatLng latLngBegin, LatLng latLngEnd) {
         this.latLngBegin = latLngBegin;
         this.latLngEnd = latLngEnd;
     }
 
     @Override
-    public void draw(BaiduMap baiduMap) {
-        // 添加折线
-        List<LatLng> points = new ArrayList<>();
-        points.add(latLngBegin);
-        points.add(latLngEnd);
-        OverlayOptions ooPolyline = new PolylineOptions()
+    public void draw(AMap aMap) {
+        PolylineOptions options = new PolylineOptions();
+        options.add(latLngBegin)
+                .add(latLngEnd)
+                .add(latLngEnd)
                 .width(lineWidth)
-                .color(lineColor)
-                .points(points);
-        baiduMap.addOverlay(ooPolyline);
+                .color(lineColor);
+        aMap.addPolyline(options);
     }
 
+    //getter----and---setter------------------------------------------------
     public LatLng getLatLngBegin() {
         return latLngBegin;
     }
@@ -56,4 +58,5 @@ public class Line extends Graph {
     public void setLatLngEnd(LatLng latLngEnd) {
         this.latLngEnd = latLngEnd;
     }
+
 }

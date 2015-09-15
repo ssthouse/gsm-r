@@ -18,22 +18,19 @@ import com.xunce.gsmr.model.MarkerItem;
 import com.xunce.gsmr.model.PrjItem;
 import com.xunce.gsmr.util.FileHelper;
 import com.xunce.gsmr.util.LogHelper;
-import com.xunce.gsmr.util.PreferenceHelper;
 import com.xunce.gsmr.util.ViewHelper;
 import com.xunce.gsmr.view.activity.PicGridActivity;
 import com.xunce.gsmr.view.activity.PrjSelectActivity;
 import com.xunce.gsmr.view.activity.SettingActivity;
-import com.xunce.gsmr.view.activity.gaode.GaodePrjEditActivity;
 import com.xunce.gsmr.view.fragment.CustomMap;
 import com.xunce.gsmr.view.fragment.baidu.CustomBaiduMap;
-import com.xunce.gsmr.view.fragment.gaode.CustomGaodeMap;
 import com.xunce.gsmr.view.style.TransparentStyle;
 
 /**
  * 开启时会接收到一个PrjItem---intent中
  */
-public class PrjEditActivity extends AppCompatActivity {
-    private static final String TAG = "PrjEditActivity";
+public class BaiduPrjEditActivity extends AppCompatActivity {
+    private static final String TAG = "BaiduPrjEditActivity";
 
     //Activity请求码
     public static final int REQUEST_CODE_ROUTE_ACTIVITY = 1000;
@@ -63,7 +60,7 @@ public class PrjEditActivity extends AppCompatActivity {
      * @param activity
      */
     public static void start(Activity activity, PrjItem prjItem) {
-        Intent intent = new Intent(activity, PrjEditActivity.class);
+        Intent intent = new Intent(activity, BaiduPrjEditActivity.class);
         intent.putExtra(Constant.EXTRA_KEY_PRJ_ITEM, prjItem);
         activity.startActivity(intent);
         activity.overridePendingTransition(R.anim.activity_fade_in, R.anim.activity_fade_out);
@@ -72,16 +69,13 @@ public class PrjEditActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_prj_edit);
+        setContentView(R.layout.activity_baidu_prj_edit);
         TransparentStyle.setTransparentStyle(this, R.color.color_primary);
 
         prjItem = (PrjItem) getIntent().getSerializableExtra(Constant.EXTRA_KEY_PRJ_ITEM);
 
         //初始化View
         initView();
-
-        //TODO---
-        startActivity(new Intent(this, GaodePrjEditActivity.class));
     }
 
     /**
@@ -93,11 +87,7 @@ public class PrjEditActivity extends AppCompatActivity {
         //启动Map的片段
         Bundle bundle = new Bundle();
         bundle.putSerializable("prjItem", prjItem);
-        if (PreferenceHelper.getInstance(this).getMapType() == PreferenceHelper.MapType.BAIDU_MAP) {
-            customMap = CustomBaiduMap.getInstance(bundle);
-        } else {
-            customMap = CustomGaodeMap.getInstance(bundle);
-        }
+        customMap = CustomBaiduMap.getInstance(bundle);
         getFragmentManager().beginTransaction().replace(R.id.id_fragment_container,
                 (Fragment) customMap).commit();
 
@@ -108,7 +98,7 @@ public class PrjEditActivity extends AppCompatActivity {
                 //先保存进数据库---然后传递
                 MarkerItem markerItem = new MarkerItem(prjItem);
                 markerItem.save();
-                MarkerActivity.start(PrjEditActivity.this, markerItem, REQUEST_CODE_MARKER_ACTIVITY);
+                MarkerActivity.start(BaiduPrjEditActivity.this, markerItem, REQUEST_CODE_MARKER_ACTIVITY);
             }
         });
     }
@@ -123,7 +113,7 @@ public class PrjEditActivity extends AppCompatActivity {
         //生成MarkerItem--跳转到MarkerEditActivity
         LatLng latLng = customMap.getCurrentMarkerLatLng();
         MarkerActivity.start(this, new MarkerItem(prjItem.getPrjName(), latLng),
-                PrjEditActivity.REQUEST_CODE_MARKER_EDIT_ACTIVITY);
+                BaiduPrjEditActivity.REQUEST_CODE_MARKER_EDIT_ACTIVITY);
     }
 
     /**
@@ -135,7 +125,7 @@ public class PrjEditActivity extends AppCompatActivity {
         customMap.hideInfoWindow();
         LatLng latLng = customMap.getCurrentMarkerLatLng();
         PicGridActivity.start(this, new MarkerItem(prjItem.getPrjName(), latLng),
-                PrjEditActivity.REQUEST_CODE_PICTURE_ACTIVITY);
+                BaiduPrjEditActivity.REQUEST_CODE_PICTURE_ACTIVITY);
     }
 
     @Override
@@ -150,7 +140,7 @@ public class PrjEditActivity extends AppCompatActivity {
             //切换工程
             case R.id.id_action_change_project:
                 finish();
-                PrjSelectActivity.start(this);
+                PrjSelectActivity.start(this, true);
                 //加载铁路地图
             case R.id.id_action_load_map:
                 //TODO---加载铁路地图
