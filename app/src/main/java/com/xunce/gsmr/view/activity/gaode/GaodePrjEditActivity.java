@@ -23,7 +23,7 @@ import com.xunce.gsmr.util.ViewHelper;
 import com.xunce.gsmr.view.activity.PicGridActivity;
 import com.xunce.gsmr.view.activity.PrjSelectActivity;
 import com.xunce.gsmr.view.activity.SettingActivity;
-import com.xunce.gsmr.view.activity.baidu.MarkerActivity;
+import com.xunce.gsmr.view.activity.baidu.BaiduMarkerActivity;
 import com.xunce.gsmr.view.activity.baidu.OfflineActivity;
 
 /**
@@ -139,6 +139,7 @@ public class GaodePrjEditActivity extends GaodeBaseActivity {
             @Override
             public void onClick(View v) {
                 //TODO
+                GaodeMeasureActivity.start(GaodePrjEditActivity.this, getaMap().getCameraPosition().target);
             }
         });
 
@@ -160,7 +161,7 @@ public class GaodePrjEditActivity extends GaodeBaseActivity {
     public void clickEdit(View v) {
         //生成MarkerItem--跳转到MarkerEditActivity
         LatLng latLng = getMarkerHolder().getCurrentMarker().getPosition();
-        MarkerActivity.start(this, new MarkerItem(prjItem.getPrjName(), latLng),
+        BaiduMarkerActivity.start(this, new MarkerItem(prjItem.getPrjName(), latLng),
                 REQUEST_CODE_MARKER_EDIT_ACTIVITY);
     }
 

@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
@@ -46,8 +45,8 @@ import java.util.List;
  * --需要显示出所有的已经标记的点的位置--便于测量距离--还有地图
  * Created by ssthouse on 2015/7/19.
  */
-public class MeasureActivity extends AppCompatActivity {
-    private static final String TAG = "MeasureActivity";
+public class BaiduMeasureActivity extends AppCompatActivity {
+    private static final String TAG = "BaiduMeasureActivity";
 
     private LatLng latLng;
 
@@ -58,7 +57,6 @@ public class MeasureActivity extends AppCompatActivity {
     private boolean isLocated = false;
 
     //ui
-    private Toolbar toolbar;
     private TextView tvLength;
     private ImageButton ibLocate;
 
@@ -76,7 +74,7 @@ public class MeasureActivity extends AppCompatActivity {
     private boolean isFistIn = true;
 
     public static void start(Activity activity, LatLng latLng) {
-        Intent intent = new Intent(activity, MeasureActivity.class);
+        Intent intent = new Intent(activity, BaiduMeasureActivity.class);
         if (latLng != null) {
             intent.putExtra(Constant.EXTRA_KEY_LATITUDE, latLng.latitude);
             intent.putExtra(Constant.EXTRA_KEY_LONGITUDE, latLng.longitude);
@@ -89,7 +87,7 @@ public class MeasureActivity extends AppCompatActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_measure);
+        setContentView(R.layout.activity_baidu_measure);
         TransparentStyle.setTransparentStyle(this, R.color.color_primary);
 
         //接收intent中的数据

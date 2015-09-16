@@ -17,7 +17,7 @@ public class Text extends Graph {
      * 画笔参数
      */
     private static int textColor = 0xFFFF00FF;
-    private static int textBgColor = 0x00FF00FF;
+    private static int textBgColor = 0x00FFFFFF;
     private static int textSize = 24;
 
     /**
@@ -56,6 +56,7 @@ public class Text extends Graph {
                 .position(latLng)
                 .text(text)
                 .fontColor(textColor)
+                .backgroundColor(textBgColor)
                 .fontSize(textSize)
                 .rotate(rotate)
                 .align(com.amap.api.maps.model.Text.ALIGN_CENTER_HORIZONTAL,

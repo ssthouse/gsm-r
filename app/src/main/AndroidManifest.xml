@@ -94,12 +94,12 @@
         <!--选址-->
         <activity
             android:screenOrientation="portrait"
-            android:name="com.xunce.gsmr.view.activity.baidu.MarkerActivity"/>
+            android:name=".view.activity.baidu.BaiduMarkerActivity"/>
 
         <!--测量Activity-->
         <activity
             android:screenOrientation="portrait"
-            android:name="com.xunce.gsmr.view.activity.baidu.MeasureActivity"/>
+            android:name=".view.activity.baidu.BaiduMeasureActivity"/>
 
         <activity
             android:screenOrientation="portrait"
@@ -127,6 +127,7 @@
         <!--TODO-高德地图-->
         <activity android:name="com.xunce.gsmr.view.activity.gaode.GaodeBaseActivity"/>
         <activity android:name="com.xunce.gsmr.view.activity.gaode.GaodePrjEditActivity"/>
+        <activity android:name=".view.activity.gaode.GaodeMeasureActivity"/>
     </application>
 
 </manifest>

@@ -111,6 +111,9 @@ public class GaodeBaseActivity extends AppCompatActivity implements LocationSour
      * 定位到我的位置
      */
     public void animateToMyLocation(){
+        if(currentAMapLocation == null){
+            return;
+        }
         LatLng latLng = new LatLng(currentAMapLocation.getLatitude(),
                 currentAMapLocation.getLongitude());
         animateToPoint(latLng);

@@ -70,10 +70,12 @@ public class MarkerHolder {
             markerList.add((Marker) baiduMap.addOverlay(redOverlay));
             LogHelper.Log(TAG, "我添加了一个点:    " + latLng.latitude + ":" + latLng.longitude);
         }
-        //动画移动过去
-        MapStatusUpdate u = MapStatusUpdateFactory.newLatLng(
-                new LatLng(markerItemList.get(0).getLatitude(), markerItemList.get(0).getLongitude()));
-        baiduMap.animateMapStatus(u);
+        if(markerItemList.size() >0) {
+            //动画移动过去
+            MapStatusUpdate u = MapStatusUpdateFactory.newLatLng(
+                    new LatLng(markerItemList.get(0).getLatitude(), markerItemList.get(0).getLongitude()));
+            baiduMap.animateMapStatus(u);
+        }
     }
 
     /**

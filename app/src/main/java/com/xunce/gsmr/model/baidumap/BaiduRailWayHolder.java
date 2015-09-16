@@ -11,7 +11,6 @@ import com.xunce.gsmr.model.baidumap.graph.Circle;
 import com.xunce.gsmr.model.baidumap.graph.Line;
 import com.xunce.gsmr.model.baidumap.graph.Text;
 import com.xunce.gsmr.util.LogHelper;
-import com.xunce.gsmr.util.gps.DBHelper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,8 +35,8 @@ public class BaiduRailWayHolder {
         texts = new ArrayList<>();
 
         //TODO---读取数据库中的数据(根据prjItem获取数据库路径)
-        SQLiteDatabase db = context.openOrCreateDatabase(DBHelper.TEMP_DB_PATH,
-                SQLiteDatabase.OPEN_READWRITE, null);
+//        SQLiteDatabase db = context.openOrCreateDatabase(DBHelper.TEMP_DB_PATH,
+//                SQLiteDatabase.OPEN_READWRITE, null);
 
         //TODO---先手动添加一些数据
         circles.add(new Circle(new LatLng(30.51667, 114.31667), 20));

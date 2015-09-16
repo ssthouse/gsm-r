@@ -31,7 +31,7 @@ import com.xunce.gsmr.model.baidumap.BaiduRailWayHolder;
 import com.xunce.gsmr.model.baidumap.MarkerHolder;
 import com.xunce.gsmr.util.PreferenceHelper;
 import com.xunce.gsmr.util.gps.MapHelper;
-import com.xunce.gsmr.view.activity.baidu.MeasureActivity;
+import com.xunce.gsmr.view.activity.baidu.BaiduMeasureActivity;
 import com.xunce.gsmr.view.fragment.CustomMap;
 
 /**
@@ -183,7 +183,7 @@ public class CustomBaiduMap extends Fragment implements CustomMap {
             @Override
             public void onClick(View v) {
                 //开启测量Activity
-                MeasureActivity.start((Activity) context, baiduMap.getMapStatus().target);
+                BaiduMeasureActivity.start((Activity) context, baiduMap.getMapStatus().target);
             }
         });
 

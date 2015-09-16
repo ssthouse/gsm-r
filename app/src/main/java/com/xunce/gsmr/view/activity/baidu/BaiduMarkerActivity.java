@@ -6,20 +6,16 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 
 import com.baidu.location.BDLocation;
 import com.baidu.location.BDLocationListener;
 import com.baidu.location.LocationClient;
 import com.baidu.mapapi.map.BaiduMap;
 import com.baidu.mapapi.map.MapStatus;
-import com.baidu.mapapi.map.MapStatusUpdate;
-import com.baidu.mapapi.map.MapStatusUpdateFactory;
 import com.baidu.mapapi.map.MapView;
 import com.baidu.mapapi.map.MyLocationConfiguration;
 import com.baidu.mapapi.map.MyLocationData;
@@ -43,36 +39,31 @@ import com.xunce.gsmr.view.widget.ZoomControlView;
  * -----如果MarkerItem数据是0-0,定位到自己当前的位置--新建选址
  * Created by ssthouse on 2015/7/17.
  */
-public class MarkerActivity extends AppCompatActivity {
-    private static final String TAG = "MarkerActivity";
-
-    //用于判断当前Activity---被开启的状态
-    private int requestCode;
+public class BaiduMarkerActivity extends AppCompatActivity {
+    private static final String TAG = "BaiduMarkerActivity";
 
     //开启本Activity需要的数据
     private MarkerItem markerItem;
+    private int requestCode;
 
-    //地图View
+    /**
+     * 地图View
+     */
     private MapView mMapView;
-    //地图控制器
     private BaiduMap mBaiduMap;
-    // 定位相关
+
+    /**
+     * 定位相关
+     */
     private LocationClient mLocClient;
-    //跟随----普通---罗盘---三种定位方式
-    private MyLocationConfiguration.LocationMode mCurrentMode =
-            MyLocationConfiguration.LocationMode.NORMAL;
+    //用于Activity开启时的第一次定位
+    private boolean isFistIn = true;
+    private LatLng currentLatLng;
 
     //经纬度的输入框
     private EditText etLatitude, etLongitude;
-    //视图中间的marker
-    private ImageView ivMark;
-    //控制状态的button
-    private ImageButton ibMode;
-
-    //用于Activity开启时的第一次定位
-    private boolean isFistIn = true;
-    //用于判断是否已经定位
-    private boolean isLocated = true;
+    //定位按钮
+    private ImageButton ibLocate;
 
     //定位监听器---每秒触发
     public BDLocationListener myListener = new BDLocationListener() {
@@ -82,16 +73,25 @@ public class MarkerActivity extends AppCompatActivity {
             if (location == null || mMapView == null) {
                 return;
             }
-            //locate(location);
+            //更新我的位置
+            MyLocationData locData = new MyLocationData.Builder()
+                    .accuracy(location.getRadius())
+                            // 此处设置开发者获取到的方向信息，顺时针0-360
+                    .direction(location.getDirection())
+                    .latitude(location.getLatitude())
+                    .longitude(location.getLongitude()).build();
+            mBaiduMap.setMyLocationData(locData);
+            currentLatLng = new LatLng(location.getLatitude(), location.getLongitude());
+            //判断是否第一次进入
             if (isFistIn) {
-                locate(location);
+                locate();
                 isFistIn = false;
             }
         }
     };
 
     public static void start(Activity activity, MarkerItem markerItem, int requestCode) {
-        Intent intent = new Intent(activity, MarkerActivity.class);
+        Intent intent = new Intent(activity, BaiduMarkerActivity.class);
         intent.putExtra(Constant.EXTRA_KEY_MARKER_ITEM, markerItem);
         intent.putExtra(Constant.EXTRA_KEY_REQUEST_CODE, requestCode);
         activity.startActivityForResult(intent, requestCode);
@@ -101,14 +101,13 @@ public class MarkerActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_mark);
-        TransparentStyle.setTransparentStyle(this,R.color.color_primary);
+        setContentView(R.layout.activity_baidu_mark);
+        TransparentStyle.setTransparentStyle(this, R.color.color_primary);
 
         //获取数据
         MarkerItem wrongItem = (MarkerItem) getIntent()
                 .getSerializableExtra(Constant.EXTRA_KEY_MARKER_ITEM);
         markerItem = DBHelper.getMarkerItemInDB(wrongItem);
-
         requestCode = getIntent().getIntExtra(Constant.EXTRA_KEY_REQUEST_CODE,
                 BaiduPrjEditActivity.REQUEST_CODE_MARKER_ACTIVITY);
 
@@ -151,26 +150,6 @@ public class MarkerActivity extends AppCompatActivity {
                     new LatLng(markerItem.getLatitude(), markerItem.getLongitude()));
         }
 
-        //地图的触摸监听事件
-        mBaiduMap.setOnMapTouchListener(new BaiduMap.OnMapTouchListener() {
-            @Override
-            public void onTouch(MotionEvent motionEvent) {
-                //一旦摸到---就表示未定位
-                if (motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
-                    isLocated = false;
-                    ibMode.setImageResource(R.drawable.locate1);
-                }
-
-//                //去除动画效果
-//                if (motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
-//                    AnimHelper.rotateBigAnim(MarkerActivity.this, ivMark);
-//                }
-//                if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
-//                    AnimHelper.rotateSmallAnim(MarkerActivity.this, ivMark);
-//                }
-            }
-        });
-
         //地图状态变化监听---用于监听选取的Marker位置
         mBaiduMap.setOnMapStatusChangeListener(new BaiduMap.OnMapStatusChangeListener() {
             @Override
@@ -190,8 +169,7 @@ public class MarkerActivity extends AppCompatActivity {
             }
         });
 
-        ivMark = (ImageView) findViewById(R.id.id_iv_mark_icon);
-
+        //经纬度输入
         etLatitude = (EditText) findViewById(R.id.id_et_latitude);
         etLongitude = (EditText) findViewById(R.id.id_et_longitude);
 
@@ -210,81 +188,30 @@ public class MarkerActivity extends AppCompatActivity {
                     setResult(Constant.RESULT_CODE_OK);
                     //退出
                     finish();
-                }else{
-                    ToastHelper.showSnack(MarkerActivity.this, ivMark, "请选择有效数据");
+                } else {
+                    ToastHelper.showSnack(BaiduMarkerActivity.this, etLatitude, "请选择有效数据");
                 }
             }
         });
 
-        //模式切换按钮---兼定位按钮
-        ibMode = (ImageButton) findViewById(R.id.id_ib_locate);
-        ibMode.setOnClickListener(new View.OnClickListener() {
+        //定位按钮
+        ibLocate = (ImageButton) findViewById(R.id.id_ib_locate);
+        ibLocate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (isLocated) {
-                    //如果已经定位了---切换视图
-                    if (mCurrentMode == MyLocationConfiguration.LocationMode.NORMAL) {
-                       // LogHelper.Log(TAG, "change to compass mode");
-                        mCurrentMode = MyLocationConfiguration.LocationMode.COMPASS;
-                        ibMode.setImageResource(R.drawable.location_mode_2);
-                        enableEagle();
-                    } else if (mCurrentMode == MyLocationConfiguration.LocationMode.COMPASS) {
-                       // LogHelper.Log(TAG, "change to normal mode");
-                        mCurrentMode = MyLocationConfiguration.LocationMode.NORMAL;
-                        ibMode.setImageResource(R.drawable.location_mode_1);
-                        disableEagle();
-                    }
-                } else {
-                    //手动定位
-                    locate(mLocClient.getLastKnownLocation());
-                   // LogHelper.Log(TAG, "located!!!");
-                    isLocated = true;
-                    //判断当前状态---切换图标
-                    if (mCurrentMode == MyLocationConfiguration.LocationMode.NORMAL) {
-                        ibMode.setImageResource(R.drawable.location_mode_1);
-                    } else if (mCurrentMode == MyLocationConfiguration.LocationMode.COMPASS) {
-                        ibMode.setImageResource(R.drawable.location_mode_2);
-                    }
-                }
+                locate();
             }
         });
     }
 
     /**
      * 根据BDLocation定位
-     *
-     * @param location
      */
-    private void locate(BDLocation location) {
-        if(location == null){
+    private void locate() {
+        if (currentLatLng == null) {
             return;
         }
-        //更新我的位置
-        MyLocationData locData = new MyLocationData.Builder()
-                .accuracy(location.getRadius())
-                        // 此处设置开发者获取到的方向信息，顺时针0-360
-                .direction(location.getDirection())
-                .latitude(location.getLatitude())
-                .longitude(location.getLongitude()).build();
-        mBaiduMap.setMyLocationData(locData);
-        //更新地图中心点
-        LatLng ll = new LatLng(location.getLatitude(),
-                location.getLongitude());
-        MapHelper.animateToPoint(mBaiduMap, ll);
-    }
-
-    private void enableEagle() {
-        //改变可视角度
-        MapStatus ms = new MapStatus.Builder(mBaiduMap.getMapStatus()).overlook(-100).build();
-        MapStatusUpdate u = MapStatusUpdateFactory.newMapStatus(ms);
-        mBaiduMap.animateMapStatus(u);
-    }
-
-    private void disableEagle() {
-        //改变可视角度
-        MapStatus ms = new MapStatus.Builder(mBaiduMap.getMapStatus()).overlook(0).build();
-        MapStatusUpdate u = MapStatusUpdateFactory.newMapStatus(ms);
-        mBaiduMap.animateMapStatus(u);
+        MapHelper.animateToPoint(mBaiduMap, currentLatLng);
     }
 
     @Override
@@ -301,7 +228,7 @@ public class MarkerActivity extends AppCompatActivity {
             case R.id.id_action_load_marker:
                 break;
             case android.R.id.home:
-                if(requestCode == BaiduPrjEditActivity.REQUEST_CODE_MARKER_EDIT_ACTIVITY){
+                if (requestCode == BaiduPrjEditActivity.REQUEST_CODE_MARKER_EDIT_ACTIVITY) {
                     finish();
                     return true;
                 }
@@ -314,7 +241,7 @@ public class MarkerActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        if(requestCode == BaiduPrjEditActivity.REQUEST_CODE_MARKER_EDIT_ACTIVITY){
+        if (requestCode == BaiduPrjEditActivity.REQUEST_CODE_MARKER_EDIT_ACTIVITY) {
             finish();
             return;
         }

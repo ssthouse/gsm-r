@@ -25,7 +25,6 @@ import com.xunce.gsmr.view.activity.gaode.GaodePrjEditActivity;
 import com.xunce.gsmr.view.adapter.PrjLvAdapter;
 import com.xunce.gsmr.view.style.TransparentStyle;
 
-
 /**
  * 主界面选择工程的Activity
  * Created by ssthouse on 2015/7/17.

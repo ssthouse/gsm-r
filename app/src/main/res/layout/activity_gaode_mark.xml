@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    android:orientation="vertical"
+    tools:context=".activity.MarkerActivity">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <!-- 地图 -->
+        <com.amap.api.maps.MapView
+            android:id="@+id/id_map_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+        <!--上方的输入框-->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:background="@color/trans_gray"
+            android:orientation="horizontal">
+
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1">
+
+                <EditText
+                    android:inputType="number"
+                    android:id="@+id/id_et_latitude"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:hint="纬度" />
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1">
+
+                <EditText
+                    android:inputType="number"
+                    android:id="@+id/id_et_longitude"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:hint="经度" />
+
+            </android.support.design.widget.TextInputLayout>
+
+            <Button
+                android:id="@+id/id_btn_submit"
+                android:layout_width="80dp"
+                android:layout_height="match_parent"
+                android:background="@drawable/selector_btn_blue_2_gray"
+                android:text="确认"
+                android:textColor="@color/white"
+                android:textSize="@dimen/text_size_normal" />
+        </LinearLayout>
+
+        <!--定位按钮-->
+        <ImageButton
+            android:id="@+id/id_ib_locate"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_gravity="bottom|left"
+            android:layout_margin="8dp"
+            android:background="@color/white"
+            android:src="@drawable/location_mode_1" />
+
+        <!--中心图标-->
+        <ImageView
+            android:id="@+id/id_iv_mark_icon"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_gravity="center"
+            android:src="@drawable/mark_icon" />
+    </FrameLayout>
+</LinearLayout>
+

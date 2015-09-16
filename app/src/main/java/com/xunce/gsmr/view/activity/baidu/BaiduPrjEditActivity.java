@@ -98,7 +98,7 @@ public class BaiduPrjEditActivity extends AppCompatActivity {
                 //先保存进数据库---然后传递
                 MarkerItem markerItem = new MarkerItem(prjItem);
                 markerItem.save();
-                MarkerActivity.start(BaiduPrjEditActivity.this, markerItem, REQUEST_CODE_MARKER_ACTIVITY);
+                BaiduMarkerActivity.start(BaiduPrjEditActivity.this, markerItem, REQUEST_CODE_MARKER_ACTIVITY);
             }
         });
     }
@@ -112,7 +112,7 @@ public class BaiduPrjEditActivity extends AppCompatActivity {
         customMap.hideInfoWindow();
         //生成MarkerItem--跳转到MarkerEditActivity
         LatLng latLng = customMap.getCurrentMarkerLatLng();
-        MarkerActivity.start(this, new MarkerItem(prjItem.getPrjName(), latLng),
+        BaiduMarkerActivity.start(this, new MarkerItem(prjItem.getPrjName(), latLng),
                 BaiduPrjEditActivity.REQUEST_CODE_MARKER_EDIT_ACTIVITY);
     }
 
