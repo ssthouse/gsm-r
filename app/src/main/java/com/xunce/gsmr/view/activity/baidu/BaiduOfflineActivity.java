@@ -31,7 +31,7 @@ import java.util.ArrayList;
 /**
  * 管理离线地图的Activity
  */
-public class OfflineActivity extends Activity implements MKOfflineMapListener {
+public class BaiduOfflineActivity extends Activity implements MKOfflineMapListener {
     private static final String TAG = "OffLineActivity";
 
     //离线地图管理器
@@ -52,8 +52,8 @@ public class OfflineActivity extends Activity implements MKOfflineMapListener {
     private ArrayList<MKOLUpdateElement> localMapList = null;
     private LocalMapAdapter localMapAdapter = null;
 
-    public static void start(Context context){
-        context.startActivity(new Intent(context, OfflineActivity.class));
+    public static void start(Context context) {
+        context.startActivity(new Intent(context, BaiduOfflineActivity.class));
     }
 
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,10 +78,10 @@ public class OfflineActivity extends Activity implements MKOfflineMapListener {
                 lm.setVisibility(View.VISIBLE);
                 cl.setVisibility(View.GONE);
                 //改变按钮颜色
-                btnDownloadList.setBackgroundColor(0xffffffff);
-                btnDownloadList.setTextColor(0xff424242);
-                btnCityList.setBackgroundColor(0x00000000);
-                btnCityList.setTextColor(0xffffffff);
+                btnDownloadList.setTextColor(getResources().getColor(R.color.white));
+                btnDownloadList.setBackgroundColor(getResources().getColor(R.color.color_primary));
+                btnCityList.setTextColor(getResources().getColor(R.color.color_primary));
+                btnCityList.setBackgroundColor(getResources().getColor(R.color.white));
             }
         });
         btnCityList = (Button) findViewById(R.id.id_btn_city_list);
@@ -93,10 +93,10 @@ public class OfflineActivity extends Activity implements MKOfflineMapListener {
                 lm.setVisibility(View.GONE);
                 cl.setVisibility(View.VISIBLE);
                 //改变按钮颜色
-                btnCityList.setBackgroundColor(0xffffffff);
-                btnCityList.setTextColor(0xff424242);
-                btnDownloadList.setBackgroundColor(0x00000000);
-                btnDownloadList.setTextColor(0xffffffff);
+                btnDownloadList.setTextColor(getResources().getColor(R.color.color_primary));
+                btnDownloadList.setBackgroundColor(getResources().getColor(R.color.white));
+                btnCityList.setTextColor(getResources().getColor(R.color.white));
+                btnCityList.setBackgroundColor(getResources().getColor(R.color.color_primary));
             }
         });
 
@@ -121,17 +121,17 @@ public class OfflineActivity extends Activity implements MKOfflineMapListener {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if(s == null){
+                if (s == null) {
                     return;
                 }
-                if(TextUtils.isEmpty(s)){
+                if (TextUtils.isEmpty(s)) {
                     currentCityList = mOffline.getOfflineCityList();
                     return;
                 }
                 //一旦文字发生变化----更新下面的listView中的数据--
-                if(mOffline.searchCity(s.toString()) == null){
+                if (mOffline.searchCity(s.toString()) == null) {
                     currentCityList.clear();
-                }else {
+                } else {
                     currentCityList = mOffline.searchCity(s.toString());
                 }
                 currentCityAdapter.notifyDataSetChanged();
@@ -162,10 +162,11 @@ public class OfflineActivity extends Activity implements MKOfflineMapListener {
 
     /**
      * 开始下载
+     *
      * @param mkolSearchRecord
      */
-    private void startDownload(MKOLSearchRecord mkolSearchRecord){
-        if(mkolSearchRecord == null){
+    private void startDownload(MKOLSearchRecord mkolSearchRecord) {
+        if (mkolSearchRecord == null) {
             return;
         }
         mOffline.start(mkolSearchRecord.cityID);
@@ -250,7 +251,7 @@ public class OfflineActivity extends Activity implements MKOfflineMapListener {
             break;
             case MKOfflineMap.TYPE_NEW_OFFLINE:
                 // 有新离线地图安装
-                Log.d("OfflineActivity", String.format("add offlinemap num:%d", state));
+                Log.d("BaiduOfflineActivity", String.format("add offlinemap num:%d", state));
                 break;
             case MKOfflineMap.TYPE_VER_UPDATE:
                 // 版本更新提示
@@ -282,7 +283,7 @@ public class OfflineActivity extends Activity implements MKOfflineMapListener {
         @Override
         public View getView(int index, View view, ViewGroup arg2) {
             MKOLUpdateElement updateElement = (MKOLUpdateElement) getItem(index);
-            view = View.inflate(OfflineActivity.this,
+            view = View.inflate(BaiduOfflineActivity.this,
                     R.layout.view_lv_offline_localmap, null);
             initViewItem(view, updateElement);
             return view;
@@ -319,7 +320,7 @@ public class OfflineActivity extends Activity implements MKOfflineMapListener {
 //                    Intent intent = new Intent();
 //                    intent.putExtra("y", e.geoPt.latitude);
 //                    intent.putExtra("x", e.geoPt.longitude);
-//                    intent.setClass(OfflineActivity.this, BaseMapDemo.class);
+//                    intent.setClass(BaiduOfflineActivity.this, BaseMapDemo.class);
 //                    startActivity(intent);
 //                }
 //            });
@@ -327,7 +328,7 @@ public class OfflineActivity extends Activity implements MKOfflineMapListener {
     }
 
     //当前搜索的City的Adapter
-    public class CurrentCityAdapter extends BaseAdapter{
+    public class CurrentCityAdapter extends BaseAdapter {
 
         @Override
         public int getCount() {
@@ -347,13 +348,13 @@ public class OfflineActivity extends Activity implements MKOfflineMapListener {
         @Override
         public View getView(final int position, View convertView, ViewGroup parent) {
             ViewHolder viewHolder;
-            if(convertView == null){
-                convertView = View.inflate(OfflineActivity.this, R.layout.view_list_item_current_city, null);
+            if (convertView == null) {
+                convertView = View.inflate(BaiduOfflineActivity.this, R.layout.view_list_item_current_city, null);
                 viewHolder = new ViewHolder();
                 viewHolder.tv = (TextView) convertView.findViewById(R.id.id_tv);
                 viewHolder.btn = (Button) convertView.findViewById(R.id.id_btn_down_load);
                 convertView.setTag(viewHolder);
-            }else{
+            } else {
                 viewHolder = (ViewHolder) convertView.getTag();
             }
             //填充数据
@@ -370,7 +371,7 @@ public class OfflineActivity extends Activity implements MKOfflineMapListener {
             return convertView;
         }
 
-        class ViewHolder{
+        class ViewHolder {
             TextView tv;
             Button btn;
         }

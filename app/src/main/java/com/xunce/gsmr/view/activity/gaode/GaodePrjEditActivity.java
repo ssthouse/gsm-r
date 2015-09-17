@@ -26,7 +26,6 @@ import com.xunce.gsmr.util.ViewHelper;
 import com.xunce.gsmr.view.activity.PicGridActivity;
 import com.xunce.gsmr.view.activity.PrjSelectActivity;
 import com.xunce.gsmr.view.activity.SettingActivity;
-import com.xunce.gsmr.view.activity.baidu.OfflineActivity;
 
 /**
  * 高德地图编辑Activity
@@ -277,7 +276,7 @@ public class GaodePrjEditActivity extends GaodeBaseActivity {
                 break;
             //开启离线地图
             case R.id.id_action_offline_map:
-                OfflineActivity.start(this);
+                GaodeOfflineActivity.start(this);
                 break;
             //设置
             case R.id.id_action_setting:

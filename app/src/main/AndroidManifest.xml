@@ -122,13 +122,14 @@
         <!--离线地图-->
         <activity
             android:screenOrientation="portrait"
-            android:name=".view.activity.baidu.OfflineActivity"/>
+            android:name=".view.activity.baidu.BaiduOfflineActivity"/>
 
         <!--TODO-高德地图-->
         <activity android:name=".view.activity.gaode.GaodeBaseActivity"/>
         <activity android:name=".view.activity.gaode.GaodePrjEditActivity"/>
         <activity android:name=".view.activity.gaode.GaodeMeasureActivity"/>
         <activity android:name=".view.activity.gaode.GaodeMarkerActivity"/>
+        <activity android:name=".view.activity.gaode.GaodeOfflineActivity"/>
     </application>
 
 </manifest>

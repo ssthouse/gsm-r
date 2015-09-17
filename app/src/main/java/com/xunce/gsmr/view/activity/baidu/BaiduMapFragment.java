@@ -1,4 +1,4 @@
-package com.xunce.gsmr.view.fragment.baidu;
+package com.xunce.gsmr.view.activity.baidu;
 
 import android.app.Activity;
 import android.app.Fragment;
@@ -31,15 +31,14 @@ import com.xunce.gsmr.model.baidumap.BaiduRailWayHolder;
 import com.xunce.gsmr.model.baidumap.MarkerHolder;
 import com.xunce.gsmr.util.PreferenceHelper;
 import com.xunce.gsmr.util.gps.MapHelper;
-import com.xunce.gsmr.view.activity.baidu.BaiduMeasureActivity;
 
 /**
  * 包含百度地图的一些组件
  * 简化Activity代码
  * Created by ssthouse on 2015/9/13.
  */
-public class CustomBaiduMap extends Fragment {
-    private static final String TAG = "CustomBaiduMap";
+public class BaiduMapFragment extends Fragment {
+    private static final String TAG = "BaiduMapFragment";
 
     /**
      * 上下文
@@ -100,10 +99,10 @@ public class CustomBaiduMap extends Fragment {
      * @param bundle
      * @return
      */
-    public static CustomBaiduMap getInstance(Bundle bundle) {
-        CustomBaiduMap customBaiduMap = new CustomBaiduMap();
-        customBaiduMap.setArguments(bundle);
-        return customBaiduMap;
+    public static BaiduMapFragment getInstance(Bundle bundle) {
+        BaiduMapFragment baiduMapFragment = new BaiduMapFragment();
+        baiduMapFragment.setArguments(bundle);
+        return baiduMapFragment;
     }
 
     @Nullable

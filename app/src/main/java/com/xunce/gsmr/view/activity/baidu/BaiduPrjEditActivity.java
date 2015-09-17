@@ -28,7 +28,6 @@ import com.xunce.gsmr.util.ViewHelper;
 import com.xunce.gsmr.view.activity.PicGridActivity;
 import com.xunce.gsmr.view.activity.PrjSelectActivity;
 import com.xunce.gsmr.view.activity.SettingActivity;
-import com.xunce.gsmr.view.fragment.baidu.CustomBaiduMap;
 import com.xunce.gsmr.view.style.TransparentStyle;
 
 /**
@@ -46,7 +45,7 @@ public class BaiduPrjEditActivity extends AppCompatActivity {
     /**
      * 地图总控制器
      */
-    private CustomBaiduMap customBaiduMap;
+    private BaiduMapFragment baiduMapFragment;
 
     /**
      * 用于点击两次退出
@@ -100,9 +99,9 @@ public class BaiduPrjEditActivity extends AppCompatActivity {
         //启动Map的片段
         Bundle bundle = new Bundle();
         bundle.putSerializable("prjItem", prjItem);
-        customBaiduMap = CustomBaiduMap.getInstance(bundle);
+        baiduMapFragment = BaiduMapFragment.getInstance(bundle);
         getFragmentManager().beginTransaction().replace(R.id.id_fragment_container,
-                (Fragment) customBaiduMap).commit();
+                (Fragment) baiduMapFragment).commit();
 
         //选址
         findViewById(R.id.id_btn_mark).setOnClickListener(new View.OnClickListener() {
@@ -142,28 +141,28 @@ public class BaiduPrjEditActivity extends AppCompatActivity {
             public void onCheckedChanged(RadioGroup group, int checkedId) {
                 switch (checkedId) {
                     case R.id.id_rb_mode_normal: {
-                        customBaiduMap.getBaiduMap().setMapType(BaiduMap.MAP_TYPE_NORMAL);
-                        MapStatus ms = new MapStatus.Builder(customBaiduMap.getBaiduMap()
+                        baiduMapFragment.getBaiduMap().setMapType(BaiduMap.MAP_TYPE_NORMAL);
+                        MapStatus ms = new MapStatus.Builder(baiduMapFragment.getBaiduMap()
                                 .getMapStatus()).overlook(0).build();
                         MapStatusUpdate u = MapStatusUpdateFactory.newMapStatus(ms);
-                        customBaiduMap.getBaiduMap().animateMapStatus(u);
+                        baiduMapFragment.getBaiduMap().animateMapStatus(u);
                         break;
                     }
                     case R.id.id_rb_mode_satellite: {
-                        customBaiduMap.getBaiduMap().setMapType(BaiduMap.MAP_TYPE_SATELLITE);
-                        MapStatus ms = new MapStatus.Builder(customBaiduMap.getBaiduMap()
+                        baiduMapFragment.getBaiduMap().setMapType(BaiduMap.MAP_TYPE_SATELLITE);
+                        MapStatus ms = new MapStatus.Builder(baiduMapFragment.getBaiduMap()
                                 .getMapStatus()).overlook(0).build();
                         MapStatusUpdate u = MapStatusUpdateFactory.newMapStatus(ms);
-                        customBaiduMap.getBaiduMap().animateMapStatus(u);
+                        baiduMapFragment.getBaiduMap().animateMapStatus(u);
                         break;
                     }
                     case R.id.id_rb_mode_3d: {
                         int overlookAngle = -45;
-                        MapStatus ms = new MapStatus.Builder(customBaiduMap.getBaiduMap()
+                        MapStatus ms = new MapStatus.Builder(baiduMapFragment.getBaiduMap()
                                 .getMapStatus()).overlook(overlookAngle).build();
                         MapStatusUpdate u = MapStatusUpdateFactory.newMapStatus(ms);
-                        customBaiduMap.getBaiduMap().animateMapStatus(u);
-                        customBaiduMap.getBaiduMap().setMapType(BaiduMap.MAP_TYPE_NORMAL);
+                        baiduMapFragment.getBaiduMap().animateMapStatus(u);
+                        baiduMapFragment.getBaiduMap().setMapType(BaiduMap.MAP_TYPE_NORMAL);
                         break;
                     }
                 }
@@ -177,9 +176,9 @@ public class BaiduPrjEditActivity extends AppCompatActivity {
      * @param v
      */
     public void clickEdit(View v) {
-        customBaiduMap.hideInfoWindow();
+        baiduMapFragment.hideInfoWindow();
         //生成MarkerItem--跳转到MarkerEditActivity
-        LatLng latLng = customBaiduMap.getCurrentMarkerLatLng();
+        LatLng latLng = baiduMapFragment.getCurrentMarkerLatLng();
         BaiduMarkerActivity.start(this, new MarkerItem(prjItem.getPrjName(), latLng),
                 BaiduPrjEditActivity.REQUEST_CODE_MARKER_EDIT_ACTIVITY);
     }
@@ -190,8 +189,8 @@ public class BaiduPrjEditActivity extends AppCompatActivity {
      * @param v
      */
     public void clickPhoto(View v) {
-        customBaiduMap.hideInfoWindow();
-        LatLng latLng = customBaiduMap.getCurrentMarkerLatLng();
+        baiduMapFragment.hideInfoWindow();
+        LatLng latLng = baiduMapFragment.getCurrentMarkerLatLng();
         PicGridActivity.start(this, new MarkerItem(prjItem.getPrjName(), latLng),
                 BaiduPrjEditActivity.REQUEST_CODE_PICTURE_ACTIVITY);
     }
@@ -213,7 +212,7 @@ public class BaiduPrjEditActivity extends AppCompatActivity {
             case R.id.id_action_load_map:
                 //TODO---加载铁路地图
                 //首先判断数据库是否绑定
-                customBaiduMap.loadRail();
+                baiduMapFragment.loadRail();
                 break;
             //数据导出
             case R.id.id_action_export_data:
@@ -221,7 +220,7 @@ public class BaiduPrjEditActivity extends AppCompatActivity {
                 break;
             case R.id.id_action_offline_map:
                 //开启离线地图管理Activity
-                OfflineActivity.start(this);
+                BaiduOfflineActivity.start(this);
                 break;
             //设置
             case R.id.id_action_setting:
@@ -240,12 +239,12 @@ public class BaiduPrjEditActivity extends AppCompatActivity {
         switch (requestCode) {
             case REQUEST_CODE_MARKER_ACTIVITY:
                 if (resultCode == Constant.RESULT_CODE_OK) {
-                    customBaiduMap.loadMarker();
+                    baiduMapFragment.loadMarker();
                 }
                 break;
             case REQUEST_CODE_MARKER_EDIT_ACTIVITY:
                 if (resultCode == Constant.RESULT_CODE_OK) {
-                    customBaiduMap.loadMarker();
+                    baiduMapFragment.loadMarker();
                 }
                 break;
             case Constant.REQUEST_CODE_DB_FILE:
@@ -278,24 +277,24 @@ public class BaiduPrjEditActivity extends AppCompatActivity {
     @Override
     protected void onPause() {
         super.onPause();
-        customBaiduMap.pause();
+        baiduMapFragment.pause();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        customBaiduMap.resume();
+        baiduMapFragment.resume();
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        customBaiduMap.destory();
+        baiduMapFragment.destory();
     }
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
-        customBaiduMap.saveInstanceState(outState);
+        baiduMapFragment.saveInstanceState(outState);
         super.onSaveInstanceState(outState);
     }
 }
