@@ -32,14 +32,13 @@ import com.xunce.gsmr.model.baidumap.MarkerHolder;
 import com.xunce.gsmr.util.PreferenceHelper;
 import com.xunce.gsmr.util.gps.MapHelper;
 import com.xunce.gsmr.view.activity.baidu.BaiduMeasureActivity;
-import com.xunce.gsmr.view.fragment.CustomMap;
 
 /**
  * 包含百度地图的一些组件
  * 简化Activity代码
  * Created by ssthouse on 2015/9/13.
  */
-public class CustomBaiduMap extends Fragment implements CustomMap {
+public class CustomBaiduMap extends Fragment {
     private static final String TAG = "CustomBaiduMap";
 
     /**
@@ -241,9 +240,6 @@ public class CustomBaiduMap extends Fragment implements CustomMap {
         baiduMap.hideInfoWindow();
     }
 
-
-
-    @Override
     public LatLng getCurrentMarkerLatLng() {
         return markerHolder.getCurrentMarker().getPosition();
     }
@@ -294,7 +290,6 @@ public class CustomBaiduMap extends Fragment implements CustomMap {
     /**
      * 定位到当前接收到的定位点
      */
-    @Override
     public void locate() {
         if (currentBDLocation != null) {
             //更新我的位置
@@ -333,12 +328,10 @@ public class CustomBaiduMap extends Fragment implements CustomMap {
     /**
      * 加载Marker图标
      */
-    @Override
     public void loadMarker() {
         markerHolder.initMarkerList();
     }
 
-    @Override
     public LatLng getTarget() {
         return baiduMap.getMapStatus().target;
     }
@@ -346,32 +339,44 @@ public class CustomBaiduMap extends Fragment implements CustomMap {
     /**
      * 加载Rail的图形数据
      */
-    @Override
     public void loadRail() {
         baiduRailWayHolder.draw(baiduMap);
     }
 
+    //getter---and---setter--------------------------------------------
+    public MapView getMapView() {
+        return mapView;
+    }
+
+    public void setMapView(MapView mapView) {
+        this.mapView = mapView;
+    }
+
+    public BaiduMap getBaiduMap() {
+        return baiduMap;
+    }
+
+    public void setBaiduMap(BaiduMap baiduMap) {
+        this.baiduMap = baiduMap;
+    }
+
     //--------------生命周期--------------------------------------------
-    @Override
     public void create(Bundle savedInstanceState) {
 
     }
 
-    @Override
     public void pause() {
         if (mapView != null) {
             mapView.onPause();
         }
     }
 
-    @Override
     public void resume() {
         if (mapView != null) {
             mapView.onResume();
         }
     }
 
-    @Override
     public void destory() {
         if (mapView != null) {
             mapView.onDestroy();
@@ -380,7 +385,7 @@ public class CustomBaiduMap extends Fragment implements CustomMap {
             locationClient.stop();
         }
     }
-    @Override
+
     public void saveInstanceState(Bundle state) {
     }
 

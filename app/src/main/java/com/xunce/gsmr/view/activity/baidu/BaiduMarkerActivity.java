@@ -42,7 +42,9 @@ import com.xunce.gsmr.view.widget.ZoomControlView;
 public class BaiduMarkerActivity extends AppCompatActivity {
     private static final String TAG = "BaiduMarkerActivity";
 
-    //开启本Activity需要的数据
+    /**
+     * 开启本Activity需要的数据
+     */
     private MarkerItem markerItem;
     private int requestCode;
 
@@ -128,6 +130,7 @@ public class BaiduMarkerActivity extends AppCompatActivity {
      */
     private void initView() {
         ViewHelper.initActionBar(this, getSupportActionBar(), "选址");
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         mMapView = (MapView) findViewById(R.id.id_map_view);
         mMapView.showZoomControls(false);
@@ -179,7 +182,6 @@ public class BaiduMarkerActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (MarkerHelper.isDataValid(etLatitude, etLongitude)) {
-
                     //保存数据---并改变原来的照片的文件夹的名称
                     LatLng latLng = new LatLng(MarkerHelper.getLatitude(etLatitude),
                             MarkerHelper.getLongitude(etLongitude));

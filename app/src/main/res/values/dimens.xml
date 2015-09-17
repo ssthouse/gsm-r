@@ -13,4 +13,14 @@
     <dimen name="text_size_action_title">22sp</dimen>
 
     <dimen name="text_size_button">16dp</dimen>
+
+    <!--选址按钮大小-->
+    <dimen name="btn_mark_size">48dp</dimen>
+    <dimen name="btn_map_mode_size">48dp</dimen>
+
+    <!--地图模式的dimen-->
+    <dimen name="map_mode_size">48dp</dimen>
+    <dimen name="map_mode_margin">8dp</dimen>
+    <dimen name="map_mode_item_width">90dp</dimen>
+
 </resources>

@@ -114,7 +114,7 @@ public class RoutePlanActivity extends Activity {
         btnGetStartPoint.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                GetLatLngActivity.start(RoutePlanActivity.this, requestCodeStart);
+                BaiduGetLatLngActivity.start(RoutePlanActivity.this, requestCodeStart);
             }
         });
 
@@ -122,7 +122,7 @@ public class RoutePlanActivity extends Activity {
         btnGetEndPOint.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                GetLatLngActivity.start(RoutePlanActivity.this, requestCodeEnd);
+                BaiduGetLatLngActivity.start(RoutePlanActivity.this, requestCodeEnd);
             }
         });
 

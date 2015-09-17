@@ -10,22 +10,27 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
+    <!--地图模式选择-->
+    <include layout="@layout/view_map_mode" />
+
     <!--选址按钮-->
     <Button
         android:id="@+id/id_btn_mark"
-        android:layout_width="match_parent"
-        android:layout_marginRight="100dp"
-        android:layout_height="48dp"
-        android:background="@drawable/btn_selector"
+        android:layout_width="@dimen/btn_mark_size"
+        android:layout_height="@dimen/btn_mark_size"
+        android:layout_gravity="right"
+        android:layout_marginTop="66dp"
+        android:layout_marginRight="8dp"
+        android:background="@color/white"
         android:text="选址"
         android:textSize="@dimen/text_size_button" />
 
     <!--下面的功能键-->
     <include
-        android:layout_gravity="bottom"
+        layout="@layout/activity_prj_edit_function"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        layout="@layout/activity_prj_edit_function"/>
+        android:layout_gravity="bottom" />
 
     <!--公里标输入框-->
     <include layout="@layout/view_position" />

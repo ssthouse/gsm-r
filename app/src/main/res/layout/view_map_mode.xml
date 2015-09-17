@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <!--打开地图模式菜单-->
+    <ImageButton
+        android:background="@color/white"
+        android:id="@+id/id_ib_open_map_mode"
+        android:layout_width="@dimen/btn_map_mode_size"
+        android:layout_height="@dimen/btn_map_mode_size"
+        android:layout_gravity="right|top"
+        android:layout_margin="8dp" />
+
+    <RadioGroup
+        android:visibility="invisible"
+        android:background="@color/white"
+        android:id="@+id/id_rg_map_mode"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="right|top"
+        android:layout_marginRight="66dp"
+        android:layout_marginTop="@dimen/map_mode_margin"
+        android:checkedButton="@+id/id_rb_mode_normal"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <!--正常状态-->
+        <RadioButton
+            android:id="@+id/id_rb_mode_normal"
+            android:layout_width="@dimen/map_mode_item_width"
+            android:layout_height="48dp"
+            android:text="标准地图" />
+
+        <!--卫星状态-->
+        <RadioButton
+            android:id="@+id/id_rb_mode_satellite"
+            android:layout_width="@dimen/map_mode_item_width"
+            android:layout_height="48dp"
+            android:text="卫星地图" />
+
+        <!--3D状态-->
+        <RadioButton
+            android:id="@+id/id_rb_mode_3d"
+            android:layout_width="@dimen/map_mode_item_width"
+            android:layout_height="48dp"
+            android:text="3D地图" />
+    </RadioGroup>
+
+</FrameLayout>

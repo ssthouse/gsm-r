@@ -134,7 +134,7 @@ public class GaodeBaseActivity extends AppCompatActivity implements LocationSour
      */
     public void showLocate() {
         aMap.setLocationSource(this);// 设置定位监听
-        aMap.getUiSettings().setMyLocationButtonEnabled(true); // 是否显示默认的定位按钮
+        aMap.getUiSettings().setMyLocationButtonEnabled(false); // 是否显示默认的定位按钮
         aMap.setMyLocationEnabled(true);// 是否可触发定位并显示定位层
     }
 

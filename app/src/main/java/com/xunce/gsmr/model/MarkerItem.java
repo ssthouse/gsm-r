@@ -99,6 +99,27 @@ public class MarkerItem extends Model implements Serializable {
     }
 
 
+    /**
+     * 改变MarkerItem的经纬度
+     * @param latLng
+     */
+    public void changeName(com.amap.api.maps.model.LatLng latLng) {
+        //先改变文件路径
+        File file = new File(Constant.PICTURE_PATH + this.getPrjName() + "/" +
+                +this.getLatitude() + "_" + this.getLongitude());
+        file.renameTo(new File(Constant.PICTURE_PATH + this.getPrjName() + "/" +
+                +latLng.latitude + "_" + latLng.longitude));
+        //修改数据
+        this.setLatitude(latLng.latitude);
+        this.setLongitude(latLng.longitude);
+        //保存数据
+        this.save();
+    }
+
+    /**
+     * 改变MarkerItem的经纬度
+     * @param latLng
+     */
     public void changeName(LatLng latLng) {
         //先改变文件路径
         File file = new File(Constant.PICTURE_PATH + this.getPrjName() + "/" +

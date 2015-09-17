@@ -37,8 +37,8 @@ import com.xunce.gsmr.view.widget.ZoomControlView;
  * 取点Activity
  * Created by ssthouse on 2015/7/24.
  */
-public class GetLatLngActivity extends AppCompatActivity {
-    private static final String TAG = "GetLatLngActivity";
+public class BaiduGetLatLngActivity extends AppCompatActivity {
+    private static final String TAG = "BaiduGetLatLngActivity";
 
     //地图View
     private MapView mMapView;
@@ -80,7 +80,7 @@ public class GetLatLngActivity extends AppCompatActivity {
 
 
     public static void start(Activity activity, int requestCode) {
-        Intent intent = new Intent(activity, GetLatLngActivity.class);
+        Intent intent = new Intent(activity, BaiduGetLatLngActivity.class);
         intent.putExtra(Constant.EXTRA_KEY_REQUEST_CODE, requestCode);
         activity.startActivityForResult(intent, requestCode);
     }
@@ -132,10 +132,10 @@ public class GetLatLngActivity extends AppCompatActivity {
                     ibMode.setImageResource(R.drawable.locate1);
                 }
                 if (motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
-                    AnimHelper.rotateBigAnim(GetLatLngActivity.this, ivMark);
+                    AnimHelper.rotateBigAnim(BaiduGetLatLngActivity.this, ivMark);
                 }
                 if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
-                    AnimHelper.rotateSmallAnim(GetLatLngActivity.this, ivMark);
+                    AnimHelper.rotateSmallAnim(BaiduGetLatLngActivity.this, ivMark);
                 }
             }
         });
@@ -177,7 +177,7 @@ public class GetLatLngActivity extends AppCompatActivity {
                     //退出
                     finish();
                 } else {
-                    ToastHelper.showSnack(GetLatLngActivity.this, ivMark, "请选择有效数据");
+                    ToastHelper.showSnack(BaiduGetLatLngActivity.this, ivMark, "请选择有效数据");
                 }
             }
         });

@@ -97,6 +97,8 @@ public class GaodeMeasureActivity extends GaodeBaseActivity {
 
         //将地图移动到目标点
         animateToPoint(latLng);
+        //开启定位
+        super.showLocate();
 
         //view---和点击事件
         tvLength = (TextView) findViewById(R.id.id_tv_length);
@@ -128,7 +130,9 @@ public class GaodeMeasureActivity extends GaodeBaseActivity {
      * 重画地图上的点
      */
     private void redraw() {
+        //清除marker--显示
         getaMap().clear();
+        showLocate();
         //画出线
         if (pointList.size() > 1) {
             polylineOptions = new PolylineOptions()
@@ -159,7 +163,6 @@ public class GaodeMeasureActivity extends GaodeBaseActivity {
         for (int i = 0; i < pointList.size() - 1; i++) {
             double gap = AMapUtils.calculateLineDistance(pointList.get(i), pointList.get(i + 1));
             length += gap;
-//            LogHelper.Log(TAG, gap + "");
         }
         if (length != 0) {
             int result = (int) length;

@@ -8,9 +8,12 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.AnimationUtils;
+import android.widget.RadioGroup;
 import android.widget.Toast;
 
 import com.amap.api.maps.AMap;
+import com.amap.api.maps.CameraUpdate;
+import com.amap.api.maps.CameraUpdateFactory;
 import com.amap.api.maps.model.LatLng;
 import com.amap.api.maps.model.Marker;
 import com.xunce.gsmr.R;
@@ -23,7 +26,6 @@ import com.xunce.gsmr.util.ViewHelper;
 import com.xunce.gsmr.view.activity.PicGridActivity;
 import com.xunce.gsmr.view.activity.PrjSelectActivity;
 import com.xunce.gsmr.view.activity.SettingActivity;
-import com.xunce.gsmr.view.activity.baidu.BaiduMarkerActivity;
 import com.xunce.gsmr.view.activity.baidu.OfflineActivity;
 
 /**
@@ -54,6 +56,11 @@ public class GaodePrjEditActivity extends GaodeBaseActivity {
      */
     private View llPosition;
     private boolean isLlPositionShowed;
+
+    /**
+     * map_mode控件
+     */
+    private RadioGroup rg;
 
     /**
      * 启动Activity
@@ -93,6 +100,9 @@ public class GaodePrjEditActivity extends GaodeBaseActivity {
     private void initView() {
         ViewHelper.initActionBar(this, getSupportActionBar(), prjItem.getPrjName());
 
+        //初始化地图Mode控件
+        initMapMode();
+
         //填充InfoWindow
         getaMap().setInfoWindowAdapter(new AMap.InfoWindowAdapter() {
             @Override
@@ -123,6 +133,9 @@ public class GaodePrjEditActivity extends GaodeBaseActivity {
             @Override
             public void onClick(View v) {
                 //TODO
+                MarkerItem markerItem = new MarkerItem(prjItem);
+                markerItem.save();
+                GaodeMarkerActivity.start(GaodePrjEditActivity.this, markerItem, REQUEST_CODE_MARKER_ACTIVITY);
             }
         });
 
@@ -154,6 +167,54 @@ public class GaodePrjEditActivity extends GaodeBaseActivity {
     }
 
     /**
+     * 初始化地图Mode控件
+     */
+    private void initMapMode() {
+        //map_mode可见性的切换
+        findViewById(R.id.id_ib_open_map_mode).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(rg.getVisibility() == View.VISIBLE){
+                    rg.startAnimation(AnimationUtils.loadAnimation(GaodePrjEditActivity.this,
+                            R.anim.slide_right));
+                    rg.setVisibility(View.INVISIBLE);
+                }else{
+                    rg.startAnimation(AnimationUtils.loadAnimation(GaodePrjEditActivity.this,
+                            R.anim.slide_left));
+                    rg.setVisibility(View.VISIBLE);
+                }
+            }
+        });
+        //切换map_mode 的选项
+        rg = (RadioGroup) findViewById(R.id.id_rg_map_mode);
+        rg.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                switch (checkedId) {
+                    case R.id.id_rb_mode_normal: {
+                        getaMap().setMapType(AMap.MAP_TYPE_NORMAL);
+                        CameraUpdate cameraUpdate = CameraUpdateFactory.changeTilt(0);
+                        getaMap().moveCamera(cameraUpdate);
+                        break;
+                    }
+                    case R.id.id_rb_mode_satellite: {
+                        getaMap().setMapType(AMap.MAP_TYPE_SATELLITE);
+                        CameraUpdate cameraUpdate = CameraUpdateFactory.changeTilt(0);
+                        getaMap().moveCamera(cameraUpdate);
+                        break;
+                    }
+                    case R.id.id_rb_mode_3d: {
+                        CameraUpdate cameraUpdate = CameraUpdateFactory.changeTilt(45);
+                        getaMap().moveCamera(cameraUpdate);
+                        getaMap().setMapType(AMap.MAP_TYPE_NORMAL);
+                        break;
+                    }
+                }
+            }
+        });
+    }
+
+    /**
      * 和InfoWindow绑定的点击事件
      *
      * @param v
@@ -161,7 +222,7 @@ public class GaodePrjEditActivity extends GaodeBaseActivity {
     public void clickEdit(View v) {
         //生成MarkerItem--跳转到MarkerEditActivity
         LatLng latLng = getMarkerHolder().getCurrentMarker().getPosition();
-        BaiduMarkerActivity.start(this, new MarkerItem(prjItem.getPrjName(), latLng),
+        GaodeMarkerActivity.start(this, new MarkerItem(prjItem.getPrjName(), latLng),
                 REQUEST_CODE_MARKER_EDIT_ACTIVITY);
     }
 
@@ -234,12 +295,16 @@ public class GaodePrjEditActivity extends GaodeBaseActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         switch (requestCode) {
             case REQUEST_CODE_MARKER_ACTIVITY:
+                LogHelper.Log(TAG, "我反悔了PrjEditActivity");
                 if (resultCode == Constant.RESULT_CODE_OK) {
                     loadMarker(prjItem);
+                    LogHelper.Log(TAG, "我重新绘制了Marker");
                 }
                 break;
             case REQUEST_CODE_MARKER_EDIT_ACTIVITY:
+                LogHelper.Log(TAG, "我反悔了PrjEditActivity");
                 if (resultCode == Constant.RESULT_CODE_OK) {
+                    LogHelper.Log(TAG, "我重新绘制了Marker");
                     loadMarker(prjItem);
                 }
                 break;
