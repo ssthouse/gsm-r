@@ -20,6 +20,7 @@ import com.xunce.gsmr.util.gps.DBHelper;
 import com.xunce.gsmr.util.gps.MarkerHelper;
 
 /**
+ *开启本Activity需要一个MarkerItem
  * 高德选取Marker的Activity
  * Created by ssthouse on 2015/9/15.
  */

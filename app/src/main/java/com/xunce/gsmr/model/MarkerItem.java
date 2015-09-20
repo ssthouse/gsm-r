@@ -6,7 +6,6 @@ import com.activeandroid.annotation.Table;
 import com.baidu.mapapi.model.LatLng;
 import com.xunce.gsmr.app.Constant;
 
-import java.io.File;
 import java.io.Serializable;
 
 /**
@@ -15,6 +14,7 @@ import java.io.Serializable;
  */
 @Table(name = Constant.TABLE_MARKER_ITEM)
 public class MarkerItem extends Model implements Serializable {
+    private static final String TAG = "MarkerItem";
 
     @Column(name = "prjName")
     private String prjName;
@@ -24,6 +24,9 @@ public class MarkerItem extends Model implements Serializable {
 
     @Column(name = "longitude")
     private double longitude;
+
+    @Column(name = "photoPathName")
+    private String photoPathName;
 
     /**
      * 传入经纬度的构造方法
@@ -48,6 +51,8 @@ public class MarkerItem extends Model implements Serializable {
         this.prjName = prjItem.getPrjName();
         this.latitude = 0;
         this.longitude = 0;
+        //根据当前时间创建路径名称
+        this.photoPathName = System.currentTimeMillis() + "";
     }
 
     /**
@@ -60,6 +65,8 @@ public class MarkerItem extends Model implements Serializable {
         this.prjName = prjName;
         this.latitude = latLng.latitude;
         this.longitude = latLng.longitude;
+        //根据当前时间创建路径名称
+        this.photoPathName = System.currentTimeMillis() + "";
     }
 
     /**
@@ -72,6 +79,8 @@ public class MarkerItem extends Model implements Serializable {
         this.prjName = prjName;
         this.latitude = latLng.latitude;
         this.longitude = latLng.longitude;
+        //根据当前时间创建路径名称
+        this.photoPathName = System.currentTimeMillis() + "";
     }
 
     public MarkerItem() {
@@ -80,35 +89,42 @@ public class MarkerItem extends Model implements Serializable {
 
     /**
      * 获取百度LatLng
+     *
      * @return
      */
-    public LatLng getBaiduLatLng(){
+    public LatLng getBaiduLatLng() {
         return new LatLng(latitude, longitude);
     }
 
     /**
      * 获取高德LatLng
+     *
      * @return
      */
-    public com.amap.api.maps.model.LatLng getGaodeLatLng(){
+    public com.amap.api.maps.model.LatLng getGaodeLatLng() {
         return new com.amap.api.maps.model.LatLng(latitude, longitude);
     }
 
+    /**
+     * 获取改点的照片路径
+     *
+     * @return
+     */
     public String getFilePath() {
-        return Constant.PICTURE_PATH + prjName + "/" + latitude + "_" + longitude + "/";
+        return Constant.PICTURE_PATH + prjName + "/" + photoPathName + "/";
     }
-
 
     /**
      * 改变MarkerItem的经纬度
+     *
      * @param latLng
      */
     public void changeName(com.amap.api.maps.model.LatLng latLng) {
         //先改变文件路径
-        File file = new File(Constant.PICTURE_PATH + this.getPrjName() + "/" +
-                +this.getLatitude() + "_" + this.getLongitude());
-        file.renameTo(new File(Constant.PICTURE_PATH + this.getPrjName() + "/" +
-                +latLng.latitude + "_" + latLng.longitude));
+//        File file = new File(Constant.PICTURE_PATH + this.getPrjName() + "/" +
+//                +this.getLatitude() + "_" + this.getLongitude());
+//        file.renameTo(new File(Constant.PICTURE_PATH + this.getPrjName() + "/" +
+//                +latLng.latitude + "_" + latLng.longitude));
         //修改数据
         this.setLatitude(latLng.latitude);
         this.setLongitude(latLng.longitude);
@@ -118,14 +134,15 @@ public class MarkerItem extends Model implements Serializable {
 
     /**
      * 改变MarkerItem的经纬度
+     *
      * @param latLng
      */
     public void changeName(LatLng latLng) {
         //先改变文件路径
-        File file = new File(Constant.PICTURE_PATH + this.getPrjName() + "/" +
-                +this.getLatitude() + "_" + this.getLongitude());
-        file.renameTo(new File(Constant.PICTURE_PATH + this.getPrjName() + "/" +
-                +latLng.latitude + "_" + latLng.longitude));
+//        File file = new File(Constant.PICTURE_PATH + this.getPrjName() + "/" +
+//                +this.getLatitude() + "_" + this.getLongitude());
+//        file.renameTo(new File(Constant.PICTURE_PATH + this.getPrjName() + "/" +
+//                +latLng.latitude + "_" + latLng.longitude));
         //修改数据
         this.setLatitude(latLng.latitude);
         this.setLongitude(latLng.longitude);
@@ -156,5 +173,13 @@ public class MarkerItem extends Model implements Serializable {
 
     public void setPrjName(String prjName) {
         this.prjName = prjName;
+    }
+
+    public String getPhotoPathName() {
+        return photoPathName;
+    }
+
+    public void setPhotoPathName(String photoPathName) {
+        this.photoPathName = photoPathName;
     }
 }

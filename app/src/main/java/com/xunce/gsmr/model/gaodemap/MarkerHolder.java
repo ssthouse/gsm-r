@@ -45,7 +45,9 @@ public class MarkerHolder {
      * Marker控制
      */
     private Marker currentMarker;
+    private MarkerItem currentMarkerItem;
     private List<Marker> markerList;
+    private List<MarkerItem> markerItemList;
 
     /**
      * 构造方法
@@ -58,6 +60,7 @@ public class MarkerHolder {
         this.prjItem = prjItem;
         this.aMap = aMap;
         markerList = new ArrayList<>();
+        markerItemList = new ArrayList<>();
 
         //初始化MarkerList数据
         initMarkerList();
@@ -70,8 +73,11 @@ public class MarkerHolder {
         //清除地图图像---清空marker数据
         aMap.clear();
         markerList.clear();
+        markerItemList.clear();
+        currentMarker = null;
+        currentMarkerItem = null;
         //填充MarkerList
-        List<MarkerItem> markerItemList = DBHelper.getMarkerList(prjItem);
+        markerItemList = DBHelper.getMarkerList(prjItem);
         for (int i = 0; i < markerItemList.size(); i++) {
             com.amap.api.maps.model.LatLng latLng = markerItemList.get(i).getGaodeLatLng();
             MarkerOptions markerOptions = new MarkerOptions();
@@ -108,8 +114,13 @@ public class MarkerHolder {
         return currentMarker;
     }
 
+    public MarkerItem getCurrentMarkerItem() {
+        return currentMarkerItem;
+    }
+
     public void setCurrentMarker(Marker currentMarker) {
         this.currentMarker = currentMarker;
+        this.currentMarkerItem = markerItemList.get(markerList.indexOf(currentMarker));
     }
 
     public List<Marker> getMarkerList() {

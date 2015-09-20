@@ -78,6 +78,7 @@ public class PicGridActivity extends AppCompatActivity {
     }
 
     private void initView() {
+        //添加照片
         btnAdd = (ImageButton) findViewById(R.id.id_btn_add);
         btnAdd.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -105,8 +106,6 @@ public class PicGridActivity extends AppCompatActivity {
         });
 
         gv = (GridView) findViewById(R.id.id_gv);
-
-
         gv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -133,6 +132,7 @@ public class PicGridActivity extends AppCompatActivity {
             }
         });
 
+        //长按进入编辑模式
         gv.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
@@ -151,6 +151,9 @@ public class PicGridActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * 删除选中的照片
+     */
     private void removeAllSelected() {
         isInSelectMode = false;
         selectedList.clear();
@@ -160,6 +163,9 @@ public class PicGridActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * 刷新View
+     */
     private void updateView() {
         if (isInSelectMode) {
             btnAdd.setVisibility(View.GONE);
@@ -181,6 +187,9 @@ public class PicGridActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * 相册还是照相机
+     */
     private void showAlbumOrCamera() {
         final NiftyDialogBuilder dialogBuilder = NiftyDialogBuilder.getInstance(this);
         View.OnClickListener confirmListener = new View.OnClickListener() {
@@ -217,6 +226,9 @@ public class PicGridActivity extends AppCompatActivity {
                 .show();
     }
 
+    /**
+     * 确认对话框
+     */
     private void showConfirmDialog() {
         final NiftyDialogBuilder dialogBuilder = NiftyDialogBuilder.getInstance(this);
         View.OnClickListener confirmListener = new View.OnClickListener() {

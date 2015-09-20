@@ -29,6 +29,11 @@ import java.util.List;
 public class PictureHelper {
     private static String TAG = "PictureHelper";
 
+    /**
+     * 删除文件
+     *
+     * @param path
+     */
     public static void deletePicture(String path) {
         File file = new File(path);
         if (file.exists()) {
@@ -45,6 +50,7 @@ public class PictureHelper {
      */
     public static boolean saveImage(Bitmap photo, String savePath) {
         try {
+            //如果文件不存在则新建路径
             File file = new File(savePath);
             file.getParentFile().mkdirs();
             if (!file.exists()) {
@@ -55,10 +61,9 @@ public class PictureHelper {
             photo.compress(Bitmap.CompressFormat.JPEG, 100, bos);
             bos.flush();
             bos.close();
-//            LogHelper.Log(TAG, "我在保存临时的照片");
+            //LogHelper.Log(TAG, "我在保存临时的照片");
         } catch (Exception e) {
             e.printStackTrace();
-
             LogHelper.Log(TAG, "image save is wrong");
             return false;
         }
@@ -249,11 +254,14 @@ public class PictureHelper {
     public static void getPictureFromCamera(Activity activity, String path) {
         String state = Environment.getExternalStorageState();
         if (state.equals(Environment.MEDIA_MOUNTED)) {
-            File file = new File(path + System.currentTimeMillis() + ".jpg");//localTempImgDir和localTempImageFileName是自己定义的名字
-            Uri u = Uri.fromFile(file);
+            //localTempImgDir和localTempImageFileName是自己定义的名字
+            File file = new File(path + System.currentTimeMillis() + ".jpg");
+            //如果该路径前面的parent路径不存在就创建
+            file.getParentFile().mkdirs();
+            Uri uri = Uri.fromFile(file);
             Intent intent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
             intent.putExtra(MediaStore.Images.Media.ORIENTATION, 0);
-            intent.putExtra(MediaStore.EXTRA_OUTPUT, u);
+            intent.putExtra(MediaStore.EXTRA_OUTPUT, uri);
             activity.startActivityForResult(intent, Constant.REQUEST_CODE_CAMERA);
             activity.overridePendingTransition(R.anim.activity_fade_in, R.anim.activity_fade_out);
         } else {

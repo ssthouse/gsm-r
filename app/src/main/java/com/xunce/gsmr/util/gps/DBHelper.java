@@ -35,6 +35,7 @@ public class DBHelper {
     }
 
     /**
+     * 根据MarkerItem生成的时间获取数据库中的MarkerItem
      * 从数据库中获取MarkerItem
      *
      * @param markerItem
@@ -42,16 +43,13 @@ public class DBHelper {
      */
     public static MarkerItem getMarkerItemInDB(MarkerItem markerItem) {
         String prjName = markerItem.getPrjName();
-        double latitude = markerItem.getLatitude();
-        double longitude = markerItem.getLongitude();
+        String photoPathName = markerItem.getPhotoPathName();
         MarkerItem markerItemInDB = new Select()
                 .from(MarkerItem.class)
                 .where("prjName ="
                         + " '" + prjName + "' and "
-                        + "latitude ="
-                        + " '" + latitude + "' and "
-                        + "longitude ="
-                        + " '" + longitude + "'").executeSingle();
+                        + "photoPathName ="
+                        + " '" + photoPathName + "'").executeSingle();
         return markerItemInDB;
     }
 

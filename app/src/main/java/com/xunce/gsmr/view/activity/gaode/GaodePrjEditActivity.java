@@ -131,7 +131,7 @@ public class GaodePrjEditActivity extends GaodeBaseActivity {
         findViewById(R.id.id_btn_mark).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //TODO
+                //TODO--首先创建一个markerItem放到数据库中
                 MarkerItem markerItem = new MarkerItem(prjItem);
                 markerItem.save();
                 GaodeMarkerActivity.start(GaodePrjEditActivity.this, markerItem, REQUEST_CODE_MARKER_ACTIVITY);
@@ -232,7 +232,8 @@ public class GaodePrjEditActivity extends GaodeBaseActivity {
      */
     public void clickPhoto(View v) {
         LatLng latLng = getMarkerHolder().getCurrentMarker().getPosition();
-        PicGridActivity.start(this, new MarkerItem(prjItem.getPrjName(), latLng),
+        //这里传入的MarkerItem
+        PicGridActivity.start(this, getMarkerHolder().getCurrentMarkerItem(),
                 REQUEST_CODE_PICTURE_ACTIVITY);
     }
 
