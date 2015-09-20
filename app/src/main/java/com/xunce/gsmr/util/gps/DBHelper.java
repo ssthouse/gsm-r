@@ -3,6 +3,7 @@ package com.xunce.gsmr.util.gps;
 import com.activeandroid.query.Select;
 import com.xunce.gsmr.model.MarkerItem;
 import com.xunce.gsmr.model.PrjItem;
+import com.xunce.gsmr.util.LogHelper;
 
 import java.util.List;
 
@@ -49,7 +50,11 @@ public class DBHelper {
                 .where("prjName ="
                         + " '" + prjName + "' and "
                         + "photoPathName ="
-                        + " '" + photoPathName + "'").executeSingle();
+                        + " '" + photoPathName + "'")
+                .executeSingle();
+        LogHelper.Log(TAG, "我从数据库中找到的东西是:   ");
+        LogHelper.Log(TAG, "原来的:   "+markerItem.getPrjName()+markerItem.getPhotoPathName());
+        LogHelper.Log(TAG, "我找到的是"+(markerItemInDB == null));
         return markerItemInDB;
     }
 

@@ -221,7 +221,7 @@ public class GaodePrjEditActivity extends GaodeBaseActivity {
     public void clickEdit(View v) {
         //生成MarkerItem--跳转到MarkerEditActivity
         LatLng latLng = getMarkerHolder().getCurrentMarker().getPosition();
-        GaodeMarkerActivity.start(this, new MarkerItem(prjItem.getPrjName(), latLng),
+        GaodeMarkerActivity.start(this, getMarkerHolder().getCurrentMarkerItem(),
                 REQUEST_CODE_MARKER_EDIT_ACTIVITY);
     }
 
@@ -328,7 +328,14 @@ public class GaodePrjEditActivity extends GaodeBaseActivity {
             Toast.makeText(this, "再按一次退出程序", Toast.LENGTH_SHORT).show();
             mExitTime = System.currentTimeMillis();
         } else {
-            finish();
+            super.onBackPressed();
+            getMapView().onDestroy();
         }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        loadMarker(prjItem);
     }
 }

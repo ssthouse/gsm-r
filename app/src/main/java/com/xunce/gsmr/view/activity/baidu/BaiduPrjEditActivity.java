@@ -17,7 +17,6 @@ import com.baidu.mapapi.map.BaiduMap;
 import com.baidu.mapapi.map.MapStatus;
 import com.baidu.mapapi.map.MapStatusUpdate;
 import com.baidu.mapapi.map.MapStatusUpdateFactory;
-import com.baidu.mapapi.model.LatLng;
 import com.xunce.gsmr.R;
 import com.xunce.gsmr.app.Constant;
 import com.xunce.gsmr.model.MarkerItem;
@@ -178,8 +177,7 @@ public class BaiduPrjEditActivity extends AppCompatActivity {
     public void clickEdit(View v) {
         baiduMapFragment.hideInfoWindow();
         //生成MarkerItem--跳转到MarkerEditActivity
-        LatLng latLng = baiduMapFragment.getCurrentMarkerLatLng();
-        BaiduMarkerActivity.start(this, new MarkerItem(prjItem.getPrjName(), latLng),
+        BaiduMarkerActivity.start(this, baiduMapFragment.getMarkerHolder().getCurrentMarkerItem(),
                 BaiduPrjEditActivity.REQUEST_CODE_MARKER_EDIT_ACTIVITY);
     }
 

@@ -125,11 +125,16 @@
             android:name=".view.activity.baidu.BaiduOfflineActivity"/>
 
         <!--TODO-高德地图-->
-        <activity android:name=".view.activity.gaode.GaodeBaseActivity"/>
-        <activity android:name=".view.activity.gaode.GaodePrjEditActivity"/>
-        <activity android:name=".view.activity.gaode.GaodeMeasureActivity"/>
-        <activity android:name=".view.activity.gaode.GaodeMarkerActivity"/>
-        <activity android:name=".view.activity.gaode.GaodeOfflineActivity"/>
+        <activity android:name=".view.activity.gaode.GaodeBaseActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".view.activity.gaode.GaodePrjEditActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".view.activity.gaode.GaodeMeasureActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".view.activity.gaode.GaodeMarkerActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".view.activity.gaode.GaodeOfflineActivity"
+            android:screenOrientation="portrait"/>
     </application>
 
 </manifest>

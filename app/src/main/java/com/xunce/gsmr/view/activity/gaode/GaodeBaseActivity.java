@@ -19,6 +19,7 @@ import com.xunce.gsmr.R;
 import com.xunce.gsmr.model.PrjItem;
 import com.xunce.gsmr.model.gaodemap.GaodeRailWayHolder;
 import com.xunce.gsmr.model.gaodemap.MarkerHolder;
+import com.xunce.gsmr.util.PreferenceHelper;
 
 /**
  * 必须有一个R.id.id_map的高德地图控件
@@ -164,6 +165,11 @@ public class GaodeBaseActivity extends AppCompatActivity implements LocationSour
             // Location API定位采用GPS和网络混合定位方式，时间最短是2000毫秒
             aMapManager.requestLocationData(
                     LocationProviderProxy.AMapNetwork, 1000, 10, this);
+            //判断是否开启GPS定位
+            if(PreferenceHelper.getInstance(GaodeBaseActivity.this)
+                    .getIsWifiLocateMode(GaodeBaseActivity.this)){
+                aMapManager.setGpsEnable(false);
+            }
         }
     }
 
