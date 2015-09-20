@@ -351,6 +351,14 @@ public class BaiduMapFragment extends Fragment {
         this.mapView = mapView;
     }
 
+    public MarkerHolder getMarkerHolder() {
+        return markerHolder;
+    }
+
+    public void setMarkerHolder(MarkerHolder markerHolder) {
+        this.markerHolder = markerHolder;
+    }
+
     public BaiduMap getBaiduMap() {
         return baiduMap;
     }

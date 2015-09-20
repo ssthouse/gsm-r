@@ -32,8 +32,19 @@ public class MarkerHolder {
     public static BitmapDescriptor descriptorRed = BitmapDescriptorFactory
             .fromResource(R.drawable.icon_measure_red);
 
+    /**
+     * Marker相关
+     */
+    //当前选中的marker和markeritem
     private Marker currentMarker;
+    private MarkerItem currentMarkerItem;
+    //marker和markeritem的list
     private List<Marker> markerList;
+    private List<MarkerItem> markerItemList;
+
+    /**
+     * 地图和数据源头
+     */
     private BaiduMap baiduMap;
     private PrjItem prjItem;
 
@@ -47,6 +58,7 @@ public class MarkerHolder {
         this.prjItem = prjItem;
         this.baiduMap = baiduMap;
         markerList = new ArrayList<>();
+        markerItemList = new ArrayList<>();
 
         initMarkerList();
     }
@@ -58,8 +70,9 @@ public class MarkerHolder {
         baiduMap.clear();
         //清空markerList
         markerList.clear();
+        markerItemList.clear();
         //初始化markerList
-        List<MarkerItem> markerItemList = DBHelper.getMarkerList(prjItem);
+        markerItemList = DBHelper.getMarkerList(prjItem);
         for (int i = 0; i < markerItemList.size(); i++) {
             LatLng latLng = markerItemList.get(i).getBaiduLatLng();
             OverlayOptions redOverlay = new MarkerOptions()
@@ -106,6 +119,15 @@ public class MarkerHolder {
 
     public void setCurrentMarker(Marker currentMarker) {
         this.currentMarker = currentMarker;
+        this.currentMarkerItem = markerItemList.get(markerList.indexOf(currentMarker));
+    }
+
+    public MarkerItem getCurrentMarkerItem() {
+        return currentMarkerItem;
+    }
+
+    public List<MarkerItem> getMarkerItemList() {
+        return markerItemList;
     }
 
     public List<Marker> getMarkerList() {

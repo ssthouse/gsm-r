@@ -190,8 +190,7 @@ public class BaiduPrjEditActivity extends AppCompatActivity {
      */
     public void clickPhoto(View v) {
         baiduMapFragment.hideInfoWindow();
-        LatLng latLng = baiduMapFragment.getCurrentMarkerLatLng();
-        PicGridActivity.start(this, new MarkerItem(prjItem.getPrjName(), latLng),
+        PicGridActivity.start(this, baiduMapFragment.getMarkerHolder().getCurrentMarkerItem(),
                 BaiduPrjEditActivity.REQUEST_CODE_PICTURE_ACTIVITY);
     }
 

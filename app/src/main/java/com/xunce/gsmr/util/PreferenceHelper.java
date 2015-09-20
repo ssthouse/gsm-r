@@ -137,7 +137,7 @@ public class PreferenceHelper {
      * @return
      */
     public int getMapType(){
-        int mapType = sharedPreferences.getInt(MapType.KEY, MapType.BAIDU_MAP);
+        int mapType = sharedPreferences.getInt(MapType.KEY, MapType.GAODE_MAP);
         return mapType;
     }
 
