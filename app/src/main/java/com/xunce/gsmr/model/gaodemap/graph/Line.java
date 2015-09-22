@@ -8,7 +8,7 @@ import com.amap.api.maps.model.PolylineOptions;
  * 高德地图的Line
  * Created by ssthouse on 2015/9/15.
  */
-public class Line extends Graph {
+public class Line extends BaseGraph {
     private static final String TAG = "Line";
 
     //直线的参数

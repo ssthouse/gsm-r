@@ -10,7 +10,7 @@ import com.amap.api.maps.model.TextOptions;
  * 高德地图的Text
  * Created by ssthouse on 2015/9/15.
  */
-public class Text extends Graph {
+public class Text extends BaseGraph {
     private static final String TAG = "Text";
 
     /**
