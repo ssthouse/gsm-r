@@ -132,7 +132,7 @@ public class GaodeMeasureActivity extends GaodeBaseActivity {
     private void redraw() {
         //清除marker--显示
         getaMap().clear();
-        showLocate();
+//        showLocate();
         //画出线
         if (pointList.size() > 1) {
             polylineOptions = new PolylineOptions()

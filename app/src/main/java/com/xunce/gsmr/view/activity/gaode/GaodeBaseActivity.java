@@ -81,8 +81,8 @@ public class GaodeBaseActivity extends AppCompatActivity implements LocationSour
      * TODO
      * 加载铁路地图
      */
-    public void loadRail(PrjItem prjItem){
-        if(railWayHolder == null){
+    public void loadRail(PrjItem prjItem) {
+        if (railWayHolder == null) {
             railWayHolder = new GaodeRailWayHolder(this, prjItem);
         }
         railWayHolder.draw(aMap);
@@ -92,18 +92,17 @@ public class GaodeBaseActivity extends AppCompatActivity implements LocationSour
      * TODO
      * 加载marker
      */
-    public void loadMarker(PrjItem prjItem){
-        if(markerHolder == null){
-            //MarkerHolder模块
-            markerHolder = new MarkerHolder(this, prjItem, getaMap());
-        }
+    public void loadMarker(PrjItem prjItem) {
+        //MarkerHolder模块
+        markerHolder = new MarkerHolder(this, prjItem, getaMap());
     }
 
     /**
      * 地图中心移动到一个点
+     *
      * @param latLng
      */
-    public void animateToPoint(LatLng latLng){
+    public void animateToPoint(LatLng latLng) {
         CameraUpdate cameraUpdate = CameraUpdateFactory.changeLatLng(latLng);
         aMap.animateCamera(cameraUpdate);
     }
@@ -111,8 +110,8 @@ public class GaodeBaseActivity extends AppCompatActivity implements LocationSour
     /**
      * 定位到我的位置
      */
-    public void animateToMyLocation(){
-        if(currentAMapLocation == null){
+    public void animateToMyLocation() {
+        if (currentAMapLocation == null) {
             return;
         }
         LatLng latLng = new LatLng(currentAMapLocation.getLatitude(),
@@ -121,6 +120,7 @@ public class GaodeBaseActivity extends AppCompatActivity implements LocationSour
     }
 
     //定位相关-------------------------------------------------------------
+
     /**
      * 隐藏定位
      */
@@ -144,7 +144,7 @@ public class GaodeBaseActivity extends AppCompatActivity implements LocationSour
      */
     @Override
     public void onLocationChanged(AMapLocation aLocation) {
-        if (mListener != null && aLocation !=null) {
+        if (mListener != null && aLocation != null) {
             currentAMapLocation = aLocation;
             mListener.onLocationChanged(aLocation);// 显示系统小蓝点
         }
@@ -158,7 +158,7 @@ public class GaodeBaseActivity extends AppCompatActivity implements LocationSour
         mListener = listener;
         if (aMapManager == null) {
             aMapManager = LocationManagerProxy.getInstance(this);
-			/*
+            /*
 			 * mAMapLocManager.setGpsEnable(false);//
 			 * 1.0.2版本新增方法，设置true表示混合定位中包含gps定位，false表示纯网络定位，默认是true
 			 */
@@ -166,8 +166,8 @@ public class GaodeBaseActivity extends AppCompatActivity implements LocationSour
             aMapManager.requestLocationData(
                     LocationProviderProxy.AMapNetwork, 1000, 10, this);
             //判断是否开启GPS定位
-            if(PreferenceHelper.getInstance(GaodeBaseActivity.this)
-                    .getIsWifiLocateMode(GaodeBaseActivity.this)){
+            if (PreferenceHelper.getInstance(GaodeBaseActivity.this)
+                    .getIsWifiLocateMode(GaodeBaseActivity.this)) {
                 aMapManager.setGpsEnable(false);
             }
         }

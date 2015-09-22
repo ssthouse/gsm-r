@@ -14,7 +14,6 @@ import android.widget.Toast;
 import com.amap.api.maps.AMap;
 import com.amap.api.maps.CameraUpdate;
 import com.amap.api.maps.CameraUpdateFactory;
-import com.amap.api.maps.model.LatLng;
 import com.amap.api.maps.model.Marker;
 import com.xunce.gsmr.R;
 import com.xunce.gsmr.app.Constant;
@@ -150,7 +149,6 @@ public class GaodePrjEditActivity extends GaodeBaseActivity {
         findViewById(R.id.id_ib_measure).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //TODO
                 GaodeMeasureActivity.start(GaodePrjEditActivity.this, getaMap().getCameraPosition().target);
             }
         });
@@ -161,6 +159,8 @@ public class GaodePrjEditActivity extends GaodeBaseActivity {
             @Override
             public void onClick(View v) {
                 toggleLlPosition();
+                //TODO
+                loadMarker(prjItem);
             }
         });
     }
@@ -220,7 +220,6 @@ public class GaodePrjEditActivity extends GaodeBaseActivity {
      */
     public void clickEdit(View v) {
         //生成MarkerItem--跳转到MarkerEditActivity
-        LatLng latLng = getMarkerHolder().getCurrentMarker().getPosition();
         GaodeMarkerActivity.start(this, getMarkerHolder().getCurrentMarkerItem(),
                 REQUEST_CODE_MARKER_EDIT_ACTIVITY);
     }
@@ -231,7 +230,6 @@ public class GaodePrjEditActivity extends GaodeBaseActivity {
      * @param v
      */
     public void clickPhoto(View v) {
-        LatLng latLng = getMarkerHolder().getCurrentMarker().getPosition();
         //这里传入的MarkerItem
         PicGridActivity.start(this, getMarkerHolder().getCurrentMarkerItem(),
                 REQUEST_CODE_PICTURE_ACTIVITY);
@@ -329,7 +327,6 @@ public class GaodePrjEditActivity extends GaodeBaseActivity {
             mExitTime = System.currentTimeMillis();
         } else {
             super.onBackPressed();
-            getMapView().onDestroy();
         }
     }
 

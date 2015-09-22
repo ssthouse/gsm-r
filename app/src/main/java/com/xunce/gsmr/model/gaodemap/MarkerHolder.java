@@ -71,7 +71,10 @@ public class MarkerHolder {
      */
     private void initMarkerList() {
         //清除地图图像---清空marker数据
-        aMap.clear();
+//        aMap.clear();
+        for(Marker marker : markerList){
+            marker.remove();
+        }
         markerList.clear();
         markerItemList.clear();
         currentMarker = null;
