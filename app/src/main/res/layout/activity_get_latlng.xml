@@ -64,8 +64,8 @@
 
         <ImageButton
             android:id="@+id/id_ib_locate"
-            android:layout_width="36dp"
-            android:layout_height="36dp"
+            android:layout_width="@dimen/btn_locate_size"
+            android:layout_height="@dimen/btn_locate_size"
             android:layout_gravity="bottom|left"
             android:layout_margin="8dp"
             android:background="@color/gray"
@@ -73,8 +73,8 @@
 
         <ImageView
             android:id="@+id/id_iv_mark_icon"
-            android:layout_width="32dp"
-            android:layout_height="32dp"
+            android:layout_width="28dp"
+            android:layout_height="28dp"
             android:layout_gravity="center"
             android:src="@drawable/mark_icon" />
 

@@ -22,7 +22,7 @@
         <include layout="@layout/view_map_mode" />
 
         <!--选址按钮-->
-        <Button
+        <ImageButton
             android:id="@+id/id_btn_mark"
             android:layout_width="@dimen/btn_mark_size"
             android:layout_height="@dimen/btn_mark_size"
@@ -30,6 +30,9 @@
             android:layout_marginRight="8dp"
             android:layout_marginTop="66dp"
             android:background="@color/white"
+            android:padding="8dp"
+            android:scaleType="centerInside"
+            android:src="@drawable/icon_measure_blue"
             android:text="选址"
             android:textSize="@dimen/text_size_button" />
 

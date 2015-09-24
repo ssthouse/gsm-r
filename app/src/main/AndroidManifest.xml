@@ -121,6 +121,7 @@
 
         <!--离线地图-->
         <activity
+            android:theme="@style/CustomNoActionbarStyle"
             android:screenOrientation="portrait"
             android:name=".view.activity.baidu.BaiduOfflineActivity"/>
 
@@ -134,6 +135,7 @@
         <activity android:name=".view.activity.gaode.GaodeMarkerActivity"
             android:screenOrientation="portrait"/>
         <activity android:name=".view.activity.gaode.GaodeOfflineActivity"
+            android:theme="@style/CustomNoActionbarStyle"
             android:screenOrientation="portrait"/>
     </application>
 

@@ -14,6 +14,9 @@
 
     <dimen name="text_size_button">16dp</dimen>
 
+    <!--定位按钮的大小-->
+    <dimen name="btn_locate_size">48dp</dimen>
+
     <!--选址按钮大小-->
     <dimen name="btn_mark_size">48dp</dimen>
     <dimen name="btn_map_mode_size">48dp</dimen>

@@ -18,6 +18,7 @@ import com.xunce.gsmr.util.ToastHelper;
 import com.xunce.gsmr.util.ViewHelper;
 import com.xunce.gsmr.util.gps.DBHelper;
 import com.xunce.gsmr.util.gps.MarkerHelper;
+import com.xunce.gsmr.view.style.TransparentStyle;
 
 /**
  *开启本Activity需要一个MarkerItem
@@ -53,6 +54,7 @@ public class GaodeMarkerActivity extends GaodeBaseActivity{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_gaode_mark);
+        TransparentStyle.setTransparentStyle(this, R.color.color_primary);
         super.init(savedInstanceState);
 
         //获取数据

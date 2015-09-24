@@ -57,7 +57,7 @@
                 android:id="@+id/id_btn_submit"
                 android:layout_width="80dp"
                 android:layout_height="match_parent"
-                android:background="@drawable/selector_btn_blue_2_gray"
+                android:background="@drawable/selector_btn_blue_2_white"
                 android:text="确认"
                 android:textColor="@color/white"
                 android:textSize="@dimen/text_size_normal" />

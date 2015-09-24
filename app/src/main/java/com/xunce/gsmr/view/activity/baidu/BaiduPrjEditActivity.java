@@ -1,7 +1,6 @@
 package com.xunce.gsmr.view.activity.baidu;
 
 import android.app.Activity;
-import android.app.Fragment;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -100,7 +99,7 @@ public class BaiduPrjEditActivity extends AppCompatActivity {
         bundle.putSerializable("prjItem", prjItem);
         baiduMapFragment = BaiduMapFragment.getInstance(bundle);
         getFragmentManager().beginTransaction().replace(R.id.id_fragment_container,
-                (Fragment) baiduMapFragment).commit();
+                baiduMapFragment).commit();
 
         //选址
         findViewById(R.id.id_btn_mark).setOnClickListener(new View.OnClickListener() {

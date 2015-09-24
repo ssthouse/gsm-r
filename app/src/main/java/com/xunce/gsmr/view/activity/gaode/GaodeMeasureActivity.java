@@ -20,6 +20,7 @@ import com.amap.api.maps.model.PolylineOptions;
 import com.xunce.gsmr.R;
 import com.xunce.gsmr.app.Constant;
 import com.xunce.gsmr.util.ViewHelper;
+import com.xunce.gsmr.view.style.TransparentStyle;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -77,6 +78,7 @@ public class GaodeMeasureActivity extends GaodeBaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_gaode_measure);
+        TransparentStyle.setTransparentStyle(this, R.color.color_primary);
         super.init(savedInstanceState);
 
         //接收数据

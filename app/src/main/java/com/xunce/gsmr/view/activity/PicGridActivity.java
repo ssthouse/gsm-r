@@ -21,6 +21,7 @@ import com.xunce.gsmr.app.Constant;
 import com.xunce.gsmr.model.BitmapItem;
 import com.xunce.gsmr.model.MarkerItem;
 import com.xunce.gsmr.util.FileHelper;
+import com.xunce.gsmr.util.LogHelper;
 import com.xunce.gsmr.util.PictureHelper;
 import com.xunce.gsmr.util.VibrateHelper;
 import com.xunce.gsmr.view.adapter.PicGridAdapter;
@@ -66,7 +67,9 @@ public class PicGridActivity extends AppCompatActivity {
         TransparentStyle.setTransparentStyle(this, R.color.color_primary);
 
         markerItem = (MarkerItem) getIntent().getSerializableExtra(Constant.EXTRA_KEY_MARKER_ITEM);
-
+        if(markerItem == null){
+            LogHelper.Log(TAG, "卧槽...我竟然时空的");
+        }
         initView();
     }
 

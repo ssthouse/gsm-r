@@ -25,6 +25,7 @@ import com.xunce.gsmr.util.ViewHelper;
 import com.xunce.gsmr.view.activity.PicGridActivity;
 import com.xunce.gsmr.view.activity.PrjSelectActivity;
 import com.xunce.gsmr.view.activity.SettingActivity;
+import com.xunce.gsmr.view.style.TransparentStyle;
 
 /**
  * 高德地图编辑Activity
@@ -77,6 +78,7 @@ public class GaodePrjEditActivity extends GaodeBaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_gaode_prj_edit);
+        TransparentStyle.setTransparentStyle(this, R.color.color_primary);
         super.init(savedInstanceState);
 
         //接收数据

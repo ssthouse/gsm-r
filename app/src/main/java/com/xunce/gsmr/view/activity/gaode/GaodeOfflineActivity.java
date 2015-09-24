@@ -28,6 +28,7 @@ import com.amap.api.maps.offlinemap.OfflineMapStatus;
 import com.xunce.gsmr.R;
 import com.xunce.gsmr.util.LogHelper;
 import com.xunce.gsmr.view.adapter.GaodeDownloadedCityAdapter;
+import com.xunce.gsmr.view.style.TransparentStyle;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -82,11 +83,15 @@ public class GaodeOfflineActivity extends AppCompatActivity implements
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_gaode_offline);
+        TransparentStyle.setTransparentStyle(this, R.color.color_primary);
 
         //初始化VIew
         initView();
     }
 
+    /**
+     * 处理界面更新的Handler
+     */
     private final static int UPDATE_LIST = 0;
     private final static int DISMISS_INIT_DIALOG = 1;
     private final static int SHOW_INIT_DIALOG = 2;
@@ -113,8 +118,6 @@ public class GaodeOfflineActivity extends AppCompatActivity implements
      * 初始化VIew
      */
     private void initView() {
-        getSupportActionBar().hide();
-
         //填充view
         viewList = new ArrayList<>();
         leftView = View.inflate(this, R.layout.activity_gaode_offline_left, null);
@@ -157,16 +160,10 @@ public class GaodeOfflineActivity extends AppCompatActivity implements
             public void onPageSelected(int position) {
                 if (position == 0) {
                     //改变按钮颜色
-                    btnDownloadList.setTextColor(getResources().getColor(R.color.white));
-                    btnDownloadList.setBackgroundColor(getResources().getColor(R.color.color_primary));
-                    btnCityList.setTextColor(getResources().getColor(R.color.color_primary));
-                    btnCityList.setBackgroundColor(getResources().getColor(R.color.white));
+                   chooseLeftPage();
                 } else {
                     //改变按钮颜色
-                    btnDownloadList.setTextColor(getResources().getColor(R.color.color_primary));
-                    btnDownloadList.setBackgroundColor(getResources().getColor(R.color.white));
-                    btnCityList.setTextColor(getResources().getColor(R.color.white));
-                    btnCityList.setBackgroundColor(getResources().getColor(R.color.color_primary));
+                    chooseRightPage();
                 }
             }
 
@@ -182,10 +179,7 @@ public class GaodeOfflineActivity extends AppCompatActivity implements
             public void onClick(View v) {
                 viewPager.setCurrentItem(0, true);
                 //改变按钮颜色
-                btnDownloadList.setTextColor(getResources().getColor(R.color.white));
-                btnDownloadList.setBackgroundColor(getResources().getColor(R.color.color_primary));
-                btnCityList.setTextColor(getResources().getColor(R.color.color_primary));
-                btnCityList.setBackgroundColor(getResources().getColor(R.color.white));
+                chooseLeftPage();
             }
         });
         btnCityList = (Button) findViewById(R.id.id_btn_city_list);
@@ -194,10 +188,7 @@ public class GaodeOfflineActivity extends AppCompatActivity implements
             public void onClick(View v) {
                 viewPager.setCurrentItem(1, true);
                 //改变按钮颜色
-                btnDownloadList.setTextColor(getResources().getColor(R.color.color_primary));
-                btnDownloadList.setBackgroundColor(getResources().getColor(R.color.white));
-                btnCityList.setTextColor(getResources().getColor(R.color.white));
-                btnCityList.setBackgroundColor(getResources().getColor(R.color.color_primary));
+                chooseRightPage();
             }
         });
 
@@ -208,6 +199,28 @@ public class GaodeOfflineActivity extends AppCompatActivity implements
         //填充左右view
         initLeftView();
         initRightView();
+    }
+
+    /**
+     * 选中左边的Pager
+     */
+    private void chooseLeftPage(){
+        //改变按钮颜色
+        btnDownloadList.setTextColor(getResources().getColor(R.color.color_primary));
+        btnDownloadList.setBackgroundColor(getResources().getColor(R.color.white));
+        btnCityList.setTextColor(getResources().getColor(R.color.white));
+        btnCityList.setBackgroundColor(getResources().getColor(R.color.color_primary));
+    }
+
+    /**
+     * 选中右边的Pager
+     */
+    private void chooseRightPage(){
+        //改变按钮颜色
+        btnDownloadList.setTextColor(getResources().getColor(R.color.white));
+        btnDownloadList.setBackgroundColor(getResources().getColor(R.color.color_primary));
+        btnCityList.setTextColor(getResources().getColor(R.color.color_primary));
+        btnCityList.setBackgroundColor(getResources().getColor(R.color.white));
     }
 
     /**

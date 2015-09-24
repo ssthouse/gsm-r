@@ -5,6 +5,7 @@
 
     <!--打开地图模式菜单-->
     <ImageButton
+        android:src="@drawable/map_mode"
         android:background="@color/white"
         android:id="@+id/id_ib_open_map_mode"
         android:layout_width="@dimen/btn_map_mode_size"
