@@ -71,4 +71,7 @@ dependencies {
     compile files('libs/Android_Map_2.5.1.20150827.jar')
     compile files('libs/MapApiServices.jar')
     compile files('libs/AMap_ Location_v1.4.0.1_20150910.jar')
+
+    //for BugHD
+    compile 'im.fir:sdk:latest.integration'
 }
