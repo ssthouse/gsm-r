@@ -4,12 +4,14 @@ import com.activeandroid.Model;
 import com.activeandroid.annotation.Column;
 import com.activeandroid.annotation.Table;
 import com.baidu.mapapi.model.LatLng;
+import com.baidu.mapapi.utils.CoordinateConverter;
 import com.xunce.gsmr.app.Constant;
 
 import java.io.Serializable;
 
 /**
  * 单个的Marker对象---一个
+ * 坐标系是:    GCJ
  * Created by ssthouse on 2015/7/17.
  */
 @Table(name = Constant.TABLE_MARKER_ITEM)
@@ -89,11 +91,18 @@ public class MarkerItem extends Model implements Serializable {
 
     /**
      * 获取百度LatLng
+     * 将国测局坐标转换为百度坐标
      *
      * @return
      */
     public LatLng getBaiduLatLng() {
-        return new LatLng(latitude, longitude);
+        // 将google地图、soso地图、aliyun地图、mapabc地图和amap地图// 所用坐标转换成百度坐标
+        CoordinateConverter converter = new CoordinateConverter();
+        converter.from(CoordinateConverter.CoordType.COMMON);
+        // sourceLatLng待转换坐标
+        converter.coord(new LatLng(latitude, longitude));
+        LatLng desLatLng = converter.convert();
+        return desLatLng;
     }
 
     /**
@@ -117,27 +126,9 @@ public class MarkerItem extends Model implements Serializable {
     /**
      * 改变MarkerItem的经纬度
      *
-     * @param latLng
+     * @param latLng 传入高德地图的数据
      */
-    public void changeName(com.amap.api.maps.model.LatLng latLng) {
-        //先改变文件路径
-//        File file = new File(Constant.PICTURE_PATH + this.getPrjName() + "/" +
-//                +this.getLatitude() + "_" + this.getLongitude());
-//        file.renameTo(new File(Constant.PICTURE_PATH + this.getPrjName() + "/" +
-//                +latLng.latitude + "_" + latLng.longitude));
-        //修改数据
-        this.setLatitude(latLng.latitude);
-        this.setLongitude(latLng.longitude);
-        //保存数据
-        this.save();
-    }
-
-    /**
-     * 改变MarkerItem的经纬度
-     *
-     * @param latLng
-     */
-    public void changeName(LatLng latLng) {
+    public void changeData(com.amap.api.maps.model.LatLng latLng) {
         //先改变文件路径
 //        File file = new File(Constant.PICTURE_PATH + this.getPrjName() + "/" +
 //                +this.getLatitude() + "_" + this.getLongitude());

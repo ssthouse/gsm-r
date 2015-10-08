@@ -1,5 +1,6 @@
 package com.xunce.gsmr.view.adapter;
 
+import android.app.AlertDialog;
 import android.content.Context;
 import android.view.View;
 import android.view.ViewGroup;
@@ -38,7 +39,7 @@ public class GaodeDownloadedCityAdapter extends BaseExpandableListAdapter {
     /**
      * 城市数据
      */
-    // 保存一级目录的省直辖市
+    // 保存一级目录的省----直辖市
     private List<OfflineMapProvince> provinceList = new ArrayList<>();
     // 保存二级目录的市
     private HashMap<Object, List<OfflineMapCity>> cityMap = new HashMap<>();
@@ -60,8 +61,9 @@ public class GaodeDownloadedCityAdapter extends BaseExpandableListAdapter {
     /**
      * 初始化已经下载了的地图数据
      */
-    private void initData(){
+    private void initData() {
         //初始化数据
+        cityMap.clear();
         provinceList = offlineMapManager.getDownloadOfflineMapProvinceList();
         LogHelper.Log(TAG, "数据一共有:  " + provinceList.size() + "条");
         for (int i = 0; i < provinceList.size(); i++) {
@@ -119,33 +121,61 @@ public class GaodeDownloadedCityAdapter extends BaseExpandableListAdapter {
             convertView = RelativeLayout.inflate(context, R.layout.view_offline_group, null);
         }
         group_text = (TextView) convertView.findViewById(R.id.group_text);
-        group_image = (ImageView) convertView
-                .findViewById(R.id.group_image);
-        group_text.setText(provinceList.get(groupPosition)
-                .getProvinceName());
+        group_image = (ImageView) convertView.findViewById(R.id.group_image);
+        group_text.setText(provinceList.get(groupPosition).getProvinceName());
 //        if (isOpen[groupPosition]) {
-//            group_image.setImageDrawable(getResources().getDrawable(
-//                    R.drawable.btn_back));
+//            group_image.setImageDrawable(getResources().getDrawable(R.drawable.btn_back));
 //        } else {
-//            group_image.setImageDrawable(getResources().getDrawable(
-//                    R.drawable.btn_back));
+//            group_image.setImageDrawable(getResources().getDrawable(R.drawable.btn_back));
 //        }
         return convertView;
     }
 
     @Override
-    public View getChildView(int groupPosition, int childPosition, boolean isLastChild,
+    public View getChildView(final int groupPosition, final int childPosition, boolean isLastChild,
                              View convertView, ViewGroup parent) {
         View view = View.inflate(context, R.layout.view_offline_child, null);
         TextView tvName = (TextView) view.findViewById(R.id.id_tv_name);
         tvName.setText(cityMap.get(groupPosition).get(childPosition).getCity());
         TextView tvSize = (TextView) view.findViewById(R.id.id_tv_size);
         tvSize.setText(cityMap.get(groupPosition).get(childPosition).getSize() / (1024 * 1024f) + "MB");
+        view.findViewById(R.id.id_btn_delete_offline_map).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //获取城市名称
+                OfflineMapCity city = cityMap.get(groupPosition).get(childPosition);
+                String name = city.getCity();
+                offlineMapManager.remove(name);
+                LogHelper.Log(TAG, "我删除了----" + name);
+                //删除后----刷新视图
+                showWaitDialog();
+            }
+        });
         return view;
     }
 
     @Override
     public boolean isChildSelectable(int groupPosition, int childPosition) {
         return true;
+    }
+
+    //显示确认的Dialog
+    private AlertDialog dialog;
+    //显示等待Dialog
+    private void showWaitDialog(){
+        final AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        //inflate出view---设置点击事件
+        View contentView = View.inflate(context, R.layout.dialog_complete, null);
+        contentView.findViewById(R.id.id_btn_ensure).setOnClickListener(new View.OnClickListener(){
+
+            @Override
+            public void onClick(View v) {
+                notifyDataSetChanged();
+                dialog.dismiss();
+            }
+        });
+        builder.setView(contentView);
+        dialog = builder.create();
+        dialog.show();
     }
 }

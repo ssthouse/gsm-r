@@ -54,11 +54,6 @@ public class GaodeBaseActivity extends AppCompatActivity implements LocationSour
      */
     private GaodeRailWayHolder railWayHolder;
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-    }
-
     /**
      * 初始化AMap对象
      */

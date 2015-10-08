@@ -65,7 +65,7 @@ public class GaodeOfflineActivity extends AppCompatActivity implements
     private boolean[] isOpen;// 记录一级目录是否打开
 
     /**
-     * 已经下载好了的地图
+     * 已经下载好了的地图Adapter
      */
     private GaodeDownloadedCityAdapter downloadedCityAdapter;
 
@@ -118,7 +118,7 @@ public class GaodeOfflineActivity extends AppCompatActivity implements
      * 初始化VIew
      */
     private void initView() {
-        //填充view
+        //填充viewList
         viewList = new ArrayList<>();
         leftView = View.inflate(this, R.layout.activity_gaode_offline_left, null);
         rightView = View.inflate(this, R.layout.activity_gaode_offline_right, null);
@@ -452,7 +452,7 @@ public class GaodeOfflineActivity extends AppCompatActivity implements
                 holder.citySize = (TextView) convertView
                         .findViewById(R.id.id_tv_size);
                 holder.cityDown = (TextView) convertView
-                        .findViewById(R.id.download_progress_status);
+                        .findViewById(R.id.id_btn_delete_offline_map);
                 convertView.setTag(holder);
             } else {
                 holder = (ViewHolder) convertView.getTag();

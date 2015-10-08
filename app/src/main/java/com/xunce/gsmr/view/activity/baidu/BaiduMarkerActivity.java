@@ -26,12 +26,12 @@ import com.xunce.gsmr.app.Constant;
 import com.xunce.gsmr.model.MarkerItem;
 import com.xunce.gsmr.util.ToastHelper;
 import com.xunce.gsmr.util.ViewHelper;
+import com.xunce.gsmr.util.gps.CoordinateHelper;
 import com.xunce.gsmr.util.gps.DBHelper;
 import com.xunce.gsmr.util.gps.LocateHelper;
 import com.xunce.gsmr.util.gps.MapHelper;
 import com.xunce.gsmr.util.gps.MarkerHelper;
 import com.xunce.gsmr.view.style.TransparentStyle;
-import com.xunce.gsmr.view.widget.ZoomControlView;
 
 /**
  * 用于选址的Activity---开启当前的Acitcvity需要传递一个MarkerItem
@@ -92,6 +92,12 @@ public class BaiduMarkerActivity extends AppCompatActivity {
         }
     };
 
+    /**
+     * 启动当前Activity的静态方法
+     * @param activity
+     * @param markerItem
+     * @param requestCode
+     */
     public static void start(Activity activity, MarkerItem markerItem, int requestCode) {
         Intent intent = new Intent(activity, BaiduMarkerActivity.class);
         intent.putExtra(Constant.EXTRA_KEY_MARKER_ITEM, markerItem);
@@ -143,10 +149,6 @@ public class BaiduMarkerActivity extends AppCompatActivity {
         mBaiduMap.setMyLocationConfigeration(new MyLocationConfiguration(
                 MyLocationConfiguration.LocationMode.NORMAL, true, null));
 
-        //获取缩放控件
-        ZoomControlView zcvZomm = (ZoomControlView) findViewById(R.id.id_zoom_control);
-        zcvZomm.setMapView(mMapView);//设置百度地图控件
-
         //如果是编辑---定位到编辑的点
         if (markerItem.getLatitude() != 0 && markerItem.getLongitude() != 0) {
             MapHelper.animateToPoint(mBaiduMap,
@@ -176,16 +178,17 @@ public class BaiduMarkerActivity extends AppCompatActivity {
         etLatitude = (EditText) findViewById(R.id.id_et_latitude);
         etLongitude = (EditText) findViewById(R.id.id_et_longitude);
 
-        //确认按钮
+        //确认按钮---设置GCJ的坐标
         Button btnSubmit = (Button) findViewById(R.id.id_btn_submit);
         btnSubmit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (MarkerHelper.isDataValid(etLatitude, etLongitude)) {
-                    //保存数据---并改变原来的照片的文件夹的名称
-                    LatLng latLng = new LatLng(MarkerHelper.getLatitude(etLatitude),
+                    //首先获取百度地图的数据
+                    LatLng bdLatLng = new LatLng(MarkerHelper.getLatitude(etLatitude),
                             MarkerHelper.getLongitude(etLongitude));
-                    markerItem.changeName(latLng);
+                    //将高德地图数据传入
+                    markerItem.changeData(CoordinateHelper.getGaodeLatLng(bdLatLng));
                     //设置返回值
                     setResult(Constant.RESULT_CODE_OK);
                     //退出

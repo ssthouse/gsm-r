@@ -77,14 +77,6 @@
             android:layout_height="32dp"
             android:layout_gravity="center"
             android:src="@drawable/mark_icon" />
-
-        <com.xunce.gsmr.view.widget.ZoomControlView
-            android:id="@+id/id_zoom_control"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom|right"
-            android:layout_marginBottom="8dp"
-            android:layout_marginRight="8dp" />
     </FrameLayout>
 </LinearLayout>
 

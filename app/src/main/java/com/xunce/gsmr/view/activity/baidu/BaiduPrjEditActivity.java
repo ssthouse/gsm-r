@@ -287,10 +287,4 @@ public class BaiduPrjEditActivity extends AppCompatActivity {
         super.onDestroy();
         baiduMapFragment.destory();
     }
-
-    @Override
-    protected void onSaveInstanceState(Bundle outState) {
-        baiduMapFragment.saveInstanceState(outState);
-        super.onSaveInstanceState(outState);
-    }
 }

@@ -368,10 +368,6 @@ public class BaiduMapFragment extends Fragment {
     }
 
     //--------------生命周期--------------------------------------------
-    public void create(Bundle savedInstanceState) {
-
-    }
-
     public void pause() {
         if (mapView != null) {
             mapView.onPause();
@@ -392,8 +388,4 @@ public class BaiduMapFragment extends Fragment {
             locationClient.stop();
         }
     }
-
-    public void saveInstanceState(Bundle state) {
-    }
-
 }

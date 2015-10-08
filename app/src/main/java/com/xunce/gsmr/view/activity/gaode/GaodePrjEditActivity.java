@@ -51,7 +51,7 @@ public class GaodePrjEditActivity extends GaodeBaseActivity {
     private PrjItem prjItem;
 
     /**
-     * 公里标显示标志位
+     * 公里标显示标志位a
      */
     private View llPosition;
     private boolean isLlPositionShowed;
@@ -84,9 +84,6 @@ public class GaodePrjEditActivity extends GaodeBaseActivity {
         //接收数据
         prjItem = (PrjItem) getIntent().getSerializableExtra(Constant.EXTRA_KEY_PRJ_ITEM);
 
-        //加载Marker
-        loadMarker(prjItem);
-
         //启动定位
         super.showLocate();
 
@@ -102,6 +99,9 @@ public class GaodePrjEditActivity extends GaodeBaseActivity {
 
         //初始化地图Mode控件
         initMapMode();
+
+        //填充Marker
+        loadMarker(prjItem);
 
         //填充InfoWindow
         getaMap().setInfoWindowAdapter(new AMap.InfoWindowAdapter() {
@@ -329,12 +329,7 @@ public class GaodePrjEditActivity extends GaodeBaseActivity {
             mExitTime = System.currentTimeMillis();
         } else {
             super.onBackPressed();
+            finish();
         }
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        loadMarker(prjItem);
     }
 }

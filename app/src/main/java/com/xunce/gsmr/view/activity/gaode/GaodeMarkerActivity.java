@@ -95,7 +95,7 @@ public class GaodeMarkerActivity extends GaodeBaseActivity{
                     //保存数据---并改变原来的照片的文件夹的名称
                     LatLng latLng = new LatLng(MarkerHelper.getLatitude(etLatitude),
                             MarkerHelper.getLongitude(etLongitude));
-                    markerItem.changeName(latLng);
+                    markerItem.changeData(latLng);
                     //设置返回值
                     setResult(Constant.RESULT_CODE_OK);
                     //退出

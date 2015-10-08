@@ -35,10 +35,10 @@ public class MarkerHolder {
     /**
      * Marker相关
      */
-    //当前选中的marker和markeritem
+    //当前选中的marker和markerItem
     private Marker currentMarker;
     private MarkerItem currentMarkerItem;
-    //marker和markeritem的list
+    //marker和markerItem的list
     private List<Marker> markerList;
     private List<MarkerItem> markerItemList;
 
