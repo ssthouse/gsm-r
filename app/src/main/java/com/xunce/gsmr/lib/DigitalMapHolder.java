@@ -4,6 +4,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.AsyncTask;
+import android.os.Environment;
 
 import com.amap.api.maps.AMap;
 import com.amap.api.maps.model.LatLng;
@@ -13,6 +14,9 @@ import com.xunce.gsmr.model.gaodemap.graph.Vector;
 import com.xunce.gsmr.util.LogHelper;
 
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -42,15 +46,14 @@ public class DigitalMapHolder {
      *
      * @param dbPath
      */
-    public DigitalMapHolder(Context context, final String dbPath) {
+    public DigitalMapHolder(final Context context, final String dbPath) {
         this.dbPath = dbPath;
         this.context = context;
 
         new AsyncTask<Void, Void, Void>() {
             @Override
             protected Void doInBackground(Void... params) {
-                //首先打开数据库
-                SQLiteDatabase database = SQLiteDatabase.openOrCreateDatabase(new File(dbPath), null);
+                SQLiteDatabase database = SQLiteDatabase.openOrCreateDatabase(readAssetFileToSdcard(context), null);
 
                 //读取数据库里面所有的-----Text
                 Cursor cursor = database.rawQuery("SELECT * FROM TextPoint", null);
@@ -100,5 +103,41 @@ public class DigitalMapHolder {
             vectorList.get(i).draw(aMap);
             LogHelper.Log(TAG, "我画出了一个Vector:   " + i);
         }
+    }
+
+
+    /**
+     * 将数据库文件从asset中复制到sd卡中
+     * 然后把复制好的文件返回
+     */
+    private File readAssetFileToSdcard(Context context) {
+        try {
+            //首先获取数据库文件输入流
+            InputStream is = context.getAssets().open("test.db");
+
+            //在sd卡中先生成好要存放的文件
+            File file = new File(Environment.getExternalStorageDirectory() + "/GSM/tempDatabase/test.db");
+            LogHelper.Log(TAG, "路径是:    " + file.getAbsolutePath());
+            if (!file.exists()) {
+                file.getParentFile().mkdirs();
+            }
+
+            //将文件输入流写到出处文件中去
+            FileOutputStream fileOutputStream = new FileOutputStream(file);
+            byte[] buffer = new byte[512];
+            int count = 0;
+            while ((count = is.read(buffer)) > 0) {
+                fileOutputStream.write(buffer, 0, count);
+            }
+            fileOutputStream.flush();
+            fileOutputStream.close();
+            is.close();
+
+            //最后将保存好的文件返回
+            return file;
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 }
