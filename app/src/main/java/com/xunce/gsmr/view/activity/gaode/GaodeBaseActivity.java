@@ -19,7 +19,7 @@ import com.xunce.gsmr.R;
 import com.xunce.gsmr.model.PrjItem;
 import com.xunce.gsmr.model.gaodemap.GaodeRailWayHolder;
 import com.xunce.gsmr.model.gaodemap.MarkerHolder;
-import com.xunce.gsmr.util.PreferenceHelper;
+import com.xunce.gsmr.util.preference.PreferenceHelper;
 
 /**
  * 必须有一个R.id.id_map的高德地图控件
@@ -58,12 +58,6 @@ public class GaodeBaseActivity extends AppCompatActivity implements LocationSour
      * 初始化AMap对象
      */
     public void init(Bundle savedInstanceState) {
-        /*
-         * 设置离线地图存储目录，在下载离线地图或初始化地图设置; 使用过程中可自行设置, 若自行设置了离线地图存储的路径，
-		 * 则需要在离线地图下载和使用地图页面都进行路径设置
-		 */
-        // Demo中为了其他界面可以使用下载的离线地图，使用默认位置存储，屏蔽了自定义设置
-        // MapsInitializer.sdcardDir =OffLineMapUtils.getSdCacheDir(this);
         mapView = (MapView) findViewById(R.id.id_map_view);
         mapView.onCreate(savedInstanceState);// 此方法必须重写
         if (aMap == null) {

@@ -17,11 +17,12 @@ import com.amap.api.maps.CameraUpdateFactory;
 import com.amap.api.maps.model.Marker;
 import com.xunce.gsmr.R;
 import com.xunce.gsmr.app.Constant;
+import com.xunce.gsmr.lib.DigitalMapHolder;
 import com.xunce.gsmr.model.MarkerItem;
 import com.xunce.gsmr.model.PrjItem;
 import com.xunce.gsmr.util.FileHelper;
 import com.xunce.gsmr.util.LogHelper;
-import com.xunce.gsmr.util.ViewHelper;
+import com.xunce.gsmr.util.view.ViewHelper;
 import com.xunce.gsmr.view.activity.PicGridActivity;
 import com.xunce.gsmr.view.activity.PrjSelectActivity;
 import com.xunce.gsmr.view.activity.SettingActivity;
@@ -89,7 +90,13 @@ public class GaodePrjEditActivity extends GaodeBaseActivity {
 
         //初始化View
         initView();
+
+        //TODO---测试代码(测试数字地图的读取)
+        digitalMapHolder = new DigitalMapHolder(this, DigitalMapHolder.TEMP_DB_PATH);
     }
+
+    //TODO
+    private DigitalMapHolder digitalMapHolder;
 
     /**
      * 初始化View
@@ -268,8 +275,9 @@ public class GaodePrjEditActivity extends GaodeBaseActivity {
                 break;
             // TODO---加载铁路地图
             case R.id.id_action_load_map:
-                //首先判断数据库是否绑定
-                loadRail(prjItem);
+                //TODO---首先判断数据库是否绑定
+//                loadRail(prjItem);
+                digitalMapHolder.draw(getaMap());
                 break;
             //数据导出
             case R.id.id_action_export_data:

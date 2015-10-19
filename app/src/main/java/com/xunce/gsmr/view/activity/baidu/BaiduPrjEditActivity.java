@@ -22,7 +22,7 @@ import com.xunce.gsmr.model.MarkerItem;
 import com.xunce.gsmr.model.PrjItem;
 import com.xunce.gsmr.util.FileHelper;
 import com.xunce.gsmr.util.LogHelper;
-import com.xunce.gsmr.util.ViewHelper;
+import com.xunce.gsmr.util.view.ViewHelper;
 import com.xunce.gsmr.view.activity.PicGridActivity;
 import com.xunce.gsmr.view.activity.PrjSelectActivity;
 import com.xunce.gsmr.view.activity.SettingActivity;

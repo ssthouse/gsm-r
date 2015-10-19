@@ -8,15 +8,11 @@ import com.xunce.gsmr.util.LogHelper;
 import java.util.List;
 
 /**
- * 数据库处理的工具类
+ * 数据库处理的工具类(处理app存储的本地数据库)
  * Created by ssthouse on 2015/7/17.
  */
 public class DBHelper {
     private static final String TAG = "DBHelper";
-
-    //这些是---操作从外部接收的数据库文件的方法
-    public static final String EXTERNAL_DB_PATH = "/storage/sdcard0/GSM/DataBase/";
-    public static final String TEMP_DB_PATH = "/storage/sdcard0/tencent/QQfile_recv/test.db";
 
     /**
      * 判断prjItem是不是空的

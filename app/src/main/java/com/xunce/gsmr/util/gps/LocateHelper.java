@@ -4,7 +4,7 @@ import android.content.Context;
 
 import com.baidu.location.LocationClient;
 import com.baidu.location.LocationClientOption;
-import com.xunce.gsmr.util.PreferenceHelper;
+import com.xunce.gsmr.util.preference.PreferenceHelper;
 
 /**
  * 用于定位

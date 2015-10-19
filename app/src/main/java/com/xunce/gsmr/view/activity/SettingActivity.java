@@ -12,8 +12,8 @@ import android.widget.Switch;
 
 import com.xunce.gsmr.R;
 import com.xunce.gsmr.util.LogHelper;
-import com.xunce.gsmr.util.PreferenceHelper;
-import com.xunce.gsmr.util.ViewHelper;
+import com.xunce.gsmr.util.preference.PreferenceHelper;
+import com.xunce.gsmr.util.view.ViewHelper;
 import com.xunce.gsmr.view.style.TransparentStyle;
 
 /**

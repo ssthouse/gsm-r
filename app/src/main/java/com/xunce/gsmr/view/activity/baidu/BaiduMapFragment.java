@@ -29,7 +29,7 @@ import com.xunce.gsmr.R;
 import com.xunce.gsmr.model.PrjItem;
 import com.xunce.gsmr.model.baidumap.BaiduRailWayHolder;
 import com.xunce.gsmr.model.baidumap.MarkerHolder;
-import com.xunce.gsmr.util.PreferenceHelper;
+import com.xunce.gsmr.util.preference.PreferenceHelper;
 import com.xunce.gsmr.util.gps.MapHelper;
 
 /**

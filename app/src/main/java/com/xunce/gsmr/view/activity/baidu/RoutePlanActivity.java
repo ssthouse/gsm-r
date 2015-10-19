@@ -38,7 +38,7 @@ import com.xunce.gsmr.R;
 import com.xunce.gsmr.app.Constant;
 import com.xunce.gsmr.util.FileHelper;
 import com.xunce.gsmr.util.LogHelper;
-import com.xunce.gsmr.util.ToastHelper;
+import com.xunce.gsmr.util.view.ToastHelper;
 import com.xunce.gsmr.view.style.TransparentStyle;
 
 import java.util.ArrayList;

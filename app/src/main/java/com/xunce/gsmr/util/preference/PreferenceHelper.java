@@ -1,4 +1,4 @@
-package com.xunce.gsmr.util;
+package com.xunce.gsmr.util.preference;
 
 import android.content.Context;
 import android.content.SharedPreferences;

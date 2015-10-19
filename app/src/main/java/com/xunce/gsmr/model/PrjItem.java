@@ -7,7 +7,7 @@ import com.activeandroid.annotation.Column;
 import com.activeandroid.annotation.Table;
 import com.activeandroid.query.Select;
 import com.xunce.gsmr.app.Constant;
-import com.xunce.gsmr.util.PreferenceHelper;
+import com.xunce.gsmr.util.preference.PreferenceHelper;
 
 import java.io.File;
 import java.io.Serializable;

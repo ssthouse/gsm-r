@@ -1,4 +1,4 @@
-package com.xunce.gsmr.util;
+package com.xunce.gsmr.util.view;
 
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;

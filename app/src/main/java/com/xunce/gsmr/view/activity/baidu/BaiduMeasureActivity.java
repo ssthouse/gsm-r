@@ -31,7 +31,7 @@ import com.baidu.mapapi.utils.DistanceUtil;
 import com.xunce.gsmr.R;
 import com.xunce.gsmr.app.Constant;
 import com.xunce.gsmr.util.LogHelper;
-import com.xunce.gsmr.util.ViewHelper;
+import com.xunce.gsmr.util.view.ViewHelper;
 import com.xunce.gsmr.util.gps.LocateHelper;
 import com.xunce.gsmr.util.gps.MapHelper;
 import com.xunce.gsmr.view.style.TransparentStyle;

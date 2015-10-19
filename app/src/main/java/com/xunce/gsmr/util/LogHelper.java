@@ -6,6 +6,7 @@ import com.baidu.location.BDLocation;
 import com.xunce.gsmr.model.MarkerItem;
 
 /**
+ * 打印调试日志
  * Created by ssthouse on 2015/7/17.
  */
 public class LogHelper {

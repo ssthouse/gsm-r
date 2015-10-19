@@ -1,4 +1,4 @@
-package com.xunce.gsmr.util;
+package com.xunce.gsmr.util.view;
 
 import android.content.Context;
 import android.view.View;

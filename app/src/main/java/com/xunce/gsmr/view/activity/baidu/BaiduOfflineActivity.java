@@ -24,7 +24,7 @@ import com.baidu.mapapi.map.offline.MKOLUpdateElement;
 import com.baidu.mapapi.map.offline.MKOfflineMap;
 import com.baidu.mapapi.map.offline.MKOfflineMapListener;
 import com.xunce.gsmr.R;
-import com.xunce.gsmr.util.ToastHelper;
+import com.xunce.gsmr.util.view.ToastHelper;
 
 import java.util.ArrayList;
 
