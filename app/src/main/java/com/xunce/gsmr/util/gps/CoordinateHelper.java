@@ -8,11 +8,6 @@ import com.amap.api.maps.model.LatLng;
  */
 public class CoordinateHelper {
 
-    static  double pi = 3.14159265358979324;
-    static double a = 6378245.0;
-    static double ee = 0.00669342162296594323;
-    static  double x_pi = 3.14159265358979324 * 3000.0 / 180.0;
-
 
     /**
      * 将百度LatLng转换为高德LatLng
@@ -21,6 +16,11 @@ public class CoordinateHelper {
      * @return
      */
     public static LatLng getGaodeLatLng(com.baidu.mapapi.model.LatLng latLng) {
+        double pi = 3.14159265358979324;
+        double a = 6378245.0;
+        double ee = 0.00669342162296594323;
+        double x_pi = 3.14159265358979324 * 3000.0 / 180.0;
+
         double bdLatitude = latLng.latitude;
         double bdLongitude = latLng.longitude;
         double x = bdLongitude - 0.0065, y = bdLatitude - 0.006;
@@ -30,4 +30,6 @@ public class CoordinateHelper {
         double gdLatitude = z * Math.sin(theta);
         return new LatLng(gdLatitude, gdLongitude);
     }
+
+
 }

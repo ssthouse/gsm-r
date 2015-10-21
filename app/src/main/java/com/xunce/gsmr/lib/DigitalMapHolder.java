@@ -7,11 +7,11 @@ import android.os.AsyncTask;
 import android.os.Environment;
 
 import com.amap.api.maps.AMap;
-import com.amap.api.maps.model.LatLng;
 import com.xunce.gsmr.model.gaodemap.graph.Point;
 import com.xunce.gsmr.model.gaodemap.graph.Text;
 import com.xunce.gsmr.model.gaodemap.graph.Vector;
 import com.xunce.gsmr.util.LogHelper;
+import com.xunce.gsmr.util.gps.PositionUtil;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -26,11 +26,6 @@ import java.util.List;
  */
 public class DigitalMapHolder {
     private static final String TAG = "DigitalMapHelper";
-
-
-    //这些是---操作从外部接收的数据库文件的方法
-    public static final String EXTERNAL_DB_PATH = "/storage/sdcard0/GSM/DataBase/";
-    public static final String TEMP_DB_PATH = "storage/sdcard0/ssthouse/test.db";
 
     //数据库地址
     private String dbPath;
@@ -59,7 +54,7 @@ public class DigitalMapHolder {
                 Cursor cursor = database.rawQuery("SELECT * FROM TextPoint", null);
                 while (cursor.moveToNext()) {
                     LogHelper.Log(TAG, cursor.getString(2) + " : " + cursor.getDouble(0) + " : " + cursor.getDouble(1));
-                    gaodeTextList.add(new Text(new LatLng(cursor.getLong(1), cursor.getDouble(0)),
+                    gaodeTextList.add(new Text(PositionUtil.gps84_To_Gcj02(cursor.getDouble(1), cursor.getDouble(0)),
                             cursor.getString(2)));
                 }
 
@@ -74,7 +69,7 @@ public class DigitalMapHolder {
                     //读取数据库中对应的Point数据
                     Cursor textCursor = database.rawQuery("SELECT * FROM Point WHERE vactorID=" + "'" + vectorId + "'", null);
                     while (textCursor.moveToNext()) {
-                        vector.getPointList().add(new Point(textCursor.getDouble(1), textCursor.getDouble(0)));
+                        vector.getPointList().add(new Point(textCursor.getDouble(0), textCursor.getDouble(1)));
                     }
                     LogHelper.Log(TAG, "我还在运行");
                     vectorList.add(vector);

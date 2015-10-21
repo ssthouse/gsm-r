@@ -6,6 +6,7 @@ import com.amap.api.maps.AMap;
 import com.amap.api.maps.model.LatLng;
 import com.amap.api.maps.model.PolylineOptions;
 import com.xunce.gsmr.util.LogHelper;
+import com.xunce.gsmr.util.gps.PositionUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,10 +36,10 @@ public class Vector extends BaseGraph {
         polylineOptions.width(10)
                 .color(Color.RED);
         //添加点
-        for(int i=0; i<pointList.size(); i++){
+        for (int i = 0; i < pointList.size(); i++) {
             Point point = pointList.get(i);
-            polylineOptions.add(new LatLng(point.getLongitude(), point.getLatitude()));
-            LogHelper.Log(TAG, "我在这条矢量中添加了一个点:  "+i);
+            polylineOptions.add(PositionUtil.gps84_To_Gcj02(point.getLatitude(), point.getLongitude()));
+            LogHelper.Log(TAG, "我在这条矢量中添加了一个点:  " + i);
         }
 
         aMap.addPolyline((new PolylineOptions())
@@ -51,6 +52,7 @@ public class Vector extends BaseGraph {
 
     /**
      * 传入一个name的构造方法
+     *
      * @param name
      */
     public Vector(String name) {
