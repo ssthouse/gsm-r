@@ -130,7 +130,7 @@
             android:screenOrientation="portrait"
             android:name=".view.activity.baidu.BaiduOfflineActivity"/>
 
-        <!--TODO-高德地图-->
+        <!--高德地图-->
         <activity android:name=".view.activity.gaode.GaodeBaseActivity"
             android:screenOrientation="portrait"/>
         <activity android:name=".view.activity.gaode.GaodePrjEditActivity"

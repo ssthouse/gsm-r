@@ -190,12 +190,12 @@ public class BaiduGetLatLngActivity extends AppCompatActivity {
                 if (isLocated) {
                     //如果已经定位了---切换视图
                     if (mCurrentMode == MyLocationConfiguration.LocationMode.NORMAL) {
-                        // LogHelper.Log(TAG, "change to compass mode");
+                        // LogHelper.log(TAG, "change to compass mode");
                         mCurrentMode = MyLocationConfiguration.LocationMode.COMPASS;
                         ibMode.setImageResource(R.drawable.location_mode_2);
                         enableEagle();
                     } else if (mCurrentMode == MyLocationConfiguration.LocationMode.COMPASS) {
-                        // LogHelper.Log(TAG, "change to normal mode");
+                        // LogHelper.log(TAG, "change to normal mode");
                         mCurrentMode = MyLocationConfiguration.LocationMode.NORMAL;
                         ibMode.setImageResource(R.drawable.location_mode_1);
                         disableEagle();

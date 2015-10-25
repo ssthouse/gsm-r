@@ -81,7 +81,7 @@ public class MarkerHolder {
                     .zIndex(16)
                     .draggable(false);
             markerList.add((Marker) baiduMap.addOverlay(redOverlay));
-            LogHelper.Log(TAG, "我添加了一个点:    " + latLng.latitude + ":" + latLng.longitude);
+            LogHelper.log(TAG, "我添加了一个点:    " + latLng.latitude + ":" + latLng.longitude);
         }
         if(markerItemList.size() >0) {
             //动画移动过去

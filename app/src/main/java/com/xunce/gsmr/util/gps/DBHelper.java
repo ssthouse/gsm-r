@@ -48,9 +48,9 @@ public class DBHelper {
                         + "photoPathName ="
                         + " '" + photoPathName + "'")
                 .executeSingle();
-        LogHelper.Log(TAG, "我从数据库中找到的东西是:   ");
-        LogHelper.Log(TAG, "原来的:   "+markerItem.getPrjName()+markerItem.getPhotoPathName());
-        LogHelper.Log(TAG, "我找到的是"+(markerItemInDB == null));
+        LogHelper.log(TAG, "我从数据库中找到的东西是:   ");
+        LogHelper.log(TAG, "原来的:   " + markerItem.getPrjName() + markerItem.getPhotoPathName());
+        LogHelper.log(TAG, "我找到的是" + (markerItemInDB == null));
         return markerItemInDB;
     }
 

@@ -92,7 +92,7 @@ public class GaodePrjEditActivity extends GaodeBaseActivity {
         initView();
 
         //TODO---测试代码(测试数字地图的读取)
-        digitalMapHolder = new DigitalMapHolder(this, DigitalMapHolder.TEMP_DB_PATH);
+        digitalMapHolder = new DigitalMapHolder(this, "", getaMap());
     }
 
     //TODO
@@ -129,7 +129,7 @@ public class GaodePrjEditActivity extends GaodeBaseActivity {
             public boolean onMarkerClick(Marker marker) {
                 marker.showInfoWindow();
                 getMarkerHolder().setCurrentMarker(marker);
-                LogHelper.Log(TAG, "这个点的经纬度是:   " + marker.getPosition().latitude + ":"
+                LogHelper.log(TAG, "这个点的经纬度是:   " + marker.getPosition().latitude + ":"
                         + marker.getPosition().longitude);
                 return true;
             }
@@ -139,7 +139,7 @@ public class GaodePrjEditActivity extends GaodeBaseActivity {
         findViewById(R.id.id_btn_mark).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //TODO--首先创建一个markerItem放到数据库中
+                //首先创建一个markerItem放到数据库中(在新开启Activity中--如果没有点击确定---就删除)
                 MarkerItem markerItem = new MarkerItem(prjItem);
                 markerItem.save();
                 GaodeMarkerActivity.start(GaodePrjEditActivity.this, markerItem, REQUEST_CODE_MARKER_ACTIVITY);
@@ -170,6 +170,8 @@ public class GaodePrjEditActivity extends GaodeBaseActivity {
                 toggleLlPosition();
                 //TODO
                 loadMarker(prjItem);
+                //TODO
+
             }
         });
     }
@@ -244,7 +246,6 @@ public class GaodePrjEditActivity extends GaodeBaseActivity {
                 REQUEST_CODE_PICTURE_ACTIVITY);
     }
 
-
     /**
      * 切换公里标显示状态
      */
@@ -277,7 +278,7 @@ public class GaodePrjEditActivity extends GaodeBaseActivity {
             case R.id.id_action_load_map:
                 //TODO---首先判断数据库是否绑定
 //                loadRail(prjItem);
-                digitalMapHolder.draw(getaMap());
+                digitalMapHolder.draw();
                 break;
             //数据导出
             case R.id.id_action_export_data:
@@ -303,23 +304,23 @@ public class GaodePrjEditActivity extends GaodeBaseActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         switch (requestCode) {
             case REQUEST_CODE_MARKER_ACTIVITY:
-                LogHelper.Log(TAG, "我反悔了PrjEditActivity");
+                LogHelper.log(TAG, "我反悔了PrjEditActivity");
                 if (resultCode == Constant.RESULT_CODE_OK) {
                     loadMarker(prjItem);
-                    LogHelper.Log(TAG, "我重新绘制了Marker");
+                    LogHelper.log(TAG, "我重新绘制了Marker");
                 }
                 break;
             case REQUEST_CODE_MARKER_EDIT_ACTIVITY:
-                LogHelper.Log(TAG, "我反悔了PrjEditActivity");
+                LogHelper.log(TAG, "我反悔了PrjEditActivity");
                 if (resultCode == Constant.RESULT_CODE_OK) {
-                    LogHelper.Log(TAG, "我重新绘制了Marker");
+                    LogHelper.log(TAG, "我重新绘制了Marker");
                     loadMarker(prjItem);
                 }
                 break;
             case Constant.REQUEST_CODE_DB_FILE:
                 //如果是加载.db文件
                 Uri uri = data.getData();
-                LogHelper.Log(TAG, uri.getEncodedPath());
+                LogHelper.log(TAG, uri.getEncodedPath());
                 break;
             case REQUEST_CODE_ROUTE_ACTIVITY:
                 break;

@@ -246,7 +246,7 @@ public class BaiduPrjEditActivity extends AppCompatActivity {
             case Constant.REQUEST_CODE_DB_FILE:
                 //如果是加载.db文件
                 Uri uri = data.getData();
-                LogHelper.Log(TAG, uri.getEncodedPath());
+                LogHelper.log(TAG, uri.getEncodedPath());
                 break;
             case REQUEST_CODE_ROUTE_ACTIVITY:
                 break;

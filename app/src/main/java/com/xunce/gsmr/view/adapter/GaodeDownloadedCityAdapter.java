@@ -65,10 +65,10 @@ public class GaodeDownloadedCityAdapter extends BaseExpandableListAdapter {
         //初始化数据
         cityMap.clear();
         provinceList = offlineMapManager.getDownloadOfflineMapProvinceList();
-        LogHelper.Log(TAG, "数据一共有:  " + provinceList.size() + "条");
+        LogHelper.log(TAG, "数据一共有:  " + provinceList.size() + "条");
         for (int i = 0; i < provinceList.size(); i++) {
             cityMap.put(i, provinceList.get(i).getCityList());
-            LogHelper.Log(TAG, "我找到了一个下载了的地图..................");
+            LogHelper.log(TAG, "我找到了一个下载了的地图..................");
         }
     }
 
@@ -146,7 +146,7 @@ public class GaodeDownloadedCityAdapter extends BaseExpandableListAdapter {
                 OfflineMapCity city = cityMap.get(groupPosition).get(childPosition);
                 String name = city.getCity();
                 offlineMapManager.remove(name);
-                LogHelper.Log(TAG, "我删除了----" + name);
+                LogHelper.log(TAG, "我删除了----" + name);
                 //删除后----刷新视图
                 showWaitDialog();
             }

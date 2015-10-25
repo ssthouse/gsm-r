@@ -82,7 +82,7 @@ public class PrjItem extends Model implements Serializable{
         List<MarkerItem> markerItemList = this.getMarkerItemList();
         if (markerItemList != null) {
             for (MarkerItem item : markerItemList) {
-//                LogHelper.Log(TAG, "我修改了MarkerItem的prjName");
+//                LogHelper.log(TAG, "我修改了MarkerItem的prjName");
                 item.setPrjName(newName);
                 item.save();
             }

@@ -68,7 +68,7 @@ public class PicGridActivity extends AppCompatActivity {
 
         markerItem = (MarkerItem) getIntent().getSerializableExtra(Constant.EXTRA_KEY_MARKER_ITEM);
         if(markerItem == null){
-            LogHelper.Log(TAG, "卧槽...我竟然时空的");
+            LogHelper.log(TAG, "卧槽...我竟然时空的");
         }
         initView();
     }

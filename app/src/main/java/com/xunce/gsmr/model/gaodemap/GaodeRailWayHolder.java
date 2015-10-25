@@ -39,10 +39,6 @@ public class GaodeRailWayHolder {
         lines = new ArrayList<>();
         texts = new ArrayList<>();
 
-        //TODO---读取数据库中的数据(根据prjItem获取数据库路径)
-//        SQLiteDatabase db = context.openOrCreateDatabase(DBHelper.TEMP_DB_PATH,
-//                SQLiteDatabase.OPEN_READWRITE, null);
-
         //TODO---先手动添加一些数据
         circles.add(new Circle(new LatLng(30.51667, 114.31667), 20));
         circles.add(new Circle(new LatLng(30.51667, 114.31667), 40));
@@ -83,7 +79,7 @@ public class GaodeRailWayHolder {
             LatLng latLngBegin = new LatLng(cursor.getFloat(1), cursor.getFloat(2));
             LatLng latLngEnd = new LatLng(cursor.getFloat(3), cursor.getFloat(4));
             lineList.add(new Line(latLngBegin, latLngEnd));
-            LogHelper.Log(TAG, cursor.getFloat(1) + ":" + cursor.getFloat(2) + ":" +
+            LogHelper.log(TAG, cursor.getFloat(1) + ":" + cursor.getFloat(2) + ":" +
                     cursor.getFloat(1) + ":" + cursor.getFloat(2));
             cursor.moveToNext();
         }
@@ -105,7 +101,7 @@ public class GaodeRailWayHolder {
         for (int i = 0; i < cursor.getCount(); i++) {
             LatLng latLng = new LatLng(cursor.getFloat(1), cursor.getFloat(2));
             circleList.add(new Circle(latLng, (int) cursor.getFloat(3)));
-            LogHelper.Log(TAG, cursor.getFloat(1) + ":" + cursor.getFloat(2) + ":" +
+            LogHelper.log(TAG, cursor.getFloat(1) + ":" + cursor.getFloat(2) + ":" +
                     cursor.getFloat(3));
             cursor.moveToNext();
         }
@@ -127,7 +123,7 @@ public class GaodeRailWayHolder {
         for (int i = 0; i < cursor.getCount(); i++) {
             LatLng latLng = new LatLng(cursor.getFloat(2), cursor.getFloat(3));
             circleList.add(new Text(latLng, cursor.getString(1)));
-            LogHelper.Log(TAG, cursor.getString(1) + ":" + cursor.getFloat(2) + ":" +
+            LogHelper.log(TAG, cursor.getString(1) + ":" + cursor.getFloat(2) + ":" +
                     cursor.getFloat(3));
             cursor.moveToNext();
         }

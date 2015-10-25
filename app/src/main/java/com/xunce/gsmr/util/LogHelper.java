@@ -11,16 +11,16 @@ import com.xunce.gsmr.model.MarkerItem;
  */
 public class LogHelper {
 
-    public static void Log(String tag, String msg) {
+    public static void log(String tag, String msg) {
         Log.e(tag, msg);
     }
 
-    public static void Log(String tag, BDLocation bdLocation) {
+    public static void log(String tag, BDLocation bdLocation) {
         Log.e(tag, bdLocation.getLongitude() + " : " + bdLocation.getLatitude());
     }
 
 
-    public static void Log(String tag, MarkerItem markerItem) {
+    public static void log(String tag, MarkerItem markerItem) {
         Log.e(tag, markerItem.getLongitude() + " : " + markerItem.getLatitude());
     }
 

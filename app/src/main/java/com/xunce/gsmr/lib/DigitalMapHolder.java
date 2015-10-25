@@ -32,6 +32,8 @@ public class DigitalMapHolder {
 
     private Context context;
 
+    private AMap aMap;
+
     //TODO---测试高德地图的文字显示
     private List<Text> gaodeTextList = new ArrayList<>();
     private List<Vector> vectorList = new ArrayList<>();
@@ -41,41 +43,67 @@ public class DigitalMapHolder {
      *
      * @param dbPath
      */
-    public DigitalMapHolder(final Context context, final String dbPath) {
+    public DigitalMapHolder(final Context context, final String dbPath, final AMap aMap) {
         this.dbPath = dbPath;
         this.context = context;
+        this.aMap = aMap;
 
         new AsyncTask<Void, Void, Void>() {
             @Override
             protected Void doInBackground(Void... params) {
+                //打开数据库
                 SQLiteDatabase database = SQLiteDatabase.openOrCreateDatabase(readAssetFileToSdcard(context), null);
 
                 //读取数据库里面所有的-----Text
                 Cursor cursor = database.rawQuery("SELECT * FROM TextPoint", null);
                 while (cursor.moveToNext()) {
-                    LogHelper.Log(TAG, cursor.getString(2) + " : " + cursor.getDouble(0) + " : " + cursor.getDouble(1));
-                    gaodeTextList.add(new Text(PositionUtil.gps84_To_Gcj02(cursor.getDouble(1), cursor.getDouble(0)),
-                            cursor.getString(2)));
+//                    LogHelper.log(TAG, cursor.getString(2) + " : " + cursor.getDouble(0) + " : " + cursor.getDouble(1));
+                    Text text = new Text(PositionUtil.gps84_To_Gcj02(cursor.getDouble(1), cursor.getDouble(0)),
+                            cursor.getString(2));
+                    //提前初始化好数据
+                    gaodeTextList.add(text);
                 }
+                cursor.close();
 
-                //读取所有的Vector的数据
+                //读取所有的Vector的数据(数据库的表结构发生了变化---需要重新写)
+//                {
+//                    Cursor cursorVector = database.rawQuery("SELECT * FROM Vector", null);
+//                    while (cursorVector.moveToNext()) {
+//                        //创建一个新的Vector
+//                        int vectorId = cursorVector.getInt(1);
+//                        String vectorName = cursorVector.getString(0);
+//                        Vector vector = new Vector(vectorName);
+//                        //读取数据库中对应的Point数据
+//                        Cursor textCursor = database.rawQuery("SELECT * FROM Point WHERE vactorID=" + "'" + vectorId + "'", null);
+//                        while (textCursor.moveToNext()) {
+//                            vector.getPointList().add(new Point(textCursor.getDouble(0), textCursor.getDouble(1)));
+//                        }
+//                        LogHelper.log(TAG, "我还在运行");
+//                        vectorList.add(vector);
+//                        textCursor.close();
+//                    }
+//                }
+
+                //现在读取数据库中的数据快多了
                 Cursor cursorVector = database.rawQuery("SELECT * FROM Vector", null);
+                Vector vector = null;
                 while (cursorVector.moveToNext()) {
-                    //创建一个新的Vector
-                    int vectorId = cursorVector.getInt(1);
-                    String vectorName = cursorVector.getString(0);
-                    Vector vector = new Vector(vectorName);
-
-                    //读取数据库中对应的Point数据
-                    Cursor textCursor = database.rawQuery("SELECT * FROM Point WHERE vactorID=" + "'" + vectorId + "'", null);
-                    while (textCursor.moveToNext()) {
-                        vector.getPointList().add(new Point(textCursor.getDouble(0), textCursor.getDouble(1)));
+                    //获取改点在Vector中的位置
+                    int orderInVector = cursorVector.getInt(3);
+                    //如果是0----先把已经保存下来的数据放进去---然后创建一个新的Vector
+                    if (orderInVector == 0) {
+                        //保存已有数据
+                        if (vector != null && vector.getPointList().size() != 0) {
+                            vectorList.add(vector);
+                            //初始化Vector中的画图数据
+                            vector.initPolylineOptions();
+                        }
+                        //更新vector
+                        vector = new Vector(cursorVector.getString(0));
+                        //LogHelper.log(TAG, "我新建了个Vector"+vector.getName());
                     }
-                    LogHelper.Log(TAG, "我还在运行");
-                    vectorList.add(vector);
-                    textCursor.close();
+                    vector.getPointList().add(new Point(cursorVector.getDouble(1), cursorVector.getDouble(2)));
                 }
-
                 cursorVector.close();
                 return null;
             }
@@ -84,10 +112,8 @@ public class DigitalMapHolder {
 
     /**
      * 在高德地图上画出当前的数据地图数据
-     *
-     * @param aMap
      */
-    public void draw(AMap aMap) {
+    public void draw() {
         //画出文字信息
         for (Text text : gaodeTextList) {
             text.draw(aMap);
@@ -96,7 +122,7 @@ public class DigitalMapHolder {
         //画出所有的Vector
         for (int i = 0; i < vectorList.size(); i++) {
             vectorList.get(i).draw(aMap);
-            LogHelper.Log(TAG, "我画出了一个Vector:   " + i);
+            LogHelper.log(TAG, "我画出了一个Vector:   " + i);
         }
     }
 
@@ -112,7 +138,7 @@ public class DigitalMapHolder {
 
             //在sd卡中先生成好要存放的文件
             File file = new File(Environment.getExternalStorageDirectory() + "/GSM/tempDatabase/test.db");
-            LogHelper.Log(TAG, "路径是:    " + file.getAbsolutePath());
+            LogHelper.log(TAG, "路径是:    " + file.getAbsolutePath());
             if (!file.exists()) {
                 file.getParentFile().mkdirs();
             }
@@ -127,7 +153,6 @@ public class DigitalMapHolder {
             fileOutputStream.flush();
             fileOutputStream.close();
             is.close();
-
             //最后将保存好的文件返回
             return file;
         } catch (IOException e) {

@@ -47,12 +47,12 @@ public class SettingActivity extends AppCompatActivity {
         Switch sw = (Switch) findViewById(R.id.id_sw_locate_mode);
         //首先设置为preference中的状态
         sw.setChecked(PreferenceHelper.getInstance(SettingActivity.this).getIsWifiLocateMode(this));
-        //LogHelper.Log(TAG, PreferenceHelper.getIsWifiLocateMode(this) + "");
+        //LogHelper.log(TAG, PreferenceHelper.getIsWifiLocateMode(this) + "");
         sw.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 PreferenceHelper.getInstance(SettingActivity.this).setLocateMode(SettingActivity.this, isChecked);
-                LogHelper.Log(TAG, isChecked + "");
+                LogHelper.log(TAG, isChecked + "");
             }
         });
 
@@ -70,11 +70,11 @@ public class SettingActivity extends AppCompatActivity {
                 if(position == 0) {
                     PreferenceHelper.getInstance(SettingActivity.this)
                             .setMapType(PreferenceHelper.MapType.BAIDU_MAP);
-                    LogHelper.Log(TAG, "我设置了---百度地图");
+                    LogHelper.log(TAG, "我设置了---百度地图");
                 }else if(position ==1){
                     PreferenceHelper.getInstance(SettingActivity.this)
                             .setMapType(PreferenceHelper.MapType.GAODE_MAP);
-                    LogHelper.Log(TAG, "我设置了--高德地图");
+                    LogHelper.log(TAG, "我设置了--高德地图");
                 }
             }
 

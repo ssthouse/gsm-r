@@ -2,9 +2,11 @@
 
 buildscript {
     repositories {
+        //这里是网络使用的开源库的中心选择
         jcenter()
     }
     dependencies {
+        //Android特有的一个插件
         classpath 'com.android.tools.build:gradle:1.2.3'
 
         // NOTE: Do not place your application dependencies here; they belong

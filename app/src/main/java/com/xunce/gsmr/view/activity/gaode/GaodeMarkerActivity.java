@@ -119,7 +119,7 @@ public class GaodeMarkerActivity extends GaodeBaseActivity{
             @Override
             public void onTouch(MotionEvent motionEvent) {
                 if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
-                    //TODO---抬手时更新EditText数据
+                    //抬手时更新EditText数据
                     //更新输入框经纬度数据
                     LatLng latlng = getaMap().getCameraPosition().target;
                     etLatitude.setText(latlng.latitude + "");

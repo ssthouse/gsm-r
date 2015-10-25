@@ -79,7 +79,7 @@ public class BaiduMeasureActivity extends AppCompatActivity {
             intent.putExtra(Constant.EXTRA_KEY_LATITUDE, latLng.latitude);
             intent.putExtra(Constant.EXTRA_KEY_LONGITUDE, latLng.longitude);
         }
-        LogHelper.Log(TAG, latLng.latitude + " : " + latLng.longitude);
+        LogHelper.log(TAG, latLng.latitude + " : " + latLng.longitude);
         activity.startActivity(intent);
         activity.overridePendingTransition(R.anim.activity_fade_in, R.anim.activity_fade_out);
     }
@@ -226,7 +226,7 @@ public class BaiduMeasureActivity extends AppCompatActivity {
         for (int i = 0; i < pointList.size() - 1; i++) {
             double gap = DistanceUtil.getDistance(pointList.get(i), pointList.get(i + 1));
             length += gap;
-//            LogHelper.Log(TAG, gap + "");
+//            LogHelper.log(TAG, gap + "");
         }
         if (length != 0) {
             int result = (int) length;

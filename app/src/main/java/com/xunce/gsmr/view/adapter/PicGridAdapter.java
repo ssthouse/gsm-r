@@ -42,7 +42,7 @@ public class PicGridAdapter extends BaseAdapter {
 
     @Override
     public int getCount() {
-//        LogHelper.Log(TAG, bitmapItemList.size()+"");
+//        LogHelper.log(TAG, bitmapItemList.size()+"");
         return bitmapItemList.size();
     }
 

@@ -61,10 +61,10 @@ public class PictureHelper {
             photo.compress(Bitmap.CompressFormat.JPEG, 100, bos);
             bos.flush();
             bos.close();
-            //LogHelper.Log(TAG, "我在保存临时的照片");
+            //LogHelper.log(TAG, "我在保存临时的照片");
         } catch (Exception e) {
             e.printStackTrace();
-            LogHelper.Log(TAG, "image save is wrong");
+            LogHelper.log(TAG, "image save is wrong");
             return false;
         }
         return true;
@@ -78,8 +78,8 @@ public class PictureHelper {
      * @return
      */
     public static boolean saveImage(String srcPath, String targetPath) {
-//        Log.e(TAG, "我是源文件" + srcPath);
-//        Log.e(TAG, "我是目标文件" + targetPath);
+//        log.e(TAG, "我是源文件" + srcPath);
+//        log.e(TAG, "我是目标文件" + targetPath);
         //判断路径是否为空
         if (srcPath == null || targetPath == null) {
             return false;
@@ -95,7 +95,7 @@ public class PictureHelper {
             targetFile.getParentFile().mkdirs();
             if (!targetFile.exists()) {
                 targetFile.createNewFile();
-//                LogHelper.Log(TAG, targetPath);
+//                LogHelper.log(TAG, targetPath);
             }
             //设置目标文件权限
             targetFile.setReadable(true);
@@ -113,7 +113,7 @@ public class PictureHelper {
             fosTo.close();
         } catch (IOException e) {
             e.printStackTrace();
-            LogHelper.Log(TAG, "something is wrong" + e.toString());
+            LogHelper.log(TAG, "something is wrong" + e.toString());
         }
         return true;
     }
@@ -148,7 +148,7 @@ public class PictureHelper {
             return time;
         } catch (Exception e) {
             e.printStackTrace();
-            LogHelper.Log(TAG, "something is wrong");
+            LogHelper.log(TAG, "something is wrong");
         }
         return 0;
     }

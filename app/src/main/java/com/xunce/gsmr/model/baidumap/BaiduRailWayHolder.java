@@ -72,7 +72,7 @@ public class BaiduRailWayHolder {
             LatLng latLngBegin = new LatLng(cursor.getFloat(1), cursor.getFloat(2));
             LatLng latLngEnd = new LatLng(cursor.getFloat(3), cursor.getFloat(4));
             lineList.add(new Line(latLngBegin, latLngEnd));
-            LogHelper.Log(TAG, cursor.getFloat(1) + ":" + cursor.getFloat(2) + ":" +
+            LogHelper.log(TAG, cursor.getFloat(1) + ":" + cursor.getFloat(2) + ":" +
                     cursor.getFloat(1) + ":" + cursor.getFloat(2));
             cursor.moveToNext();
         }
@@ -89,7 +89,7 @@ public class BaiduRailWayHolder {
         for (int i = 0; i < cursor.getCount(); i++) {
             LatLng latLng = new LatLng(cursor.getFloat(1), cursor.getFloat(2));
             circleList.add(new Circle(latLng, (int) cursor.getFloat(3)));
-            LogHelper.Log(TAG, cursor.getFloat(1) + ":" + cursor.getFloat(2) + ":" +
+            LogHelper.log(TAG, cursor.getFloat(1) + ":" + cursor.getFloat(2) + ":" +
                     cursor.getFloat(3));
             cursor.moveToNext();
         }
@@ -106,7 +106,7 @@ public class BaiduRailWayHolder {
         for (int i = 0; i < cursor.getCount(); i++) {
             LatLng latLng = new LatLng(cursor.getFloat(2), cursor.getFloat(3));
             circleList.add(new Text(latLng, cursor.getString(1)));
-            LogHelper.Log(TAG, cursor.getString(1) + ":" + cursor.getFloat(2) + ":" +
+            LogHelper.log(TAG, cursor.getString(1) + ":" + cursor.getFloat(2) + ":" +
                     cursor.getFloat(3));
             cursor.moveToNext();
         }

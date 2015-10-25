@@ -3,9 +3,8 @@ package com.xunce.gsmr.model.gaodemap.graph;
 import android.graphics.Color;
 
 import com.amap.api.maps.AMap;
-import com.amap.api.maps.model.LatLng;
+import com.amap.api.maps.model.Polyline;
 import com.amap.api.maps.model.PolylineOptions;
-import com.xunce.gsmr.util.LogHelper;
 import com.xunce.gsmr.util.gps.PositionUtil;
 
 import java.util.ArrayList;
@@ -18,6 +17,7 @@ import java.util.List;
 public class Vector extends BaseGraph {
     private static final String TAG = "Vector";
 
+    private static final int POLYLINE_WIDTH = 6;
 
     /**
      * 当前矢量的名称
@@ -29,25 +29,38 @@ public class Vector extends BaseGraph {
      */
     private List<Point> pointList = new ArrayList<>();
 
-    @Override
-    public void draw(AMap aMap) {
-        //先amap添加polylineOptions
-        PolylineOptions polylineOptions = new PolylineOptions();
-        polylineOptions.width(10)
-                .color(Color.RED);
+    /**
+     * 画在地图上的数据
+     */
+    private PolylineOptions polylineOptions;
+    private Polyline polyline;
+
+    /**
+     * 初始化需要画在地图上的数据
+     */
+    public void initPolylineOptions() {
+        polylineOptions = new PolylineOptions();
+        polylineOptions.width(POLYLINE_WIDTH).color(Color.BLUE);
+
         //添加点
         for (int i = 0; i < pointList.size(); i++) {
             Point point = pointList.get(i);
             polylineOptions.add(PositionUtil.gps84_To_Gcj02(point.getLatitude(), point.getLongitude()));
-            LogHelper.Log(TAG, "我在这条矢量中添加了一个点:  " + i);
+//            LogHelper.log(TAG, "我在这条矢量中添加了一个点:  " + i);
         }
+    }
 
-        aMap.addPolyline((new PolylineOptions())
-                .add(new LatLng(43.828, 87.621), new LatLng(45.808, 126.55))
-                .geodesic(true).color(Color.RED));
-
-        //画出来
-        aMap.addPolyline(polylineOptions);
+    @Override
+    public void draw(AMap aMap) {
+        if (polylineOptions == null) {
+            return;
+        }
+        if(polyline == null){
+            polyline = aMap.addPolyline(polylineOptions);
+            polyline.setVisible(false);
+        }else{
+            polyline.setVisible(true);
+        }
     }
 
     /**

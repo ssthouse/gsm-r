@@ -85,7 +85,7 @@ public class MarkerHolder {
                     .position(latLng)
                     .title("hahaha");
             markerList.add(aMap.addMarker(markerOptions));
-            LogHelper.Log(TAG, "我添加了一个点:    " + latLng.latitude + ":" + latLng.longitude);
+            LogHelper.log(TAG, "我添加了一个点:    " + latLng.latitude + ":" + latLng.longitude);
         }
     }
 

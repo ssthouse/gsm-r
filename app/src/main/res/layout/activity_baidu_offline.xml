@@ -88,7 +88,7 @@
             <!--android:layout_height="wrap_content"-->
             <!--android:layout_weight="1"-->
             <!--android:onClick="importFromSDCard"-->
-            <!--android:text="导入" />-->
+            <!--android:content="导入" />-->
         </LinearLayout>
 
 

@@ -45,7 +45,7 @@ public class MarkerHelper {
             }
             return true;
         } catch (Exception e) {
-            LogHelper.Log(TAG, e.toString());
+            LogHelper.log(TAG, e.toString());
             return true;
         }
     }

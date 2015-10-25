@@ -94,7 +94,6 @@ public class NaviActivity extends Activity {
 
                     @Override
                     public void onJumpToDownloadOfflineData() {
-                        // TODO Auto-generated method stub
                     }
                 }));
     }
@@ -107,12 +106,12 @@ public class NaviActivity extends Activity {
 
             @Override
             public void engineInitStart() {
-                LogHelper.Log(TAG, "初始化导航-----");
+                LogHelper.log(TAG, "初始化导航-----");
             }
 
             @Override
             public void engineInitSuccess() {
-                LogHelper.Log(TAG, "初始化成功");
+                LogHelper.log(TAG, "初始化成功");
 
                 BNMapController.getInstance().locateWithAnimation(
                         (int) (113.97348 * 1e5), (int) (22.53951 * 1e5));
@@ -120,7 +119,7 @@ public class NaviActivity extends Activity {
 
             @Override
             public void engineInitFail() {
-                LogHelper.Log(TAG, "初始化失败");
+                LogHelper.log(TAG, "初始化失败");
             }
         };
 

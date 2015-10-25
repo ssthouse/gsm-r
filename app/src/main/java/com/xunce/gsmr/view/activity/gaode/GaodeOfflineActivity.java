@@ -310,7 +310,7 @@ public class GaodeOfflineActivity extends AppCompatActivity implements
             @Override
             public boolean onChildClick(ExpandableListView parent, View v,
                                         int groupPosition, int childPosition, long id) {
-                LogHelper.Log(TAG, "我点击了");
+                LogHelper.log(TAG, "我点击了");
                 try {
                     String name = cityMap.get(groupPosition).get(childPosition).getCity();
 //                    String url = amapManager.getItemByCityName(name).getUrl();
