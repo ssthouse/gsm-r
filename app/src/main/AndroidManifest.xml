@@ -142,6 +142,24 @@
         <activity android:name=".view.activity.gaode.GaodeOfflineActivity"
             android:theme="@style/CustomNoActionbarStyle"
             android:screenOrientation="portrait"/>
+
+
+        <!-- 第三方的module中的Activity  作用是选择文件-->
+        <activity
+            android:name="com.ipaulpro.afilechooser.FileChooserActivity"
+            android:icon="@drawable/ic_chooser"
+            android:enabled="@bool/use_activity"
+            android:exported="true"
+            android:label="@string/choose_file" >
+            <intent-filter>
+                <action android:name="android.intent.action.GET_CONTENT" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.OPENABLE" />
+
+                <data android:mimeType="*/*" />
+            </intent-filter>
+        </activity>
     </application>
 
 </manifest>

@@ -22,6 +22,7 @@ import com.xunce.gsmr.model.MarkerItem;
 import com.xunce.gsmr.model.PrjItem;
 import com.xunce.gsmr.util.FileHelper;
 import com.xunce.gsmr.util.LogHelper;
+import com.xunce.gsmr.util.view.ToastHelper;
 import com.xunce.gsmr.util.view.ViewHelper;
 import com.xunce.gsmr.view.activity.PicGridActivity;
 import com.xunce.gsmr.view.activity.PrjSelectActivity;
@@ -37,9 +38,14 @@ public class GaodePrjEditActivity extends GaodeBaseActivity {
 
     //Activity请求码
     public static final int REQUEST_CODE_ROUTE_ACTIVITY = 1000;
+    //创建Marker的Activity
     public static final int REQUEST_CODE_MARKER_ACTIVITY = 1001;
-    public static final int REQUEST_CODE_PICTURE_ACTIVITY = 1002;
+    //编辑Marker的Activity
     public static final int REQUEST_CODE_MARKER_EDIT_ACTIVITY = 1003;
+    //打开当前Marker的图片展示的Activity
+    public static final int REQUEST_CODE_PICTURE_ACTIVITY = 1002;
+    //选取数字地图文件
+    public static final int REQUEST_CODE_DIGITAL_FILE_CHOOSE = 1004;
 
     /**
      * 用于点击两次退出
@@ -92,7 +98,8 @@ public class GaodePrjEditActivity extends GaodeBaseActivity {
         initView();
 
         //TODO---测试代码(测试数字地图的读取)
-        digitalMapHolder = new DigitalMapHolder(this, "", getaMap());
+//        FileHelper.showFileChooser(this, REQUEST_CODE_DIGITAL_FILE_CHOOSE);
+//        digitalMapHolder = new DigitalMapHolder(this, "", getaMap());
     }
 
     //TODO
@@ -184,11 +191,11 @@ public class GaodePrjEditActivity extends GaodeBaseActivity {
         findViewById(R.id.id_ib_open_map_mode).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(rg.getVisibility() == View.VISIBLE){
+                if (rg.getVisibility() == View.VISIBLE) {
                     rg.startAnimation(AnimationUtils.loadAnimation(GaodePrjEditActivity.this,
                             R.anim.slide_right));
                     rg.setVisibility(View.INVISIBLE);
-                }else{
+                } else {
                     rg.startAnimation(AnimationUtils.loadAnimation(GaodePrjEditActivity.this,
                             R.anim.slide_left));
                     rg.setVisibility(View.VISIBLE);
@@ -274,11 +281,15 @@ public class GaodePrjEditActivity extends GaodeBaseActivity {
                 finish();
                 PrjSelectActivity.start(this, true);
                 break;
-            // TODO---加载铁路地图
+            // TODO---加载数字地图
             case R.id.id_action_load_map:
                 //TODO---首先判断数据库是否绑定
 //                loadRail(prjItem);
-                digitalMapHolder.draw();
+                if(digitalMapHolder == null){
+                    FileHelper.showFileChooser(this, REQUEST_CODE_DIGITAL_FILE_CHOOSE);
+                }else {
+                    digitalMapHolder.draw();
+                }
                 break;
             //数据导出
             case R.id.id_action_export_data:
@@ -322,6 +333,19 @@ public class GaodePrjEditActivity extends GaodeBaseActivity {
                 Uri uri = data.getData();
                 LogHelper.log(TAG, uri.getEncodedPath());
                 break;
+            case REQUEST_CODE_DIGITAL_FILE_CHOOSE:
+                if (resultCode == Activity.RESULT_OK) {
+                    Uri uriDigitalFile = data.getData();
+                    String path = uriDigitalFile.getPath();
+                    //如果没有选择文件直接返回
+                    if (path == null || path.length() == 0) {
+                        return;
+                    }
+                    //如果获取路径成功就----刷新digitalMapHolder
+                    digitalMapHolder = new DigitalMapHolder(this, path, getaMap());
+                    ToastHelper.show(this, "数字地图文件加载成功,再次点击即可显示");
+                    LogHelper.log(TAG, path);
+                }
             case REQUEST_CODE_ROUTE_ACTIVITY:
                 break;
         }

@@ -52,7 +52,7 @@ public class DigitalMapHolder {
             @Override
             protected Void doInBackground(Void... params) {
                 //打开数据库
-                SQLiteDatabase database = SQLiteDatabase.openOrCreateDatabase(readAssetFileToSdcard(context), null);
+                SQLiteDatabase database = SQLiteDatabase.openOrCreateDatabase(new File(dbPath), null);
 
                 //读取数据库里面所有的-----Text
                 Cursor cursor = database.rawQuery("SELECT * FROM TextPoint", null);
@@ -112,13 +112,14 @@ public class DigitalMapHolder {
 
     /**
      * 在高德地图上画出当前的数据地图数据
+     * 因为画的比较忙----性能问题--在开始时显示一个Dialog
+     * 结束时---取消Dialog
      */
     public void draw() {
         //画出文字信息
         for (Text text : gaodeTextList) {
             text.draw(aMap);
         }
-
         //画出所有的Vector
         for (int i = 0; i < vectorList.size(); i++) {
             vectorList.get(i).draw(aMap);

@@ -8,6 +8,7 @@ import android.os.Environment;
 import android.provider.ContactsContract;
 import android.util.Log;
 
+import com.ipaulpro.afilechooser.utils.FileUtils;
 import com.xunce.gsmr.app.Constant;
 import com.xunce.gsmr.model.BitmapItem;
 
@@ -90,6 +91,23 @@ public class FileHelper {
         }
     }
 
+    /**
+     * 开启文件选择程序
+     */
+    public static void showFileChooser(Activity context, int requestCode) {
+        // Create the ACTION_GET_CONTENT Intent
+        Intent getContentIntent = FileUtils.createGetContentIntent();
+        Intent intent = Intent.createChooser(getContentIntent, "Select a file");
+        context.startActivityForResult(intent, requestCode);
+    }
+
+
+    /**
+     * 发送图片文件
+     *
+     * @param context
+     * @param bitmapItemList
+     */
     public static void sendPicture(Context context, List<BitmapItem> bitmapItemList) {
         Intent intent = new Intent(android.content.Intent.ACTION_SEND_MULTIPLE);
         ArrayList<Uri> uriList = new ArrayList<>();
