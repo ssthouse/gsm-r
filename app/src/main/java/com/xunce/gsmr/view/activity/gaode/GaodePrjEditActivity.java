@@ -96,13 +96,12 @@ public class GaodePrjEditActivity extends GaodeBaseActivity {
 
         //初始化View
         initView();
-
-        //TODO---测试代码(测试数字地图的读取)
-//        FileHelper.showFileChooser(this, REQUEST_CODE_DIGITAL_FILE_CHOOSE);
-//        digitalMapHolder = new DigitalMapHolder(this, "", getaMap());
     }
 
     //TODO
+    /**
+     * 数字地图的管理器
+     */
     private DigitalMapHolder digitalMapHolder;
 
     /**

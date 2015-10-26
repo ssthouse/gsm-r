@@ -6,6 +6,7 @@ import com.activeandroid.annotation.Table;
 import com.baidu.mapapi.model.LatLng;
 import com.baidu.mapapi.utils.CoordinateConverter;
 import com.xunce.gsmr.app.Constant;
+import com.xunce.gsmr.util.gps.PositionUtil;
 
 import java.io.Serializable;
 
@@ -79,8 +80,10 @@ public class MarkerItem extends Model implements Serializable {
     public MarkerItem(String prjName, com.amap.api.maps.model.LatLng latLng) {
         super();
         this.prjName = prjName;
-        this.latitude = latLng.latitude;
-        this.longitude = latLng.longitude;
+        //转换坐标
+        double wgsLatlng[] = PositionUtil.gcj_To_Gps84(latLng.latitude, latLng.longitude);
+        this.latitude = wgsLatlng[0];
+        this.longitude = wgsLatlng[1];
         //根据当前时间创建路径名称
         this.photoPathName = System.currentTimeMillis() + "";
     }
@@ -111,7 +114,9 @@ public class MarkerItem extends Model implements Serializable {
      * @return
      */
     public com.amap.api.maps.model.LatLng getGaodeLatLng() {
-        return new com.amap.api.maps.model.LatLng(latitude, longitude);
+        //将数据库中WGS的数据转换为---gcj的数据
+        com.amap.api.maps.model.LatLng gcjLatlng = PositionUtil.gps84_To_Gcj02(latitude, longitude);
+        return gcjLatlng;
     }
 
     /**
@@ -129,14 +134,10 @@ public class MarkerItem extends Model implements Serializable {
      * @param latLng 传入高德地图的数据
      */
     public void changeData(com.amap.api.maps.model.LatLng latLng) {
-        //先改变文件路径
-//        File file = new File(Constant.PICTURE_PATH + this.getPrjName() + "/" +
-//                +this.getLatitude() + "_" + this.getLongitude());
-//        file.renameTo(new File(Constant.PICTURE_PATH + this.getPrjName() + "/" +
-//                +latLng.latitude + "_" + latLng.longitude));
-        //修改数据
-        this.setLatitude(latLng.latitude);
-        this.setLongitude(latLng.longitude);
+        //转换坐标
+        double wgsLatlng[] = PositionUtil.gcj_To_Gps84(latLng.latitude, latLng.longitude);
+        this.latitude = wgsLatlng[0];
+        this.longitude = wgsLatlng[1];
         //保存数据
         this.save();
     }

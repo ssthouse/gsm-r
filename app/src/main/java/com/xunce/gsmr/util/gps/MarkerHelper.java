@@ -2,13 +2,6 @@ package com.xunce.gsmr.util.gps;
 
 import android.widget.EditText;
 
-import com.baidu.mapapi.map.BaiduMap;
-import com.baidu.mapapi.map.BitmapDescriptor;
-import com.baidu.mapapi.map.BitmapDescriptorFactory;
-import com.baidu.mapapi.map.MarkerOptions;
-import com.baidu.mapapi.map.OverlayOptions;
-import com.baidu.mapapi.model.LatLng;
-import com.xunce.gsmr.R;
 import com.xunce.gsmr.util.LogHelper;
 
 /**
@@ -56,28 +49,5 @@ public class MarkerHelper {
 
     public static double getLongitude(EditText etLongitude) {
         return Double.parseDouble(etLongitude.getText().toString());
-    }
-
-
-    /**
-     * 标注覆盖物
-     */
-    public static void mark(BaiduMap baiduMap, LatLng point) {
-        if (baiduMap == null || point == null) {
-            return;
-        }
-        //构建Marker图标
-        BitmapDescriptor bitmap = BitmapDescriptorFactory
-                .fromResource(R.mipmap.ic_launcher);
-        //构建MarkerOption，用于在地图上添加Marker
-        OverlayOptions option = new MarkerOptions()
-                .position(point)
-                .icon(bitmap)
-                .title("hahaha")
-                .zIndex(10)
-                .draggable(true);
-
-        //在地图上添加Marker，并显示
-        baiduMap.addOverlay(option);
     }
 }

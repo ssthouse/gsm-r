@@ -156,7 +156,6 @@ public class GaodeMarkerActivity extends GaodeBaseActivity{
         return super.onOptionsItemSelected(item);
     }
 
-
     @Override
     public void onBackPressed() {
         if (requestCode == GaodePrjEditActivity.REQUEST_CODE_MARKER_EDIT_ACTIVITY) {

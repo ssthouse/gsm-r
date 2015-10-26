@@ -8,7 +8,6 @@ import com.amap.api.maps.model.LatLng;
  */
 public class CoordinateHelper {
 
-
     /**
      * 将百度LatLng转换为高德LatLng
      *
@@ -30,6 +29,4 @@ public class CoordinateHelper {
         double gdLatitude = z * Math.sin(theta);
         return new LatLng(gdLatitude, gdLongitude);
     }
-
-
 }

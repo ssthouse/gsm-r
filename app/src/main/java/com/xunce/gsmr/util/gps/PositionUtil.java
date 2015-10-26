@@ -27,9 +27,6 @@ public class PositionUtil {
      * @return
      */
     public static LatLng gps84_To_Gcj02(double lat, double lon) {
-//        if (outOfChina(lat, lon)) {
-//            return null;
-//        }
           double dLat = transformLat(lon - 105.0, lat - 35.0);
           double dLon = transformLon(lon - 105.0, lat - 35.0);
           double radLat = lat / 180.0 * pi;
@@ -43,83 +40,100 @@ public class PositionUtil {
           return new LatLng(mgLat,mgLon);
     }
 
-//    /**
-//     * * 火星坐标系 (GCJ-02) to 84 * * @param lon * @param lat * @return
-//     * */
-//    public static Gps gcj_To_Gps84(double lat, double lon) {
-//        Gps gps = transform(lat, lon);
-//        double lontitude = lon * 2 - gps.getWgLon();
-//        double latitude = lat * 2 - gps.getWgLat();
-//        return new Gps(latitude, lontitude);
-//    }
-//
-//    /**
-//     * 火星坐标系 (GCJ-02) 与百度坐标系 (BD-09) 的转换算法 将 GCJ-02 坐标转换成 BD-09 坐标
-//     *
-//     * @param gg_lat
-//     * @param gg_lon
-//     */
-//    public static Gps gcj02_To_Bd09(double gg_lat, double gg_lon) {
-//        double x = gg_lon, y = gg_lat;
-//        double z = Math.sqrt(x * x + y * y) + 0.00002 * Math.sin(y * pi);
-//        double theta = Math.atan2(y, x) + 0.000003 * Math.cos(x * pi);
-//        double bd_lon = z * Math.cos(theta) + 0.0065;
-//        double bd_lat = z * Math.sin(theta) + 0.006;
-//        return new Gps(bd_lat, bd_lon);
-//    }
-//
-//    /**
-//     * * 火星坐标系 (GCJ-02) 与百度坐标系 (BD-09) 的转换算法 * * 将 BD-09 坐标转换成GCJ-02 坐标 * * @param
-//     * bd_lat * @param bd_lon * @return
-//     */
-//    public static Gps bd09_To_Gcj02(double bd_lat, double bd_lon) {
-//        double x = bd_lon - 0.0065, y = bd_lat - 0.006;
-//        double z = Math.sqrt(x * x + y * y) - 0.00002 * Math.sin(y * pi);
-//        double theta = Math.atan2(y, x) - 0.000003 * Math.cos(x * pi);
-//        double gg_lon = z * Math.cos(theta);
-//        double gg_lat = z * Math.sin(theta);
-//        return new Gps(gg_lat, gg_lon);
-//    }
-//
-//    /**
-//     * (BD-09)-->84
-//     * @param bd_lat
-//     * @param bd_lon
-//     * @return
-//     */
-//    public static Gps bd09_To_Gps84(double bd_lat, double bd_lon) {
-//
-//        Gps gcj02 = PositionUtil.bd09_To_Gcj02(bd_lat, bd_lon);
-//        Gps map84 = PositionUtil.gcj_To_Gps84(gcj02.getWgLat(),
-//                gcj02.getWgLon());
-//        return map84;
-//
-//    }
-//
-//    public static boolean outOfChina(double lat, double lon) {
-//        if (lon < 72.004 || lon > 137.8347)
-//            return true;
-//        if (lat < 0.8293 || lat > 55.8271)
-//            return true;
-//        return false;
-//    }
-//
-//    public static Gps transform(double lat, double lon) {
-//        if (outOfChina(lat, lon)) {
-//            return new Gps(lat, lon);
-//        }
-//        double dLat = transformLat(lon - 105.0, lat - 35.0);
-//        double dLon = transformLon(lon - 105.0, lat - 35.0);
-//        double radLat = lat / 180.0 * pi;
-//        double magic = Math.sin(radLat);
-//        magic = 1 - ee * magic * magic;
-//        double sqrtMagic = Math.sqrt(magic);
-//        dLat = (dLat * 180.0) / ((a * (1 - ee)) / (magic * sqrtMagic) * pi);
-//        dLon = (dLon * 180.0) / (a / sqrtMagic * Math.cos(radLat) * pi);
-//        double mgLat = lat + dLat;
-//        double mgLon = lon + dLon;
-//        return new Gps(mgLat, mgLon);
-//    }
+    /**
+     * 火星坐标系 (GCJ-02) to 84
+     *
+     * @param lon
+     * @param lat
+     * @return 返回的数据---纬度---经度
+     * */
+    public static double[] gcj_To_Gps84(double lat, double lon) {
+        double tempLatlng [] = transform(lat, lon);
+        double longitude = lon * 2 - tempLatlng[1];
+        double latitude = lat * 2 - tempLatlng[0];
+        //输出一个数组
+        double[] result = new double[2];
+        result[0] = latitude;
+        result[1] = longitude;
+        return result;
+    }
+
+    /**
+     * 火星坐标系 (GCJ-02) 与百度坐标系 (BD-09) 的转换算法 将 GCJ-02 坐标转换成 BD-09 坐标
+     *
+     * @param gg_lat
+     * @param gg_lon
+     */
+    public static double[] gcj02_To_Bd09(double gg_lat, double gg_lon) {
+        double x = gg_lon, y = gg_lat;
+        double z = Math.sqrt(x * x + y * y) + 0.00002 * Math.sin(y * pi);
+        double theta = Math.atan2(y, x) + 0.000003 * Math.cos(x * pi);
+        double bd_lon = z * Math.cos(theta) + 0.0065;
+        double bd_lat = z * Math.sin(theta) + 0.006;
+        //输出数据
+        double result[] = new double[2];
+        result[0] = bd_lat;
+        result[1] = bd_lon;
+        return result;
+    }
+
+    /**
+     * * 火星坐标系 (GCJ-02) 与百度坐标系 (BD-09) 的转换算法 * * 将 BD-09 坐标转换成GCJ-02 坐标 * * @param
+     * bd_lat * @param bd_lon * @return
+     */
+    public static double[] bd09_To_Gcj02(double bd_lat, double bd_lon) {
+        double x = bd_lon - 0.0065, y = bd_lat - 0.006;
+        double z = Math.sqrt(x * x + y * y) - 0.00002 * Math.sin(y * pi);
+        double theta = Math.atan2(y, x) - 0.000003 * Math.cos(x * pi);
+        double gg_lon = z * Math.cos(theta);
+        double gg_lat = z * Math.sin(theta);
+        //输出数据
+        double result[] = new double[2];
+        result[0] = bd_lat;
+        result[1] = bd_lon;
+        return result;
+    }
+
+    /**
+     * (BD-09)-->84
+     * @param bd_lat
+     * @param bd_lon
+     * @return
+     */
+    public static double[] bd09_To_Gps84(double bd_lat, double bd_lon) {
+        double gcjLatlng[] = PositionUtil.bd09_To_Gcj02(bd_lat, bd_lon);
+        double wgsLatlng[] = PositionUtil.gcj_To_Gps84(gcjLatlng[0], gcjLatlng[1]);
+        return wgsLatlng;
+    }
+
+    public static boolean outOfChina(double lat, double lon) {
+        if (lon < 72.004 || lon > 137.8347)
+            return true;
+        if (lat < 0.8293 || lat > 55.8271)
+            return true;
+        return false;
+    }
+
+    public static double[] transform(double lat, double lon) {
+        if (outOfChina(lat, lon)) {
+            return null;
+        }
+        double dLat = transformLat(lon - 105.0, lat - 35.0);
+        double dLon = transformLon(lon - 105.0, lat - 35.0);
+        double radLat = lat / 180.0 * pi;
+        double magic = Math.sin(radLat);
+        magic = 1 - ee * magic * magic;
+        double sqrtMagic = Math.sqrt(magic);
+        dLat = (dLat * 180.0) / ((a * (1 - ee)) / (magic * sqrtMagic) * pi);
+        dLon = (dLon * 180.0) / (a / sqrtMagic * Math.cos(radLat) * pi);
+        double mgLat = lat + dLat;
+        double mgLon = lon + dLon;
+        //配置输出
+        double result[] = new double[2];
+        result[0] = mgLat;
+        result[1] = mgLon;
+        return result;
+    }
 
     public static double transformLat(double x, double y) {
         double ret = -100.0 + 2.0 * x + 3.0 * y + 0.2 * y * y + 0.1 * x * y
