@@ -177,7 +177,6 @@ public class GaodePrjEditActivity extends GaodeBaseActivity {
                 //TODO
                 loadMarker(prjItem);
                 //TODO
-
             }
         });
     }
@@ -199,8 +198,6 @@ public class GaodePrjEditActivity extends GaodeBaseActivity {
                             R.anim.slide_left));
                     rg.setVisibility(View.VISIBLE);
                 }
-                //TODO
-                loadMarker(prjItem);
             }
         });
         //切换map_mode 的选项
@@ -363,7 +360,7 @@ public class GaodePrjEditActivity extends GaodeBaseActivity {
             mExitTime = System.currentTimeMillis();
         } else {
             super.onBackPressed();
-            //
+            //杀掉当前app的进程---释放地图的内存
             System.exit(0);
         }
     }

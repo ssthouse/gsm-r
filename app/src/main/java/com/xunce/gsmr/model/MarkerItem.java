@@ -141,6 +141,16 @@ public class MarkerItem extends Model implements Serializable {
         this.save();
     }
 
+    /**
+     * 传入wgs的数据并保存
+     * @param wgsLatlng 第一个数据是latitude---第二个数据是longitude
+     */
+    public void changeData(double[] wgsLatlng){
+        this.latitude = wgsLatlng[0];
+        this.longitude = wgsLatlng[1];
+        this.save();
+    }
+
     //getter-----and------setter--------------------------
     public double getLatitude() {
         return latitude;

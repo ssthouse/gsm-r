@@ -14,32 +14,42 @@ import com.amap.api.maps.model.LatLng;
 import com.xunce.gsmr.R;
 import com.xunce.gsmr.app.Constant;
 import com.xunce.gsmr.model.MarkerItem;
-import com.xunce.gsmr.util.view.ToastHelper;
-import com.xunce.gsmr.util.view.ViewHelper;
 import com.xunce.gsmr.util.gps.DBHelper;
 import com.xunce.gsmr.util.gps.MarkerHelper;
+import com.xunce.gsmr.util.gps.PositionUtil;
+import com.xunce.gsmr.util.view.ToastHelper;
+import com.xunce.gsmr.util.view.ViewHelper;
 import com.xunce.gsmr.view.style.TransparentStyle;
 
 /**
- *开启本Activity需要一个MarkerItem
+ * 开启本Activity需要一个MarkerItem
  * 高德选取Marker的Activity
  * Created by ssthouse on 2015/9/15.
  */
-public class GaodeMarkerActivity extends GaodeBaseActivity{
+public class GaodeMarkerActivity extends GaodeBaseActivity {
     private static final String TAG = "GaodeMarkerActivity";
 
     /**
      * 开启本Activity需要的数据
      */
     private MarkerItem markerItem;
+    /**
+     * 用于判断---是修改还是新增
+     */
     private int requestCode;
 
     /**
-     * View控件
+     * 经纬度输入框
      */
-    //经纬度输入框
     private EditText etLatitude, etLongitude;
 
+    /**
+     * 启动当前Activity
+     *
+     * @param activity
+     * @param markerItem
+     * @param requestCode
+     */
     public static void start(Activity activity, MarkerItem markerItem, int requestCode) {
         //填充intent进去markerItem和requestCode
         Intent intent = new Intent(activity, GaodeMarkerActivity.class);
@@ -67,7 +77,7 @@ public class GaodeMarkerActivity extends GaodeBaseActivity{
         //如果是编辑---定位到编辑的点
         if (markerItem != null && markerItem.getLatitude() != 0 && markerItem.getLongitude() != 0) {
             super.animateToPoint(markerItem.getGaodeLatLng());
-        }else{
+        } else {
             showLocate();
             animateToMyLocation();
         }
@@ -79,7 +89,7 @@ public class GaodeMarkerActivity extends GaodeBaseActivity{
     /**
      * 初始化View
      */
-    private void initView(){
+    private void initView() {
         ViewHelper.initActionBar(this, getSupportActionBar(), "选址");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
@@ -93,9 +103,10 @@ public class GaodeMarkerActivity extends GaodeBaseActivity{
             public void onClick(View v) {
                 if (MarkerHelper.isDataValid(etLatitude, etLongitude)) {
                     //保存数据---并改变原来的照片的文件夹的名称
-                    LatLng latLng = new LatLng(MarkerHelper.getLatitude(etLatitude),
-                            MarkerHelper.getLongitude(etLongitude));
-                    markerItem.changeData(latLng);
+                    double latitude = MarkerHelper.getLatitude(etLatitude);
+                    double longitude = MarkerHelper.getLongitude(etLongitude);
+                    double wgsLatlng[] = PositionUtil.gcj_To_Gps84(latitude, longitude);
+                    markerItem.changeData(wgsLatlng);
                     //设置返回值
                     setResult(Constant.RESULT_CODE_OK);
                     //退出
@@ -119,11 +130,11 @@ public class GaodeMarkerActivity extends GaodeBaseActivity{
             @Override
             public void onTouch(MotionEvent motionEvent) {
                 if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
-                    //抬手时更新EditText数据
-                    //更新输入框经纬度数据
+                    //抬手时更新输入框经纬度数据
                     LatLng latlng = getaMap().getCameraPosition().target;
-                    etLatitude.setText(latlng.latitude + "");
-                    etLongitude.setText(latlng.longitude + "");
+                    double wgsLatlng[] = PositionUtil.gcj_To_Gps84(latlng.latitude, latlng.longitude);
+                    etLatitude.setText(wgsLatlng[0] + "");
+                    etLongitude.setText(wgsLatlng[1] + "");
                 }
             }
         });

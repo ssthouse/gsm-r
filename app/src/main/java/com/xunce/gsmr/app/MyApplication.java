@@ -15,8 +15,8 @@ public class MyApplication extends Application {
 
     @Override
     public void onCreate() {
+        //fir统计
         FIR.init(this);
-
         super.onCreate();
         //百度地图初始化
         SDKInitializer.initialize(getApplicationContext());

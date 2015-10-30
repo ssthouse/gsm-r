@@ -17,7 +17,6 @@ public class Constant {
     public static final String TEMP_FILE_PATH = "/storage/sdcard0/GSM/Temp/";
     public static final String DATA_BASE_FILE_PATH = "/storage/sdcard0/GSM/DataBase/";
 
-
     //table名
     public static final String TABLE_PRJ_ITEM = "Projects";
     public static final String TABLE_MARKER_ITEM = "Markers";

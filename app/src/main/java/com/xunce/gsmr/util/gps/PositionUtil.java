@@ -176,6 +176,4 @@ public class PositionUtil {
                 * pi)) * 2.0 / 3.0;
         return ret;
     }
-
-
 }

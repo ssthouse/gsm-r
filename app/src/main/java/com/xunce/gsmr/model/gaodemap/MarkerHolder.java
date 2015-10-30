@@ -71,11 +71,10 @@ public class MarkerHolder {
      */
     public void initMarker() {
         //清除地图图像---清空marker数据
-        //aMap.clear();
         for(Marker marker : markerOnMapList){
             marker.setVisible(false);
             marker.remove();
-            LogHelper.log(TAG, "我去除了一个Marker");
+//            LogHelper.log(TAG, "我去除了一个Marker");
         }
         markerOnMapList.clear();
         markerOnDbList.clear();
@@ -88,7 +87,7 @@ public class MarkerHolder {
             MarkerOptions markerOptions = new MarkerOptions();
             markerOptions.icon(descriptorBlue).position(latLng);
             markerOnMapList.add(aMap.addMarker(markerOptions));
-            LogHelper.log(TAG, "我添加了一个点:    " + latLng.latitude + ":" + latLng.longitude);
+//            LogHelper.log(TAG, "我添加了一个点:    " + latLng.latitude + ":" + latLng.longitude);
         }
     }
 

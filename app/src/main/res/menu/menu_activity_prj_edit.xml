@@ -16,7 +16,6 @@
         android:title="菜单"
         android:icon="@drawable/ic_action_overflow">
         <menu>
-
             <item
                 android:id="@+id/id_action_change_project"
                 android:orderInCategory="100"
@@ -48,6 +47,4 @@
                 app:showAsAction="never" />
         </menu>
     </item>
-
-
 </menu>

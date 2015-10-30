@@ -39,7 +39,7 @@ public class MarkerHelper {
             return true;
         } catch (Exception e) {
             LogHelper.log(TAG, e.toString());
-            return true;
+            return false;
         }
     }
 
