@@ -59,7 +59,8 @@ public class GaodeBaseActivity extends AppCompatActivity implements LocationSour
      */
     public void init(Bundle savedInstanceState) {
         mapView = (MapView) findViewById(R.id.id_map_view);
-        mapView.onCreate(savedInstanceState);// 此方法必须重写
+        // 此方法必须重写
+        mapView.onCreate(savedInstanceState);
         if (aMap == null) {
             aMap = mapView.getMap();
             mUiSettings = aMap.getUiSettings();
@@ -78,12 +79,15 @@ public class GaodeBaseActivity extends AppCompatActivity implements LocationSour
     }
 
     /**
-     * TODO
      * 加载marker
      */
     public void loadMarker(PrjItem prjItem) {
         //MarkerHolder模块
-        markerHolder = new MarkerHolder(this, prjItem, getaMap());
+        if(markerHolder == null){
+            markerHolder = new MarkerHolder(this, prjItem, getaMap());
+        }else{
+            markerHolder.initMarker();
+        }
     }
 
     /**

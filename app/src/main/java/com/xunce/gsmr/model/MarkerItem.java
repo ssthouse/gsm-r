@@ -115,8 +115,7 @@ public class MarkerItem extends Model implements Serializable {
      */
     public com.amap.api.maps.model.LatLng getGaodeLatLng() {
         //将数据库中WGS的数据转换为---gcj的数据
-        com.amap.api.maps.model.LatLng gcjLatlng = PositionUtil.gps84_To_Gcj02(latitude, longitude);
-        return gcjLatlng;
+        return PositionUtil.gps84_To_Gcj02(latitude, longitude);
     }
 
     /**

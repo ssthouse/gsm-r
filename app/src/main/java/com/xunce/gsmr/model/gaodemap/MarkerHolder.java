@@ -46,8 +46,8 @@ public class MarkerHolder {
      */
     private Marker currentMarker;
     private MarkerItem currentMarkerItem;
-    private List<Marker> markerList;
-    private List<MarkerItem> markerItemList;
+    private List<Marker> markerOnMapList;
+    private List<MarkerItem> markerOnDbList;
 
     /**
      * 构造方法
@@ -59,32 +59,35 @@ public class MarkerHolder {
         this.context = context;
         this.prjItem = prjItem;
         this.aMap = aMap;
-        markerList = new ArrayList<>();
-        markerItemList = new ArrayList<>();
+        markerOnMapList = new ArrayList<>();
+        markerOnDbList = new ArrayList<>();
 
-        //初始化MarkerList数据
-        initMarkerList();
+        //初始化Marker
+        initMarker();
     }
 
     /**
-     * 初始化MarkerList数据
+     * 初始化Marker
      */
-    private void initMarkerList() {
+    public void initMarker() {
         //清除地图图像---清空marker数据
-        aMap.clear();
-        markerList.clear();
-        markerItemList.clear();
+        //aMap.clear();
+        for(Marker marker : markerOnMapList){
+            marker.setVisible(false);
+            marker.remove();
+            LogHelper.log(TAG, "我去除了一个Marker");
+        }
+        markerOnMapList.clear();
+        markerOnDbList.clear();
         currentMarker = null;
         currentMarkerItem = null;
         //填充MarkerList
-        markerItemList = DBHelper.getMarkerList(prjItem);
-        for (int i = 0; i < markerItemList.size(); i++) {
-            com.amap.api.maps.model.LatLng latLng = markerItemList.get(i).getGaodeLatLng();
+        markerOnDbList = DBHelper.getMarkerList(prjItem);
+        for (int i = 0; i < markerOnDbList.size(); i++) {
+            com.amap.api.maps.model.LatLng latLng = markerOnDbList.get(i).getGaodeLatLng();
             MarkerOptions markerOptions = new MarkerOptions();
-            markerOptions.icon(descriptorBlue)
-                    .position(latLng)
-                    .title("hahaha");
-            markerList.add(aMap.addMarker(markerOptions));
+            markerOptions.icon(descriptorBlue).position(latLng);
+            markerOnMapList.add(aMap.addMarker(markerOptions));
             LogHelper.log(TAG, "我添加了一个点:    " + latLng.latitude + ":" + latLng.longitude);
         }
     }
@@ -102,7 +105,7 @@ public class MarkerHolder {
      * 全部图标变为蓝色
      */
     public void setAll2Blue() {
-        for (Marker marker : markerList) {
+        for (Marker marker : markerOnMapList) {
             if (marker != null) {
                 marker.setIcon(descriptorBlue);
             }
@@ -120,14 +123,14 @@ public class MarkerHolder {
 
     public void setCurrentMarker(Marker currentMarker) {
         this.currentMarker = currentMarker;
-        this.currentMarkerItem = markerItemList.get(markerList.indexOf(currentMarker));
+        this.currentMarkerItem = markerOnDbList.get(markerOnMapList.indexOf(currentMarker));
     }
 
-    public List<Marker> getMarkerList() {
-        return markerList;
+    public List<Marker> getMarkerOnMapList() {
+        return markerOnMapList;
     }
 
-    public void setMarkerList(List<Marker> markerList) {
-        this.markerList = markerList;
+    public void setMarkerOnMapList(List<Marker> markerOnMapList) {
+        this.markerOnMapList = markerOnMapList;
     }
 }

@@ -47,6 +47,12 @@ public class GaodePrjEditActivity extends GaodeBaseActivity {
     //选取数字地图文件
     public static final int REQUEST_CODE_DIGITAL_FILE_CHOOSE = 1004;
 
+    //TODO
+    /**
+     * 数字地图的管理器
+     */
+    private DigitalMapHolder digitalMapHolder;
+
     /**
      * 用于点击两次退出
      */
@@ -97,12 +103,6 @@ public class GaodePrjEditActivity extends GaodeBaseActivity {
         //初始化View
         initView();
     }
-
-    //TODO
-    /**
-     * 数字地图的管理器
-     */
-    private DigitalMapHolder digitalMapHolder;
 
     /**
      * 初始化View
@@ -199,6 +199,8 @@ public class GaodePrjEditActivity extends GaodeBaseActivity {
                             R.anim.slide_left));
                     rg.setVisibility(View.VISIBLE);
                 }
+                //TODO
+                loadMarker(prjItem);
             }
         });
         //切换map_mode 的选项
@@ -361,7 +363,8 @@ public class GaodePrjEditActivity extends GaodeBaseActivity {
             mExitTime = System.currentTimeMillis();
         } else {
             super.onBackPressed();
-            finish();
+            //
+            System.exit(0);
         }
     }
 }

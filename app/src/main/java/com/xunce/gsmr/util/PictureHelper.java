@@ -153,6 +153,11 @@ public class PictureHelper {
         return 0;
     }
 
+    /**
+     * 判断是否有照片缩略图
+     * @param file
+     * @return
+     */
     private static boolean hasTempPicture(File file) {
         File tempFile = new File(Constant.TEMP_FILE_PATH + file.getName());
         if (tempFile.exists()) {
@@ -162,10 +167,20 @@ public class PictureHelper {
         }
     }
 
+    /**
+     * 获取照片的缩略图
+     * @param file
+     * @return
+     */
     private static File getTempPicture(File file) {
         return new File(Constant.TEMP_FILE_PATH + file.getName());
     }
 
+    /**
+     * 获取指定路径下的所有bitmap
+     * @param path
+     * @return
+     */
     public static List<BitmapItem> getBitmapItemList(String path) {
         //要返回的数据
         List<BitmapItem> bitmapList = new ArrayList<>();

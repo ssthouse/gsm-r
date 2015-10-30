@@ -15,7 +15,6 @@ public class LocateHelper {
     private LocateHelper() {
     }
 
-
     /**
      * 初始化LocationClient的数据
      *

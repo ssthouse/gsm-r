@@ -24,13 +24,13 @@ import com.baidu.mapapi.model.LatLng;
 import com.xunce.gsmr.R;
 import com.xunce.gsmr.app.Constant;
 import com.xunce.gsmr.model.MarkerItem;
-import com.xunce.gsmr.util.view.ToastHelper;
-import com.xunce.gsmr.util.view.ViewHelper;
-import com.xunce.gsmr.util.gps.CoordinateHelper;
 import com.xunce.gsmr.util.gps.DBHelper;
 import com.xunce.gsmr.util.gps.LocateHelper;
 import com.xunce.gsmr.util.gps.MapHelper;
 import com.xunce.gsmr.util.gps.MarkerHelper;
+import com.xunce.gsmr.util.gps.PositionUtil;
+import com.xunce.gsmr.util.view.ToastHelper;
+import com.xunce.gsmr.util.view.ViewHelper;
 import com.xunce.gsmr.view.style.TransparentStyle;
 
 /**
@@ -188,7 +188,7 @@ public class BaiduMarkerActivity extends AppCompatActivity {
                     LatLng bdLatLng = new LatLng(MarkerHelper.getLatitude(etLatitude),
                             MarkerHelper.getLongitude(etLongitude));
                     //将高德地图数据传入
-                    markerItem.changeData(CoordinateHelper.getGaodeLatLng(bdLatLng));
+                    markerItem.changeData(PositionUtil.bd_2_gaode_latlng(bdLatLng));
                     //设置返回值
                     setResult(Constant.RESULT_CODE_OK);
                     //退出

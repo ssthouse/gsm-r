@@ -19,11 +19,9 @@ public class LogHelper {
         Log.e(tag, bdLocation.getLongitude() + " : " + bdLocation.getLatitude());
     }
 
-
     public static void log(String tag, MarkerItem markerItem) {
         Log.e(tag, markerItem.getLongitude() + " : " + markerItem.getLatitude());
     }
-
 }
 
 

@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Environment;
-import android.provider.ContactsContract;
 import android.util.Log;
 
 import com.ipaulpro.afilechooser.utils.FileUtils;
@@ -28,30 +27,6 @@ public class FileHelper {
     private static final String TAG = "FileHelper";
 
     /**
-     * TODO---开启Intent获取.db文件----然后加载文件中的数据
-     *
-     * @param activity
-     */
-    public static void loadDbFile(Activity activity) {
-        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
-        intent.setType(ContactsContract.Contacts.CONTENT_TYPE);
-        activity.startActivityForResult(intent, Constant.REQUEST_CODE_DB_FILE);
-    }
-
-    /**
-     * 获取File根目录的文件路径
-     *
-     * @return
-     */
-    public static String getFileParentPath(Context context) {
-        return context.getFilesDir().getAbsolutePath();
-    }
-
-    public static String getFilePath(Context context, String fileName) {
-        return getFileParentPath(context) + fileName;
-    }
-
-    /**
      * 获取指定数据库的绝对路径
      *
      * @param context
@@ -68,24 +43,12 @@ public class FileHelper {
      * @return
      */
     public static String getSDPath() {
-        File sdDir = null;
+        File sdDir;
         boolean sdCardExist = Environment.getExternalStorageState()
                 .equals(Environment.MEDIA_MOUNTED);   //判断sd卡是否存在
         if (sdCardExist) {
             sdDir = Environment.getExternalStorageDirectory();//获取跟目录
             return sdDir.toString();
-        } else {
-            return null;
-        }
-    }
-
-    public static String getSDPath(String fileName) {
-        File sdDir = null;
-        boolean sdCardExist = Environment.getExternalStorageState()
-                .equals(Environment.MEDIA_MOUNTED);   //判断sd卡是否存在
-        if (sdCardExist) {
-            sdDir = Environment.getExternalStorageDirectory();//获取跟目录
-            return sdDir.toString() + "/" + fileName;
         } else {
             return null;
         }
@@ -100,7 +63,6 @@ public class FileHelper {
         Intent intent = Intent.createChooser(getContentIntent, "Select a file");
         context.startActivityForResult(intent, requestCode);
     }
-
 
     /**
      * 发送图片文件
@@ -122,6 +84,9 @@ public class FileHelper {
         context.startActivity(Intent.createChooser(intent, "Share　Image"));
     }
 
+    /**
+     * 本地生成的数据库的文件名
+     */
     private static final String DB_FILE_NAME = "Location.db";
 
     /**
@@ -165,7 +130,7 @@ public class FileHelper {
             }
             fis.close();
         } catch (Exception e) {
-            System.out.println("复制单个文件操作出错");
+            LogHelper.log(TAG, "复制单个文件出错");
             e.printStackTrace();
         }
     }
