@@ -41,23 +41,22 @@ public class Vector extends BaseGraph {
     public void initPolylineOptions() {
         polylineOptions = new PolylineOptions();
         polylineOptions.width(POLYLINE_WIDTH).color(Color.BLUE);
-
         //添加点
         for (int i = 0; i < pointList.size(); i++) {
             Point point = pointList.get(i);
             polylineOptions.add(PositionUtil.gps84_To_Gcj02(point.getLatitude(), point.getLongitude()));
-//            LogHelper.log(TAG, "我在这条矢量中添加了一个点:  " + i);
         }
     }
 
     @Override
     public void draw(AMap aMap) {
         if (polylineOptions == null) {
+            initPolylineOptions();
+            polyline = aMap.addPolyline(polylineOptions);
             return;
         }
         if(polyline == null){
             polyline = aMap.addPolyline(polylineOptions);
-//            polyline.setVisible(false);
         }else{
             polyline.setVisible(true);
         }

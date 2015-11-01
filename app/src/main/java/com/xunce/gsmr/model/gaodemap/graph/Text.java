@@ -5,6 +5,7 @@ import android.graphics.Typeface;
 import com.amap.api.maps.AMap;
 import com.amap.api.maps.model.LatLng;
 import com.amap.api.maps.model.TextOptions;
+import com.xunce.gsmr.util.gps.PositionUtil;
 
 /**
  * 高德地图的Text
@@ -62,6 +63,16 @@ public class Text extends BaseGraph {
     }
 
     /**
+     * 传入经纬度的
+     * @param latitude
+     * @param longitude
+     */
+    public Text(double latitude, double longitude, String text){
+        this.latLng = PositionUtil.gps84_To_Gcj02(latitude, longitude);
+        this.content = text;
+    }
+
+    /**
      * 构造方法
      *
      * @param latLng
@@ -83,6 +94,13 @@ public class Text extends BaseGraph {
         }else{
             text.setVisible(true);
         }
+    }
+
+    @Override
+    public String toString() {
+        return "latitude:"+latLng.latitude+"\t"
+                +"longitude:"+latLng.longitude+"\t"
+                +"content:"+content;
     }
 
     //getter----and---setter------------------------------------------------

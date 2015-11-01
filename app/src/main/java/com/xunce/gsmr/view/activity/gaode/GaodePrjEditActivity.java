@@ -17,7 +17,8 @@ import com.amap.api.maps.CameraUpdateFactory;
 import com.amap.api.maps.model.Marker;
 import com.xunce.gsmr.R;
 import com.xunce.gsmr.app.Constant;
-import com.xunce.gsmr.lib.DigitalMapHolder;
+import com.xunce.gsmr.lib.cadparser.XmlParser;
+import com.xunce.gsmr.lib.digitalmap.DigitalMapHolder;
 import com.xunce.gsmr.model.MarkerItem;
 import com.xunce.gsmr.model.PrjItem;
 import com.xunce.gsmr.util.FileHelper;
@@ -102,7 +103,12 @@ public class GaodePrjEditActivity extends GaodeBaseActivity {
 
         //初始化View
         initView();
+
+        //TODO
+         xmlParser = new XmlParser(this);
     }
+
+    XmlParser xmlParser;
 
     /**
      * 初始化View
@@ -198,6 +204,8 @@ public class GaodePrjEditActivity extends GaodeBaseActivity {
                             R.anim.slide_left));
                     rg.setVisibility(View.VISIBLE);
                 }
+                //TODO
+                xmlParser.draw(getaMap());
             }
         });
         //切换map_mode 的选项

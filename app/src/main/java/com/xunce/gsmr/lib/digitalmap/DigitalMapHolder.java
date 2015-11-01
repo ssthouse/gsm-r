@@ -1,4 +1,4 @@
-package com.xunce.gsmr.lib;
+package com.xunce.gsmr.lib.digitalmap;
 
 import android.content.Context;
 import android.database.Cursor;

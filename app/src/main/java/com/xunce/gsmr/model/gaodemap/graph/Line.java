@@ -23,6 +23,7 @@ public class Line extends BaseGraph {
 
     /**
      * 构造方法
+     *
      * @param latLngBegin
      * @param latLngEnd
      */
@@ -36,10 +37,18 @@ public class Line extends BaseGraph {
         PolylineOptions options = new PolylineOptions();
         options.add(latLngBegin)
                 .add(latLngEnd)
-                .add(latLngEnd)
                 .width(lineWidth)
                 .color(lineColor);
         aMap.addPolyline(options);
+    }
+
+
+    @Override
+    public String toString() {
+        return "latitude:" + latLngBegin.latitude + "\t"
+                + "longitude:" + latLngBegin.longitude + "\t"
+                + "latitude:" + latLngEnd.latitude + "\t"
+                + "longitude:" + latLngEnd.longitude + "\t";
     }
 
     //getter----and---setter------------------------------------------------

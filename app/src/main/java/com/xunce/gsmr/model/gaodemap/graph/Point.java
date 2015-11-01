@@ -2,6 +2,7 @@ package com.xunce.gsmr.model.gaodemap.graph;
 
 /**
  * 一个点
+ * 保存的是WGS的数据
  */
 public class Point{
     /**
@@ -20,8 +21,7 @@ public class Point{
         this.latitude = latitude;
     }
 
-    //getter----and----setter--------------
-
+    //getter----and----setter-----------------------------------------
     public double getLongitude() {
         return longitude;
     }
