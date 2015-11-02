@@ -16,6 +16,7 @@ import org.xml.sax.SAXException;
 import org.xml.sax.XMLReader;
 import org.xml.sax.helpers.DefaultHandler;
 
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -63,11 +64,19 @@ public class XmlParser extends DefaultHandler {
      * @param context
      * @return
      */
-    public static XmlParser getXmlParser(Context context, String xmlFilePath){
+    public static XmlParser loadXmlParser(Context context, String xmlFilePath){
         //如果xmlParser是空的---或者路径改了---就创建新的xmlParser
         if(xmlParser == null || xmlParser.getXmlFilePath().equals(xmlFilePath)){
             xmlParser = new XmlParser(context, xmlFilePath);
         }
+        return xmlParser;
+    }
+
+    /**
+     * 获取XmlParser
+     * @return
+     */
+    public static XmlParser getXmlParser(){
         return xmlParser;
     }
 
@@ -88,13 +97,25 @@ public class XmlParser extends DefaultHandler {
             xmlReader.setContentHandler(this);
             xmlReader.setErrorHandler(this);
             //开始解析
-            xmlReader.parse(new InputSource(context.getAssets().open("123.xml")));
+            xmlReader.parse(new InputSource(new FileInputStream(xmlFilePath)));
         } catch (ParserConfigurationException e) {
             e.printStackTrace();
         } catch (SAXException e) {
             e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
+        }
+    }
+
+    /**
+     * XmlParser是不是空的
+     * @return
+     */
+    public static boolean isXmlParserEmpty(){
+        if(xmlParser == null){
+            return true;
+        }else{
+            return false;
         }
     }
 
@@ -110,7 +131,22 @@ public class XmlParser extends DefaultHandler {
         }
         for (com.xunce.gsmr.model.gaodemap.graph.Vector vector : vectorList) {
             vector.draw(aMap);
-            LogHelper.log(TAG, "我又画出了一个vector");
+            //LogHelper.log(TAG, "我又画出了一个vector");
+        }
+    }
+
+    /**
+     * 将画好的图像隐藏
+     */
+    public void hide(){
+        for (Line line : lineList) {
+            line.hide();
+        }
+        for (Text text : textList) {
+            text.hide();
+        }
+        for (com.xunce.gsmr.model.gaodemap.graph.Vector vector : vectorList) {
+            vector.hide();
         }
     }
 

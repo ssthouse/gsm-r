@@ -2,6 +2,7 @@ package com.xunce.gsmr.model.gaodemap.graph;
 
 import com.amap.api.maps.AMap;
 import com.amap.api.maps.model.LatLng;
+import com.amap.api.maps.model.Polyline;
 import com.amap.api.maps.model.PolylineOptions;
 
 /**
@@ -21,6 +22,8 @@ public class Line extends BaseGraph {
     private LatLng latLngBegin;
     private LatLng latLngEnd;
 
+    private Polyline polyline;
+
     /**
      * 构造方法
      *
@@ -39,9 +42,17 @@ public class Line extends BaseGraph {
                 .add(latLngEnd)
                 .width(lineWidth)
                 .color(lineColor);
-        aMap.addPolyline(options);
+        polyline = aMap.addPolyline(options);
     }
 
+    /**
+     * 隐藏
+     */
+    public void hide(){
+        if(polyline != null){
+            polyline.setVisible(false);
+        }
+    }
 
     @Override
     public String toString() {

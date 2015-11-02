@@ -9,6 +9,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.AnimationUtils;
 import android.widget.RadioGroup;
+import android.widget.Switch;
 import android.widget.Toast;
 
 import com.amap.api.maps.AMap;
@@ -56,7 +57,6 @@ public class GaodePrjEditActivity extends GaodeBaseActivity {
      * 数字地图的管理器---xml文件管理器---kml文件管理器
      */
     private DigitalMapHolder digitalMapHolder;
-    private XmlParser xmlParser;
 
     /**
      * 用于点击两次退出
@@ -121,28 +121,51 @@ public class GaodePrjEditActivity extends GaodeBaseActivity {
         //填充Marker
         loadMarker(prjItem);
 
-        //填充InfoWindow
-        getaMap().setInfoWindowAdapter(new AMap.InfoWindowAdapter() {
-            @Override
-            public View getInfoWindow(Marker marker) {
-                return View.inflate(GaodePrjEditActivity.this, R.layout.view_info_window, null);
-            }
+        //初始化Marker的点击事件--以及InfoWindow的填充
+        initMarkerClick();
 
+        //初始化--数字地图的Switch
+        Switch swDigitalFile = (Switch) findViewById(R.id.id_sw_digital_file);
+        swDigitalFile.setOnClickListener(new View.OnClickListener() {
             @Override
-            public View getInfoContents(Marker marker) {
-                return View.inflate(GaodePrjEditActivity.this, R.layout.view_info_window, null);
+            public void onClick(View v) {
+//                Switch switchView = (Switch) v;
+//                //如果是空的---显示先加载文件
+//                if (XmlParser.isXmlParserEmpty()) {
+//                    ToastHelper.show(GaodePrjEditActivity.this, "请先加载数字地图文件");
+//                    switchView.setChecked(false);
+//                } else {
+//                    if (switchView.isChecked()) {
+//                        XmlParser.getXmlParser().hide();
+//                    } else {
+//                        XmlParser.getXmlParser().draw(getaMap());
+//                        switchView.setChecked(true);
+//                    }
+//                }
             }
         });
 
-        //设置Marker点击事件
-        getaMap().setOnMarkerClickListener(new AMap.OnMarkerClickListener() {
+        //初始化--xml文件的Switch
+        Switch swXmlFile = (Switch) findViewById(R.id.id_sw_xml_file);
+        swXmlFile.setOnClickListener(new View.OnClickListener() {
             @Override
-            public boolean onMarkerClick(Marker marker) {
-                marker.showInfoWindow();
-                getMarkerHolder().setCurrentMarker(marker);
-                LogHelper.log(TAG, "这个点的经纬度是:   " + marker.getPosition().latitude + ":"
-                        + marker.getPosition().longitude);
-                return true;
+            public void onClick(View v) {
+                Switch switchView = (Switch) v;
+                //如果是空的---显示先加载文件
+                if (XmlParser.isXmlParserEmpty()) {
+                    ToastHelper.show(GaodePrjEditActivity.this, "请先加载数字地图文件");
+                    switchView.setChecked(false);
+                } else {
+                    if (!switchView.isChecked()) {
+                        LogHelper.log(TAG, "我隐藏了");
+                        switchView.setChecked(false);
+                        XmlParser.getXmlParser().hide();
+                    } else {
+                        LogHelper.log(TAG, "我显示了");
+                        switchView.setChecked(true);
+                        XmlParser.getXmlParser().draw(getaMap());
+                    }
+                }
             }
         });
 
@@ -187,6 +210,36 @@ public class GaodePrjEditActivity extends GaodeBaseActivity {
     }
 
     /**
+     * 初始化Marker的点击事件--以及InfoWindow的填充
+     */
+    private void initMarkerClick() {
+        //填充InfoWindow
+        getaMap().setInfoWindowAdapter(new AMap.InfoWindowAdapter() {
+            @Override
+            public View getInfoWindow(Marker marker) {
+                return View.inflate(GaodePrjEditActivity.this, R.layout.view_info_window, null);
+            }
+
+            @Override
+            public View getInfoContents(Marker marker) {
+                return View.inflate(GaodePrjEditActivity.this, R.layout.view_info_window, null);
+            }
+        });
+
+        //设置Marker点击事件
+        getaMap().setOnMarkerClickListener(new AMap.OnMarkerClickListener() {
+            @Override
+            public boolean onMarkerClick(Marker marker) {
+                marker.showInfoWindow();
+                getMarkerHolder().setCurrentMarker(marker);
+                LogHelper.log(TAG, "这个点的经纬度是:   " + marker.getPosition().latitude + ":"
+                        + marker.getPosition().longitude);
+                return true;
+            }
+        });
+    }
+
+    /**
      * 初始化地图Mode控件
      */
     private void initMapMode() {
@@ -203,8 +256,6 @@ public class GaodePrjEditActivity extends GaodeBaseActivity {
                             R.anim.slide_left));
                     rg.setVisibility(View.VISIBLE);
                 }
-                //TODO
-                xmlParser.draw(getaMap());
             }
         });
         //切换map_mode 的选项
@@ -368,7 +419,7 @@ public class GaodePrjEditActivity extends GaodeBaseActivity {
                     Uri uriDigitalFile = data.getData();
                     String path = uriDigitalFile.getPath();
                     //初始化xmlParser
-                    xmlParser = XmlParser.getXmlParser(this, path);
+                    XmlParser.loadXmlParser(this, path);
                     ToastHelper.show(this, "xml文件加载成功");
                 }
                 break;

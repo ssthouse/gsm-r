@@ -14,17 +14,44 @@
     <!--地图模式选择-->
     <include layout="@layout/view_map_mode" />
 
-    <!--选址按钮-->
-    <Button
-        android:id="@+id/id_btn_mark"
-        android:layout_width="@dimen/btn_mark_size"
-        android:layout_height="@dimen/btn_mark_size"
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_gravity="right"
-        android:layout_marginTop="66dp"
         android:layout_marginRight="8dp"
-        android:background="@color/white"
-        android:text="选址"
-        android:textSize="@dimen/text_size_button" />
+        android:layout_marginTop="66dp"
+        android:orientation="vertical">
+
+        <!--选址按钮-->
+        <Button
+            android:id="@+id/id_btn_mark"
+            android:layout_width="@dimen/btn_mark_size"
+            android:layout_height="@dimen/btn_mark_size"
+            android:layout_gravity="right"
+            android:background="@color/white"
+            android:text="选址"
+            android:textSize="@dimen/text_size_button" />
+
+        <Switch
+            android:id="@+id/id_sw_digital_file"
+            android:layout_width="wrap_content"
+            android:layout_height="48dp"
+            android:layout_marginTop="8dp"
+            android:textOff="数字地图"
+            android:textOn="数字地图"
+            android:textSize="@dimen/text_size_normal" />
+
+        <Switch
+            android:id="@+id/id_sw_xml_file"
+            android:layout_width="wrap_content"
+            android:layout_height="48dp"
+            android:layout_marginTop="8dp"
+            android:textOff="Xml文件"
+            android:textOn="Xml文件"
+            android:textSize="@dimen/text_size_button" />
+
+    </LinearLayout>
 
     <!--下面的功能键-->
     <include

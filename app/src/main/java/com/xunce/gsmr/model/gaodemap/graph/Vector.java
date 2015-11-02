@@ -63,6 +63,15 @@ public class Vector extends BaseGraph {
     }
 
     /**
+     * 隐藏
+     */
+    public void hide(){
+        if(polyline != null){
+            polyline.setVisible(false);
+        }
+    }
+
+    /**
      * 传入一个name的构造方法
      *
      * @param name

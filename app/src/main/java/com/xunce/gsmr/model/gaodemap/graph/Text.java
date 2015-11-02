@@ -96,6 +96,15 @@ public class Text extends BaseGraph {
         }
     }
 
+    /**
+     * 隐藏
+     */
+    public void hide() {
+        if(text != null){
+            text.setVisible(false);
+        }
+    }
+
     @Override
     public String toString() {
         return "latitude:"+latLng.latitude+"\t"
@@ -127,4 +136,6 @@ public class Text extends BaseGraph {
     public void setContent(String content) {
         this.content = content;
     }
+
+
 }
