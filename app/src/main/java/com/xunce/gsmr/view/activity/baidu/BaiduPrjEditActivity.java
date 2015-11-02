@@ -205,7 +205,7 @@ public class BaiduPrjEditActivity extends AppCompatActivity {
                 finish();
                 PrjSelectActivity.start(this, true);
                 //加载铁路地图
-            case R.id.id_action_load_map:
+            case R.id.id_action_load_digital_file:
                 //TODO---加载铁路地图
                 //首先判断数据库是否绑定
                 baiduMapFragment.loadRail();

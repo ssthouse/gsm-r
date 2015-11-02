@@ -10,7 +10,6 @@ import com.amap.api.maps.model.MarkerOptions;
 import com.xunce.gsmr.R;
 import com.xunce.gsmr.model.MarkerItem;
 import com.xunce.gsmr.model.PrjItem;
-import com.xunce.gsmr.util.LogHelper;
 import com.xunce.gsmr.util.gps.DBHelper;
 
 import java.util.ArrayList;
@@ -85,7 +84,9 @@ public class MarkerHolder {
         for (int i = 0; i < markerOnDbList.size(); i++) {
             com.amap.api.maps.model.LatLng latLng = markerOnDbList.get(i).getGaodeLatLng();
             MarkerOptions markerOptions = new MarkerOptions();
-            markerOptions.icon(descriptorBlue).position(latLng);
+            markerOptions.icon(descriptorBlue)
+                    .position(latLng)
+            .title("");
             markerOnMapList.add(aMap.addMarker(markerOptions));
 //            LogHelper.log(TAG, "我添加了一个点:    " + latLng.latitude + ":" + latLng.longitude);
         }

@@ -228,7 +228,7 @@ public class BaiduMarkerActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.id_action_load_map:
+            case R.id.id_action_load_digital_file:
                 break;
             case R.id.id_action_load_marker:
                 break;

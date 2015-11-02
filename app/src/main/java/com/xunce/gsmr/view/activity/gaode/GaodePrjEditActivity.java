@@ -45,14 +45,18 @@ public class GaodePrjEditActivity extends GaodeBaseActivity {
     public static final int REQUEST_CODE_MARKER_EDIT_ACTIVITY = 1003;
     //打开当前Marker的图片展示的Activity
     public static final int REQUEST_CODE_PICTURE_ACTIVITY = 1002;
-    //选取数字地图文件
-    public static final int REQUEST_CODE_DIGITAL_FILE_CHOOSE = 1004;
+    //选取---数字地图文件--xml文件---kml文件
+    public static final int REQUEST_CODE_LOAD_DIGITAL_FILE = 1004;
+    public static final int REQUEST_CODE_LOAD_XML_FILE = 1005;
+    public static final int REQUEST_CODE_LOAD_KML_FILE = 1006;
+
 
     //TODO
     /**
-     * 数字地图的管理器
+     * 数字地图的管理器---xml文件管理器---kml文件管理器
      */
     private DigitalMapHolder digitalMapHolder;
+    private XmlParser xmlParser;
 
     /**
      * 用于点击两次退出
@@ -103,12 +107,7 @@ public class GaodePrjEditActivity extends GaodeBaseActivity {
 
         //初始化View
         initView();
-
-        //TODO
-         xmlParser = new XmlParser(this);
     }
-
-    XmlParser xmlParser;
 
     /**
      * 初始化View
@@ -288,14 +287,23 @@ public class GaodePrjEditActivity extends GaodeBaseActivity {
                 PrjSelectActivity.start(this, true);
                 break;
             // TODO---加载数字地图
-            case R.id.id_action_load_map:
+            case R.id.id_action_load_digital_file:
                 //TODO---首先判断数据库是否绑定
 //                loadRail(prjItem);
-                if(digitalMapHolder == null){
-                    FileHelper.showFileChooser(this, REQUEST_CODE_DIGITAL_FILE_CHOOSE);
-                }else {
+                if (digitalMapHolder == null) {
+                    FileHelper.showFileChooser(this, REQUEST_CODE_LOAD_DIGITAL_FILE);
+                } else {
                     digitalMapHolder.draw();
                 }
+                break;
+            //加载xml文件
+            case R.id.id_action_load_xml_file:
+                FileHelper.showFileChooser(this, REQUEST_CODE_LOAD_XML_FILE);
+                //TODO
+                break;
+            //加载kml文件
+            case R.id.id_action_load_kml_file:
+                //TODO
                 break;
             //数据导出
             case R.id.id_action_export_data:
@@ -339,7 +347,8 @@ public class GaodePrjEditActivity extends GaodeBaseActivity {
                 Uri uri = data.getData();
                 LogHelper.log(TAG, uri.getEncodedPath());
                 break;
-            case REQUEST_CODE_DIGITAL_FILE_CHOOSE:
+            //加载数字地图文件
+            case REQUEST_CODE_LOAD_DIGITAL_FILE:
                 if (resultCode == Activity.RESULT_OK) {
                     Uri uriDigitalFile = data.getData();
                     String path = uriDigitalFile.getPath();
@@ -352,6 +361,23 @@ public class GaodePrjEditActivity extends GaodeBaseActivity {
                     ToastHelper.show(this, "数字地图文件加载成功,再次点击即可显示");
                     LogHelper.log(TAG, path);
                 }
+                break;
+            //加载xml文件
+            case REQUEST_CODE_LOAD_XML_FILE:
+                if (resultCode == Activity.RESULT_OK) {
+                    Uri uriDigitalFile = data.getData();
+                    String path = uriDigitalFile.getPath();
+                    //初始化xmlParser
+                    xmlParser = XmlParser.getXmlParser(this, path);
+                    ToastHelper.show(this, "xml文件加载成功");
+                }
+                break;
+            //加载kml文件
+            case REQUEST_CODE_LOAD_KML_FILE:
+                if (resultCode == Activity.RESULT_OK) {
+
+                }
+                break;
             case REQUEST_CODE_ROUTE_ACTIVITY:
                 break;
         }

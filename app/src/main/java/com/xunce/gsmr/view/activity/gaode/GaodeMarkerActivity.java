@@ -150,7 +150,7 @@ public class GaodeMarkerActivity extends GaodeBaseActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             //TODO
-            case R.id.id_action_load_map:
+            case R.id.id_action_load_digital_file:
                 break;
             //TODO
             case R.id.id_action_load_marker:

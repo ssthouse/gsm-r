@@ -50,12 +50,35 @@ public class XmlParser extends DefaultHandler {
     private List<com.xunce.gsmr.model.gaodemap.graph.Vector> vectorList = new ArrayList<>();
 
     /**
+     * 唯一的XmlParser单例
+     */
+    private static XmlParser xmlParser;
+    /**
+     * 当前解析的xml文件的路径
+     */
+    private String xmlFilePath;
+
+    /**
+     *
+     * @param context
+     * @return
+     */
+    public static XmlParser getXmlParser(Context context, String xmlFilePath){
+        //如果xmlParser是空的---或者路径改了---就创建新的xmlParser
+        if(xmlParser == null || xmlParser.getXmlFilePath().equals(xmlFilePath)){
+            xmlParser = new XmlParser(context, xmlFilePath);
+        }
+        return xmlParser;
+    }
+
+    /**
      * 构造方法
      *
      * @param context
      */
-    public XmlParser(Context context) {
+    private XmlParser(Context context, String xmlFilePath) {
         this.context = context;
+        this.xmlFilePath = xmlFilePath;
 
         try {
             //获取解析器
@@ -83,7 +106,7 @@ public class XmlParser extends DefaultHandler {
             line.draw(aMap);
         }
         for (Text text : textList) {
-            // text.draw(aMap);
+             text.draw(aMap);
         }
         for (com.xunce.gsmr.model.gaodemap.graph.Vector vector : vectorList) {
             vector.draw(aMap);
@@ -195,5 +218,15 @@ public class XmlParser extends DefaultHandler {
         static final String longitude = "longitude";
         static final String latitude = "latitude";
         static final String order = "order";
+    }
+
+    //getter----and-----setter----------------------------------
+
+    public String getXmlFilePath() {
+        return xmlFilePath;
+    }
+
+    public void setXmlFilePath(String xmlFilePath) {
+        this.xmlFilePath = xmlFilePath;
     }
 }
