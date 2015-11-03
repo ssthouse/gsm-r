@@ -72,6 +72,15 @@ public class Vector extends BaseGraph {
     }
 
     /**
+     * 销毁
+     */
+    public void destory(){
+        if(polyline != null){
+            polyline.remove();
+        }
+    }
+
+    /**
      * 传入一个name的构造方法
      *
      * @param name

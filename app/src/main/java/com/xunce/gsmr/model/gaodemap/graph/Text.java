@@ -19,7 +19,7 @@ public class Text extends BaseGraph {
      */
     private static int textColor = 0xFFFF00FF;
     private static int textBgColor = 0x00FFFFFF;
-    private static int textSize = 18;
+    private static int textSize = 12;
 
     /**
      * 文字参数
@@ -102,6 +102,16 @@ public class Text extends BaseGraph {
     public void hide() {
         if(text != null){
             text.setVisible(false);
+        }
+    }
+
+    /**
+     * 销毁
+     */
+    public void destory(){
+        if(text != null){
+            text.remove();
+            text.destroy();
         }
     }
 

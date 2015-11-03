@@ -1,6 +1,7 @@
 package com.xunce.gsmr.lib.cadparser;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.amap.api.maps.AMap;
 import com.amap.api.maps.model.LatLng;
@@ -60,23 +61,25 @@ public class XmlParser extends DefaultHandler {
     private String xmlFilePath;
 
     /**
-     *
      * @param context
      * @return
      */
-    public static XmlParser loadXmlParser(Context context, String xmlFilePath){
-        //如果xmlParser是空的---或者路径改了---就创建新的xmlParser
-        if(xmlParser == null || xmlParser.getXmlFilePath().equals(xmlFilePath)){
-            xmlParser = new XmlParser(context, xmlFilePath);
+    public static XmlParser loadXmlParser(Context context, String xmlFilePath) {
+        //如果之前有加载文件---去除内存
+        if(xmlParser != null){
+            xmlParser.destory();
         }
+        //如果xmlParser是空的---或者路径改了---就创建新的xmlParser
+        xmlParser = new XmlParser(context, xmlFilePath);
         return xmlParser;
     }
 
     /**
      * 获取XmlParser
+     *
      * @return
      */
-    public static XmlParser getXmlParser(){
+    public static XmlParser getXmlParser() {
         return xmlParser;
     }
 
@@ -98,23 +101,21 @@ public class XmlParser extends DefaultHandler {
             xmlReader.setErrorHandler(this);
             //开始解析
             xmlReader.parse(new InputSource(new FileInputStream(xmlFilePath)));
-        } catch (ParserConfigurationException e) {
+        } catch (ParserConfigurationException | SAXException | IOException e) {
             e.printStackTrace();
-        } catch (SAXException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
+            LogHelper.log(TAG, Log.getStackTraceString(e));
         }
     }
 
     /**
      * XmlParser是不是空的
+     *
      * @return
      */
-    public static boolean isXmlParserEmpty(){
-        if(xmlParser == null){
+    public static boolean isXmlParserEmpty() {
+        if (xmlParser == null) {
             return true;
-        }else{
+        } else {
             return false;
         }
     }
@@ -127,7 +128,7 @@ public class XmlParser extends DefaultHandler {
             line.draw(aMap);
         }
         for (Text text : textList) {
-             text.draw(aMap);
+            text.draw(aMap);
         }
         for (com.xunce.gsmr.model.gaodemap.graph.Vector vector : vectorList) {
             vector.draw(aMap);
@@ -138,9 +139,24 @@ public class XmlParser extends DefaultHandler {
     /**
      * 将画好的图像隐藏
      */
-    public void hide(){
+    public void hide() {
         for (Line line : lineList) {
             line.hide();
+        }
+        for (Text text : textList) {
+            text.hide();
+        }
+        for (com.xunce.gsmr.model.gaodemap.graph.Vector vector : vectorList) {
+            vector.hide();
+        }
+    }
+
+    /**
+     * 销毁
+     */
+    public void destory(){
+        for (Line line : lineList) {
+            line.destory();
         }
         for (Text text : textList) {
             text.hide();
@@ -179,13 +195,24 @@ public class XmlParser extends DefaultHandler {
                         Double.parseDouble(attributes.getValue(Vector.latitude))));
             }
         } else if (Element.POLY.equals(localName)) {
-            //获取的是高德地图的latlng
-            LatLng latLngStart = PositionUtil.gps84_To_Gcj02(Double.parseDouble(attributes.getValue(LineElement.latStart)),
-                    Double.parseDouble(attributes.getValue(LineElement.longStart)));
-            LatLng latLngEnd = PositionUtil.gps84_To_Gcj02(Double.parseDouble(attributes.getValue(LineElement.latEnd)),
-                    Double.parseDouble(attributes.getValue(LineElement.longEnd)));
-            line = new Line(latLngStart, latLngEnd);
-            lineList.add(line);
+//            //获取的是高德地图的latlng
+//            LatLng latLngStart = PositionUtil.gps84_To_Gcj02(Double.parseDouble(attributes.getValue(LineElement.latStart)),
+//                    Double.parseDouble(attributes.getValue(LineElement.longStart)));
+//            LatLng latLngEnd = PositionUtil.gps84_To_Gcj02(Double.parseDouble(attributes.getValue(LineElement.latEnd)),
+//                    Double.parseDouble(attributes.getValue(LineElement.longEnd)));
+//            line = new Line(latLngStart, latLngEnd);
+//            lineList.add(line);
+            //判断order是0的话---要把前面的数据放进去
+            int order = Integer.parseInt(attributes.getValue(Vector.order));
+            if (order == 0) {
+                if (vector != null && vector.getPointList().size() != 0) {
+                    vectorList.add(vector);
+                }
+                vector = new com.xunce.gsmr.model.gaodemap.graph.Vector("");
+            } else {
+                vector.getPointList().add(new Point(Double.parseDouble(attributes.getValue(Vector.longitude)),
+                        Double.parseDouble(attributes.getValue(Vector.latitude))));
+            }
         }
 //        LogHelper.log(TAG, "uri:    " + uri
 //                + "\n" + "locaName:  " + localName
@@ -195,7 +222,7 @@ public class XmlParser extends DefaultHandler {
     @Override
     public void endElement(String uri, String localName, String qName) throws SAXException {
         super.endElement(uri, localName, qName);
-        if(Element.DATA.equals(localName)){
+        if (Element.DATA.equals(localName)) {
             LogHelper.log(TAG, "我添加了最后一个Vector");
             vectorList.add(vector);
         }

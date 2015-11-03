@@ -54,6 +54,15 @@ public class Line extends BaseGraph {
         }
     }
 
+    /**
+     * 销毁
+     */
+    public void destory(){
+        if(polyline != null){
+            polyline.remove();
+        }
+    }
+
     @Override
     public String toString() {
         return "latitude:" + latLngBegin.latitude + "\t"

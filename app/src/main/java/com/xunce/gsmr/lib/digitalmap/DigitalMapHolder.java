@@ -29,21 +29,59 @@ public class DigitalMapHolder {
 
     //数据库地址
     private String dbPath;
-
+    //context
     private Context context;
-
+    //高德地图
     private AMap aMap;
 
-    //TODO---测试高德地图的文字显示
-    private List<Text> gaodeTextList = new ArrayList<>();
+    //高德地图的文字显示数据
+    private List<Text> textList = new ArrayList<>();
     private List<Vector> vectorList = new ArrayList<>();
+
+    /**
+     * 唯一的单例
+     */
+    private static DigitalMapHolder digitalMapHolder;
+
+    /**
+     * 加载数字文件
+     * @param context
+     * @param dbPath
+     * @param aMap
+     */
+    public static void loadDigitalMapHolder(Context context, String dbPath, AMap aMap) {
+        //如果之前有加载过文件----清除内存
+        if(digitalMapHolder != null){
+            digitalMapHolder.destory();
+        }
+        digitalMapHolder = new DigitalMapHolder(context, dbPath, aMap);
+    }
+
+    /**
+     * 获取DigitalHolder
+     * @return
+     */
+    public static DigitalMapHolder getDigitalMapHolder() {
+        if (digitalMapHolder != null) {
+            return digitalMapHolder;
+        }
+        return null;
+    }
+
+    /**
+     * 是不是空的
+     * @return
+     */
+    public static boolean isEmpty() {
+        return digitalMapHolder == null;
+    }
 
     /**
      * 传入数据库地址的构造方法
      *
      * @param dbPath
      */
-    public DigitalMapHolder(final Context context, final String dbPath, final AMap aMap) {
+    private DigitalMapHolder(final Context context, final String dbPath, final AMap aMap) {
         this.dbPath = dbPath;
         this.context = context;
         this.aMap = aMap;
@@ -53,7 +91,6 @@ public class DigitalMapHolder {
             protected Void doInBackground(Void... params) {
                 //打开数据库
                 SQLiteDatabase database = SQLiteDatabase.openOrCreateDatabase(new File(dbPath), null);
-
                 //读取数据库里面所有的-----Text
                 Cursor cursor = database.rawQuery("SELECT * FROM TextPoint", null);
                 while (cursor.moveToNext()) {
@@ -61,7 +98,7 @@ public class DigitalMapHolder {
                     Text text = new Text(PositionUtil.gps84_To_Gcj02(cursor.getDouble(1), cursor.getDouble(0)),
                             cursor.getString(2));
                     //提前初始化好数据
-                    gaodeTextList.add(text);
+                    textList.add(text);
                 }
                 cursor.close();
 
@@ -107,6 +144,17 @@ public class DigitalMapHolder {
                 cursorVector.close();
                 return null;
             }
+
+            @Override
+            protected void onPostExecute(Void aVoid) {
+                super.onPostExecute(aVoid);
+                int vectorPointSum = 0;
+                for(Vector vector : vectorList){
+                    vectorPointSum += vector.getPointList().size();
+                }
+                LogHelper.log(TAG, "我一共解释出来了这么多个VectorPoint的数据: "+vectorPointSum);
+                LogHelper.log(TAG, "我一共解释出来了这么多个Text的数据: " + textList.size());
+            }
         }.execute();
     }
 
@@ -117,16 +165,43 @@ public class DigitalMapHolder {
      */
     public void draw() {
         //画出文字信息
-        for (Text text : gaodeTextList) {
+        for (Text text : textList) {
             text.draw(aMap);
         }
         //画出所有的Vector
         for (int i = 0; i < vectorList.size(); i++) {
             vectorList.get(i).draw(aMap);
-            LogHelper.log(TAG, "我画出了一个Vector:   " + i);
+            //LogHelper.log(TAG, "我画出了一个Vector:   " + i);
         }
     }
 
+    /**
+     * 隐藏数字地图数据
+     */
+    public void hide() {
+        //隐藏文字信息
+        for (Text text : textList) {
+            text.hide();
+        }
+        //隐藏所有的Vector
+        for (int i = 0; i < vectorList.size(); i++) {
+            vectorList.get(i).hide();
+        }
+    }
+
+    /**
+     * 将之前地图画的数据destory
+     */
+    public void destory(){
+        //destory文字信息
+        for (Text text : textList) {
+            text.hide();
+        }
+        //destory所有的Vector
+        for (int i = 0; i < vectorList.size(); i++) {
+            vectorList.get(i).hide();
+        }
+    }
 
     /**
      * 将数据库文件从asset中复制到sd卡中

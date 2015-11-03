@@ -31,6 +31,8 @@ import com.xunce.gsmr.view.activity.PrjSelectActivity;
 import com.xunce.gsmr.view.activity.SettingActivity;
 import com.xunce.gsmr.view.style.TransparentStyle;
 
+import java.io.File;
+
 /**
  * 高德地图编辑Activity
  * Created by ssthouse on 2015/9/14.
@@ -125,23 +127,25 @@ public class GaodePrjEditActivity extends GaodeBaseActivity {
         initMarkerClick();
 
         //初始化--数字地图的Switch
-        Switch swDigitalFile = (Switch) findViewById(R.id.id_sw_digital_file);
+        final Switch swDigitalFile = (Switch) findViewById(R.id.id_sw_digital_file);
         swDigitalFile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                Switch switchView = (Switch) v;
-//                //如果是空的---显示先加载文件
-//                if (XmlParser.isXmlParserEmpty()) {
-//                    ToastHelper.show(GaodePrjEditActivity.this, "请先加载数字地图文件");
-//                    switchView.setChecked(false);
-//                } else {
-//                    if (switchView.isChecked()) {
-//                        XmlParser.getXmlParser().hide();
-//                    } else {
-//                        XmlParser.getXmlParser().draw(getaMap());
-//                        switchView.setChecked(true);
-//                    }
-//                }
+                Switch switchView = (Switch) v;
+                //如果是空的---显示先加载文件
+                //如果数字地图文件还没有加载
+                if(DigitalMapHolder.isEmpty()){
+                    ToastHelper.show(GaodePrjEditActivity.this, "请先加载数字地图文件");
+                    switchView.setChecked(false);
+                }else{
+                    if(!switchView.isChecked()){
+                        switchView.setChecked(false);
+                        DigitalMapHolder.getDigitalMapHolder().hide();
+                    }else{
+                        DigitalMapHolder.getDigitalMapHolder().draw();
+                        switchView.setChecked(true);
+                    }
+                }
             }
         });
 
@@ -153,7 +157,7 @@ public class GaodePrjEditActivity extends GaodeBaseActivity {
                 Switch switchView = (Switch) v;
                 //如果是空的---显示先加载文件
                 if (XmlParser.isXmlParserEmpty()) {
-                    ToastHelper.show(GaodePrjEditActivity.this, "请先加载数字地图文件");
+                    ToastHelper.show(GaodePrjEditActivity.this, "请先加载Xml文件");
                     switchView.setChecked(false);
                 } else {
                     if (!switchView.isChecked()) {
@@ -339,13 +343,7 @@ public class GaodePrjEditActivity extends GaodeBaseActivity {
                 break;
             // TODO---加载数字地图
             case R.id.id_action_load_digital_file:
-                //TODO---首先判断数据库是否绑定
-//                loadRail(prjItem);
-                if (digitalMapHolder == null) {
-                    FileHelper.showFileChooser(this, REQUEST_CODE_LOAD_DIGITAL_FILE);
-                } else {
-                    digitalMapHolder.draw();
-                }
+                FileHelper.showFileChooser(this, REQUEST_CODE_LOAD_DIGITAL_FILE);
                 break;
             //加载xml文件
             case R.id.id_action_load_xml_file:
@@ -407,9 +405,15 @@ public class GaodePrjEditActivity extends GaodeBaseActivity {
                     if (path == null || path.length() == 0) {
                         return;
                     }
-                    //如果获取路径成功就----刷新digitalMapHolder
-                    digitalMapHolder = new DigitalMapHolder(this, path, getaMap());
-                    ToastHelper.show(this, "数字地图文件加载成功,再次点击即可显示");
+                    //判断是不是数据库文件
+                    File file = new File(path);
+                    if(!file.getName().endsWith(".db")){
+                        ToastHelper.show(this, "您选取的数字地图文件格式有误!");
+                        return;
+                    }
+                    //如果获取路径成功就----加载digitalMapHolder
+                    DigitalMapHolder.loadDigitalMapHolder(this, path, getaMap());
+                    ToastHelper.show(this, "数字地图文件加载成功!");
                     LogHelper.log(TAG, path);
                 }
                 break;
@@ -418,9 +422,15 @@ public class GaodePrjEditActivity extends GaodeBaseActivity {
                 if (resultCode == Activity.RESULT_OK) {
                     Uri uriDigitalFile = data.getData();
                     String path = uriDigitalFile.getPath();
+                    //判断是不是数据库文件
+                    File file = new File(path);
+                    if(!file.getName().endsWith(".xml")){
+                        ToastHelper.show(this, "您选取的数字地图文件格式有误!");
+                        return;
+                    }
                     //初始化xmlParser
                     XmlParser.loadXmlParser(this, path);
-                    ToastHelper.show(this, "xml文件加载成功");
+                    ToastHelper.show(this, "xml文件加载成功!");
                 }
                 break;
             //加载kml文件
