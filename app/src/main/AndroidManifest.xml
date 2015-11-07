@@ -143,12 +143,11 @@
             android:theme="@style/CustomNoActionbarStyle"
             android:screenOrientation="portrait"/>
 
-
+        <!--android:enabled="@bool/use_activity"-->
         <!-- 第三方的module中的Activity  作用是选择文件-->
         <activity
             android:name="com.ipaulpro.afilechooser.FileChooserActivity"
             android:icon="@drawable/ic_chooser"
-            android:enabled="@bool/use_activity"
             android:exported="true"
             android:label="@string/choose_file" >
             <intent-filter>

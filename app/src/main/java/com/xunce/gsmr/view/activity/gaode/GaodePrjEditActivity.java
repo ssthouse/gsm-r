@@ -20,6 +20,7 @@ import com.xunce.gsmr.R;
 import com.xunce.gsmr.app.Constant;
 import com.xunce.gsmr.lib.cadparser.XmlParser;
 import com.xunce.gsmr.lib.digitalmap.DigitalMapHolder;
+import com.xunce.gsmr.lib.kmlParser.KMLParser;
 import com.xunce.gsmr.model.MarkerItem;
 import com.xunce.gsmr.model.PrjItem;
 import com.xunce.gsmr.util.FileHelper;
@@ -353,6 +354,7 @@ public class GaodePrjEditActivity extends GaodeBaseActivity {
             //加载kml文件
             case R.id.id_action_load_kml_file:
                 //TODO
+                FileHelper.showFileChooser(this, REQUEST_CODE_LOAD_KML_FILE);
                 break;
             //数据导出
             case R.id.id_action_export_data:
@@ -425,7 +427,7 @@ public class GaodePrjEditActivity extends GaodeBaseActivity {
                     //判断是不是数据库文件
                     File file = new File(path);
                     if(!file.getName().endsWith(".xml")){
-                        ToastHelper.show(this, "您选取的数字地图文件格式有误!");
+                        ToastHelper.show(this, "您选取的XML文件格式有误!");
                         return;
                     }
                     //初始化xmlParser
@@ -436,7 +438,15 @@ public class GaodePrjEditActivity extends GaodeBaseActivity {
             //加载kml文件
             case REQUEST_CODE_LOAD_KML_FILE:
                 if (resultCode == Activity.RESULT_OK) {
-
+                    Uri uriDigitalFile = data.getData();
+                    String path = uriDigitalFile.getPath();
+                    //判断是不是数据库文件
+                    File file = new File(path);
+                    if(!file.getName().endsWith(".kml")){
+                        ToastHelper.show(this, "您选取的KML文件格式有误!");
+                        return;
+                    }
+                    KMLParser kmlParser = new KMLParser(path);
                 }
                 break;
             case REQUEST_CODE_ROUTE_ACTIVITY:

@@ -7,7 +7,7 @@ import android.net.Uri;
 import android.os.Environment;
 import android.util.Log;
 
-import com.ipaulpro.afilechooser.utils.FileUtils;
+import com.ipaulpro.afilechooser.FileChooserActivity;
 import com.xunce.gsmr.app.Constant;
 import com.xunce.gsmr.model.BitmapItem;
 
@@ -59,9 +59,9 @@ public class FileHelper {
      */
     public static void showFileChooser(Activity context, int requestCode) {
         // Create the ACTION_GET_CONTENT Intent
-        Intent getContentIntent = FileUtils.createGetContentIntent();
-        Intent intent = Intent.createChooser(getContentIntent, "Select a file");
-        context.startActivityForResult(intent, requestCode);
+        Intent getContentIntent = new Intent(context, FileChooserActivity.class);
+       // Intent intent = Intent.createChooser(getContentIntent, "Select a file");
+        context.startActivityForResult(getContentIntent, requestCode);
     }
 
     /**
