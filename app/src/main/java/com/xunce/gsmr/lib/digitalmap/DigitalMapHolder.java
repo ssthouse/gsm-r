@@ -102,25 +102,6 @@ public class DigitalMapHolder {
                 }
                 cursor.close();
 
-                //读取所有的Vector的数据(数据库的表结构发生了变化---需要重新写)
-//                {
-//                    Cursor cursorVector = database.rawQuery("SELECT * FROM Vector", null);
-//                    while (cursorVector.moveToNext()) {
-//                        //创建一个新的Vector
-//                        int vectorId = cursorVector.getInt(1);
-//                        String vectorName = cursorVector.getString(0);
-//                        Vector vector = new Vector(vectorName);
-//                        //读取数据库中对应的Point数据
-//                        Cursor textCursor = database.rawQuery("SELECT * FROM Point WHERE vactorID=" + "'" + vectorId + "'", null);
-//                        while (textCursor.moveToNext()) {
-//                            vector.getPointList().add(new Point(textCursor.getDouble(0), textCursor.getDouble(1)));
-//                        }
-//                        LogHelper.log(TAG, "我还在运行");
-//                        vectorList.add(vector);
-//                        textCursor.close();
-//                    }
-//                }
-
                 //现在读取数据库中的数据快多了
                 Cursor cursorVector = database.rawQuery("SELECT * FROM Vector", null);
                 Vector vector = null;

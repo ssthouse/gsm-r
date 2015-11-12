@@ -6,10 +6,10 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.CompoundButton;
 import android.widget.Spinner;
 import android.widget.Switch;
 
+import com.gitonway.lee.niftymodaldialogeffects.lib.NiftyDialogBuilder;
 import com.xunce.gsmr.R;
 import com.xunce.gsmr.util.LogHelper;
 import com.xunce.gsmr.util.preference.PreferenceHelper;
@@ -22,6 +22,12 @@ import com.xunce.gsmr.view.style.TransparentStyle;
  */
 public class SettingActivity extends AppCompatActivity {
     private static final String TAG = "SettingActivity";
+
+    /**
+     * 是否使用wifi的switch
+     */
+    private Switch locateModeSwitch;
+
 
     public static void start(Activity activity) {
         activity.startActivity(new Intent(activity, SettingActivity.class));
@@ -43,16 +49,17 @@ public class SettingActivity extends AppCompatActivity {
     private void initView() {
         ViewHelper.initActionBar(this, getSupportActionBar(), "设置");
 
-        //百度地图定位模式切换
-        Switch sw = (Switch) findViewById(R.id.id_sw_locate_mode);
+        //地图定位模式切换
+        locateModeSwitch = (Switch) findViewById(R.id.id_sw_locate_mode);
         //首先设置为preference中的状态
-        sw.setChecked(PreferenceHelper.getInstance(SettingActivity.this).getIsWifiLocateMode(this));
-        //LogHelper.log(TAG, PreferenceHelper.getIsWifiLocateMode(this) + "");
-        sw.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        locateModeSwitch.setChecked(PreferenceHelper.getInstance(SettingActivity.this).getIsWifiLocateMode(this));
+        findViewById(R.id.id_ll_locate_mode).setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+            public void onClick(View v) {
+                //改变switch状态
+                locateModeSwitch.toggle();
+                boolean isChecked = locateModeSwitch.isChecked();
                 PreferenceHelper.getInstance(SettingActivity.this).setLocateMode(SettingActivity.this, isChecked);
-                LogHelper.log(TAG, isChecked + "");
             }
         });
 
@@ -67,11 +74,11 @@ public class SettingActivity extends AppCompatActivity {
         sp.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                if(position == 0) {
+                if (position == 0) {
                     PreferenceHelper.getInstance(SettingActivity.this)
                             .setMapType(PreferenceHelper.MapType.BAIDU_MAP);
                     LogHelper.log(TAG, "我设置了---百度地图");
-                }else if(position ==1){
+                } else if (position == 1) {
                     PreferenceHelper.getInstance(SettingActivity.this)
                             .setMapType(PreferenceHelper.MapType.GAODE_MAP);
                     LogHelper.log(TAG, "我设置了--高德地图");
@@ -83,5 +90,26 @@ public class SettingActivity extends AppCompatActivity {
 
             }
         });
+
+        //app版本按钮
+        findViewById(R.id.id_tv_app_version).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showAppVersionDialog();
+            }
+        });
+    }
+
+    /**
+     * 显示app的版本Dialog
+     */
+    private void showAppVersionDialog(){
+        NiftyDialogBuilder dialogBuilder = NiftyDialogBuilder.getInstance(this);
+        dialogBuilder.setCustomView(R.layout.dialog_app_version, this)
+                .withTitle("版本信息")
+                //.withTitleColor(0xffffff)
+                .withDialogColor(getResources().getColor(R.color.color_primary_light))
+                .isCancelableOnTouchOutside(true)
+                .show();
     }
 }

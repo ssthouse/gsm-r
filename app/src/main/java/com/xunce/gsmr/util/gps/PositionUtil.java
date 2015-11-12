@@ -11,7 +11,6 @@ import com.amap.api.maps.model.LatLng;
  * 搜狗坐标系、图吧坐标系等，估计也是在GCJ02基础上加密而成的。 chenhua
  */
 public class PositionUtil {
-
     public static final String BAIDU_LBS_TYPE = "bd09ll";
 
     public static double pi = 3.1415926535897932384626;

@@ -7,19 +7,25 @@
 
     <!--是否使用wifi定位还是gps定位-->
     <LinearLayout
+        android:id="@+id/id_ll_locate_mode"
         android:layout_width="match_parent"
         android:layout_height="56dp"
         android:layout_margin="8dp"
+        android:background="@drawable/selector_btn_white_2_blue"
+        android:clickable="true"
         android:orientation="horizontal">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:gravity="center"
+            android:padding="8dp"
             android:text="使用wifi定位方式"
-            android:textSize="20sp" />
+            android:textColor="@drawable/selector_text_black_2_white"
+            android:textSize="@dimen/activity_setting_item_text_size" />
 
         <Switch
+            android:clickable="false"
             android:id="@+id/id_sw_locate_mode"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -31,20 +37,37 @@
         android:layout_width="match_parent"
         android:layout_height="56dp"
         android:layout_margin="8dp"
+        android:background="@drawable/selector_btn_white_2_blue"
+        android:clickable="true"
         android:orientation="horizontal">
 
         <TextView
             android:layout_width="0dp"
-            android:layout_weight="1"
             android:layout_height="match_parent"
+            android:layout_weight="1"
             android:gravity="center|left"
+            android:padding="8dp"
             android:text="地图类型"
-            android:textSize="20sp" />
+            android:textColor="@drawable/selector_text_black_2_white"
+            android:textSize="@dimen/activity_setting_item_text_size" />
 
         <Spinner
             android:id="@+id/id_sp_map_type"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:entries="@array/array_map_type"/>
+            android:entries="@array/array_map_type" />
     </LinearLayout>
+
+    <TextView
+        android:id="@+id/id_tv_app_version"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:layout_margin="8dp"
+        android:background="@drawable/selector_btn_white_2_blue"
+        android:clickable="true"
+        android:gravity="center_vertical"
+        android:padding="8dp"
+        android:text="软件版本"
+        android:textColor="@drawable/selector_text_black_2_white"
+        android:textSize="@dimen/activity_setting_item_text_size" />
 </LinearLayout>

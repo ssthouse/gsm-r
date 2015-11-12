@@ -54,13 +54,6 @@ public class GaodePrjEditActivity extends GaodeBaseActivity {
     public static final int REQUEST_CODE_LOAD_XML_FILE = 1005;
     public static final int REQUEST_CODE_LOAD_KML_FILE = 1006;
 
-
-    //TODO
-    /**
-     * 数字地图的管理器---xml文件管理器---kml文件管理器
-     */
-    private DigitalMapHolder digitalMapHolder;
-
     /**
      * 用于点击两次退出
      */
