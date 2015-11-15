@@ -43,7 +43,7 @@
     <uses-permission android:name="com.android.launcher.permission.READ_SETTINGS" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.WRITE_SETTINGS" />
-    <uses-permission android:name="android.permission.GET_TASKS"></uses-permission>
+    <uses-permission android:name="android.permission.GET_TASKS"/>
 
     <application
         android:name=".app.MyApplication"
@@ -78,7 +78,6 @@
             android:name="com.baidu.location.f"
             android:enabled="true"
             android:process=":remote" />
-
         <!--Project选择Activity-->
         <activity
             android:screenOrientation="portrait"
@@ -88,12 +87,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <!--工程编辑Activity-->
         <activity
             android:screenOrientation="portrait"
             android:name=".view.activity.baidu.BaiduPrjEditActivity">
-
         </activity>
 
         <!--选址-->
@@ -152,10 +149,8 @@
             android:label="@string/choose_file" >
             <intent-filter>
                 <action android:name="android.intent.action.GET_CONTENT" />
-
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.OPENABLE" />
-
                 <data android:mimeType="*/*" />
             </intent-filter>
         </activity>

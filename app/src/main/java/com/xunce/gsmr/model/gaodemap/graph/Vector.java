@@ -5,6 +5,7 @@ import android.graphics.Color;
 import com.amap.api.maps.AMap;
 import com.amap.api.maps.model.Polyline;
 import com.amap.api.maps.model.PolylineOptions;
+import com.xunce.gsmr.util.LogHelper;
 import com.xunce.gsmr.util.gps.PositionUtil;
 
 import java.util.ArrayList;
@@ -23,6 +24,10 @@ public class Vector extends BaseGraph {
      * 当前矢量的名称
      */
     private String name;
+    /**
+     * 矢量在地图中的类型
+     */
+    private String typeInMap;
 
     /**
      * 一个矢量的所有点
@@ -36,6 +41,25 @@ public class Vector extends BaseGraph {
     private Polyline polyline;
 
     /**
+     * 传入name的构造方法
+     *
+     * @param name
+     */
+    public Vector(String name) {
+        this.name = name;
+    }
+
+    /**
+     * 传入一个name的构造方法
+     *
+     * @param name
+     */
+    public Vector(String name, String typeInMap) {
+        this.name = name;
+        this.typeInMap = typeInMap;
+    }
+
+    /**
      * 初始化需要画在地图上的数据
      */
     public void initPolylineOptions() {
@@ -46,6 +70,13 @@ public class Vector extends BaseGraph {
             Point point = pointList.get(i);
             polylineOptions.add(PositionUtil.gps84_To_Gcj02(point.getLatitude(), point.getLongitude()));
         }
+        //判断需不需要改变颜色
+        LogHelper.log(TAG, "name:\t" + name);
+        if (name != null && name.contains("Railway")) {
+            LogHelper.log(TAG, "我改变了颜色");
+            polylineOptions.color(Color.RED);
+            polylineOptions.width(POLYLINE_WIDTH * 2);
+        }
     }
 
     @Override
@@ -55,9 +86,9 @@ public class Vector extends BaseGraph {
             polyline = aMap.addPolyline(polylineOptions);
             return;
         }
-        if(polyline == null){
+        if (polyline == null) {
             polyline = aMap.addPolyline(polylineOptions);
-        }else{
+        } else {
             polyline.setVisible(true);
         }
     }
@@ -65,8 +96,8 @@ public class Vector extends BaseGraph {
     /**
      * 隐藏
      */
-    public void hide(){
-        if(polyline != null){
+    public void hide() {
+        if (polyline != null) {
             polyline.setVisible(false);
         }
     }
@@ -74,19 +105,10 @@ public class Vector extends BaseGraph {
     /**
      * 销毁
      */
-    public void destory(){
-        if(polyline != null){
+    public void destory() {
+        if (polyline != null) {
             polyline.remove();
         }
-    }
-
-    /**
-     * 传入一个name的构造方法
-     *
-     * @param name
-     */
-    public Vector(String name) {
-        this.name = name;
     }
 
     public String getName() {

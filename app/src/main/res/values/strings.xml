@@ -3,4 +3,6 @@
 
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">设置</string>
+    <string name="str_app_version">版本号: 1.0.0beta</string>
+    <string name="str_app_usage">GSM铁路基站辅助软件</string>
 </resources>

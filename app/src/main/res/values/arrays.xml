@@ -7,4 +7,11 @@
         <item>高德地图</item>
     </array>
 
+    <!--数字地图的加载选项(Spinner)-->
+    <array name="array_digital_map_spinner">
+        <item>不显示</item>
+        <item>显示所有</item>
+        <item>显示部分文字</item>
+        <item>显示所有文字</item>
+    </array>
 </resources>

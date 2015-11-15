@@ -120,6 +120,8 @@ public class GaodePrjEditActivity extends GaodeBaseActivity {
         //初始化Marker的点击事件--以及InfoWindow的填充
         initMarkerClick();
 
+        //初始化--数字地图的Spinner
+
         //初始化--数字地图的Switch
         final Switch swDigitalFile = (Switch) findViewById(R.id.id_sw_digital_file);
         swDigitalFile.setOnClickListener(new View.OnClickListener() {

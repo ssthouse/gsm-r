@@ -116,9 +116,10 @@ public class DigitalMapHolder {
                             //初始化Vector中的画图数据
                             vector.initPolylineOptions();
                         }
-                        //更新vector
+                        //更新vector(传入名字---typeInMap)
+                       // vector = new Vector(cursorVector.getString(0), cursorVector.getString(1));
                         vector = new Vector(cursorVector.getString(0));
-                        //LogHelper.log(TAG, "我新建了个Vector"+vector.getName());
+                                //LogHelper.log(TAG, "我新建了个Vector"+vector.getName());
                     }
                     vector.getPointList().add(new Point(cursorVector.getDouble(1), cursorVector.getDouble(2)));
                 }

@@ -12,7 +12,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:gravity="center"
-        android:text="GSM铁路基站辅助软件" />
+        android:text="@string/str_app_usage" />
 
     <TextView
         android:textColor="@color/white"
@@ -21,5 +21,5 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:gravity="center"
-        android:text="版本号:  1.0.0beta" />
+        android:text="@string/str_app_version" />
 </LinearLayout>
