@@ -2,7 +2,7 @@ package com.xunce.gsmr.util.gps;
 
 import android.widget.EditText;
 
-import com.xunce.gsmr.util.LogHelper;
+import com.xunce.gsmr.util.L;
 
 /**
  * 地图标注---还有选址Util
@@ -38,7 +38,7 @@ public class MarkerHelper {
             }
             return true;
         } catch (Exception e) {
-            LogHelper.log(TAG, e.toString());
+            L.log(TAG, e.toString());
             return false;
         }
     }

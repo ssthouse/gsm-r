@@ -30,7 +30,7 @@ import com.baidu.mapapi.model.LatLng;
 import com.baidu.mapapi.utils.DistanceUtil;
 import com.xunce.gsmr.R;
 import com.xunce.gsmr.app.Constant;
-import com.xunce.gsmr.util.LogHelper;
+import com.xunce.gsmr.util.L;
 import com.xunce.gsmr.util.view.ViewHelper;
 import com.xunce.gsmr.util.gps.LocateHelper;
 import com.xunce.gsmr.util.gps.MapHelper;
@@ -79,7 +79,7 @@ public class BaiduMeasureActivity extends AppCompatActivity {
             intent.putExtra(Constant.EXTRA_KEY_LATITUDE, latLng.latitude);
             intent.putExtra(Constant.EXTRA_KEY_LONGITUDE, latLng.longitude);
         }
-        LogHelper.log(TAG, latLng.latitude + " : " + latLng.longitude);
+        L.log(TAG, latLng.latitude + " : " + latLng.longitude);
         activity.startActivity(intent);
         activity.overridePendingTransition(R.anim.activity_fade_in, R.anim.activity_fade_out);
     }
@@ -226,7 +226,7 @@ public class BaiduMeasureActivity extends AppCompatActivity {
         for (int i = 0; i < pointList.size() - 1; i++) {
             double gap = DistanceUtil.getDistance(pointList.get(i), pointList.get(i + 1));
             length += gap;
-//            LogHelper.log(TAG, gap + "");
+//            L.log(TAG, gap + "");
         }
         if (length != 0) {
             int result = (int) length;

@@ -130,7 +130,7 @@ public class FileHelper {
             }
             fis.close();
         } catch (Exception e) {
-            LogHelper.log(TAG, "复制单个文件出错");
+            L.log(TAG, "复制单个文件出错");
             e.printStackTrace();
         }
     }

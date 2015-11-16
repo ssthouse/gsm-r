@@ -5,7 +5,7 @@ import android.graphics.Color;
 import com.amap.api.maps.AMap;
 import com.amap.api.maps.model.Polyline;
 import com.amap.api.maps.model.PolylineOptions;
-import com.xunce.gsmr.util.LogHelper;
+import com.xunce.gsmr.util.L;
 import com.xunce.gsmr.util.gps.PositionUtil;
 
 import java.util.ArrayList;
@@ -71,9 +71,9 @@ public class Vector extends BaseGraph {
             polylineOptions.add(PositionUtil.gps84_To_Gcj02(point.getLatitude(), point.getLongitude()));
         }
         //判断需不需要改变颜色
-        LogHelper.log(TAG, "name:\t" + name);
+        L.log(TAG, "name:\t" + name);
         if (name != null && name.contains("Railway")) {
-            LogHelper.log(TAG, "我改变了颜色");
+            L.log(TAG, "我改变了颜色");
             polylineOptions.color(Color.RED);
             polylineOptions.width(POLYLINE_WIDTH * 2);
         }

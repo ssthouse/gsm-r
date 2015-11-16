@@ -61,10 +61,10 @@ public class PictureHelper {
             photo.compress(Bitmap.CompressFormat.JPEG, 100, bos);
             bos.flush();
             bos.close();
-            //LogHelper.log(TAG, "我在保存临时的照片");
+            //L.log(TAG, "我在保存临时的照片");
         } catch (Exception e) {
             e.printStackTrace();
-            LogHelper.log(TAG, "image save is wrong");
+            L.log(TAG, "image save is wrong");
             return false;
         }
         return true;
@@ -95,7 +95,7 @@ public class PictureHelper {
             targetFile.getParentFile().mkdirs();
             if (!targetFile.exists()) {
                 targetFile.createNewFile();
-//                LogHelper.log(TAG, targetPath);
+//                L.log(TAG, targetPath);
             }
             //设置目标文件权限
             targetFile.setReadable(true);
@@ -113,7 +113,7 @@ public class PictureHelper {
             fosTo.close();
         } catch (IOException e) {
             e.printStackTrace();
-            LogHelper.log(TAG, "something is wrong" + e.toString());
+            L.log(TAG, "something is wrong" + e.toString());
         }
         return true;
     }
@@ -148,7 +148,7 @@ public class PictureHelper {
             return time;
         } catch (Exception e) {
             e.printStackTrace();
-            LogHelper.log(TAG, "something is wrong");
+            L.log(TAG, "something is wrong");
         }
         return 0;
     }

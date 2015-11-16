@@ -8,7 +8,7 @@ import com.amap.api.maps.model.LatLng;
 import com.xunce.gsmr.model.gaodemap.graph.Line;
 import com.xunce.gsmr.model.gaodemap.graph.Point;
 import com.xunce.gsmr.model.gaodemap.graph.Text;
-import com.xunce.gsmr.util.LogHelper;
+import com.xunce.gsmr.util.L;
 import com.xunce.gsmr.util.gps.PositionUtil;
 
 import org.xml.sax.Attributes;
@@ -103,7 +103,7 @@ public class XmlParser extends DefaultHandler {
             xmlReader.parse(new InputSource(new FileInputStream(xmlFilePath)));
         } catch (ParserConfigurationException | SAXException | IOException e) {
             e.printStackTrace();
-            LogHelper.log(TAG, Log.getStackTraceString(e));
+            L.log(TAG, Log.getStackTraceString(e));
         }
     }
 
@@ -132,7 +132,7 @@ public class XmlParser extends DefaultHandler {
         }
         for (com.xunce.gsmr.model.gaodemap.graph.Vector vector : vectorList) {
             vector.draw(aMap);
-            //LogHelper.log(TAG, "我又画出了一个vector");
+            //L.log(TAG, "我又画出了一个vector");
         }
     }
 
@@ -214,7 +214,7 @@ public class XmlParser extends DefaultHandler {
                         Double.parseDouble(attributes.getValue(Vector.latitude))));
             }
         }
-//        LogHelper.log(TAG, "uri:    " + uri
+//        L.log(TAG, "uri:    " + uri
 //                + "\n" + "locaName:  " + localName
 //                + "\n" + "qname: " + qName);
     }
@@ -223,29 +223,29 @@ public class XmlParser extends DefaultHandler {
     public void endElement(String uri, String localName, String qName) throws SAXException {
         super.endElement(uri, localName, qName);
         if (Element.DATA.equals(localName)) {
-            LogHelper.log(TAG, "我添加了最后一个Vector");
+            L.log(TAG, "我添加了最后一个Vector");
             vectorList.add(vector);
         }
     }
 
     @Override
     public void startDocument() throws SAXException {
-        LogHelper.log(TAG, "我开始解析了...");
+        L.log(TAG, "我开始解析了...");
         super.startDocument();
     }
 
     @Override
     public void endDocument() throws SAXException {
         super.endDocument();
-        LogHelper.log(TAG, "我解析完毕了...");
+        L.log(TAG, "我解析完毕了...");
 //        for (Text text : textList) {
-//            LogHelper.log(TAG, text.toString());
+//            L.log(TAG, text.toString());
 //        }
 //        for (Line line : lineList) {
-//            LogHelper.log(TAG, line.toString());
+//            L.log(TAG, line.toString());
 //        }
 //        for (com.xunce.gsmr.model.gaodemap.graph.Vector vector : vectorList) {
-//            LogHelper.log(TAG, "我的Point的Size是: " + vector.getPointList().size());
+//            L.log(TAG, "我的Point的Size是: " + vector.getPointList().size());
 //        }
     }
 

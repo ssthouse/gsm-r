@@ -146,6 +146,4 @@ public class Text extends BaseGraph {
     public void setContent(String content) {
         this.content = content;
     }
-
-
 }

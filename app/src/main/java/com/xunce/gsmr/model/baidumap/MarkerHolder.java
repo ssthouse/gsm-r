@@ -12,7 +12,7 @@ import com.baidu.mapapi.model.LatLng;
 import com.xunce.gsmr.R;
 import com.xunce.gsmr.model.MarkerItem;
 import com.xunce.gsmr.model.PrjItem;
-import com.xunce.gsmr.util.LogHelper;
+import com.xunce.gsmr.util.L;
 import com.xunce.gsmr.util.gps.DBHelper;
 
 import java.util.ArrayList;
@@ -81,7 +81,7 @@ public class MarkerHolder {
                     .zIndex(16)
                     .draggable(false);
             markerList.add((Marker) baiduMap.addOverlay(redOverlay));
-            LogHelper.log(TAG, "我添加了一个点:    " + latLng.latitude + ":" + latLng.longitude);
+            L.log(TAG, "我添加了一个点:    " + latLng.latitude + ":" + latLng.longitude);
         }
         if(markerItemList.size() >0) {
             //动画移动过去

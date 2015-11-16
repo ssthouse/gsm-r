@@ -9,7 +9,7 @@ import com.xunce.gsmr.model.MarkerItem;
  * 打印调试日志
  * Created by ssthouse on 2015/7/17.
  */
-public class LogHelper {
+public class L {
 
     public static void log(String tag, String msg) {
         Log.e(tag, msg);

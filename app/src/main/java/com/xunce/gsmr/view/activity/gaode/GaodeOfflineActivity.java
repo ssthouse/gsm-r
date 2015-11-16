@@ -26,7 +26,7 @@ import com.amap.api.maps.offlinemap.OfflineMapManager;
 import com.amap.api.maps.offlinemap.OfflineMapProvince;
 import com.amap.api.maps.offlinemap.OfflineMapStatus;
 import com.xunce.gsmr.R;
-import com.xunce.gsmr.util.LogHelper;
+import com.xunce.gsmr.util.L;
 import com.xunce.gsmr.view.adapter.GaodeDownloadedCityAdapter;
 import com.xunce.gsmr.view.style.TransparentStyle;
 
@@ -310,7 +310,7 @@ public class GaodeOfflineActivity extends AppCompatActivity implements
             @Override
             public boolean onChildClick(ExpandableListView parent, View v,
                                         int groupPosition, int childPosition, long id) {
-                LogHelper.log(TAG, "我点击了");
+                L.log(TAG, "我点击了");
                 try {
                     String name = cityMap.get(groupPosition).get(childPosition).getCity();
 //                    String url = amapManager.getItemByCityName(name).getUrl();

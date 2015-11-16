@@ -50,11 +50,11 @@
                 android:layout_height="48dp"
                 android:textSize="@dimen/text_size_normal" />
 
-            <Spinner
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:entries="@array/array_digital_map_spinner" />
+            <!--<Spinner-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_gravity="center"-->
+                <!--android:entries="@array/array_digital_map_spinner" />-->
         </LinearLayout>
 
         <LinearLayout

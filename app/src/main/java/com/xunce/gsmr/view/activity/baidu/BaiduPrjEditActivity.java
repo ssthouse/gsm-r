@@ -21,7 +21,7 @@ import com.xunce.gsmr.app.Constant;
 import com.xunce.gsmr.model.MarkerItem;
 import com.xunce.gsmr.model.PrjItem;
 import com.xunce.gsmr.util.FileHelper;
-import com.xunce.gsmr.util.LogHelper;
+import com.xunce.gsmr.util.L;
 import com.xunce.gsmr.util.view.ViewHelper;
 import com.xunce.gsmr.view.activity.PicGridActivity;
 import com.xunce.gsmr.view.activity.PrjSelectActivity;
@@ -246,7 +246,7 @@ public class BaiduPrjEditActivity extends AppCompatActivity {
             case Constant.REQUEST_CODE_DB_FILE:
                 //如果是加载.db文件
                 Uri uri = data.getData();
-                LogHelper.log(TAG, uri.getEncodedPath());
+                L.log(TAG, uri.getEncodedPath());
                 break;
             case REQUEST_CODE_ROUTE_ACTIVITY:
                 break;

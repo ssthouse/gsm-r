@@ -13,7 +13,7 @@ import com.amap.api.maps.offlinemap.OfflineMapCity;
 import com.amap.api.maps.offlinemap.OfflineMapManager;
 import com.amap.api.maps.offlinemap.OfflineMapProvince;
 import com.xunce.gsmr.R;
-import com.xunce.gsmr.util.LogHelper;
+import com.xunce.gsmr.util.L;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -65,10 +65,10 @@ public class GaodeDownloadedCityAdapter extends BaseExpandableListAdapter {
         //初始化数据
         cityMap.clear();
         provinceList = offlineMapManager.getDownloadOfflineMapProvinceList();
-        LogHelper.log(TAG, "数据一共有:  " + provinceList.size() + "条");
+        L.log(TAG, "数据一共有:  " + provinceList.size() + "条");
         for (int i = 0; i < provinceList.size(); i++) {
             cityMap.put(i, provinceList.get(i).getCityList());
-            LogHelper.log(TAG, "我找到了一个下载了的地图..................");
+            L.log(TAG, "我找到了一个下载了的地图..................");
         }
     }
 
@@ -146,7 +146,7 @@ public class GaodeDownloadedCityAdapter extends BaseExpandableListAdapter {
                 OfflineMapCity city = cityMap.get(groupPosition).get(childPosition);
                 String name = city.getCity();
                 offlineMapManager.remove(name);
-                LogHelper.log(TAG, "我删除了----" + name);
+                L.log(TAG, "我删除了----" + name);
                 //删除后----刷新视图
                 showWaitDialog();
             }

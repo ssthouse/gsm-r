@@ -10,7 +10,7 @@ import com.amap.api.maps.AMap;
 import com.xunce.gsmr.model.gaodemap.graph.Point;
 import com.xunce.gsmr.model.gaodemap.graph.Text;
 import com.xunce.gsmr.model.gaodemap.graph.Vector;
-import com.xunce.gsmr.util.LogHelper;
+import com.xunce.gsmr.util.L;
 import com.xunce.gsmr.util.gps.PositionUtil;
 
 import java.io.File;
@@ -45,13 +45,14 @@ public class DigitalMapHolder {
 
     /**
      * 加载数字文件
+     *
      * @param context
      * @param dbPath
      * @param aMap
      */
     public static void loadDigitalMapHolder(Context context, String dbPath, AMap aMap) {
         //如果之前有加载过文件----清除内存
-        if(digitalMapHolder != null){
+        if (digitalMapHolder != null) {
             digitalMapHolder.destory();
         }
         digitalMapHolder = new DigitalMapHolder(context, dbPath, aMap);
@@ -59,6 +60,7 @@ public class DigitalMapHolder {
 
     /**
      * 获取DigitalHolder
+     *
      * @return
      */
     public static DigitalMapHolder getDigitalMapHolder() {
@@ -70,6 +72,7 @@ public class DigitalMapHolder {
 
     /**
      * 是不是空的
+     *
      * @return
      */
     public static boolean isEmpty() {
@@ -94,7 +97,7 @@ public class DigitalMapHolder {
                 //读取数据库里面所有的-----Text
                 Cursor cursor = database.rawQuery("SELECT * FROM TextPoint", null);
                 while (cursor.moveToNext()) {
-//                    LogHelper.log(TAG, cursor.getString(2) + " : " + cursor.getDouble(0) + " : " + cursor.getDouble(1));
+//                    L.log(TAG, cursor.getString(2) + " : " + cursor.getDouble(0) + " : " + cursor.getDouble(1));
                     Text text = new Text(PositionUtil.gps84_To_Gcj02(cursor.getDouble(1), cursor.getDouble(0)),
                             cursor.getString(2));
                     //提前初始化好数据
@@ -117,9 +120,9 @@ public class DigitalMapHolder {
                             vector.initPolylineOptions();
                         }
                         //更新vector(传入名字---typeInMap)
-                       // vector = new Vector(cursorVector.getString(0), cursorVector.getString(1));
+                        // vector = new Vector(cursorVector.getString(0), cursorVector.getString(1));
                         vector = new Vector(cursorVector.getString(0));
-                                //LogHelper.log(TAG, "我新建了个Vector"+vector.getName());
+                        //L.log(TAG, "我新建了个Vector"+vector.getName());
                     }
                     vector.getPointList().add(new Point(cursorVector.getDouble(1), cursorVector.getDouble(2)));
                 }
@@ -131,19 +134,17 @@ public class DigitalMapHolder {
             protected void onPostExecute(Void aVoid) {
                 super.onPostExecute(aVoid);
                 int vectorPointSum = 0;
-                for(Vector vector : vectorList){
+                for (Vector vector : vectorList) {
                     vectorPointSum += vector.getPointList().size();
                 }
-                LogHelper.log(TAG, "我一共解释出来了这么多个VectorPoint的数据: "+vectorPointSum);
-                LogHelper.log(TAG, "我一共解释出来了这么多个Text的数据: " + textList.size());
+                L.log(TAG, "我一共解释出来了这么多个VectorPoint的数据: " + vectorPointSum);
+                L.log(TAG, "我一共解释出来了这么多个Text的数据: " + textList.size());
             }
         }.execute();
     }
 
     /**
-     * 在高德地图上画出当前的数据地图数据
-     * 因为画的比较忙----性能问题--在开始时显示一个Dialog
-     * 结束时---取消Dialog
+     * 画出所有--数字地图数据
      */
     public void draw() {
         //画出文字信息
@@ -153,7 +154,28 @@ public class DigitalMapHolder {
         //画出所有的Vector
         for (int i = 0; i < vectorList.size(); i++) {
             vectorList.get(i).draw(aMap);
-            //LogHelper.log(TAG, "我画出了一个Vector:   " + i);
+            //L.log(TAG, "我画出了一个Vector:   " + i);
+        }
+    }
+
+    /**
+     * 画出数字地图---线
+     */
+    public void drawLine() {
+        //画出所有的Vector
+        for (int i = 0; i < vectorList.size(); i++) {
+            vectorList.get(i).draw(aMap);
+            //L.log(TAG, "我画出了一个Vector:   " + i);
+        }
+    }
+
+    /**
+     * 画出数字地图---文字
+     */
+    public void drawText() {
+        //画出文字信息
+        for (Text text : textList) {
+            text.draw(aMap);
         }
     }
 
@@ -172,9 +194,19 @@ public class DigitalMapHolder {
     }
 
     /**
+     * 仅隐藏文字
+     */
+    public void hideText(){
+        //隐藏文字信息
+        for (Text text : textList) {
+            text.hide();
+        }
+    }
+
+    /**
      * 将之前地图画的数据destory
      */
-    public void destory(){
+    public void destory() {
         //destory文字信息
         for (Text text : textList) {
             text.hide();
@@ -196,7 +228,7 @@ public class DigitalMapHolder {
 
             //在sd卡中先生成好要存放的文件
             File file = new File(Environment.getExternalStorageDirectory() + "/GSM/tempDatabase/test.db");
-            LogHelper.log(TAG, "路径是:    " + file.getAbsolutePath());
+            L.log(TAG, "路径是:    " + file.getAbsolutePath());
             if (!file.exists()) {
                 file.getParentFile().mkdirs();
             }

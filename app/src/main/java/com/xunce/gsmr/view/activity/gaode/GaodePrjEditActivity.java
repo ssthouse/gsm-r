@@ -15,6 +15,7 @@ import android.widget.Toast;
 import com.amap.api.maps.AMap;
 import com.amap.api.maps.CameraUpdate;
 import com.amap.api.maps.CameraUpdateFactory;
+import com.amap.api.maps.model.CameraPosition;
 import com.amap.api.maps.model.Marker;
 import com.xunce.gsmr.R;
 import com.xunce.gsmr.app.Constant;
@@ -23,8 +24,9 @@ import com.xunce.gsmr.lib.digitalmap.DigitalMapHolder;
 import com.xunce.gsmr.lib.kmlParser.KMLParser;
 import com.xunce.gsmr.model.MarkerItem;
 import com.xunce.gsmr.model.PrjItem;
+import com.xunce.gsmr.model.gaodemap.GaodeMapCons;
 import com.xunce.gsmr.util.FileHelper;
-import com.xunce.gsmr.util.LogHelper;
+import com.xunce.gsmr.util.L;
 import com.xunce.gsmr.util.view.ToastHelper;
 import com.xunce.gsmr.util.view.ViewHelper;
 import com.xunce.gsmr.view.activity.PicGridActivity;
@@ -65,6 +67,12 @@ public class GaodePrjEditActivity extends GaodeBaseActivity {
     private PrjItem prjItem;
 
     /**
+     * 数字地图的开关
+     */
+    private Switch swDigitalFile;
+    private boolean isDigitalMapTextShowed = false;
+
+    /**
      * 公里标显示标志位a
      */
     private View llPosition;
@@ -78,8 +86,8 @@ public class GaodePrjEditActivity extends GaodeBaseActivity {
     /**
      * 启动Activity
      *
-     * @param activity
-     * @param prjItem
+     * @param activity 开启的上下文Activity
+     * @param prjItem   当前处理的PrjItem
      */
     public static void start(Activity activity, PrjItem prjItem) {
         Intent intent = new Intent(activity, GaodePrjEditActivity.class);
@@ -120,26 +128,55 @@ public class GaodePrjEditActivity extends GaodeBaseActivity {
         //初始化Marker的点击事件--以及InfoWindow的填充
         initMarkerClick();
 
-        //初始化--数字地图的Spinner
-
         //初始化--数字地图的Switch
-        final Switch swDigitalFile = (Switch) findViewById(R.id.id_sw_digital_file);
+        swDigitalFile = (Switch) findViewById(R.id.id_sw_digital_file);
         swDigitalFile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Switch switchView = (Switch) v;
                 //如果是空的---显示先加载文件
                 //如果数字地图文件还没有加载
-                if(DigitalMapHolder.isEmpty()){
+                if (DigitalMapHolder.isEmpty()) {
                     ToastHelper.show(GaodePrjEditActivity.this, "请先加载数字地图文件");
                     switchView.setChecked(false);
-                }else{
-                    if(!switchView.isChecked()){
+                } else {
+                    if (!switchView.isChecked()) {
                         switchView.setChecked(false);
                         DigitalMapHolder.getDigitalMapHolder().hide();
-                    }else{
-                        DigitalMapHolder.getDigitalMapHolder().draw();
+                    } else {
+                        CameraPosition cameraPosition = getaMap().getCameraPosition();
+                        if(cameraPosition.zoom > GaodeMapCons.zoomLevel){
+                            DigitalMapHolder.getDigitalMapHolder().draw();
+                        }else if(cameraPosition.zoom < GaodeMapCons.zoomLevel){
+                            DigitalMapHolder.getDigitalMapHolder().drawLine();
+                        }
                         switchView.setChecked(true);
+                    }
+                }
+            }
+        });
+
+        //监测---地图的大小变化---画出/隐藏---文字
+        getaMap().setOnCameraChangeListener(new AMap.OnCameraChangeListener() {
+            @Override
+            public void onCameraChange(CameraPosition cameraPosition) {
+            }
+
+            @Override
+            public void onCameraChangeFinish(CameraPosition cameraPosition) {
+                //数字地图已经加载 且 switch为开
+                if(!DigitalMapHolder.isEmpty() && swDigitalFile.isChecked()){
+                    //如果放大到16以上
+                    if(cameraPosition.zoom > GaodeMapCons.zoomLevel){
+                        //L.log(TAG, "放大到16以上了");
+                        if(!isDigitalMapTextShowed) {
+                            DigitalMapHolder.getDigitalMapHolder().drawText();
+                            isDigitalMapTextShowed = true;
+                        }
+                    }else if(cameraPosition.zoom < GaodeMapCons.zoomLevel){
+                        //L.log(TAG, "缩小到16以下了");
+                        DigitalMapHolder.getDigitalMapHolder().hideText();
+                        isDigitalMapTextShowed = false;
                     }
                 }
             }
@@ -157,11 +194,11 @@ public class GaodePrjEditActivity extends GaodeBaseActivity {
                     switchView.setChecked(false);
                 } else {
                     if (!switchView.isChecked()) {
-                        LogHelper.log(TAG, "我隐藏了");
+                        L.log(TAG, "我隐藏了");
                         switchView.setChecked(false);
                         XmlParser.getXmlParser().hide();
                     } else {
-                        LogHelper.log(TAG, "我显示了");
+                        L.log(TAG, "我显示了");
                         switchView.setChecked(true);
                         XmlParser.getXmlParser().draw(getaMap());
                     }
@@ -232,7 +269,7 @@ public class GaodePrjEditActivity extends GaodeBaseActivity {
             public boolean onMarkerClick(Marker marker) {
                 marker.showInfoWindow();
                 getMarkerHolder().setCurrentMarker(marker);
-                LogHelper.log(TAG, "这个点的经纬度是:   " + marker.getPosition().latitude + ":"
+                L.log(TAG, "这个点的经纬度是:   " + marker.getPosition().latitude + ":"
                         + marker.getPosition().longitude);
                 return true;
             }
@@ -290,7 +327,7 @@ public class GaodePrjEditActivity extends GaodeBaseActivity {
     /**
      * 和InfoWindow绑定的点击事件
      *
-     * @param v
+     * @param v view就是InfoWindow
      */
     public void clickEdit(View v) {
         //生成MarkerItem--跳转到MarkerEditActivity
@@ -301,7 +338,7 @@ public class GaodePrjEditActivity extends GaodeBaseActivity {
     /**
      * 和InfoWindow绑定的点击事件
      *
-     * @param v
+     * @param v view就是InfoWindow
      */
     public void clickPhoto(View v) {
         //这里传入的MarkerItem
@@ -375,23 +412,23 @@ public class GaodePrjEditActivity extends GaodeBaseActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         switch (requestCode) {
             case REQUEST_CODE_MARKER_ACTIVITY:
-                LogHelper.log(TAG, "我反悔了PrjEditActivity");
+                L.log(TAG, "我反悔了PrjEditActivity");
                 if (resultCode == Constant.RESULT_CODE_OK) {
                     loadMarker(prjItem);
-                    LogHelper.log(TAG, "我重新绘制了Marker");
+                    L.log(TAG, "我重新绘制了Marker");
                 }
                 break;
             case REQUEST_CODE_MARKER_EDIT_ACTIVITY:
-                LogHelper.log(TAG, "我反悔了PrjEditActivity");
+                L.log(TAG, "我反悔了PrjEditActivity");
                 if (resultCode == Constant.RESULT_CODE_OK) {
-                    LogHelper.log(TAG, "我重新绘制了Marker");
+                    L.log(TAG, "我重新绘制了Marker");
                     loadMarker(prjItem);
                 }
                 break;
             case Constant.REQUEST_CODE_DB_FILE:
                 //如果是加载.db文件
                 Uri uri = data.getData();
-                LogHelper.log(TAG, uri.getEncodedPath());
+                L.log(TAG, uri.getEncodedPath());
                 break;
             //加载数字地图文件
             case REQUEST_CODE_LOAD_DIGITAL_FILE:
@@ -411,7 +448,7 @@ public class GaodePrjEditActivity extends GaodeBaseActivity {
                     //如果获取路径成功就----加载digitalMapHolder
                     DigitalMapHolder.loadDigitalMapHolder(this, path, getaMap());
                     ToastHelper.show(this, "数字地图文件加载成功!");
-                    LogHelper.log(TAG, path);
+                    L.log(TAG, path);
                 }
                 break;
             //加载xml文件

@@ -22,7 +22,7 @@ import com.baidu.navisdk.ui.widget.RoutePlanObserver;
 import com.baidu.nplatform.comapi.map.MapGLSurfaceView;
 import com.xunce.gsmr.R;
 import com.xunce.gsmr.util.FileHelper;
-import com.xunce.gsmr.util.LogHelper;
+import com.xunce.gsmr.util.L;
 import com.xunce.gsmr.view.style.TransparentStyle;
 
 
@@ -106,12 +106,12 @@ public class NaviActivity extends Activity {
 
             @Override
             public void engineInitStart() {
-                LogHelper.log(TAG, "初始化导航-----");
+                L.log(TAG, "初始化导航-----");
             }
 
             @Override
             public void engineInitSuccess() {
-                LogHelper.log(TAG, "初始化成功");
+                L.log(TAG, "初始化成功");
 
                 BNMapController.getInstance().locateWithAnimation(
                         (int) (113.97348 * 1e5), (int) (22.53951 * 1e5));
@@ -119,7 +119,7 @@ public class NaviActivity extends Activity {
 
             @Override
             public void engineInitFail() {
-                LogHelper.log(TAG, "初始化失败");
+                L.log(TAG, "初始化失败");
             }
         };
 

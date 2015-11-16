@@ -2,7 +2,7 @@ package com.xunce.gsmr.lib.kmlParser;
 
 import android.util.Log;
 
-import com.xunce.gsmr.util.LogHelper;
+import com.xunce.gsmr.util.L;
 
 import org.xml.sax.Attributes;
 import org.xml.sax.helpers.DefaultHandler;
@@ -76,7 +76,7 @@ public class KMLParser extends DefaultHandler
                 datalist.add(mydata);
             }
         }
-        LogHelper.log(TAG, "我解析出来了: "+datalist.size()+" 条数据");
+        L.log(TAG, "我解析出来了: " + datalist.size() + " 条数据");
     }
 
 }
