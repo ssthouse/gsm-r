@@ -19,23 +19,47 @@ import java.io.Serializable;
 public class MarkerItem extends Model implements Serializable {
     private static final String TAG = "MarkerItem";
 
+    /**
+     * 工程名
+     */
     @Column(name = "prjName")
     private String prjName;
-
+    /**
+     * 纬度
+     */
     @Column(name = "latitude")
     private double latitude;
-
+    /**
+     * 经度
+     */
     @Column(name = "longitude")
     private double longitude;
-
+    /**
+     * 照片路径___文件名
+     */
     @Column(name = "photoPathName")
     private String photoPathName;
+    /**
+     * 设备类型
+     */
+    @Column(name = "device_type")
+    private String deviceType;
+    /**
+     * 公里标
+     */
+    @Column(name = "kilometer_mark")
+    private String kilometerMark;
+    /**
+     * 侧向
+     */
+    @Column(name = "side_direction")
+    private String sideDirection;
 
     /**
      * 传入经纬度的构造方法
      *
-     * @param latitude
-     * @param longitude
+     * @param latitude  wgs纬度
+     * @param longitude wgs经度
      */
     public MarkerItem(String prjName, double latitude, double longitude) {
         super();
@@ -47,7 +71,7 @@ public class MarkerItem extends Model implements Serializable {
     /**
      * 使用prjItem的构造方法
      *
-     * @param prjItem
+     * @param prjItem 根据PrjItem创建的MarkerItem
      */
     public MarkerItem(PrjItem prjItem) {
         super();
@@ -61,7 +85,7 @@ public class MarkerItem extends Model implements Serializable {
     /**
      * 百度LatLng的构造方法
      *
-     * @param latLng
+     * @param latLng 百度地图的LatLng
      */
     public MarkerItem(String prjName, LatLng latLng) {
         super();
@@ -75,7 +99,7 @@ public class MarkerItem extends Model implements Serializable {
     /**
      * 高德地图LatLng的构造方法
      *
-     * @param latLng
+     * @param latLng 高德地图LatLng
      */
     public MarkerItem(String prjName, com.amap.api.maps.model.LatLng latLng) {
         super();
@@ -96,7 +120,7 @@ public class MarkerItem extends Model implements Serializable {
      * 获取百度LatLng
      * 将国测局坐标转换为百度坐标
      *
-     * @return
+     * @return 百度地图LatLng
      */
     public LatLng getBaiduLatLng() {
         // 将google地图、soso地图、aliyun地图、mapabc地图和amap地图// 所用坐标转换成百度坐标
@@ -104,14 +128,13 @@ public class MarkerItem extends Model implements Serializable {
         converter.from(CoordinateConverter.CoordType.COMMON);
         // sourceLatLng待转换坐标
         converter.coord(new LatLng(latitude, longitude));
-        LatLng desLatLng = converter.convert();
-        return desLatLng;
+        return converter.convert();
     }
 
     /**
      * 获取高德LatLng
      *
-     * @return
+     * @return 高德地图LatLng
      */
     public com.amap.api.maps.model.LatLng getGaodeLatLng() {
         //将数据库中WGS的数据转换为---gcj的数据
@@ -121,7 +144,7 @@ public class MarkerItem extends Model implements Serializable {
     /**
      * 获取改点的照片路径
      *
-     * @return
+     * @return 当前Marker的照片存放路径
      */
     public String getFilePath() {
         return Constant.PICTURE_PATH + prjName + "/" + photoPathName + "/";
@@ -133,7 +156,7 @@ public class MarkerItem extends Model implements Serializable {
      * @param latLng 传入高德地图的数据
      */
     public void changeData(com.amap.api.maps.model.LatLng latLng) {
-        //转换坐标
+        //改变坐标
         double wgsLatlng[] = PositionUtil.gcj_To_Gps84(latLng.latitude, latLng.longitude);
         this.latitude = wgsLatlng[0];
         this.longitude = wgsLatlng[1];
@@ -143,15 +166,16 @@ public class MarkerItem extends Model implements Serializable {
 
     /**
      * 传入wgs的数据并保存
+     *
      * @param wgsLatlng 第一个数据是latitude---第二个数据是longitude
      */
-    public void changeData(double[] wgsLatlng){
+    public void changeData(double[] wgsLatlng) {
         this.latitude = wgsLatlng[0];
         this.longitude = wgsLatlng[1];
         this.save();
     }
 
-    //getter-----and------setter--------------------------
+    //getter-----and------setter------------------------------------------
     public double getLatitude() {
         return latitude;
     }
@@ -182,5 +206,29 @@ public class MarkerItem extends Model implements Serializable {
 
     public void setPhotoPathName(String photoPathName) {
         this.photoPathName = photoPathName;
+    }
+
+    public String getDeviceType() {
+        return deviceType;
+    }
+
+    public void setDeviceType(String deviceType) {
+        this.deviceType = deviceType;
+    }
+
+    public String getKilometerMark() {
+        return kilometerMark;
+    }
+
+    public void setKilometerMark(String kilometerMark) {
+        this.kilometerMark = kilometerMark;
+    }
+
+    public String getSideDirection() {
+        return sideDirection;
+    }
+
+    public void setSideDirection(String sideDirection) {
+        this.sideDirection = sideDirection;
     }
 }

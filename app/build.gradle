@@ -23,7 +23,7 @@ android {
     def version_code = getDate();
     defaultConfig {
         applicationId "com.xunce.gsmr"
-        minSdkVersion 14
+        minSdkVersion 15
         targetSdkVersion 22
         versionCode 1
         versionName "1.0(${version_code})"
@@ -77,4 +77,6 @@ dependencies {
     //for BugHD
     compile 'im.fir:sdk:latest.integration'
     compile project(':aFileChooser')
+    //for log
+    compile 'com.jakewharton.timber:timber:4.1.0'
 }

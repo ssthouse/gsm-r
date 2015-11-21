@@ -30,8 +30,6 @@ import com.xunce.gsmr.view.style.TransparentStyle;
  * Created by ssthouse on 2015/7/17.
  */
 public class PrjSelectActivity extends AppCompatActivity{
-    private static final String TAG = "PrjSelectActivity";
-
     private static String EXTRA_KEY_IS_CALLED = "is_called_by_prj_edit";
 
     private ListView lv;

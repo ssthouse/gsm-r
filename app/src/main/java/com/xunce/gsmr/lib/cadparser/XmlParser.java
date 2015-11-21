@@ -8,7 +8,6 @@ import com.amap.api.maps.model.LatLng;
 import com.xunce.gsmr.model.gaodemap.graph.Line;
 import com.xunce.gsmr.model.gaodemap.graph.Point;
 import com.xunce.gsmr.model.gaodemap.graph.Text;
-import com.xunce.gsmr.util.L;
 import com.xunce.gsmr.util.gps.PositionUtil;
 
 import org.xml.sax.Attributes;
@@ -26,6 +25,8 @@ import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 
+import timber.log.Timber;
+
 /**
  * CAD导出的xml文件的解析
  * 解析出来的数据为:
@@ -33,8 +34,6 @@ import javax.xml.parsers.SAXParserFactory;
  * Created by ssthouse on 2015/10/30.
  */
 public class XmlParser extends DefaultHandler {
-    private static final String TAG = "XmlParser";
-
     private Context context;
 
     /**
@@ -66,7 +65,7 @@ public class XmlParser extends DefaultHandler {
      */
     public static XmlParser loadXmlParser(Context context, String xmlFilePath) {
         //如果之前有加载文件---去除内存
-        if(xmlParser != null){
+        if (xmlParser != null) {
             xmlParser.destory();
         }
         //如果xmlParser是空的---或者路径改了---就创建新的xmlParser
@@ -103,7 +102,7 @@ public class XmlParser extends DefaultHandler {
             xmlReader.parse(new InputSource(new FileInputStream(xmlFilePath)));
         } catch (ParserConfigurationException | SAXException | IOException e) {
             e.printStackTrace();
-            L.log(TAG, Log.getStackTraceString(e));
+            Timber.e(Log.getStackTraceString(e));
         }
     }
 
@@ -154,7 +153,7 @@ public class XmlParser extends DefaultHandler {
     /**
      * 销毁
      */
-    public void destory(){
+    public void destory() {
         for (Line line : lineList) {
             line.destory();
         }
@@ -223,21 +222,21 @@ public class XmlParser extends DefaultHandler {
     public void endElement(String uri, String localName, String qName) throws SAXException {
         super.endElement(uri, localName, qName);
         if (Element.DATA.equals(localName)) {
-            L.log(TAG, "我添加了最后一个Vector");
+            Timber.e("我添加了最后一个Vector");
             vectorList.add(vector);
         }
     }
 
     @Override
     public void startDocument() throws SAXException {
-        L.log(TAG, "我开始解析了...");
+        Timber.e("我开始解析了...");
         super.startDocument();
     }
 
     @Override
     public void endDocument() throws SAXException {
         super.endDocument();
-        L.log(TAG, "我解析完毕了...");
+        Timber.e("我解析完毕了...");
 //        for (Text text : textList) {
 //            L.log(TAG, text.toString());
 //        }

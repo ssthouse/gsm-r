@@ -10,7 +10,6 @@ import com.amap.api.maps.AMap;
 import com.xunce.gsmr.model.gaodemap.graph.Point;
 import com.xunce.gsmr.model.gaodemap.graph.Text;
 import com.xunce.gsmr.model.gaodemap.graph.Vector;
-import com.xunce.gsmr.util.L;
 import com.xunce.gsmr.util.gps.PositionUtil;
 
 import java.io.File;
@@ -20,13 +19,13 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
+import timber.log.Timber;
+
 /**
  * 将所有的数据库数据读出来-----然后画在地图上
  * Created by ssthouse on 2015/10/14.
  */
 public class DigitalMapHolder {
-    private static final String TAG = "DigitalMapHelper";
-
     //数据库地址
     private String dbPath;
     //context
@@ -137,8 +136,8 @@ public class DigitalMapHolder {
                 for (Vector vector : vectorList) {
                     vectorPointSum += vector.getPointList().size();
                 }
-                L.log(TAG, "我一共解释出来了这么多个VectorPoint的数据: " + vectorPointSum);
-                L.log(TAG, "我一共解释出来了这么多个Text的数据: " + textList.size());
+                Timber.e( "我一共解释出来了这么多个VectorPoint的数据: " + vectorPointSum);
+                Timber.e("我一共解释出来了这么多个Text的数据: " + textList.size());
             }
         }.execute();
     }
@@ -228,7 +227,7 @@ public class DigitalMapHolder {
 
             //在sd卡中先生成好要存放的文件
             File file = new File(Environment.getExternalStorageDirectory() + "/GSM/tempDatabase/test.db");
-            L.log(TAG, "路径是:    " + file.getAbsolutePath());
+           Timber.e("路径是:    " + file.getAbsolutePath());
             if (!file.exists()) {
                 file.getParentFile().mkdirs();
             }

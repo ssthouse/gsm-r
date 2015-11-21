@@ -22,6 +22,11 @@
                 android:title="项目管理"
                 app:showAsAction="never" />
 
+            <item android:id="@+id/id_action_load_xml_marker"
+                android:title="加载初始标记点文件"
+                android:orderInCategory="100"
+                android:showAsAction="never"/>
+
             <item
                 android:id="@+id/id_action_load_digital_file"
                 android:orderInCategory="100"

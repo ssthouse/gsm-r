@@ -6,6 +6,7 @@ import com.activeandroid.ActiveAndroid;
 import com.baidu.mapapi.SDKInitializer;
 
 import im.fir.sdk.FIR;
+import timber.log.Timber;
 
 /**
  * 程序入口
@@ -22,6 +23,8 @@ public class MyApplication extends Application {
         SDKInitializer.initialize(getApplicationContext());
         //初始化数据库
         ActiveAndroid.initialize(this);
+        //初始化Timber日志
+        Timber.plant(new Timber.DebugTree());
     }
 
     @Override

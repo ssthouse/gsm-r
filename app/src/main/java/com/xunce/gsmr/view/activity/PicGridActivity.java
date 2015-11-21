@@ -21,7 +21,6 @@ import com.xunce.gsmr.app.Constant;
 import com.xunce.gsmr.model.BitmapItem;
 import com.xunce.gsmr.model.MarkerItem;
 import com.xunce.gsmr.util.FileHelper;
-import com.xunce.gsmr.util.L;
 import com.xunce.gsmr.util.PictureHelper;
 import com.xunce.gsmr.util.VibrateHelper;
 import com.xunce.gsmr.view.adapter.PicGridAdapter;
@@ -31,13 +30,13 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
+import timber.log.Timber;
+
 /**
  * 用于显示一个MarkItem对应的所有的照片
  * Created by ssthouse on 2015/7/20.
  */
 public class PicGridActivity extends AppCompatActivity {
-    private static final String TAG = "PicGridActivity";
-
     private MarkerItem markerItem;
 
     private List<BitmapItem> selectedList = new ArrayList<>();
@@ -68,7 +67,7 @@ public class PicGridActivity extends AppCompatActivity {
 
         markerItem = (MarkerItem) getIntent().getSerializableExtra(Constant.EXTRA_KEY_MARKER_ITEM);
         if(markerItem == null){
-            L.log(TAG, "卧槽...我竟然时空的");
+            Timber.e("卧槽...我竟然时空的");
         }
         initView();
     }

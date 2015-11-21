@@ -2,8 +2,6 @@ package com.xunce.gsmr.lib.kmlParser;
 
 import android.util.Log;
 
-import com.xunce.gsmr.util.L;
-
 import org.xml.sax.Attributes;
 import org.xml.sax.helpers.DefaultHandler;
 
@@ -13,13 +11,14 @@ import java.util.ArrayList;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 
+import timber.log.Timber;
+
 /**
  * KML文件加载器
  * Created by ssthouse on 2015/11/3.
  */
 public class KMLParser extends DefaultHandler
 {
-    private static final String TAG = "KMLLParser";
     data mydata = new data();
     ArrayList<data> datalist = new ArrayList<>();
     String qname = null;
@@ -35,7 +34,7 @@ public class KMLParser extends DefaultHandler
             SAXParser saxParser = factory.newSAXParser();
             saxParser.parse(new File(path), this);
         }catch (Exception e){
-            Log.e(TAG, Log.getStackTraceString(e));
+            Timber.e(Log.getStackTraceString(e));
         }
     }
 
@@ -76,37 +75,37 @@ public class KMLParser extends DefaultHandler
                 datalist.add(mydata);
             }
         }
-        L.log(TAG, "我解析出来了: " + datalist.size() + " 条数据");
+        Timber.e("我解析出来了: " + datalist.size() + " 条数据");
     }
 
+    class data {
+        private String name;
+        private String longtitude;
+        private String latitude;
+
+        public String getLatitude() {
+            return latitude;
+        }
+
+        public void setLatitude(String latitude) {
+            this.latitude = latitude;
+        }
+
+        public String getLongtitude() {
+            return longtitude;
+        }
+
+        public void setLongtitude(String longtitude) {
+            this.longtitude = longtitude;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public void setName(String name) {
+            this.name = name;
+        }
+    }
 }
 
-class data {
-    private String name;
-    private String longtitude;
-    private String latitude;
-
-    public String getLatitude() {
-        return latitude;
-    }
-
-    public void setLatitude(String latitude) {
-        this.latitude = latitude;
-    }
-
-    public String getLongtitude() {
-        return longtitude;
-    }
-
-    public void setLongtitude(String longtitude) {
-        this.longtitude = longtitude;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-}

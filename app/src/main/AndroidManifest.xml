@@ -4,8 +4,6 @@
 
     <!--自己添加的权限-->
     <uses-permission android:name="android.permission.VIBRATE"/>
-
-    <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS" />
     <uses-permission android:name="android.permission.BAIDU_LOCATION_SERVICE" />
     <uses-permission android:name="android.permission.ACCES_MOCK_LOCATION" />
     <uses-permission android:name="com.android.launcher.permission.READ_SETTINGS" />
@@ -55,12 +53,10 @@
         <!--百度地图的Key-->
         <meta-data android:name="com.baidu.lbsapi.API_KEY"
             android:value="5DdPLYPONLfXGezwQUjjZrfn" />
-
         <!--高德地图的Key-->
         <meta-data
             android:name="com.amap.api.v2.apikey"
             android:value="c0d2c8ea88dedc1ebe05077b72544025"/>
-
         <!--active_android数据库-->
         <meta-data
             android:name="AA_DB_NAME"
@@ -68,11 +64,10 @@
         <meta-data
             android:name="AA_DB_VERSION"
             android:value="1" />
-
+        <!--BUG_HD反馈-->
         <meta-data
             android:value="81ede838451fbee4e766e156e3421c1a"
             android:name="BUG_HD_SDK_GENERAL_KEY" />
-
         <!--百度地图定位service-->
         <service
             android:name="com.baidu.location.f"
@@ -92,12 +87,10 @@
             android:screenOrientation="portrait"
             android:name=".view.activity.baidu.BaiduPrjEditActivity">
         </activity>
-
         <!--选址-->
         <activity
             android:screenOrientation="portrait"
             android:name=".view.activity.baidu.BaiduMarkerActivity"/>
-
         <!--测量Activity-->
         <activity
             android:screenOrientation="portrait"
@@ -109,6 +102,7 @@
         <activity
             android:screenOrientation="portrait"
             android:name=".view.activity.baidu.RoutePlanActivity" />
+        <!--图片Grid查看-->
         <activity
             android:screenOrientation="portrait"
             android:name=".view.activity.PicGridActivity"
@@ -116,17 +110,15 @@
         <activity
             android:screenOrientation="portrait"
             android:name=".view.activity.baidu.BaiduGetLatLngActivity"/>
-
+        <!--设置-->
         <activity
             android:screenOrientation="portrait"
             android:name=".view.activity.SettingActivity"/>
-
         <!--离线地图-->
         <activity
             android:theme="@style/CustomNoActionbarStyle"
             android:screenOrientation="portrait"
             android:name=".view.activity.baidu.BaiduOfflineActivity"/>
-
         <!--高德地图-->
         <activity android:name=".view.activity.gaode.GaodeBaseActivity"
             android:screenOrientation="portrait"/>
@@ -139,7 +131,6 @@
         <activity android:name=".view.activity.gaode.GaodeOfflineActivity"
             android:theme="@style/CustomNoActionbarStyle"
             android:screenOrientation="portrait"/>
-
         <!--android:enabled="@bool/use_activity"-->
         <!-- 第三方的module中的Activity  作用是选择文件-->
         <activity
@@ -155,5 +146,4 @@
             </intent-filter>
         </activity>
     </application>
-
 </manifest>

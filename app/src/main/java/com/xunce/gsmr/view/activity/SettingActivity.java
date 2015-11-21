@@ -11,18 +11,17 @@ import android.widget.Switch;
 
 import com.gitonway.lee.niftymodaldialogeffects.lib.NiftyDialogBuilder;
 import com.xunce.gsmr.R;
-import com.xunce.gsmr.util.L;
 import com.xunce.gsmr.util.preference.PreferenceHelper;
 import com.xunce.gsmr.util.view.ViewHelper;
 import com.xunce.gsmr.view.style.TransparentStyle;
+
+import timber.log.Timber;
 
 /**
  * 设置Activity
  * Created by ssthouse on 2015/9/8.
  */
 public class SettingActivity extends AppCompatActivity {
-    private static final String TAG = "SettingActivity";
-
     /**
      * 是否使用wifi的switch
      */
@@ -77,11 +76,11 @@ public class SettingActivity extends AppCompatActivity {
                 if (position == 0) {
                     PreferenceHelper.getInstance(SettingActivity.this)
                             .setMapType(PreferenceHelper.MapType.BAIDU_MAP);
-                    L.log(TAG, "我设置了---百度地图");
+                    Timber.e("我设置了---百度地图");
                 } else if (position == 1) {
                     PreferenceHelper.getInstance(SettingActivity.this)
                             .setMapType(PreferenceHelper.MapType.GAODE_MAP);
-                    L.log(TAG, "我设置了--高德地图");
+                   Timber.e("我设置了--高德地图");
                 }
             }
 

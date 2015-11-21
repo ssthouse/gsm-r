@@ -19,7 +19,8 @@ allprojects {
         jcenter()
 
         maven {
-            url "http://dl.bintray.com/fir/maven"
+           // url "http://dl.bintray.com/fir/maven@aar"
+            url "http://maven.bughd.com/public"
         }
     }
 }
