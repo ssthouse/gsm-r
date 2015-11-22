@@ -1,8 +1,10 @@
 package com.xunce.gsmr.lib.xmlMarkerParser;
 
+import android.content.Context;
 import android.util.Log;
 
 import com.xunce.gsmr.model.MarkerItem;
+import com.xunce.gsmr.util.view.ToastHelper;
 
 import org.xml.sax.Attributes;
 import org.xml.sax.InputSource;
@@ -22,20 +24,18 @@ import javax.xml.parsers.SAXParserFactory;
 import timber.log.Timber;
 
 /**
- * 单例
  * XMl文件中的Marker解析
  * Created by ssthouse on 2015/11/17.
  */
 public class XmlMarkerParser extends DefaultHandler {
     /**
-     * 单例
-     */
-    private static XmlMarkerParser xmlMarkerParser;
-
-    /**
      * 解析的Xml文件的路径
      */
     private String filePath;
+    /**
+     * 上下文
+     */
+    private Context context;
 
     /**
      * 初始化___填入文件路径
@@ -49,18 +49,9 @@ public class XmlMarkerParser extends DefaultHandler {
      *
      * @param filePath 文件路径
      */
-    private XmlMarkerParser(String filePath) {
+    public XmlMarkerParser(Context context, String filePath) {
+        this.context = context;
         this.filePath = filePath;
-    }
-
-    /**
-     * 获取唯一的单例
-     */
-    public static XmlMarkerParser getInstance(String filePath) {
-        if (xmlMarkerParser == null) {
-            xmlMarkerParser = new XmlMarkerParser(filePath);
-        }
-        return xmlMarkerParser;
     }
 
     /**
@@ -88,6 +79,19 @@ public class XmlMarkerParser extends DefaultHandler {
         } catch (ParserConfigurationException | SAXException | IOException e) {
             e.printStackTrace();
             Timber.e(Log.getStackTraceString(e));
+        }
+    }
+
+    /**
+     * 设置解析出来的MarkerItem的prjName
+     */
+    public void saveMarkerItem(String prjName) {
+        if (markerItemList.size() > 0) {
+            for (MarkerItem markerItem : markerItemList) {
+                markerItem.setPrjName(prjName);
+                markerItem.save();
+            }
+            ToastHelper.show(context, markerItemList.size()+"个标记点添加到当前工程中");
         }
     }
 
@@ -125,13 +129,13 @@ public class XmlMarkerParser extends DefaultHandler {
             markerItem.setSideDirection(attributes.getValue(XmlCons.ATTRIBUTE_VALUE));
         } else if (localName.equals(XmlCons.LATITUDE)) {
             String value = attributes.getValue(XmlCons.ATTRIBUTE_VALUE);
-            if(value == null || value.isEmpty()){
+            if (value == null || value.isEmpty()) {
                 return;
             }
             markerItem.setLatitude(Double.parseDouble(value));
         } else if (localName.equals(XmlCons.LONGITUDE)) {
             String value = attributes.getValue(XmlCons.ATTRIBUTE_VALUE);
-            if(value == null || value.isEmpty()){
+            if (value == null || value.isEmpty()) {
                 return;
             }
             markerItem.setLongitude(Double.parseDouble(value));

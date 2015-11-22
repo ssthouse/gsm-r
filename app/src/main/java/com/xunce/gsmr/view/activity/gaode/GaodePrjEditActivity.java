@@ -124,16 +124,12 @@ public class GaodePrjEditActivity extends GaodeBaseActivity {
      */
     private void initView() {
         ViewHelper.initActionBar(this, getSupportActionBar(), prjItem.getPrjName());
-
         //初始化地图Mode控件
         initMapMode();
-
         //填充Marker
         loadMarker(prjItem);
-
         //初始化Marker的点击事件--以及InfoWindow的填充
         initMarkerClick();
-
         //初始化--数字地图的Switch
         swDigitalFile = (Switch) findViewById(R.id.id_sw_digital_file);
         swDigitalFile.setOnClickListener(new View.OnClickListener() {
@@ -161,7 +157,6 @@ public class GaodePrjEditActivity extends GaodeBaseActivity {
                 }
             }
         });
-
         //监测---地图的大小变化---画出/隐藏---文字
         getaMap().setOnCameraChangeListener(new AMap.OnCameraChangeListener() {
             @Override
@@ -187,7 +182,6 @@ public class GaodePrjEditActivity extends GaodeBaseActivity {
                 }
             }
         });
-
         //初始化--xml文件的Switch
         Switch swXmlFile = (Switch) findViewById(R.id.id_sw_xml_file);
         swXmlFile.setOnClickListener(new View.OnClickListener() {
@@ -211,7 +205,6 @@ public class GaodePrjEditActivity extends GaodeBaseActivity {
                 }
             }
         });
-
         //选址
         findViewById(R.id.id_btn_mark).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -222,7 +215,6 @@ public class GaodePrjEditActivity extends GaodeBaseActivity {
                 GaodeMarkerActivity.start(GaodePrjEditActivity.this, markerItem, REQUEST_CODE_MARKER_ACTIVITY);
             }
         });
-
         //定位
         findViewById(R.id.id_ib_locate).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -230,7 +222,6 @@ public class GaodePrjEditActivity extends GaodeBaseActivity {
                 GaodePrjEditActivity.super.animateToMyLocation();
             }
         });
-
         //测量
         findViewById(R.id.id_ib_measure).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -238,7 +229,6 @@ public class GaodePrjEditActivity extends GaodeBaseActivity {
                 GaodeMeasureActivity.start(GaodePrjEditActivity.this, getaMap().getCameraPosition().target);
             }
         });
-
         //公里标
         llPosition = findViewById(R.id.id_ll_position);
         findViewById(R.id.id_ib_position).setOnClickListener(new View.OnClickListener() {
@@ -268,7 +258,6 @@ public class GaodePrjEditActivity extends GaodeBaseActivity {
                 return View.inflate(GaodePrjEditActivity.this, R.layout.view_info_window, null);
             }
         });
-
         //设置Marker点击事件
         getaMap().setOnMarkerClickListener(new AMap.OnMarkerClickListener() {
             @Override
@@ -445,8 +434,13 @@ public class GaodePrjEditActivity extends GaodeBaseActivity {
                         ToastHelper.show(this, "请选取.xml文件");
                         return;
                     }
-                    xmlMarkerParser = XmlMarkerParser.getInstance(filePath);
+                    //解析出MarkerItem数据
+                    xmlMarkerParser = new XmlMarkerParser(this, filePath);
                     xmlMarkerParser.parse();
+                    //将数据增加到当前工程中去(给每一个Marker添加prjName---然后save)
+                    xmlMarkerParser.saveMarkerItem(prjItem.getPrjName());
+                    //重画界面的Marker
+                    loadMarker(prjItem);
                 }
                 break;
             //加载数字地图文件
