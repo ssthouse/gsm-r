@@ -11,14 +11,13 @@ import android.widget.TextView;
 
 import com.amap.api.maps.AMap;
 import com.amap.api.maps.AMapUtils;
-import com.amap.api.maps.model.BitmapDescriptor;
-import com.amap.api.maps.model.BitmapDescriptorFactory;
 import com.amap.api.maps.model.LatLng;
 import com.amap.api.maps.model.Marker;
 import com.amap.api.maps.model.MarkerOptions;
 import com.amap.api.maps.model.PolylineOptions;
 import com.xunce.gsmr.R;
 import com.xunce.gsmr.app.Constant;
+import com.xunce.gsmr.model.MarkerCons;
 import com.xunce.gsmr.util.view.ViewHelper;
 import com.xunce.gsmr.view.style.TransparentStyle;
 
@@ -30,14 +29,6 @@ import java.util.List;
  * Created by ssthouse on 2015/9/16.
  */
 public class GaodeMeasureActivity extends GaodeBaseActivity {
-    private static final String TAG = "GaodeMeasureActivity";
-
-    //标记点相关的
-    BitmapDescriptor descriptorBlue = BitmapDescriptorFactory
-            .fromResource(R.drawable.icon_measure_blue);
-    BitmapDescriptor descriptorRed = BitmapDescriptorFactory
-            .fromResource(R.drawable.icon_measure_red);
-
     /**
      * 接收的数据
      */
@@ -116,7 +107,7 @@ public class GaodeMeasureActivity extends GaodeBaseActivity {
             @Override
             public void onMapClick(LatLng latLng) {
                 //将点击位置存入List
-                MarkerOptions options = new MarkerOptions().icon(descriptorRed).position(latLng);
+                MarkerOptions options = new MarkerOptions().icon(MarkerCons.descriptorRed).position(latLng);
                 markerList.add((getaMap().addMarker(options)));
                 //添加坐标点
                 pointList.add(latLng);
@@ -134,7 +125,6 @@ public class GaodeMeasureActivity extends GaodeBaseActivity {
     private void redraw() {
         //清除marker--显示
         getaMap().clear();
-//        showLocate();
         //画出线
         if (pointList.size() > 1) {
             polylineOptions = new PolylineOptions()
@@ -146,11 +136,13 @@ public class GaodeMeasureActivity extends GaodeBaseActivity {
         //画出标记点
         for (int i = 0; i < pointList.size(); i++) {
             if (i == 0 || i == pointList.size() - 1) {
-                MarkerOptions markerOptions = new MarkerOptions().position(pointList.get(i)).icon(descriptorRed)
+                MarkerOptions markerOptions = new MarkerOptions().position(pointList.get(i))
+                        .icon(MarkerCons.descriptorRed)
                         .zIndex(9).draggable(true);
                 getaMap().addMarker(markerOptions);
             } else {
-                MarkerOptions markerOptions = new MarkerOptions().position(pointList.get(i)).icon(descriptorBlue)
+                MarkerOptions markerOptions = new MarkerOptions().position(pointList.get(i))
+                        .icon(MarkerCons.descriptorBlue)
                         .zIndex(9).draggable(true);
                 getaMap().addMarker(markerOptions);
             }

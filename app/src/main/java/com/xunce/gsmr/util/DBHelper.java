@@ -1,19 +1,18 @@
-package com.xunce.gsmr.util.gps;
+package com.xunce.gsmr.util;
 
 import com.activeandroid.query.Select;
 import com.xunce.gsmr.model.MarkerItem;
 import com.xunce.gsmr.model.PrjItem;
-import com.xunce.gsmr.util.L;
 
 import java.util.List;
+
+import timber.log.Timber;
 
 /**
  * 数据库处理的工具类(处理app存储的本地数据库)
  * Created by ssthouse on 2015/7/17.
  */
 public class DBHelper {
-    private static final String TAG = "DBHelper";
-
     /**
      * 判断prjItem是不是空的
      *
@@ -48,9 +47,9 @@ public class DBHelper {
                         + "photoPathName ="
                         + " '" + photoPathName + "'")
                 .executeSingle();
-        L.log(TAG, "我从数据库中找到的东西是:   ");
-        L.log(TAG, "原来的:   " + markerItem.getPrjName() + markerItem.getPhotoPathName());
-        L.log(TAG, "我找到的是" + (markerItemInDB == null));
+        Timber.e("我从数据库中找到的东西是:   ");
+        Timber.e("原来的:   " + markerItem.getPrjName() + markerItem.getPhotoPathName());
+        Timber.e("我找到的是" + (markerItemInDB == null));
         return markerItemInDB;
     }
 

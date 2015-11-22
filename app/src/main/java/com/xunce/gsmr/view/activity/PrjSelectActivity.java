@@ -19,7 +19,7 @@ import com.xunce.gsmr.util.preference.PreferenceHelper;
 import com.xunce.gsmr.util.view.ToastHelper;
 import com.xunce.gsmr.util.VibrateHelper;
 import com.xunce.gsmr.util.view.ViewHelper;
-import com.xunce.gsmr.util.gps.DBHelper;
+import com.xunce.gsmr.util.DBHelper;
 import com.xunce.gsmr.view.activity.baidu.BaiduPrjEditActivity;
 import com.xunce.gsmr.view.activity.gaode.GaodePrjEditActivity;
 import com.xunce.gsmr.view.adapter.PrjLvAdapter;

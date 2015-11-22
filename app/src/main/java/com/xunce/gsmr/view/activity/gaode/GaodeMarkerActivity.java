@@ -14,7 +14,7 @@ import com.amap.api.maps.model.LatLng;
 import com.xunce.gsmr.R;
 import com.xunce.gsmr.app.Constant;
 import com.xunce.gsmr.model.MarkerItem;
-import com.xunce.gsmr.util.gps.DBHelper;
+import com.xunce.gsmr.util.DBHelper;
 import com.xunce.gsmr.util.gps.MarkerHelper;
 import com.xunce.gsmr.util.gps.PositionUtil;
 import com.xunce.gsmr.util.view.ToastHelper;
@@ -105,8 +105,8 @@ public class GaodeMarkerActivity extends GaodeBaseActivity {
                     //保存数据---并改变原来的照片的文件夹的名称
                     double latitude = MarkerHelper.getLatitude(etLatitude);
                     double longitude = MarkerHelper.getLongitude(etLongitude);
-                    double wgsLatlng[] = PositionUtil.gcj_To_Gps84(latitude, longitude);
-                    markerItem.changeData(wgsLatlng);
+                    //double wgsLatlng[] = PositionUtil.gcj_To_Gps84(latitude, longitude);
+                    markerItem.changeData(new double[]{latitude, longitude});
                     //设置返回值
                     setResult(Constant.RESULT_CODE_OK);
                     //退出

@@ -3,14 +3,12 @@ package com.xunce.gsmr.model.gaodemap;
 import android.content.Context;
 
 import com.amap.api.maps.AMap;
-import com.amap.api.maps.model.BitmapDescriptor;
-import com.amap.api.maps.model.BitmapDescriptorFactory;
 import com.amap.api.maps.model.Marker;
 import com.amap.api.maps.model.MarkerOptions;
-import com.xunce.gsmr.R;
+import com.xunce.gsmr.model.MarkerCons;
 import com.xunce.gsmr.model.MarkerItem;
 import com.xunce.gsmr.model.PrjItem;
-import com.xunce.gsmr.util.gps.DBHelper;
+import com.xunce.gsmr.util.DBHelper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,14 +19,6 @@ import java.util.List;
  * Created by ssthouse on 2015/9/15.
  */
 public class MarkerHolder {
-    private static final String TAG = "MarkerHolder";
-
-    //标记点相关的
-    public static BitmapDescriptor descriptorBlue = BitmapDescriptorFactory
-            .fromResource(R.drawable.icon_measure_blue);
-    public static BitmapDescriptor descriptorRed = BitmapDescriptorFactory
-            .fromResource(R.drawable.icon_measure_red);
-
     /**
      * 上下文
      */
@@ -70,10 +60,9 @@ public class MarkerHolder {
      */
     public void initMarker() {
         //清除地图图像---清空marker数据
-        for(Marker marker : markerOnMapList){
+        for (Marker marker : markerOnMapList) {
             marker.setVisible(false);
             marker.remove();
-//            L.log(TAG, "我去除了一个Marker");
         }
         markerOnMapList.clear();
         markerOnDbList.clear();
@@ -84,11 +73,10 @@ public class MarkerHolder {
         for (int i = 0; i < markerOnDbList.size(); i++) {
             com.amap.api.maps.model.LatLng latLng = markerOnDbList.get(i).getGaodeLatLng();
             MarkerOptions markerOptions = new MarkerOptions();
-            markerOptions.icon(descriptorBlue)
+            markerOptions.icon(MarkerCons.descriptorBlue)
                     .position(latLng)
-            .title("");
+                    .title("");
             markerOnMapList.add(aMap.addMarker(markerOptions));
-//            L.log(TAG, "我添加了一个点:    " + latLng.latitude + ":" + latLng.longitude);
         }
     }
 
@@ -107,7 +95,7 @@ public class MarkerHolder {
     public void setAll2Blue() {
         for (Marker marker : markerOnMapList) {
             if (marker != null) {
-                marker.setIcon(descriptorBlue);
+                marker.setIcon(MarkerCons.descriptorRed);
             }
         }
     }

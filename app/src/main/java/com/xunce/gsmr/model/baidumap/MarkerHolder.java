@@ -12,11 +12,12 @@ import com.baidu.mapapi.model.LatLng;
 import com.xunce.gsmr.R;
 import com.xunce.gsmr.model.MarkerItem;
 import com.xunce.gsmr.model.PrjItem;
-import com.xunce.gsmr.util.L;
-import com.xunce.gsmr.util.gps.DBHelper;
+import com.xunce.gsmr.util.DBHelper;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import timber.log.Timber;
 
 /**
  * 持有一个baiduMap的引用
@@ -24,8 +25,6 @@ import java.util.List;
  * Created by ssthouse on 2015/8/21.
  */
 public class MarkerHolder {
-    private static final String TAG = "MarkerHolder";
-
     //标记点相关的
     public static BitmapDescriptor descriptorBlue = BitmapDescriptorFactory
             .fromResource(R.drawable.icon_measure_blue);
@@ -81,7 +80,7 @@ public class MarkerHolder {
                     .zIndex(16)
                     .draggable(false);
             markerList.add((Marker) baiduMap.addOverlay(redOverlay));
-            L.log(TAG, "我添加了一个点:    " + latLng.latitude + ":" + latLng.longitude);
+            Timber.e("我添加了一个点:    " + latLng.latitude + ":" + latLng.longitude);
         }
         if(markerItemList.size() >0) {
             //动画移动过去

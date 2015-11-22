@@ -24,7 +24,7 @@ import com.baidu.mapapi.model.LatLng;
 import com.xunce.gsmr.R;
 import com.xunce.gsmr.app.Constant;
 import com.xunce.gsmr.model.MarkerItem;
-import com.xunce.gsmr.util.gps.DBHelper;
+import com.xunce.gsmr.util.DBHelper;
 import com.xunce.gsmr.util.gps.LocateHelper;
 import com.xunce.gsmr.util.gps.MapHelper;
 import com.xunce.gsmr.util.gps.MarkerHelper;

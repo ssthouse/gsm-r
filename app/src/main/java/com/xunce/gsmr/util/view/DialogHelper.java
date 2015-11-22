@@ -11,7 +11,7 @@ import com.gitonway.lee.niftymodaldialogeffects.lib.Effectstype;
 import com.gitonway.lee.niftymodaldialogeffects.lib.NiftyDialogBuilder;
 import com.xunce.gsmr.R;
 import com.xunce.gsmr.model.PrjItem;
-import com.xunce.gsmr.util.gps.DBHelper;
+import com.xunce.gsmr.util.DBHelper;
 import com.xunce.gsmr.view.activity.baidu.BaiduPrjEditActivity;
 import com.xunce.gsmr.view.adapter.PrjLvAdapter;
 
