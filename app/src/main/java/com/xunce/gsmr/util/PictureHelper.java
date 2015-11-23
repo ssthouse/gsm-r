@@ -22,13 +22,13 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import timber.log.Timber;
+
 /**
  * 处理图片的工具类
  * Created by ssthouse on 2015/7/18.
  */
 public class PictureHelper {
-    private static String TAG = "PictureHelper";
-
     /**
      * 删除文件
      *
@@ -64,7 +64,7 @@ public class PictureHelper {
             //L.log(TAG, "我在保存临时的照片");
         } catch (Exception e) {
             e.printStackTrace();
-            L.log(TAG, "image save is wrong");
+            Timber.e("image save is wrong");
             return false;
         }
         return true;
@@ -113,7 +113,7 @@ public class PictureHelper {
             fosTo.close();
         } catch (IOException e) {
             e.printStackTrace();
-            L.log(TAG, "something is wrong" + e.toString());
+            Timber.e("something is wrong" + e.toString());
         }
         return true;
     }
@@ -148,7 +148,7 @@ public class PictureHelper {
             return time;
         } catch (Exception e) {
             e.printStackTrace();
-            L.log(TAG, "something is wrong");
+            Timber.e("something is wrong");
         }
         return 0;
     }
@@ -160,11 +160,7 @@ public class PictureHelper {
      */
     private static boolean hasTempPicture(File file) {
         File tempFile = new File(Constant.TEMP_FILE_PATH + file.getName());
-        if (tempFile.exists()) {
-            return true;
-        } else {
-            return false;
-        }
+        return tempFile.exists();
     }
 
     /**

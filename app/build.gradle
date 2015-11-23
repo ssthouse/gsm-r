@@ -56,8 +56,10 @@ android {
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
+    //google_support_jar
     compile 'com.android.support:appcompat-v7:22.2.0'
     compile 'com.android.support:support-v4:22.2.0'
+    compile 'com.android.support:design:22.2.0'
     //依赖注入
     compile 'com.jakewharton:butterknife:7.0.1'
     //Material dialog
@@ -65,8 +67,6 @@ dependencies {
     compile 'com.github.sd6352051.niftydialogeffects:niftydialogeffects:1.0.0@aar'
     //fabButton
     compile 'com.github.clans:fab:1.5.4'
-    //google_support_jar
-    compile 'com.android.support:design:22.2.0'
     //progressBar
     compile 'com.github.rahatarmanahmed:circularprogressview:2.3.2'
     //event_bus

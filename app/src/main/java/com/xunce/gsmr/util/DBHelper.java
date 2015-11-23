@@ -13,6 +13,8 @@ import timber.log.Timber;
  * Created by ssthouse on 2015/7/17.
  */
 public class DBHelper {
+    public static final String DB_NAME = "Location.db";
+
     /**
      * 判断prjItem是不是空的
      *

@@ -369,11 +369,11 @@ public class GaodePrjEditActivity extends GaodeBaseActivity {
                 finish();
                 PrjSelectActivity.start(this, true);
                 break;
-            //TODO---加载初始xml中的Marker数据
+            //加载初始xml中的Marker数据
             case R.id.id_action_load_xml_marker:
                 FileHelper.showFileChooser(this, REQUEST_CODE_LOAD_XML_MARKER_FILE);
                 break;
-                // TODO---加载数字地图
+            // 加载数字地图
             case R.id.id_action_load_digital_file:
                 FileHelper.showFileChooser(this, REQUEST_CODE_LOAD_DIGITAL_FILE);
                 break;
@@ -388,7 +388,8 @@ public class GaodePrjEditActivity extends GaodeBaseActivity {
                 break;
             //数据导出
             case R.id.id_action_export_data:
-                FileHelper.sendDbFile(this);
+                //FileHelper.sendDbFile(this);
+                FileHelper.sendZipFile(this);
                 break;
             //开启离线地图
             case R.id.id_action_offline_map:
