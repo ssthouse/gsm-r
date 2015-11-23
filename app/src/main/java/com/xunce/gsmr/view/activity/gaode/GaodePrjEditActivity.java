@@ -25,6 +25,7 @@ import com.xunce.gsmr.lib.kmlParser.KMLParser;
 import com.xunce.gsmr.lib.xmlMarkerParser.XmlMarkerParser;
 import com.xunce.gsmr.model.MarkerItem;
 import com.xunce.gsmr.model.PrjItem;
+import com.xunce.gsmr.model.event.MarkerEditEvent;
 import com.xunce.gsmr.model.gaodemap.GaodeMapCons;
 import com.xunce.gsmr.util.FileHelper;
 import com.xunce.gsmr.util.view.ToastHelper;
@@ -36,6 +37,7 @@ import com.xunce.gsmr.view.style.TransparentStyle;
 
 import java.io.File;
 
+import de.greenrobot.event.EventBus;
 import timber.log.Timber;
 
 /**
@@ -106,6 +108,8 @@ public class GaodePrjEditActivity extends GaodeBaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_gaode_prj_edit);
+        //注册eventbus
+        EventBus.getDefault().register(this);
         TransparentStyle.setTransparentStyle(this, R.color.color_primary);
         super.init(savedInstanceState);
 
@@ -407,26 +411,23 @@ public class GaodePrjEditActivity extends GaodeBaseActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    /**
+     * prjEditActivity的回调方法
+     */
+    public void onEventMainThread(MarkerEditEvent markerEditEvent){
+        switch (markerEditEvent.getBackState()){
+            case CHANGED:
+                loadMarker(prjItem);
+                break;
+            case UNCHANGED:
+                break;
+        }
+    }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         switch (requestCode) {
-            //从选址activity返回
-            case REQUEST_CODE_MARKER_ACTIVITY:
-                Timber.e("我反悔了PrjEditActivity");
-                if (resultCode == Constant.RESULT_CODE_OK) {
-                    loadMarker(prjItem);
-                    Timber.e("我重新绘制了Marker");
-                }
-                break;
-            //从marker编辑activity返回
-            case REQUEST_CODE_MARKER_EDIT_ACTIVITY:
-                Timber.e("我反悔了PrjEditActivity");
-                if (resultCode == Constant.RESULT_CODE_OK) {
-                    Timber.e("我重新绘制了Marker");
-                    loadMarker(prjItem);
-                }
-                break;
-            //TODO---加载xml中的初始Marker数据
+            //加载xml中的初始Marker数据
             case REQUEST_CODE_LOAD_XML_MARKER_FILE:
                 if (resultCode == Activity.RESULT_OK) {
                     Uri uriXmlFileUri = data.getData();

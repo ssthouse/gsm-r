@@ -9,8 +9,6 @@ import com.amap.api.maps.model.LatLng;
  * Created by ssthouse on 2015/9/15.
  */
 public class Circle extends BaseGraph {
-    private static final String TAG = "CircleGraph";
-
     /**
      * 画笔参数
      */

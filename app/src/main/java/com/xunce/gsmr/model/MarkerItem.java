@@ -66,6 +66,8 @@ public class MarkerItem extends Model implements Serializable {
         this.prjName = prjName;
         this.latitude = latitude;
         this.longitude = longitude;
+        //根据当前时间创建路径名称
+        this.photoPathName = System.currentTimeMillis() + "";
     }
 
     /**
@@ -112,8 +114,15 @@ public class MarkerItem extends Model implements Serializable {
         this.photoPathName = System.currentTimeMillis() + "";
     }
 
+    /**
+     * 无参构造方法
+     */
     public MarkerItem() {
         super();
+        this.latitude = 0;
+        this.longitude = 0;
+        //根据当前时间创建路径名称
+        this.photoPathName = System.currentTimeMillis() + "";
     }
 
     /**

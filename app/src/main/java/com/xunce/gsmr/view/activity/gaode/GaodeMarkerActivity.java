@@ -14,12 +14,15 @@ import com.amap.api.maps.model.LatLng;
 import com.xunce.gsmr.R;
 import com.xunce.gsmr.app.Constant;
 import com.xunce.gsmr.model.MarkerItem;
+import com.xunce.gsmr.model.event.MarkerEditEvent;
 import com.xunce.gsmr.util.DBHelper;
 import com.xunce.gsmr.util.gps.MarkerHelper;
 import com.xunce.gsmr.util.gps.PositionUtil;
 import com.xunce.gsmr.util.view.ToastHelper;
 import com.xunce.gsmr.util.view.ViewHelper;
 import com.xunce.gsmr.view.style.TransparentStyle;
+
+import de.greenrobot.event.EventBus;
 
 /**
  * 开启本Activity需要一个MarkerItem
@@ -107,8 +110,8 @@ public class GaodeMarkerActivity extends GaodeBaseActivity {
                     double longitude = MarkerHelper.getLongitude(etLongitude);
                     //double wgsLatlng[] = PositionUtil.gcj_To_Gps84(latitude, longitude);
                     markerItem.changeData(new double[]{latitude, longitude});
-                    //设置返回值
-                    setResult(Constant.RESULT_CODE_OK);
+                    //返回
+                    EventBus.getDefault().post(new MarkerEditEvent(MarkerEditEvent.BackState.CHANGED));
                     //退出
                     finish();
                 } else {
@@ -161,8 +164,9 @@ public class GaodeMarkerActivity extends GaodeBaseActivity {
                     return true;
                 }
                 markerItem.delete();
-                setResult(Constant.RESULT_CODE_OK);
+                EventBus.getDefault().post(new MarkerEditEvent(MarkerEditEvent.BackState.UNCHANGED));
                 finish();
+                break;
         }
         return super.onOptionsItemSelected(item);
     }
@@ -175,7 +179,7 @@ public class GaodeMarkerActivity extends GaodeBaseActivity {
         }
         //如果直接想返回---需要删除提前在数据库中保存的数据
         markerItem.delete();
-        setResult(Constant.RESULT_CODE_OK);
+        EventBus.getDefault().post(new MarkerEditEvent(MarkerEditEvent.BackState.UNCHANGED));
         super.onBackPressed();
     }
 }

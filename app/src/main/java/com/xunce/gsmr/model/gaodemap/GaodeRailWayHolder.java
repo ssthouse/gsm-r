@@ -39,13 +39,12 @@ public class GaodeRailWayHolder {
         lines = new ArrayList<>();
         texts = new ArrayList<>();
 
-        //TODO---先手动添加一些数据
-        circles.add(new Circle(new LatLng(30.51667, 114.31667), 20));
-        circles.add(new Circle(new LatLng(30.51667, 114.31667), 40));
-        circles.add(new Circle(new LatLng(30.51667, 114.31667), 60));
-        lines.add(new Line(new LatLng(30.51667, 114.31667), new LatLng(30.52667, 114.33667)));
-
-        texts.add(new Text(new LatLng(30.51667, 114.31667), 20, "哈哈哈哈哈哈哈"));
+        //先手动添加一些数据
+//        circles.add(new Circle(new LatLng(30.51667, 114.31667), 20));
+//        circles.add(new Circle(new LatLng(30.51667, 114.31667), 40));
+//        circles.add(new Circle(new LatLng(30.51667, 114.31667), 60));
+//        lines.add(new Line(new LatLng(30.51667, 114.31667), new LatLng(30.52667, 114.33667)));
+//        texts.add(new Text(new LatLng(30.51667, 114.31667), 20, "哈哈哈哈哈哈哈"));
     }
 
     /**
