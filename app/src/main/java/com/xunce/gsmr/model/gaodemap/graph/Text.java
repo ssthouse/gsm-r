@@ -90,7 +90,6 @@ public class Text extends BaseGraph {
     public void draw(AMap aMap) {
         if (text == null) {
             text = aMap.addText(textOptions);
-//            text.setVisible(false);
         }else{
             text.setVisible(true);
         }

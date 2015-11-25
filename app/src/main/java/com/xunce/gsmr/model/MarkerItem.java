@@ -17,8 +17,6 @@ import java.io.Serializable;
  */
 @Table(name = Constant.TABLE_MARKER_ITEM)
 public class MarkerItem extends Model implements Serializable {
-    private static final String TAG = "MarkerItem";
-
     /**
      * 工程名
      */
@@ -35,7 +33,7 @@ public class MarkerItem extends Model implements Serializable {
     @Column(name = "longitude")
     private double longitude;
     /**
-     * 照片路径___文件名
+     * 照片路径的文件名
      */
     @Column(name = "photoPathName")
     private String photoPathName;
@@ -54,6 +52,16 @@ public class MarkerItem extends Model implements Serializable {
      */
     @Column(name = "side_direction")
     private String sideDirection;
+    /**
+     * 距线路中心距离
+     */
+    @Column(name = "distance_to_rail")
+    private String distanceToRail;
+    /**
+     * 备注文本
+     */
+    @Column(name = "comment")
+    private String comment;
 
     /**
      * 传入经纬度的构造方法
@@ -239,5 +247,21 @@ public class MarkerItem extends Model implements Serializable {
 
     public void setSideDirection(String sideDirection) {
         this.sideDirection = sideDirection;
+    }
+
+    public String getDistanceToRail() {
+        return distanceToRail;
+    }
+
+    public void setDistanceToRail(String distanceToRail) {
+        this.distanceToRail = distanceToRail;
+    }
+
+    public String getComment() {
+        return comment;
+    }
+
+    public void setComment(String comment) {
+        this.comment = comment;
     }
 }

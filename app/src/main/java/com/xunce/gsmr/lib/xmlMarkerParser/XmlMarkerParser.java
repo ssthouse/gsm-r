@@ -119,26 +119,39 @@ public class XmlMarkerParser extends DefaultHandler {
     public void startElement(String uri, String localName, String qName, Attributes attributes) throws SAXException {
         super.startElement(uri, localName, qName, attributes);
         //进入一个Marker的时候___更新数据
-        if (localName.equals(XmlCons.DAVICE_TYPE)) {
-            markerItem = new MarkerItem();
-            markerItem.setDeviceType(attributes.getValue(XmlCons.ATTRIBUTE_VALUE));
-            return;
-        } else if (localName.equals(XmlCons.KILOMETER_MARK)) {
-            markerItem.setKilometerMark(attributes.getValue(XmlCons.ATTRIBUTE_VALUE));
-        } else if (localName.equals(XmlCons.SIDE_DIRECTION)) {
-            markerItem.setSideDirection(attributes.getValue(XmlCons.ATTRIBUTE_VALUE));
-        } else if (localName.equals(XmlCons.LATITUDE)) {
-            String value = attributes.getValue(XmlCons.ATTRIBUTE_VALUE);
-            if (value == null || value.isEmpty()) {
-                return;
+        switch (localName) {
+            case XmlCons.DEVICE_TYPE:
+                markerItem = new MarkerItem();
+                markerItem.setDeviceType(attributes.getValue(XmlCons.ATTRIBUTE_VALUE));
+                break;
+            case XmlCons.KILOMETER_MARK:
+                markerItem.setKilometerMark(attributes.getValue(XmlCons.ATTRIBUTE_VALUE));
+                break;
+            case XmlCons.SIDE_DIRECTION:
+                markerItem.setSideDirection(attributes.getValue(XmlCons.ATTRIBUTE_VALUE));
+                break;
+            case XmlCons.DISTANCE_TO_RAIL:
+                markerItem.setDistanceToRail(attributes.getValue(XmlCons.ATTRIBUTE_VALUE));
+                break;
+            case XmlCons.COMMENT:
+                markerItem.setComment(attributes.getValue(XmlCons.ATTRIBUTE_VALUE));
+                break;
+            case XmlCons.LATITUDE: {
+                String value = attributes.getValue(XmlCons.ATTRIBUTE_VALUE);
+                if (value == null || value.isEmpty()) {
+                    return;
+                }
+                markerItem.setLatitude(Double.parseDouble(value));
+                break;
             }
-            markerItem.setLatitude(Double.parseDouble(value));
-        } else if (localName.equals(XmlCons.LONGITUDE)) {
-            String value = attributes.getValue(XmlCons.ATTRIBUTE_VALUE);
-            if (value == null || value.isEmpty()) {
-                return;
+            case XmlCons.LONGITUDE: {
+                String value = attributes.getValue(XmlCons.ATTRIBUTE_VALUE);
+                if (value == null || value.isEmpty()) {
+                    return;
+                }
+                markerItem.setLongitude(Double.parseDouble(value));
+                break;
             }
-            markerItem.setLongitude(Double.parseDouble(value));
         }
     }
 
@@ -146,7 +159,7 @@ public class XmlMarkerParser extends DefaultHandler {
     public void endElement(String uri, String localName, String qName) throws SAXException {
         super.endElement(uri, localName, qName);
         //结束每一个Marker的节点时保存进List
-        if (localName.equals(XmlCons.DAVICE_TYPE)) {
+        if (localName.equals(XmlCons.DEVICE_TYPE)) {
             markerItemList.add(markerItem);
         }
     }
@@ -156,11 +169,13 @@ public class XmlMarkerParser extends DefaultHandler {
      */
     class XmlCons {
         //xml文件中的标签
-        public static final String DAVICE_TYPE = "devicetype";
+        public static final String DEVICE_TYPE = "devicetype";
         public static final String KILOMETER_MARK = "kmmark";
         public static final String SIDE_DIRECTION = "lateral";
-        public static final String LONGITUDE = "longtitude";
+        public static final String DISTANCE_TO_RAIL = "distanceToRail";
+        public static final String LONGITUDE = "longitude";
         public static final String LATITUDE = "latitude";
+        public static final String COMMENT = "comment";
         //xml文件中的属性
         public static final String ATTRIBUTE_VALUE = "value";
     }

@@ -387,7 +387,6 @@ public class GaodePrjEditActivity extends GaodeBaseActivity {
                 break;
             //加载kml文件
             case R.id.id_action_load_kml_file:
-                //TODO
                 FileHelper.showFileChooser(this, REQUEST_CODE_LOAD_KML_FILE);
                 break;
             //数据导出
@@ -494,6 +493,7 @@ public class GaodePrjEditActivity extends GaodeBaseActivity {
                         return;
                     }
                     KMLParser kmlParser = new KMLParser(path);
+                    kmlParser.draw(getaMap());
                 }
                 break;
             case REQUEST_CODE_ROUTE_ACTIVITY:
