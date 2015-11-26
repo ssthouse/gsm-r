@@ -68,7 +68,7 @@ dependencies {
     //fabButton
     compile 'com.github.clans:fab:1.5.4'
     //progressBar
-    compile 'com.github.rahatarmanahmed:circularprogressview:2.3.2'
+    compile 'com.github.rahatarmanahmed:circularprogressview:2.4.0'
     //event_bus
     compile 'de.greenrobot:eventbus:2.4.0'
     compile files('libs/Android_Map_2.5.1.20150827.jar')

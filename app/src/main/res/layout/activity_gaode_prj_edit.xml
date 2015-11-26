@@ -34,48 +34,38 @@
             android:text="选址"
             android:textSize="@dimen/text_size_button" />
 
+        <!--数字地图开关-->
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content">
-
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="48dp"
                 android:gravity="center"
                 android:text="数字地图" />
-
             <Switch
                 android:id="@+id/id_sw_digital_file"
                 android:layout_width="wrap_content"
                 android:layout_height="48dp"
                 android:textSize="@dimen/text_size_normal" />
-
-            <!--<Spinner-->
-                <!--android:layout_width="wrap_content"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:layout_gravity="center"-->
-                <!--android:entries="@array/array_digital_map_spinner" />-->
         </LinearLayout>
 
+        <!--xml开关-->
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content">
-
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="48dp"
                 android:gravity="center"
                 android:text="Xml文件" />
-
             <Switch
                 android:id="@+id/id_sw_xml_file"
                 android:layout_width="wrap_content"
                 android:layout_height="48dp"
                 android:gravity="center"
                 android:textSize="@dimen/text_size_button" />
-
         </LinearLayout>
-
     </LinearLayout>
 
     <!--下面的功能键-->
@@ -87,5 +77,8 @@
 
     <!--公里标输入框-->
     <include layout="@layout/view_position" />
+
+    <!--progressbar作为遮挡-->
+    <include layout="@layout/view_progress_block"/>
 
 </FrameLayout>

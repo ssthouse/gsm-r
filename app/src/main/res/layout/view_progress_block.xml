@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:visibility="gone"
+    android:id="@+id/id_pb_block"
+    android:background="#77bdbdbd"
+    android:orientation="vertical">
+
+    <com.github.rahatarmanahmed.cpv.CircularProgressView
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/progress_view"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        app:cpv_animAutostart="true"
+        app:cpv_indeterminate="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:textSize="16dp"
+        android:layout_height="wrap_content"
+        android:text="正在加载,请稍候..."/>
+</LinearLayout>

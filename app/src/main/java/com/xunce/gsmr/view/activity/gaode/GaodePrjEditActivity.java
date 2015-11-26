@@ -27,6 +27,7 @@ import com.xunce.gsmr.lib.xmlMarkerParser.XmlMarkerParser;
 import com.xunce.gsmr.model.MarkerItem;
 import com.xunce.gsmr.model.PrjItem;
 import com.xunce.gsmr.model.event.MarkerEditEvent;
+import com.xunce.gsmr.model.event.ProgressbarEvent;
 import com.xunce.gsmr.model.gaodemap.GaodeMapCons;
 import com.xunce.gsmr.util.FileHelper;
 import com.xunce.gsmr.util.view.ToastHelper;
@@ -79,14 +80,13 @@ public class GaodePrjEditActivity extends GaodeBaseActivity {
     private Switch swXmlFile;
     private boolean isXmlTextShowed = false;
     /**
-     * 公里标显示标志位a
+     * 控件
      */
+    private View pbBlock;
+    private RadioGroup rgMapMode;
+    //公里标显示标志位
     private View llPosition;
     private boolean isLlPositionShowed;
-    /**
-     * map_mode控件
-     */
-    private RadioGroup rgMapMode;
     /**
      * 初始选址文件解析器
      */
@@ -137,6 +137,8 @@ public class GaodePrjEditActivity extends GaodeBaseActivity {
      */
     private void initView() {
         ViewHelper.initActionBar(this, getSupportActionBar(), prjItem.getPrjName());
+        //progressbar控件
+        pbBlock = findViewById(R.id.id_pb_block);
         //初始化地图Mode控件
         initMapMode();
         //填充Marker
@@ -440,6 +442,18 @@ public class GaodePrjEditActivity extends GaodeBaseActivity {
         }
     }
 
+    /**
+     * progressbar是否显示的回调控制方法
+     * @param progressbarEvent
+     */
+    public void onEventMainThread(ProgressbarEvent progressbarEvent){
+        if(progressbarEvent.isShow()){
+            pbBlock.setVisibility(View.VISIBLE);
+        }else{
+            pbBlock.setVisibility(View.INVISIBLE);
+        }
+    }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         switch (requestCode) {
@@ -493,7 +507,6 @@ public class GaodePrjEditActivity extends GaodeBaseActivity {
                         return;
                     }
                     xmlParser = new XmlParser(this, path);
-                    ToastHelper.show(this, "xml文件加载成功!");
                 }
                 break;
             //加载kml文件

@@ -7,10 +7,12 @@ import android.os.AsyncTask;
 import android.os.Environment;
 
 import com.amap.api.maps.AMap;
+import com.xunce.gsmr.model.event.ProgressbarEvent;
 import com.xunce.gsmr.model.gaodemap.graph.Point;
 import com.xunce.gsmr.model.gaodemap.graph.Text;
 import com.xunce.gsmr.model.gaodemap.graph.Vector;
 import com.xunce.gsmr.util.gps.PositionUtil;
+import com.xunce.gsmr.util.view.ToastHelper;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -19,6 +21,7 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
+import de.greenrobot.event.EventBus;
 import timber.log.Timber;
 
 /**
@@ -58,6 +61,8 @@ public class DigitalMapHolder {
         this.dbPath = dbPath;
         this.context = context;
 
+        //启动线程前___显示progressbar
+        EventBus.getDefault().post(new ProgressbarEvent(true));
         //启动异步线程解析数据
         new AsyncTask<Void, Void, Void>() {
             @Override
@@ -106,6 +111,9 @@ public class DigitalMapHolder {
                 }
                 Timber.e( "我一共解释出来了这么多个VectorPoint的数据: " + vectorPointSum);
                 Timber.e("我一共解释出来了这么多个Text的数据: " + textList.size());
+                //运行完将progressbar隐藏
+                EventBus.getDefault().post(new ProgressbarEvent(false));
+                ToastHelper.show(context, "xml文件加载成功!");
             }
         }.execute();
     }

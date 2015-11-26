@@ -62,7 +62,7 @@ public class XmlParser extends DefaultHandler {
     public XmlParser(Context context, String xmlFilePath) {
         this.context = context;
         this.xmlFilePath = xmlFilePath;
-
+        //开一个新线程完成解析任务
         try {
             //获取解析器
             SAXParser saxParser = SAXParserFactory.newInstance().newSAXParser();
@@ -90,7 +90,6 @@ public class XmlParser extends DefaultHandler {
         }
         for (com.xunce.gsmr.model.gaodemap.graph.Vector vector : vectorList) {
             vector.draw(aMap);
-            //L.log(TAG, "我又画出了一个vector");
         }
     }
 
@@ -142,21 +141,6 @@ public class XmlParser extends DefaultHandler {
         }
     }
 
-    /**
-     * 销毁
-     */
-    public void destory() {
-        for (Line line : lineList) {
-            line.destory();
-        }
-        for (Text text : textList) {
-            text.hide();
-        }
-        for (com.xunce.gsmr.model.gaodemap.graph.Vector vector : vectorList) {
-            vector.hide();
-        }
-    }
-
     @Override
     public void startElement(String uri, String localName, String qName, Attributes attributes) throws SAXException {
         super.startElement(uri, localName, qName, attributes);
@@ -205,9 +189,6 @@ public class XmlParser extends DefaultHandler {
                         Double.parseDouble(attributes.getValue(Vector.latitude))));
             }
         }
-//        L.log(TAG, "uri:    " + uri
-//                + "\n" + "locaName:  " + localName
-//                + "\n" + "qname: " + qName);
     }
 
     @Override
@@ -229,15 +210,6 @@ public class XmlParser extends DefaultHandler {
     public void endDocument() throws SAXException {
         super.endDocument();
         Timber.e("我解析完毕了...");
-//        for (Text text : textList) {
-//            L.log(TAG, text.toString());
-//        }
-//        for (Line line : lineList) {
-//            L.log(TAG, line.toString());
-//        }
-//        for (com.xunce.gsmr.model.gaodemap.graph.Vector vector : vectorList) {
-//            L.log(TAG, "我的Point的Size是: " + vector.getPointList().size());
-//        }
     }
 
     class Element {
