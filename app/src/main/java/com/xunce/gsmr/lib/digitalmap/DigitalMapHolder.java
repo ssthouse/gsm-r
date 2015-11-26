@@ -30,8 +30,6 @@ public class DigitalMapHolder {
     private String dbPath;
     //context
     private Context context;
-    //高德地图
-    private AMap aMap;
 
     //高德地图的文字显示数据
     private List<Text> textList = new ArrayList<>();
@@ -43,36 +41,9 @@ public class DigitalMapHolder {
     private static DigitalMapHolder digitalMapHolder;
 
     /**
-     * 加载数字文件
-     *
-     * @param context
-     * @param dbPath
-     * @param aMap
-     */
-    public static void loadDigitalMapHolder(Context context, String dbPath, AMap aMap) {
-        //如果之前有加载过文件----清除内存
-        if (digitalMapHolder != null) {
-            digitalMapHolder.destory();
-        }
-        digitalMapHolder = new DigitalMapHolder(context, dbPath, aMap);
-    }
-
-    /**
-     * 获取DigitalHolder
-     *
-     * @return
-     */
-    public static DigitalMapHolder getDigitalMapHolder() {
-        if (digitalMapHolder != null) {
-            return digitalMapHolder;
-        }
-        return null;
-    }
-
-    /**
      * 是不是空的
      *
-     * @return
+     * @return 单例是否为空
      */
     public static boolean isEmpty() {
         return digitalMapHolder == null;
@@ -81,13 +52,13 @@ public class DigitalMapHolder {
     /**
      * 传入数据库地址的构造方法
      *
-     * @param dbPath
+     * @param dbPath 数据库文件路径
      */
-    private DigitalMapHolder(final Context context, final String dbPath, final AMap aMap) {
+    public DigitalMapHolder(final Context context, final String dbPath) {
         this.dbPath = dbPath;
         this.context = context;
-        this.aMap = aMap;
 
+        //启动异步线程解析数据
         new AsyncTask<Void, Void, Void>() {
             @Override
             protected Void doInBackground(Void... params) {
@@ -96,7 +67,6 @@ public class DigitalMapHolder {
                 //读取数据库里面所有的-----Text
                 Cursor cursor = database.rawQuery("SELECT * FROM TextPoint", null);
                 while (cursor.moveToNext()) {
-//                    L.log(TAG, cursor.getString(2) + " : " + cursor.getDouble(0) + " : " + cursor.getDouble(1));
                     Text text = new Text(PositionUtil.gps84_To_Gcj02(cursor.getDouble(1), cursor.getDouble(0)),
                             cursor.getString(2));
                     //提前初始化好数据
@@ -118,8 +88,6 @@ public class DigitalMapHolder {
                             //初始化Vector中的画图数据
                             vector.initPolylineOptions();
                         }
-                        //更新vector(传入名字---typeInMap)
-                        // vector = new Vector(cursorVector.getString(0), cursorVector.getString(1));
                         vector = new Vector(cursorVector.getString(0));
                         //L.log(TAG, "我新建了个Vector"+vector.getName());
                     }
@@ -145,7 +113,7 @@ public class DigitalMapHolder {
     /**
      * 画出所有--数字地图数据
      */
-    public void draw() {
+    public void draw(AMap aMap) {
         //画出文字信息
         for (Text text : textList) {
             text.draw(aMap);
@@ -160,7 +128,7 @@ public class DigitalMapHolder {
     /**
      * 画出数字地图---线
      */
-    public void drawLine() {
+    public void drawLine(AMap aMap) {
         //画出所有的Vector
         for (int i = 0; i < vectorList.size(); i++) {
             vectorList.get(i).draw(aMap);
@@ -171,7 +139,7 @@ public class DigitalMapHolder {
     /**
      * 画出数字地图---文字
      */
-    public void drawText() {
+    public void drawText(AMap aMap) {
         //画出文字信息
         for (Text text : textList) {
             text.draw(aMap);

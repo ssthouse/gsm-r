@@ -8,6 +8,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.AnimationUtils;
+import android.widget.CompoundButton;
 import android.widget.RadioGroup;
 import android.widget.Switch;
 import android.widget.Toast;
@@ -63,33 +64,41 @@ public class GaodePrjEditActivity extends GaodeBaseActivity {
      * 用于点击两次退出
      */
     private long mExitTime;
-
     /**
      * 编辑的PrjItem
      */
     private PrjItem prjItem;
-
     /**
      * 数字地图的开关
      */
     private Switch swDigitalFile;
     private boolean isDigitalMapTextShowed = false;
-
+    /**
+     * cad的xml文件开关
+     */
+    private Switch swXmlFile;
+    private boolean isXmlTextShowed = false;
     /**
      * 公里标显示标志位a
      */
     private View llPosition;
     private boolean isLlPositionShowed;
-
     /**
      * map_mode控件
      */
-    private RadioGroup rg;
-
+    private RadioGroup rgMapMode;
     /**
      * 初始选址文件解析器
      */
     private XmlMarkerParser xmlMarkerParser;
+    /**
+     * xml数据文件的解析工具
+     */
+    private XmlParser xmlParser;
+    /**
+     * 数字地图文件解析器
+     */
+    private DigitalMapHolder digitalMapHolder;
 
     /**
      * 启动Activity
@@ -136,28 +145,46 @@ public class GaodePrjEditActivity extends GaodeBaseActivity {
         initMarkerClick();
         //初始化--数字地图的Switch
         swDigitalFile = (Switch) findViewById(R.id.id_sw_digital_file);
-        swDigitalFile.setOnClickListener(new View.OnClickListener() {
+        swDigitalFile.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
-            public void onClick(View v) {
-                Switch switchView = (Switch) v;
-                //如果是空的---显示先加载文件
-                //如果数字地图文件还没有加载
-                if (DigitalMapHolder.isEmpty()) {
-                    ToastHelper.show(GaodePrjEditActivity.this, "请先加载数字地图文件");
-                    switchView.setChecked(false);
-                } else {
-                    if (!switchView.isChecked()) {
-                        switchView.setChecked(false);
-                        DigitalMapHolder.getDigitalMapHolder().hide();
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                //如果想打开
+                if (isChecked) {
+                    if (digitalMapHolder == null) {
+                        ToastHelper.show(GaodePrjEditActivity.this, "请先加载数字地图文件");
                     } else {
                         CameraPosition cameraPosition = getaMap().getCameraPosition();
                         if (cameraPosition.zoom > GaodeMapCons.zoomLevel) {
-                            DigitalMapHolder.getDigitalMapHolder().draw();
-                        } else if (cameraPosition.zoom < GaodeMapCons.zoomLevel) {
-                            DigitalMapHolder.getDigitalMapHolder().drawLine();
+                            digitalMapHolder.draw(getaMap());
+                        } else {
+                            digitalMapHolder.drawLine(getaMap());
                         }
-                        switchView.setChecked(true);
                     }
+                } else {
+                    if (digitalMapHolder != null) {
+                        digitalMapHolder.hide();
+                    }
+                }
+            }
+        });
+        //初始化--xml文件的Switch
+        swXmlFile = (Switch) findViewById(R.id.id_sw_xml_file);
+        swXmlFile.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                //如果是想打开--并且没有加载文件
+                if (isChecked && xmlParser == null) {
+                    ToastHelper.show(GaodePrjEditActivity.this, "请先加载Xml文件");
+                    buttonView.setChecked(false);
+                } else if (isChecked && xmlParser != null) {
+                    CameraPosition cameraPosition = getaMap().getCameraPosition();
+                    if (cameraPosition.zoom > GaodeMapCons.zoomLevel) {
+                        xmlParser.draw(getaMap());
+                    } else {
+                        xmlParser.drawLine(getaMap());
+                    }
+                } else if (!isChecked) {
+                    xmlParser.hide();
                 }
             }
         });
@@ -170,41 +197,31 @@ public class GaodePrjEditActivity extends GaodeBaseActivity {
             @Override
             public void onCameraChangeFinish(CameraPosition cameraPosition) {
                 //数字地图已经加载 且 switch为开
-                if (!DigitalMapHolder.isEmpty() && swDigitalFile.isChecked()) {
+                if (digitalMapHolder != null && swDigitalFile.isChecked()) {
                     //如果放大到16以上
                     if (cameraPosition.zoom > GaodeMapCons.zoomLevel) {
                         //Timber.e("放大到16以上了");
                         if (!isDigitalMapTextShowed) {
-                            DigitalMapHolder.getDigitalMapHolder().drawText();
+                            digitalMapHolder.drawText(getaMap());
                             isDigitalMapTextShowed = true;
                         }
                     } else if (cameraPosition.zoom < GaodeMapCons.zoomLevel) {
                         //Timber.e("缩小到16以下了");
-                        DigitalMapHolder.getDigitalMapHolder().hideText();
+                        digitalMapHolder.hideText();
                         isDigitalMapTextShowed = false;
                     }
                 }
-            }
-        });
-        //初始化--xml文件的Switch
-        Switch swXmlFile = (Switch) findViewById(R.id.id_sw_xml_file);
-        swXmlFile.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Switch switchView = (Switch) v;
-                //如果是空的---显示先加载文件
-                if (XmlParser.isXmlParserEmpty()) {
-                    ToastHelper.show(GaodePrjEditActivity.this, "请先加载Xml文件");
-                    switchView.setChecked(false);
-                } else {
-                    if (!switchView.isChecked()) {
-                        Timber.e("我隐藏了");
-                        switchView.setChecked(false);
-                        XmlParser.getXmlParser().hide();
-                    } else {
-                        Timber.e("我显示了");
-                        switchView.setChecked(true);
-                        XmlParser.getXmlParser().draw(getaMap());
+                //如果 xml文件已经加载 且 switch为开
+                if (xmlParser != null && swXmlFile.isChecked()) {
+                    //如果放大到16以上
+                    if (cameraPosition.zoom > GaodeMapCons.zoomLevel && !isXmlTextShowed) {
+                        xmlParser.drawText(getaMap());
+                        isXmlTextShowed = true;
+                        Timber.e(">>>> 16了");
+                    } else if (cameraPosition.zoom < GaodeMapCons.zoomLevel && isXmlTextShowed) {
+                        Timber.e("缩小到16以下了");
+                        xmlParser.hideText();
+                        isXmlTextShowed = false;
                     }
                 }
             }
@@ -283,20 +300,20 @@ public class GaodePrjEditActivity extends GaodeBaseActivity {
         findViewById(R.id.id_ib_open_map_mode).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (rg.getVisibility() == View.VISIBLE) {
-                    rg.startAnimation(AnimationUtils.loadAnimation(GaodePrjEditActivity.this,
+                if (rgMapMode.getVisibility() == View.VISIBLE) {
+                    rgMapMode.startAnimation(AnimationUtils.loadAnimation(GaodePrjEditActivity.this,
                             R.anim.slide_right));
-                    rg.setVisibility(View.INVISIBLE);
+                    rgMapMode.setVisibility(View.INVISIBLE);
                 } else {
-                    rg.startAnimation(AnimationUtils.loadAnimation(GaodePrjEditActivity.this,
+                    rgMapMode.startAnimation(AnimationUtils.loadAnimation(GaodePrjEditActivity.this,
                             R.anim.slide_left));
-                    rg.setVisibility(View.VISIBLE);
+                    rgMapMode.setVisibility(View.VISIBLE);
                 }
             }
         });
         //切换map_mode 的选项
-        rg = (RadioGroup) findViewById(R.id.id_rg_map_mode);
-        rg.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+        rgMapMode = (RadioGroup) findViewById(R.id.id_rg_map_mode);
+        rgMapMode.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
                 switch (checkedId) {
@@ -413,8 +430,8 @@ public class GaodePrjEditActivity extends GaodeBaseActivity {
     /**
      * prjEditActivity的回调方法
      */
-    public void onEventMainThread(MarkerEditEvent markerEditEvent){
-        switch (markerEditEvent.getBackState()){
+    public void onEventMainThread(MarkerEditEvent markerEditEvent) {
+        switch (markerEditEvent.getBackState()) {
             case CHANGED:
                 loadMarker(prjItem);
                 break;
@@ -460,9 +477,8 @@ public class GaodePrjEditActivity extends GaodeBaseActivity {
                         return;
                     }
                     //如果获取路径成功就----加载digitalMapHolder
-                    DigitalMapHolder.loadDigitalMapHolder(this, path, getaMap());
+                    digitalMapHolder = new DigitalMapHolder(this, path);
                     ToastHelper.show(this, "数字地图文件加载成功!");
-                    Timber.e(path);
                 }
                 break;
             //加载xml文件
@@ -476,8 +492,7 @@ public class GaodePrjEditActivity extends GaodeBaseActivity {
                         ToastHelper.show(this, "您选取的XML文件格式有误!");
                         return;
                     }
-                    //初始化xmlParser
-                    XmlParser.loadXmlParser(this, path);
+                    xmlParser = new XmlParser(this, path);
                     ToastHelper.show(this, "xml文件加载成功!");
                 }
                 break;

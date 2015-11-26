@@ -30,7 +30,6 @@ import timber.log.Timber;
 /**
  * CAD导出的xml文件的解析
  * 解析出来的数据为:
- * <p/>
  * Created by ssthouse on 2015/10/30.
  */
 public class XmlParser extends DefaultHandler {
@@ -51,43 +50,16 @@ public class XmlParser extends DefaultHandler {
     private List<com.xunce.gsmr.model.gaodemap.graph.Vector> vectorList = new ArrayList<>();
 
     /**
-     * 唯一的XmlParser单例
-     */
-    private static XmlParser xmlParser;
-    /**
      * 当前解析的xml文件的路径
      */
     private String xmlFilePath;
-
-    /**
-     * @param context
-     * @return
-     */
-    public static XmlParser loadXmlParser(Context context, String xmlFilePath) {
-        //如果之前有加载文件---去除内存
-        if (xmlParser != null) {
-            xmlParser.destory();
-        }
-        //如果xmlParser是空的---或者路径改了---就创建新的xmlParser
-        xmlParser = new XmlParser(context, xmlFilePath);
-        return xmlParser;
-    }
-
-    /**
-     * 获取XmlParser
-     *
-     * @return
-     */
-    public static XmlParser getXmlParser() {
-        return xmlParser;
-    }
 
     /**
      * 构造方法
      *
      * @param context
      */
-    private XmlParser(Context context, String xmlFilePath) {
+    public XmlParser(Context context, String xmlFilePath) {
         this.context = context;
         this.xmlFilePath = xmlFilePath;
 
@@ -103,19 +75,6 @@ public class XmlParser extends DefaultHandler {
         } catch (ParserConfigurationException | SAXException | IOException e) {
             e.printStackTrace();
             Timber.e(Log.getStackTraceString(e));
-        }
-    }
-
-    /**
-     * XmlParser是不是空的
-     *
-     * @return
-     */
-    public static boolean isXmlParserEmpty() {
-        if (xmlParser == null) {
-            return true;
-        } else {
-            return false;
         }
     }
 
@@ -136,6 +95,30 @@ public class XmlParser extends DefaultHandler {
     }
 
     /**
+     * 仅仅画出文字
+     * @param aMap
+     */
+    public void drawText(AMap aMap){
+        for (Text text : textList) {
+            text.draw(aMap);
+        }
+    }
+
+    /**
+     * 仅仅画出线段
+     * @param aMap
+     */
+    public void drawLine(AMap aMap){
+        for (Line line : lineList) {
+            line.draw(aMap);
+        }
+        for (com.xunce.gsmr.model.gaodemap.graph.Vector vector : vectorList) {
+            vector.draw(aMap);
+            //L.log(TAG, "我又画出了一个vector");
+        }
+    }
+
+    /**
      * 将画好的图像隐藏
      */
     public void hide() {
@@ -147,6 +130,15 @@ public class XmlParser extends DefaultHandler {
         }
         for (com.xunce.gsmr.model.gaodemap.graph.Vector vector : vectorList) {
             vector.hide();
+        }
+    }
+
+    /**
+     * 隐藏文字
+     */
+    public void hideText(){
+        for (Text text : textList) {
+            text.hide();
         }
     }
 
