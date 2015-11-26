@@ -1,14 +1,17 @@
 package com.xunce.gsmr.lib.cadparser;
 
 import android.content.Context;
+import android.os.AsyncTask;
 import android.util.Log;
 
 import com.amap.api.maps.AMap;
 import com.amap.api.maps.model.LatLng;
+import com.xunce.gsmr.model.event.ProgressbarEvent;
 import com.xunce.gsmr.model.gaodemap.graph.Line;
 import com.xunce.gsmr.model.gaodemap.graph.Point;
 import com.xunce.gsmr.model.gaodemap.graph.Text;
 import com.xunce.gsmr.util.gps.PositionUtil;
+import com.xunce.gsmr.util.view.ToastHelper;
 
 import org.xml.sax.Attributes;
 import org.xml.sax.InputSource;
@@ -25,6 +28,7 @@ import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 
+import de.greenrobot.event.EventBus;
 import timber.log.Timber;
 
 /**
@@ -59,23 +63,40 @@ public class XmlParser extends DefaultHandler {
      *
      * @param context
      */
-    public XmlParser(Context context, String xmlFilePath) {
+    public XmlParser(final Context context, final String xmlFilePath) {
         this.context = context;
         this.xmlFilePath = xmlFilePath;
+        //开启线程执行前显示进度条
+        EventBus.getDefault().post(new ProgressbarEvent(true));
+
         //开一个新线程完成解析任务
-        try {
-            //获取解析器
-            SAXParser saxParser = SAXParserFactory.newInstance().newSAXParser();
-            XMLReader xmlReader = saxParser.getXMLReader();
-            //设置监听器
-            xmlReader.setContentHandler(this);
-            xmlReader.setErrorHandler(this);
-            //开始解析
-            xmlReader.parse(new InputSource(new FileInputStream(xmlFilePath)));
-        } catch (ParserConfigurationException | SAXException | IOException e) {
-            e.printStackTrace();
-            Timber.e(Log.getStackTraceString(e));
-        }
+        new AsyncTask<Void, Void, Void>(){
+
+            @Override
+            protected Void doInBackground(Void... params) {
+                try {
+                    //获取解析器
+                    SAXParser saxParser = SAXParserFactory.newInstance().newSAXParser();
+                    XMLReader xmlReader = saxParser.getXMLReader();
+                    //设置监听器
+                    xmlReader.setContentHandler(XmlParser.this);
+                    xmlReader.setErrorHandler(XmlParser.this);
+                    //开始解析
+                    xmlReader.parse(new InputSource(new FileInputStream(xmlFilePath)));
+                } catch (ParserConfigurationException | SAXException | IOException e) {
+                    e.printStackTrace();
+                    Timber.e(Log.getStackTraceString(e));
+                }
+                return null;
+            }
+
+            @Override
+            protected void onPostExecute(Void aVoid) {
+                super.onPostExecute(aVoid);
+                EventBus.getDefault().post(new ProgressbarEvent(false));
+                ToastHelper.show(context, "Xml文件加载完成");
+            }
+        }.execute();
     }
 
     /**
@@ -113,7 +134,6 @@ public class XmlParser extends DefaultHandler {
         }
         for (com.xunce.gsmr.model.gaodemap.graph.Vector vector : vectorList) {
             vector.draw(aMap);
-            //L.log(TAG, "我又画出了一个vector");
         }
     }
 
