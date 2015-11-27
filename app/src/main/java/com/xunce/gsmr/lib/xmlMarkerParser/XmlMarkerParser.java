@@ -3,6 +3,7 @@ package com.xunce.gsmr.lib.xmlMarkerParser;
 import android.content.Context;
 import android.util.Log;
 
+import com.xunce.gsmr.lib.cadparser.KilometerMarkHolder;
 import com.xunce.gsmr.model.MarkerItem;
 import com.xunce.gsmr.util.view.ToastHelper;
 
@@ -36,13 +37,6 @@ public class XmlMarkerParser extends DefaultHandler {
      * 上下文
      */
     private Context context;
-
-    /**
-     * 初始化___填入文件路径
-     */
-    public void initXmlMarkerParser(String path) {
-        this.filePath = path;
-    }
 
     /**
      * 构造方法
@@ -85,14 +79,29 @@ public class XmlMarkerParser extends DefaultHandler {
     /**
      * 设置解析出来的MarkerItem的prjName
      */
-    public void saveMarkerItem(String prjName) {
-        if (markerItemList.size() > 0) {
-            for (MarkerItem markerItem : markerItemList) {
+    public void saveMarkerItem(String prjName, KilometerMarkHolder kilometerMarkHolder) {
+        //TODO--首先需要看数据能不能计算出经纬度--不能的就不添加
+        int addCount=0;
+        int failCount = 0;
+        for (MarkerItem markerItem : markerItemList) {
+            //判断数据是否可用
+            if (kilometerMarkHolder.isDataValid(markerItem.getKilometerMark(),
+                    markerItem.getSideDirection(), markerItem.getDistanceToRail())) {
+                //计算经纬度
+                double position[] = kilometerMarkHolder.getPosition(markerItem.getKilometerMark(),
+                        markerItem.getSideDirection(), markerItem.getDistanceToRail());
+                markerItem.setLongitude(position[0]);
+                markerItem.setLatitude(position[1]);
                 markerItem.setPrjName(prjName);
                 markerItem.save();
+                //计数加一
+                addCount++;
+            }else{
+                failCount++;
             }
-            ToastHelper.show(context, markerItemList.size()+"个标记点添加到当前工程中");
         }
+        ToastHelper.show(context, addCount+ "个标记点添加到当前工程中");
+        ToastHelper.show(context, failCount+ "个标记点因格式不符无法添加");
     }
 
     @Override

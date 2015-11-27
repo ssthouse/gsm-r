@@ -26,6 +26,7 @@ import com.xunce.gsmr.lib.kmlParser.KMLParser;
 import com.xunce.gsmr.lib.xmlMarkerParser.XmlMarkerParser;
 import com.xunce.gsmr.model.MarkerItem;
 import com.xunce.gsmr.model.PrjItem;
+import com.xunce.gsmr.model.event.ExcelXmlDataEvent;
 import com.xunce.gsmr.model.event.MarkerEditEvent;
 import com.xunce.gsmr.model.event.ProgressbarEvent;
 import com.xunce.gsmr.model.gaodemap.GaodeMapCons;
@@ -69,35 +70,32 @@ public class GaodePrjEditActivity extends GaodeBaseActivity {
      * 编辑的PrjItem
      */
     private PrjItem prjItem;
-    /**
-     * 数字地图的开关
-     */
-    private Switch swDigitalFile;
-    private boolean isDigitalMapTextShowed = false;
-    /**
-     * cad的xml文件开关
-     */
-    private Switch swXmlFile;
-    private boolean isXmlTextShowed = false;
+
     /**
      * 控件
      */
+    //进度条
     private View pbBlock;
+    //地图模式选择
     private RadioGroup rgMapMode;
     //公里标显示标志位
     private View llPosition;
     private boolean isLlPositionShowed;
+    //数字地图的开关
+    private Switch swDigitalFile;
+    private boolean isDigitalMapTextShowed = false;
+    //cad的xml文件开关
+    private Switch swXmlFile;
+    private boolean isXmlTextShowed = false;
+
     /**
-     * 初始选址文件解析器
+     * 数据解析器
      */
+     //初始选址文件解析器
     private XmlMarkerParser xmlMarkerParser;
-    /**
-     * xml数据文件的解析工具
-     */
+    //xml数据文件的解析工具
     private XmlParser xmlParser;
-    /**
-     * 数字地图文件解析器
-     */
+    //数字地图文件解析器
     private DigitalMapHolder digitalMapHolder;
 
     /**
@@ -454,6 +452,14 @@ public class GaodePrjEditActivity extends GaodeBaseActivity {
         }
     }
 
+    public void onEventMainThread(ExcelXmlDataEvent excelXmlDataEvent){
+        if(excelXmlDataEvent.isParseSuccess()){
+            ToastHelper.show(this, "xml中预设标记点数据添加成功");
+        }else{
+            ToastHelper.show(this, "xml中预设标记点数据添加失败, 请检查excel文件格式是否正确");
+        }
+    }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         switch (requestCode) {
@@ -492,7 +498,6 @@ public class GaodePrjEditActivity extends GaodeBaseActivity {
                     }
                     //如果获取路径成功就----加载digitalMapHolder
                     digitalMapHolder = new DigitalMapHolder(this, path);
-                    ToastHelper.show(this, "数字地图文件加载成功!");
                 }
                 break;
             //加载xml文件

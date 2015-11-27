@@ -59,6 +59,11 @@ public class XmlParser extends DefaultHandler {
     private String xmlFilePath;
 
     /**
+     * 公里标控制器
+     */
+    private KilometerMarkHolder kilometerMarkHolder = new KilometerMarkHolder();
+
+    /**
      * 构造方法
      *
      * @param context
@@ -66,11 +71,18 @@ public class XmlParser extends DefaultHandler {
     public XmlParser(final Context context, final String xmlFilePath) {
         this.context = context;
         this.xmlFilePath = xmlFilePath;
+        //开始解析xml文件
+        parse();
+    }
+
+    /**
+     * 开始解析xml文件
+     */
+    private void parse() {
         //开启线程执行前显示进度条
         EventBus.getDefault().post(new ProgressbarEvent(true));
-
         //开一个新线程完成解析任务
-        new AsyncTask<Void, Void, Void>(){
+        new AsyncTask<Void, Void, Void>() {
 
             @Override
             protected Void doInBackground(Void... params) {
@@ -116,9 +128,10 @@ public class XmlParser extends DefaultHandler {
 
     /**
      * 仅仅画出文字
+     *
      * @param aMap
      */
-    public void drawText(AMap aMap){
+    public void drawText(AMap aMap) {
         for (Text text : textList) {
             text.draw(aMap);
         }
@@ -126,9 +139,10 @@ public class XmlParser extends DefaultHandler {
 
     /**
      * 仅仅画出线段
+     *
      * @param aMap
      */
-    public void drawLine(AMap aMap){
+    public void drawLine(AMap aMap) {
         for (Line line : lineList) {
             line.draw(aMap);
         }
@@ -155,7 +169,7 @@ public class XmlParser extends DefaultHandler {
     /**
      * 隐藏文字
      */
-    public void hideText(){
+    public void hideText() {
         for (Text text : textList) {
             text.hide();
         }
@@ -173,10 +187,15 @@ public class XmlParser extends DefaultHandler {
             line = new Line(latLngStart, latLngEnd);
             lineList.add(line);
         } else if (Element.TEXT.equals(localName)) {
-            LatLng latLng = PositionUtil.gps84_To_Gcj02(Double.parseDouble(attributes.getValue(TextElement.latitude)),
-                    Double.parseDouble(attributes.getValue(TextElement.longitude)));
-            text = new Text(latLng, attributes.getValue(TextElement.value));
+            double longitude = Double.parseDouble(attributes.getValue(TextElement.latitude));
+            double latitude = Double.parseDouble(attributes.getValue(TextElement.longitude));
+            LatLng latLng = PositionUtil.gps84_To_Gcj02(longitude, latitude);
+            String content = attributes.getValue(TextElement.value);
+            text = new Text(latLng, content);
             textList.add(text);
+            //TODO---文字需要判断是不是公里标(是的话需要加入KilometerMarkHolder中)
+            KilometerMark kilometerMark = KilometerMark.getKilometerMark(longitude, latitude, content);
+            kilometerMarkHolder.addKilometerMark(kilometerMark);
         } else if (Element.P2DPOLY.equals(localName)) {
             //判断order是0的话---要把前面的数据放进去
             int order = Integer.parseInt(attributes.getValue(Vector.order));
@@ -190,13 +209,6 @@ public class XmlParser extends DefaultHandler {
                         Double.parseDouble(attributes.getValue(Vector.latitude))));
             }
         } else if (Element.POLY.equals(localName)) {
-//            //获取的是高德地图的latlng
-//            LatLng latLngStart = PositionUtil.gps84_To_Gcj02(Double.parseDouble(attributes.getValue(LineElement.latStart)),
-//                    Double.parseDouble(attributes.getValue(LineElement.longStart)));
-//            LatLng latLngEnd = PositionUtil.gps84_To_Gcj02(Double.parseDouble(attributes.getValue(LineElement.latEnd)),
-//                    Double.parseDouble(attributes.getValue(LineElement.longEnd)));
-//            line = new Line(latLngStart, latLngEnd);
-//            lineList.add(line);
             //判断order是0的话---要把前面的数据放进去
             int order = Integer.parseInt(attributes.getValue(Vector.order));
             if (order == 0) {
@@ -230,6 +242,7 @@ public class XmlParser extends DefaultHandler {
     public void endDocument() throws SAXException {
         super.endDocument();
         Timber.e("我解析完毕了...");
+        Timber.e(kilometerMarkHolder.toString());
     }
 
     class Element {
