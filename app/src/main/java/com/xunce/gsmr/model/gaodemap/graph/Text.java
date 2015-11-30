@@ -19,7 +19,7 @@ public class Text extends BaseGraph {
      */
     private static int textColor = 0xFFFF00FF;
     private static int textBgColor = 0x00FFFFFF;
-    private static int textSize = 12;
+    private static int textSize = 14;
 
     /**
      * 文字参数

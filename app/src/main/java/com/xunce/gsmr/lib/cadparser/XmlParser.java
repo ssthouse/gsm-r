@@ -187,12 +187,13 @@ public class XmlParser extends DefaultHandler {
             line = new Line(latLngStart, latLngEnd);
             lineList.add(line);
         } else if (Element.TEXT.equals(localName)) {
-            double longitude = Double.parseDouble(attributes.getValue(TextElement.latitude));
-            double latitude = Double.parseDouble(attributes.getValue(TextElement.longitude));
-            LatLng latLng = PositionUtil.gps84_To_Gcj02(longitude, latitude);
+            double latitude = Double.parseDouble(attributes.getValue(TextElement.latitude));
+            double longitude = Double.parseDouble(attributes.getValue(TextElement.longitude));
+            LatLng latLng = PositionUtil.gps84_To_Gcj02(latitude, longitude);
             String content = attributes.getValue(TextElement.value);
             text = new Text(latLng, content);
             textList.add(text);
+            Timber.e("找到一个文字标签：\t" + content);
             //TODO---文字需要判断是不是公里标(是的话需要加入KilometerMarkHolder中)
             KilometerMark kilometerMark = KilometerMark.getKilometerMark(longitude, latitude, content);
             kilometerMarkHolder.addKilometerMark(kilometerMark);
@@ -241,6 +242,9 @@ public class XmlParser extends DefaultHandler {
     @Override
     public void endDocument() throws SAXException {
         super.endDocument();
+        //解析完毕后---将获得的公里标List进行排序
+        kilometerMarkHolder.sort();
+        //打印查看公里标数据
         Timber.e("我解析完毕了...");
         Timber.e(kilometerMarkHolder.toString());
     }
@@ -287,5 +291,13 @@ public class XmlParser extends DefaultHandler {
 
     public void setXmlFilePath(String xmlFilePath) {
         this.xmlFilePath = xmlFilePath;
+    }
+
+    public KilometerMarkHolder getKilometerMarkHolder() {
+        return kilometerMarkHolder;
+    }
+
+    public void setKilometerMarkHolder(KilometerMarkHolder kilometerMarkHolder) {
+        this.kilometerMarkHolder = kilometerMarkHolder;
     }
 }

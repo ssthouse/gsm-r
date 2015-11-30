@@ -80,28 +80,34 @@ public class XmlMarkerParser extends DefaultHandler {
      * 设置解析出来的MarkerItem的prjName
      */
     public void saveMarkerItem(String prjName, KilometerMarkHolder kilometerMarkHolder) {
+        //必须先加载好了Xml文件
+        if (kilometerMarkHolder == null) {
+            ToastHelper.show(context, "请先加载cad文件（.xml）");
+            return;
+        }
         //TODO--首先需要看数据能不能计算出经纬度--不能的就不添加
-        int addCount=0;
+        int addCount = 0;
         int failCount = 0;
         for (MarkerItem markerItem : markerItemList) {
             //判断数据是否可用
             if (kilometerMarkHolder.isDataValid(markerItem.getKilometerMark(),
                     markerItem.getSideDirection(), markerItem.getDistanceToRail())) {
-                //计算经纬度
+                //计算经纬度___第一个是纬度___第二个是经度
                 double position[] = kilometerMarkHolder.getPosition(markerItem.getKilometerMark(),
                         markerItem.getSideDirection(), markerItem.getDistanceToRail());
-                markerItem.setLongitude(position[0]);
-                markerItem.setLatitude(position[1]);
+                markerItem.setLongitude(position[1]);
+                markerItem.setLatitude(position[0]);
                 markerItem.setPrjName(prjName);
+                //TODO---暂时只做测试---不要真的保存进去(后面应该还要监测是不是有重复的)
                 markerItem.save();
                 //计数加一
                 addCount++;
-            }else{
+            } else {
                 failCount++;
             }
         }
-        ToastHelper.show(context, addCount+ "个标记点添加到当前工程中");
-        ToastHelper.show(context, failCount+ "个标记点因格式不符无法添加");
+        ToastHelper.show(context, addCount + "个标记点添加到当前工程中");
+        ToastHelper.show(context, failCount + "个标记点因格式不符无法添加");
     }
 
     @Override

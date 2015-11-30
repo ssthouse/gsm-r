@@ -31,6 +31,7 @@ import com.xunce.gsmr.model.event.MarkerEditEvent;
 import com.xunce.gsmr.model.event.ProgressbarEvent;
 import com.xunce.gsmr.model.gaodemap.GaodeMapCons;
 import com.xunce.gsmr.util.FileHelper;
+import com.xunce.gsmr.util.gps.LonLatToUTMXY;
 import com.xunce.gsmr.util.view.ToastHelper;
 import com.xunce.gsmr.util.view.ViewHelper;
 import com.xunce.gsmr.view.activity.PicGridActivity;
@@ -91,7 +92,7 @@ public class GaodePrjEditActivity extends GaodeBaseActivity {
     /**
      * 数据解析器
      */
-     //初始选址文件解析器
+    //初始选址文件解析器
     private XmlMarkerParser xmlMarkerParser;
     //xml数据文件的解析工具
     private XmlParser xmlParser;
@@ -128,6 +129,10 @@ public class GaodePrjEditActivity extends GaodeBaseActivity {
 
         //初始化View
         initView();
+
+        //TODO---测试代码
+        double data[] = LonLatToUTMXY.LatLonToUTM(29.75282575519019, 115.40374717759676);
+        Timber.e(data[0] + "\t" + data[1] + "\t" + data[2]);
     }
 
     /**
@@ -442,20 +447,21 @@ public class GaodePrjEditActivity extends GaodeBaseActivity {
 
     /**
      * progressbar是否显示的回调控制方法
+     *
      * @param progressbarEvent
      */
-    public void onEventMainThread(ProgressbarEvent progressbarEvent){
-        if(progressbarEvent.isShow()){
+    public void onEventMainThread(ProgressbarEvent progressbarEvent) {
+        if (progressbarEvent.isShow()) {
             pbBlock.setVisibility(View.VISIBLE);
-        }else{
+        } else {
             pbBlock.setVisibility(View.INVISIBLE);
         }
     }
 
-    public void onEventMainThread(ExcelXmlDataEvent excelXmlDataEvent){
-        if(excelXmlDataEvent.isParseSuccess()){
+    public void onEventMainThread(ExcelXmlDataEvent excelXmlDataEvent) {
+        if (excelXmlDataEvent.isParseSuccess()) {
             ToastHelper.show(this, "xml中预设标记点数据添加成功");
-        }else{
+        } else {
             ToastHelper.show(this, "xml中预设标记点数据添加失败, 请检查excel文件格式是否正确");
         }
     }
@@ -476,7 +482,7 @@ public class GaodePrjEditActivity extends GaodeBaseActivity {
                     xmlMarkerParser = new XmlMarkerParser(this, filePath);
                     xmlMarkerParser.parse();
                     //将数据增加到当前工程中去(给每一个Marker添加prjName---然后save)
-                    xmlMarkerParser.saveMarkerItem(prjItem.getPrjName());
+                    xmlMarkerParser.saveMarkerItem(prjItem.getPrjName(), xmlParser.getKilometerMarkHolder());
                     //重画界面的Marker
                     loadMarker(prjItem);
                 }
