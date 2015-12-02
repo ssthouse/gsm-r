@@ -10,11 +10,14 @@ import android.view.MenuItem;
 import android.widget.ListView;
 
 import com.xunce.gsmr.R;
+import com.xunce.gsmr.model.event.MarkerIconChangeEvent;
 import com.xunce.gsmr.util.preference.PreferenceHelper;
 import com.xunce.gsmr.util.view.ViewHelper;
 import com.xunce.gsmr.view.adapter.MarkerIconListAdapter;
 
 import java.util.Map;
+
+import de.greenrobot.event.EventBus;
 
 /**
  * 标记点图标设置的Activity
@@ -67,6 +70,8 @@ public class MarkerIconSetActivity extends AppCompatActivity {
             case R.id.id_action_save_change:
                 Map<String, String> mapData = adapter.getEditedMarkerIconMap();
                 PreferenceHelper.getInstance(this).setMarkerIconMap(mapData);
+                //提醒PrjEditActivity更新view
+                EventBus.getDefault().post(new MarkerIconChangeEvent(true));
                 //保存修改后---退出activity
                 finish();
                 break;

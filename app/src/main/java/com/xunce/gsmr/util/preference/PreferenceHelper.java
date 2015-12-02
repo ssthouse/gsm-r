@@ -5,7 +5,9 @@ import android.content.SharedPreferences;
 
 import com.xunce.gsmr.model.MarkerIconCons;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -235,6 +237,24 @@ public class PreferenceHelper {
      */
     public void setMarkerIconMap(Map<String, String> map) {
         SharedPreferences.Editor editor = sharedPreferences.edit();
+
+        //删除之前的数据
+        int size = sharedPreferences.getInt(KEY_MARKER_ICON_SIZE, 0);
+        List<String> deviceTypeNames = new ArrayList<>();
+        for (int i = 0; i < size; i++) {
+            String name = sharedPreferences.getString(KEY_MARKER_ICON_NAME_PREFIX + i, "");
+            deviceTypeNames.add(name);
+        }
+        //将name对应的colorStr删除
+        for (String name : deviceTypeNames) {
+            editor.remove(name);
+        }
+        //将deviceName也去掉
+        for (int i = 0; i < size; i++) {
+            editor.remove(KEY_MARKER_ICON_NAME_PREFIX + i);
+        }
+
+        //写入新的数据
         //写入size
         editor.putInt(KEY_MARKER_ICON_SIZE, map.size());
         //循环写入map数据
@@ -248,5 +268,18 @@ public class PreferenceHelper {
             i++;
         }
         editor.commit();
+    }
+
+    /**
+     * 获取指定设别类型的Marker的颜色str
+     *
+     * @return
+     */
+    public String getMarkerColorName(String deviceType) {
+        if (deviceType == null) {
+            return "";
+        } else {
+            return sharedPreferences.getString(deviceType, "");
+        }
     }
 }

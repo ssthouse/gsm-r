@@ -3,12 +3,14 @@ package com.xunce.gsmr.model.gaodemap;
 import android.content.Context;
 
 import com.amap.api.maps.AMap;
+import com.amap.api.maps.model.BitmapDescriptor;
 import com.amap.api.maps.model.Marker;
 import com.amap.api.maps.model.MarkerOptions;
 import com.xunce.gsmr.model.MarkerIconCons;
 import com.xunce.gsmr.model.MarkerItem;
 import com.xunce.gsmr.model.PrjItem;
 import com.xunce.gsmr.util.DBHelper;
+import com.xunce.gsmr.util.preference.PreferenceHelper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -71,11 +73,38 @@ public class MarkerHolder {
         //填充MarkerList
         markerOnDbList = DBHelper.getMarkerList(prjItem);
         for (int i = 0; i < markerOnDbList.size(); i++) {
+            //获取latLng
             com.amap.api.maps.model.LatLng latLng = markerOnDbList.get(i).getGaodeLatLng();
+            //获取bitmapdescriptor
+            BitmapDescriptor bitmapDescriptor;
+            String deviceType = markerOnDbList.get(i).getDeviceType();
+            String colorStr = PreferenceHelper.getInstance(context).getMarkerColorName(deviceType);
+            switch (colorStr){
+                case MarkerIconCons.ColorName.BLUE:
+                    bitmapDescriptor = MarkerIconCons.descriptorBlue;
+                    break;
+                case MarkerIconCons.ColorName.GREEN:
+                    bitmapDescriptor = MarkerIconCons.descriptorGreen;
+                    break;
+                case MarkerIconCons.ColorName.ORANGE:
+                    bitmapDescriptor = MarkerIconCons.descriptorOrange;
+                    break;
+                case MarkerIconCons.ColorName.PURPLE:
+                    bitmapDescriptor = MarkerIconCons.descriptorPurple;
+                    break;
+                case MarkerIconCons.ColorName.RED:
+                    bitmapDescriptor = MarkerIconCons.descriptorRed;
+                    break;
+                default:
+                    bitmapDescriptor = MarkerIconCons.descriptorBlue;
+                    break;
+            }
+            //生成markerOptions
             MarkerOptions markerOptions = new MarkerOptions();
-            markerOptions.icon(MarkerIconCons.descriptorBlue)
+            markerOptions.icon(bitmapDescriptor)
                     .position(latLng)
                     .title("");
+            //正式添加marker
             markerOnMapList.add(aMap.addMarker(markerOptions));
         }
     }

@@ -28,6 +28,7 @@ import com.xunce.gsmr.model.MarkerItem;
 import com.xunce.gsmr.model.PrjItem;
 import com.xunce.gsmr.model.event.ExcelXmlDataEvent;
 import com.xunce.gsmr.model.event.MarkerEditEvent;
+import com.xunce.gsmr.model.event.MarkerIconChangeEvent;
 import com.xunce.gsmr.model.event.ProgressbarEvent;
 import com.xunce.gsmr.model.gaodemap.GaodeMapCons;
 import com.xunce.gsmr.util.FileHelper;
@@ -459,6 +460,12 @@ public class GaodePrjEditActivity extends GaodeBaseActivity {
             pbBlock.setVisibility(View.VISIBLE);
         } else {
             pbBlock.setVisibility(View.INVISIBLE);
+        }
+    }
+
+    public void onEventMainThread(MarkerIconChangeEvent event){
+        if(event.isChanged()){
+            loadMarker(prjItem);
         }
     }
 

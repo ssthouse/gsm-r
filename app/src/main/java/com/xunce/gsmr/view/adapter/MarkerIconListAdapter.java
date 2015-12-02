@@ -97,7 +97,6 @@ public class MarkerIconListAdapter extends BaseSwipeAdapter {
         swipeLayout.findViewById(R.id.id_ll_delete).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //TODO---删除当前item
                 //删除key
                 keyList.remove(position);
                 valueList.remove(position);
@@ -124,7 +123,6 @@ public class MarkerIconListAdapter extends BaseSwipeAdapter {
         sp.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int positionInSp, long id) {
-                //TODO---改变List中的数据(只用改变value列表中的数据)
                 switch (positionInSp) {
                     case 0:
                         valueList.set(positionInLv, MarkerIconCons.ColorName.BLUE);
@@ -162,7 +160,6 @@ public class MarkerIconListAdapter extends BaseSwipeAdapter {
 
             @Override
             public void afterTextChanged(Editable s) {
-                //TODO---文字改变后---改keylist
                 keyList.set(positionInLv, s.toString());
             }
         });
@@ -201,6 +198,4 @@ public class MarkerIconListAdapter extends BaseSwipeAdapter {
     public long getItemId(int position) {
         return position;
     }
-
-
 }
