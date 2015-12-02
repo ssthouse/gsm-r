@@ -193,7 +193,6 @@ public class XmlParser extends DefaultHandler {
             String content = attributes.getValue(TextElement.value);
             text = new Text(latLng, content);
             textList.add(text);
-            Timber.e("找到一个文字标签：\t" + content);
             //TODO---文字需要判断是不是公里标(是的话需要加入KilometerMarkHolder中)
             KilometerMark kilometerMark = KilometerMark.getKilometerMark(longitude, latitude, content);
             kilometerMarkHolder.addKilometerMark(kilometerMark);

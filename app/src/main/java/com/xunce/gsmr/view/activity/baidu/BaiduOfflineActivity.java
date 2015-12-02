@@ -349,7 +349,7 @@ public class BaiduOfflineActivity extends Activity implements MKOfflineMapListen
         public View getView(final int position, View convertView, ViewGroup parent) {
             ViewHolder viewHolder;
             if (convertView == null) {
-                convertView = View.inflate(BaiduOfflineActivity.this, R.layout.view_list_item_current_city, null);
+                convertView = View.inflate(BaiduOfflineActivity.this, R.layout.view_lv_item_current_city, null);
                 viewHolder = new ViewHolder();
                 viewHolder.tv = (TextView) convertView.findViewById(R.id.id_tv);
                 viewHolder.btn = (Button) convertView.findViewById(R.id.id_btn_down_load);

@@ -98,7 +98,7 @@ public class XmlMarkerParser extends DefaultHandler {
                 markerItem.setLongitude(position[1]);
                 markerItem.setLatitude(position[0]);
                 markerItem.setPrjName(prjName);
-                //TODO---暂时只做测试---不要真的保存进去(后面应该还要监测是不是有重复的)
+                //正式将数据写入数据库
                 markerItem.save();
                 //计数加一
                 addCount++;
@@ -120,14 +120,6 @@ public class XmlMarkerParser extends DefaultHandler {
     public void endDocument() throws SAXException {
         Timber.e("结束解析文档");
         super.endDocument();
-        //打印获取到的数据
-//        for (MarkerItem item : markerItemList) {
-//            Timber.e("deviceType:\t" + item.getDeviceType() + "\n"
-//                    + "kilomnaterMark:\t" + item.getKilometerMark() + "\n"
-//                    + "sideDirection:\t" + item.getSideDirection() + "\n"
-//                    + "latitude:\t" + item.getLatitude() + "\n"
-//                    + "longitude:\t" + item.getLongitude() + "\n");
-//        }
     }
 
     @Override

@@ -81,7 +81,7 @@ public class KilometerMarkHolder {
     public double[] getPosition(String text, String sideDirection, String distanceToRail) {
         //获取应该偏移的方向
         boolean isRight = true;
-        switch (sideDirection){
+        switch (sideDirection) {
             case ExcelCons.sideDirectionLeft:
                 isRight = false;
                 break;
@@ -111,7 +111,7 @@ public class KilometerMarkHolder {
             nextMarker = kilometerMarkList.get(position + 1);
         }
         //计算当前点和前面点的横坐标差值___看是不是需要翻转方向
-        if((currentMark.getLongitude()-nextMarker.getLatitude()) < 0.0){
+        if ((currentMark.getLongitude() - nextMarker.getLatitude()) < 0.0) {
             isRight = !isRight;
         }
         //算出直线
@@ -127,11 +127,9 @@ public class KilometerMarkHolder {
         double xyPosition[] = verticalLine.getPosition(xy1[0], xy1[1], Double.parseDouble(distanceToRail), isRight);
         double lonLat[] = UTMXY2BL.UTMWGSXYtoBL(xyPosition[1], xyPosition[0], xy1[2] * 6 - 180 - 3);
         //打印找到的点
-        if (currentMark != null) {
-            Timber.e("我找到的匹配的点是:\t" + currentMark.toString());
-            Timber.e("我最终得到的大地坐标;\t" + xyPosition[0] + "\t" + xyPosition[1]);
-            Timber.e("我最终得到的经纬度为;\t" + lonLat[0] + "\t" + lonLat[1]);
-        }
+        Timber.e("我找到的匹配的点是:\t" + currentMark.toString());
+        Timber.e("我最终得到的大地坐标;\t" + xyPosition[0] + "\t" + xyPosition[1]);
+        Timber.e("我最终得到的经纬度为;\t" + lonLat[0] + "\t" + lonLat[1]);
         return lonLat;
     }
 
@@ -140,7 +138,7 @@ public class KilometerMarkHolder {
      */
     public void addKilometerMark(KilometerMark kilometerMark) {
         if (kilometerMark != null) {
-            Timber.e("我添加了一个点：\t"+kilometerMark.toString());
+            Timber.e("我添加了一个点：\t" + kilometerMark.toString());
             kilometerMarkList.add(kilometerMark);
         }
     }

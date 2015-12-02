@@ -32,7 +32,7 @@
             android:background="@color/white"
             android:padding="8dp"
             android:scaleType="centerInside"
-            android:src="@drawable/icon_measure_blue"
+            android:src="@drawable/icon_marker_blue"
             android:text="选址"
             android:textSize="@dimen/text_size_button" />
 

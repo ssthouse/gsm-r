@@ -17,7 +17,7 @@ import com.amap.api.maps.model.MarkerOptions;
 import com.amap.api.maps.model.PolylineOptions;
 import com.xunce.gsmr.R;
 import com.xunce.gsmr.app.Constant;
-import com.xunce.gsmr.model.MarkerCons;
+import com.xunce.gsmr.model.MarkerIconCons;
 import com.xunce.gsmr.util.view.ViewHelper;
 import com.xunce.gsmr.view.style.TransparentStyle;
 
@@ -107,7 +107,7 @@ public class GaodeMeasureActivity extends GaodeBaseActivity {
             @Override
             public void onMapClick(LatLng latLng) {
                 //将点击位置存入List
-                MarkerOptions options = new MarkerOptions().icon(MarkerCons.descriptorRed).position(latLng);
+                MarkerOptions options = new MarkerOptions().icon(MarkerIconCons.descriptorRed).position(latLng);
                 markerList.add((getaMap().addMarker(options)));
                 //添加坐标点
                 pointList.add(latLng);
@@ -137,12 +137,12 @@ public class GaodeMeasureActivity extends GaodeBaseActivity {
         for (int i = 0; i < pointList.size(); i++) {
             if (i == 0 || i == pointList.size() - 1) {
                 MarkerOptions markerOptions = new MarkerOptions().position(pointList.get(i))
-                        .icon(MarkerCons.descriptorRed)
+                        .icon(MarkerIconCons.descriptorRed)
                         .zIndex(9).draggable(true);
                 getaMap().addMarker(markerOptions);
             } else {
                 MarkerOptions markerOptions = new MarkerOptions().position(pointList.get(i))
-                        .icon(MarkerCons.descriptorBlue)
+                        .icon(MarkerIconCons.descriptorBlue)
                         .zIndex(9).draggable(true);
                 getaMap().addMarker(markerOptions);
             }

@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.daimajia.swipe.SwipeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/id_swipe_layout"
+    android:layout_width="match_parent"
+    android:layout_height="100dp">
+
+    <!-- Bottom View Start-->
+    <LinearLayout
+        android:clickable="true"
+        android:id="@+id/id_ll_delete"
+        android:layout_width="80dp"
+        android:layout_height="match_parent"
+        android:background="#66ddff00"
+        android:orientation="horizontal"
+        android:weightSum="1">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:background="@color/color_primary"
+            android:gravity="center"
+            android:text="删除"
+            android:textColor="@color/white"
+            android:textSize="16dp" />
+    </LinearLayout>
+    <!-- Bottom View End-->
+
+    <!-- Surface View Start -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#ffffff"
+        android:orientation="horizontal"
+        android:padding="10dp">
+
+        <!--显示设别类型的名字-->
+        <EditText
+            android:id="@+id/id_et"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:textSize="16sp" />
+
+        <!--显示所有图标选项的spinner-->
+        <Spinner
+            android:id="@+id/id_sp"
+            android:layout_width="60dp"
+            android:layout_height="match_parent" />
+
+        <!--划出右边删除控件的btn-->
+        <ImageView
+            android:layout_marginLeft="4dp"
+            android:layout_marginRight="4dp"
+            android:id="@+id/id_btn_show_delete"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:scaleType="centerCrop"
+            android:background="@drawable/icon_overflow_dark" />
+    </LinearLayout>
+    <!-- Surface View End -->
+
+</com.daimajia.swipe.SwipeLayout>

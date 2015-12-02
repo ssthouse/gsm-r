@@ -1,26 +1,21 @@
 package com.xunce.gsmr.util.gps;
 
-import timber.log.Timber;
-
 /**
  * 大地坐标转换为经纬度
  * Created by ssthouse on 2015/11/30.
  */
 public class UTMXY2BL {
 
-    /// <summary>
-    /// 将WGS的大地坐标转化为经纬度
-    /// </summary>
-    /// <param name="Xn"></param>
-    /// <param name="Yn"></param>
-    /// <returns></returns>
+    /**
+     * 将WGS的大地坐标转化为经纬度
+     * @param Xn 横坐标
+     * @param Yn 纵坐标
+     * @param L0 中央子午线
+     * @return
+     */
     public static double[] UTMWGSXYtoBL(double Xn, double Yn, double L0) {
         //最后输出的数据
         double XYtoBL[] = new double[2];
-        Timber.e("我的中央子午线为:\t" + L0);
-        //工程中的--------中央经线-----数据
-        //TODO---这里是读取文本文件获取中央经线---有可能文本文件的数据格式有问题
-        //double L0 = PrjConstant.getCentralLongitude();
 
         double Mf;
         double Nf;

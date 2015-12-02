@@ -62,9 +62,9 @@ public class BaiduMeasureActivity extends AppCompatActivity {
 
     //标记点相关的
     BitmapDescriptor descriptorBlue = BitmapDescriptorFactory
-            .fromResource(R.drawable.icon_measure_blue);
+            .fromResource(R.drawable.icon_marker_blue);
     BitmapDescriptor descriptorRed = BitmapDescriptorFactory
-            .fromResource(R.drawable.icon_measure_red);
+            .fromResource(R.drawable.icon_marker_red);
     //手指在地图上点下的标记List---用OverLay来实现
     private List<Marker> markerList = new ArrayList<>();
     private List<LatLng> pointList = new ArrayList<>();

@@ -2,15 +2,16 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
+    <!--增加-->
     <item
-        android:id="@+id/id_action_back_one_point"
-        android:icon="@drawable/btn_back"
-        android:title="上一步"
+        android:id="@+id/id_action_add"
+        android:icon="@drawable/fab_add"
+        android:title="增加"
         app:showAsAction="always" />
 
+    <!--保存 修改-->
     <item
-        android:id="@+id/id_action_delete_all"
-        android:icon="@drawable/map_delete"
-        android:title="清除"
+        android:id="@+id/id_action_save_change"
+        android:title="保存修改"
         app:showAsAction="always" />
 </menu>

@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Spinner;
@@ -47,6 +48,7 @@ public class SettingActivity extends AppCompatActivity {
      */
     private void initView() {
         ViewHelper.initActionBar(this, getSupportActionBar(), "设置");
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         //地图定位模式切换
         locateModeSwitch = (Switch) findViewById(R.id.id_sw_locate_mode);
@@ -64,10 +66,10 @@ public class SettingActivity extends AppCompatActivity {
 
         //spinner选择地图类型
         Spinner sp = (Spinner) findViewById(R.id.id_sp_map_type);
-        if(PreferenceHelper.getInstance(SettingActivity.this).getMapType() ==
+        if (PreferenceHelper.getInstance(SettingActivity.this).getMapType() ==
                 PreferenceHelper.MapType.BAIDU_MAP) {
             sp.setSelection(0);
-        }else{
+        } else {
             sp.setSelection(1);
         }
         sp.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -80,13 +82,21 @@ public class SettingActivity extends AppCompatActivity {
                 } else if (position == 1) {
                     PreferenceHelper.getInstance(SettingActivity.this)
                             .setMapType(PreferenceHelper.MapType.GAODE_MAP);
-                   Timber.e("我设置了--高德地图");
+                    Timber.e("我设置了--高德地图");
                 }
             }
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
 
+            }
+        });
+
+        //选中点的Icon的设置界面
+        findViewById(R.id.id_ll_marker_icon).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                MarkerIconSetActivity.start(SettingActivity.this);
             }
         });
 
@@ -102,7 +112,7 @@ public class SettingActivity extends AppCompatActivity {
     /**
      * 显示app的版本Dialog
      */
-    private void showAppVersionDialog(){
+    private void showAppVersionDialog() {
         NiftyDialogBuilder dialogBuilder = NiftyDialogBuilder.getInstance(this);
         dialogBuilder.setCustomView(R.layout.dialog_app_version, this)
                 .withTitle("版本信息")
@@ -110,5 +120,15 @@ public class SettingActivity extends AppCompatActivity {
                 .withDialogColor(getResources().getColor(R.color.color_primary_light))
                 .isCancelableOnTouchOutside(true)
                 .show();
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()){
+            case android.R.id.home:
+                finish();
+                break;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

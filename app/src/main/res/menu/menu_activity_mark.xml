@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item android:id="@+id/id_action_over_flow"
-        android:icon="@drawable/ic_action_overflow"
+        android:icon="@drawable/icon_action_overflow"
         android:title="菜单"
         app:showAsAction="always">
         <menu>

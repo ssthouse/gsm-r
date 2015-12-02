@@ -27,9 +27,9 @@ import timber.log.Timber;
 public class MarkerHolder {
     //标记点相关的
     public static BitmapDescriptor descriptorBlue = BitmapDescriptorFactory
-            .fromResource(R.drawable.icon_measure_blue);
+            .fromResource(R.drawable.icon_marker_blue);
     public static BitmapDescriptor descriptorRed = BitmapDescriptorFactory
-            .fromResource(R.drawable.icon_measure_red);
+            .fromResource(R.drawable.icon_marker_red);
 
     /**
      * Marker相关

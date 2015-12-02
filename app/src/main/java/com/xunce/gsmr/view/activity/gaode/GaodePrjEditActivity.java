@@ -32,6 +32,7 @@ import com.xunce.gsmr.model.event.ProgressbarEvent;
 import com.xunce.gsmr.model.gaodemap.GaodeMapCons;
 import com.xunce.gsmr.util.FileHelper;
 import com.xunce.gsmr.util.gps.LonLatToUTMXY;
+import com.xunce.gsmr.util.preference.PreferenceHelper;
 import com.xunce.gsmr.util.view.ToastHelper;
 import com.xunce.gsmr.util.view.ViewHelper;
 import com.xunce.gsmr.view.activity.PicGridActivity;
@@ -120,6 +121,9 @@ public class GaodePrjEditActivity extends GaodeBaseActivity {
         EventBus.getDefault().register(this);
         TransparentStyle.setTransparentStyle(this, R.color.color_primary);
         super.init(savedInstanceState);
+
+        //对sharedpreference进行初始化
+        PreferenceHelper.getInstance(this).initMarkerIconPreference();
 
         //接收数据
         prjItem = (PrjItem) getIntent().getSerializableExtra(Constant.EXTRA_KEY_PRJ_ITEM);

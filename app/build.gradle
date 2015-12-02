@@ -79,4 +79,6 @@ dependencies {
     compile project(':aFileChooser')
     //for log
     compile 'com.jakewharton.timber:timber:4.1.0'
+    //侧滑删除的lib
+    compile "com.daimajia.swipelayout:library:1.1.8@aar"
 }

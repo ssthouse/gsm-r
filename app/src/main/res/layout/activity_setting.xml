@@ -25,11 +25,11 @@
             android:textSize="@dimen/activity_setting_item_text_size" />
 
         <Switch
-            android:clickable="false"
             android:id="@+id/id_sw_locate_mode"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_gravity="center_vertical" />
+            android:layout_gravity="center_vertical"
+            android:clickable="false" />
     </LinearLayout>
 
     <!--地图选择-->
@@ -56,6 +56,27 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:entries="@array/array_map_type" />
+    </LinearLayout>
+
+    <!--标记点图标设置-->
+    <LinearLayout
+        android:id="@+id/id_ll_marker_icon"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:layout_margin="8dp"
+        android:background="@drawable/selector_btn_white_2_blue"
+        android:clickable="true"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center|left"
+            android:padding="8dp"
+            android:text="标记点图标设置"
+            android:textColor="@drawable/selector_text_black_2_white"
+            android:textSize="@dimen/activity_setting_item_text_size" />
     </LinearLayout>
 
     <TextView

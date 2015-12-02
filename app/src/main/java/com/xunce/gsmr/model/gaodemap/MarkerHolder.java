@@ -5,7 +5,7 @@ import android.content.Context;
 import com.amap.api.maps.AMap;
 import com.amap.api.maps.model.Marker;
 import com.amap.api.maps.model.MarkerOptions;
-import com.xunce.gsmr.model.MarkerCons;
+import com.xunce.gsmr.model.MarkerIconCons;
 import com.xunce.gsmr.model.MarkerItem;
 import com.xunce.gsmr.model.PrjItem;
 import com.xunce.gsmr.util.DBHelper;
@@ -73,7 +73,7 @@ public class MarkerHolder {
         for (int i = 0; i < markerOnDbList.size(); i++) {
             com.amap.api.maps.model.LatLng latLng = markerOnDbList.get(i).getGaodeLatLng();
             MarkerOptions markerOptions = new MarkerOptions();
-            markerOptions.icon(MarkerCons.descriptorBlue)
+            markerOptions.icon(MarkerIconCons.descriptorBlue)
                     .position(latLng)
                     .title("");
             markerOnMapList.add(aMap.addMarker(markerOptions));
@@ -95,7 +95,7 @@ public class MarkerHolder {
     public void setAll2Blue() {
         for (Marker marker : markerOnMapList) {
             if (marker != null) {
-                marker.setIcon(MarkerCons.descriptorRed);
+                marker.setIcon(MarkerIconCons.descriptorRed);
             }
         }
     }

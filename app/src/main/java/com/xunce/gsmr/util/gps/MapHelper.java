@@ -24,7 +24,7 @@ public class MapHelper {
 
     //标记点相关的
     private static BitmapDescriptor descriptorBlue = BitmapDescriptorFactory
-            .fromResource(R.drawable.icon_measure_blue);
+            .fromResource(R.drawable.icon_marker_blue);
 
     /**
      * 动画放大
