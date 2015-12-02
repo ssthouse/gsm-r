@@ -2,9 +2,19 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <item android:id="@+id/id_action_over_flow"
+    <!--编辑文本-->
+    <item android:id="@+id/id_action_edit_info"
+        android:icon="@drawable/icon_action_edit"
+        android:orderInCategory="10"
+        app:showAsAction="always"
+        android:title="编辑文本"/>
+
+
+    <!--加载地图 数据-->
+   <item android:id="@+id/id_action_over_flow"
         android:icon="@drawable/icon_action_overflow"
         android:title="菜单"
+       android:orderInCategory="90"
         app:showAsAction="always">
         <menu>
             <item

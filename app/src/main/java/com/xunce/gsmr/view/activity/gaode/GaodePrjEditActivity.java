@@ -396,6 +396,7 @@ public class GaodePrjEditActivity extends GaodeBaseActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
+            //项目管理
             case R.id.id_action_change_project:
                 finish();
                 PrjSelectActivity.start(this, true);
@@ -463,12 +464,20 @@ public class GaodePrjEditActivity extends GaodeBaseActivity {
         }
     }
 
+    /**
+     * 更新Marker图标颜色
+     * @param event
+     */
     public void onEventMainThread(MarkerIconChangeEvent event){
         if(event.isChanged()){
             loadMarker(prjItem);
         }
     }
 
+    /**
+     * 提示xml文件加载情况
+     * @param excelXmlDataEvent
+     */
     public void onEventMainThread(ExcelXmlDataEvent excelXmlDataEvent) {
         if (excelXmlDataEvent.isParseSuccess()) {
             ToastHelper.show(this, "xml中预设标记点数据添加成功");

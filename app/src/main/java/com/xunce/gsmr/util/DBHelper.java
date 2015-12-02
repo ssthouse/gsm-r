@@ -17,7 +17,7 @@ public class DBHelper {
      * 判断prjItem是不是空的
      *
      * @param prjItem
-     * @return  数据库中PrjItem是不是空的
+     * @return 数据库中PrjItem是不是空的
      */
     public static boolean isPrjEmpty(PrjItem prjItem) {
         List<MarkerItem> markerList = new Select()
@@ -31,18 +31,18 @@ public class DBHelper {
      * 根据MarkerItem生成的时间获取数据库中的MarkerItem
      * 从数据库中获取MarkerItem
      *
-     * @param markerItem    序列化的MarkerItem
-     * @return  在数据库中保存的MarkerItem
+     * @param markerItem 序列化的MarkerItem
+     * @return 在数据库中保存的MarkerItem
      */
     public static MarkerItem getMarkerItemInDB(MarkerItem markerItem) {
         String prjName = markerItem.getPrjName();
         String photoPathName = markerItem.getPhotoPathName();
         MarkerItem markerItemInDB = new Select()
                 .from(MarkerItem.class)
-                .where("prjName ="
-                        + " '" + prjName + "' and "
-                        + "photoPathName ="
-                        + " '" + photoPathName + "'")
+                .where("prjName =" + " '" + prjName
+                        + "' and "
+                        + MarkerItem.MarkerItemCons.column_photo_path_name
+                        + " =" + " '" + photoPathName + "'")
                 .executeSingle();
 //        Timber.e("我从数据库中找到的东西是:   ");
 //        Timber.e("原来的:   " + markerItem.getPrjName() + markerItem.getPhotoPathName());

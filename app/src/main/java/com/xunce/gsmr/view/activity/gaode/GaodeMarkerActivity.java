@@ -30,8 +30,6 @@ import de.greenrobot.event.EventBus;
  * Created by ssthouse on 2015/9/15.
  */
 public class GaodeMarkerActivity extends GaodeBaseActivity {
-    private static final String TAG = "GaodeMarkerActivity";
-
     /**
      * 开启本Activity需要的数据
      */
@@ -145,13 +143,17 @@ public class GaodeMarkerActivity extends GaodeBaseActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_activity_mark, menu);
+        getMenuInflater().inflate(R.menu.menu_activity_mark_edit, menu);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
+            //编辑文本信息
+            case R.id.id_action_edit_info:
+                MarkerInfoEditActivity.start(this, markerItem);
+                break;
             //TODO
             case R.id.id_action_load_digital_file:
                 break;

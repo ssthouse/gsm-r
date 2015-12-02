@@ -131,8 +131,12 @@
         <activity android:name=".view.activity.gaode.GaodeOfflineActivity"
             android:theme="@style/CustomNoActionbarStyle"
             android:screenOrientation="portrait"/>
+        <!--设置marker不同设别类型不同图标-->
         <activity android:name=".view.activity.MarkerIconSetActivity"
             android:screenOrientation="portrait"/>
+        <!--编辑marker文本信息-->
+        <activity android:name=".view.activity.gaode.MarkerInfoEditActivity"
+            android:screenOrientation="portrait" />
         <!--android:enabled="@bool/use_activity"-->
         <!-- 第三方的module中的Activity  作用是选择文件-->
         <activity

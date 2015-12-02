@@ -7,6 +7,20 @@
         <item>高德地图</item>
     </array>
 
+    <!--下行侧向的spinner选项-->
+    <array name="array_side_direction">
+        <item>下行左侧</item>
+        <item>下行右侧</item>
+    </array>
+
+    <!--杆塔类型的spinner选项-->
+    <array name="array_tower_type">
+        <item>杆</item>
+        <item>独管塔</item>
+        <item>四管塔</item>
+    </array>
+
+
     <!--&lt;!&ndash;数字地图的加载选项(Spinner)&ndash;&gt;-->
     <!--<array name="array_digital_map_spinner">-->
         <!--<item>不显示</item>-->

@@ -221,7 +221,7 @@ public class BaiduMarkerActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_activity_mark, menu);
+        getMenuInflater().inflate(R.menu.menu_activity_mark_edit, menu);
         return true;
     }
 
