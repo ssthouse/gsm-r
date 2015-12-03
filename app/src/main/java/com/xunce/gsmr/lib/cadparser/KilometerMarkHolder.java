@@ -36,7 +36,7 @@ public class KilometerMarkHolder {
      * @param distanceToRail
      * @return 数据是否正确
      */
-    public boolean isDataValid(String text, String sideDirection, String distanceToRail) {
+    public boolean isDataValid(String text, String sideDirection, double distanceToRail) {
         //判断是否有一样的text
         boolean hasSameText = false;
         for (KilometerMark kilometerMark : kilometerMarkList) {
@@ -53,13 +53,7 @@ public class KilometerMarkHolder {
             return false;
         }
         //判断distanceToRail是否正确
-        double distance;
-        try {
-            distance = Double.parseDouble(distanceToRail);
-        } catch (Exception e) {
-            return false;
-        }
-        if (distance <= 0.0) {
+        if (distanceToRail <= 0.0) {
             return false;
         }
         return true;
@@ -78,7 +72,7 @@ public class KilometerMarkHolder {
      *
      * @return
      */
-    public double[] getPosition(String text, String sideDirection, String distanceToRail) {
+    public double[] getPosition(String text, String sideDirection, double distanceToRail) {
         //获取应该偏移的方向
         boolean isRight = true;
         switch (sideDirection) {
@@ -124,7 +118,7 @@ public class KilometerMarkHolder {
         //获取垂直的线___根据找到的当前公里标
         MathLine verticalLine = markerLine.getVerticalLine(xy1[0], xy1[1]);
         //根据给定的距离当前点的距离___获取选定点的___大地坐标
-        double xyPosition[] = verticalLine.getPosition(xy1[0], xy1[1], Double.parseDouble(distanceToRail), isRight);
+        double xyPosition[] = verticalLine.getPosition(xy1[0], xy1[1],distanceToRail, isRight);
         double lonLat[] = UTMXY2BL.UTMWGSXYtoBL(xyPosition[1], xyPosition[0], xy1[2] * 6 - 180 - 3);
         //打印找到的点
         Timber.e("我找到的匹配的点是:\t" + currentMark.toString());

@@ -11,7 +11,7 @@ import com.xunce.gsmr.util.gps.PositionUtil;
 import java.io.Serializable;
 
 /**
- * 单个的Marker对象---一个
+ * 单个的Marker对象---15个Field
  * 坐标系是:    GCJ
  * Created by ssthouse on 2015/7/17.
  */
@@ -38,6 +38,17 @@ public class MarkerItem extends Model implements Serializable {
         String column_antenna_direction_2 = "antenna_direction_2";//天线方向角2
         String column_antenna_direction_3 = "antenna_direction_3";//天线方向角3
         String column_antenna_direction_4 = "antenna_direction_4";//天线方向角4
+
+        //下行方向的选项
+        String sideDirectionUndefine = "未定义";
+        String sideDirectionLeft = "下行左侧";
+        String sideDirectionRight = "下行右侧";
+
+        //杆塔类型的选项
+        String towerTypeUndefine = "未定义";
+        String towerTypePole = "杆";         //杆
+        String towerTypeSingleTower = "独管塔";          //独管塔
+        String towerTypeFourTower = "四管塔"; //四管塔
     }
 
     /**
@@ -79,7 +90,7 @@ public class MarkerItem extends Model implements Serializable {
      * 距线路中心距离
      */
     @Column(name = MarkerItemCons.column_distance_to_rail)
-    private String distanceToRail;
+    private double distanceToRail;
     /**
      * 备注文本
      */
@@ -105,8 +116,26 @@ public class MarkerItem extends Model implements Serializable {
     @Column(name = MarkerItemCons.column_antenna_direction_3)
     private String antennaDirection3;
     @Column(name = MarkerItemCons.column_antenna_direction_4)
-    private String antennaDirection41;
+    private String antennaDirection4;
 
+
+
+    /**
+     * 初始化除了---latitude---longitude---photoPathName外的数据
+     */
+    private void initFields(){
+        deviceType = "";
+        kilometerMark = "";
+        sideDirection = MarkerItemCons.sideDirectionUndefine;
+        distanceToRail = 0.0;
+        comment = "";
+        towerType = MarkerItemCons.towerTypeUndefine;
+        towerHeight = "";
+        antennaDirection1 = "";
+        antennaDirection2 = "";
+        antennaDirection3 = "";
+        antennaDirection4 = "";
+    }
     /**
      * 传入经纬度的构造方法
      *
@@ -120,6 +149,8 @@ public class MarkerItem extends Model implements Serializable {
         this.longitude = longitude;
         //根据当前时间创建路径名称
         this.photoPathName = System.currentTimeMillis() + "";
+        //初始化Fields
+        initFields();
     }
 
     /**
@@ -134,6 +165,8 @@ public class MarkerItem extends Model implements Serializable {
         this.longitude = 0;
         //根据当前时间创建路径名称
         this.photoPathName = System.currentTimeMillis() + "";
+        //初始化Fields
+        initFields();
     }
 
     /**
@@ -148,6 +181,8 @@ public class MarkerItem extends Model implements Serializable {
         this.longitude = latLng.longitude;
         //根据当前时间创建路径名称
         this.photoPathName = System.currentTimeMillis() + "";
+        //初始化Fields
+        initFields();
     }
 
     /**
@@ -176,6 +211,7 @@ public class MarkerItem extends Model implements Serializable {
         //根据当前时间创建路径名称
         this.photoPathName = System.currentTimeMillis() + "";
     }
+
 
     /**
      * 获取百度LatLng
@@ -293,11 +329,11 @@ public class MarkerItem extends Model implements Serializable {
         this.sideDirection = sideDirection;
     }
 
-    public String getDistanceToRail() {
+    public double getDistanceToRail() {
         return distanceToRail;
     }
 
-    public void setDistanceToRail(String distanceToRail) {
+    public void setDistanceToRail(double distanceToRail) {
         this.distanceToRail = distanceToRail;
     }
 
@@ -349,11 +385,11 @@ public class MarkerItem extends Model implements Serializable {
         this.antennaDirection3 = antennaDirection3;
     }
 
-    public String getAntennaDirection41() {
-        return antennaDirection41;
+    public String getAntennaDirection4() {
+        return antennaDirection4;
     }
 
-    public void setAntennaDirection41(String antennaDirection41) {
-        this.antennaDirection41 = antennaDirection41;
+    public void setAntennaDirection4(String antennaDirection4) {
+        this.antennaDirection4 = antennaDirection4;
     }
 }

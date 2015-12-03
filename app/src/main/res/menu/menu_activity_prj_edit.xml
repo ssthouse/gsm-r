@@ -3,13 +3,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context=".MainActivity">
 
-    <!--将测距放在地图上面-->
-    <!--<item-->
-    <!--android:id="@+id/id_action_measure_tool"-->
-    <!--android:orderInCategory="100"-->
-    <!--android:title="测量工具"-->
-    <!--app:showAsAction="never" />-->
-
     <!--将overflow的menu改为手动实现-->
     <item
         android:id="@+id/id_action_over_flow"
@@ -26,25 +19,25 @@
             <item
                 android:id="@+id/id_action_load_xml_marker"
                 android:orderInCategory="100"
-                android:title="初始标记点文件加载"
+                android:title="初始标记点文件加载(.xml)"
                 app:showAsAction="never" />
 
             <item
                 android:id="@+id/id_action_load_digital_file"
                 android:orderInCategory="100"
-                android:title="数字地图文件加载"
+                android:title="数字地图文件加载(.db)"
                 app:showAsAction="never" />
 
             <item
                 android:id="@+id/id_action_load_xml_file"
                 android:orderInCategory="100"
-                android:title="xml文件加载"
+                android:title="CAD文件加载(.xml)"
                 app:showAsAction="never" />
 
             <item
                 android:id="@+id/id_action_load_kml_file"
                 android:orderInCategory="100"
-                android:title="kml文件加载"
+                android:title="kml文件加载(.kml)"
                 app:showAsAction="never" />
 
 

@@ -4,6 +4,6 @@
 
     <item
         android:id="@+id/id_action_save_change"
-        app:showAsAction="always"
-        android:title="保存修改"/>
+        android:title="保存修改"
+        app:showAsAction="always" />
 </menu>

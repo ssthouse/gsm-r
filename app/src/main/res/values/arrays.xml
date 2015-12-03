@@ -9,12 +9,14 @@
 
     <!--下行侧向的spinner选项-->
     <array name="array_side_direction">
+        <item>未定义</item>
         <item>下行左侧</item>
         <item>下行右侧</item>
     </array>
 
     <!--杆塔类型的spinner选项-->
     <array name="array_tower_type">
+        <item>未定义</item>
         <item>杆</item>
         <item>独管塔</item>
         <item>四管塔</item>

@@ -15,6 +15,7 @@ import com.xunce.gsmr.R;
 import com.xunce.gsmr.app.Constant;
 import com.xunce.gsmr.model.MarkerItem;
 import com.xunce.gsmr.model.event.MarkerEditEvent;
+import com.xunce.gsmr.model.event.MarkerInfoSaveEvent;
 import com.xunce.gsmr.util.DBHelper;
 import com.xunce.gsmr.util.gps.MarkerHelper;
 import com.xunce.gsmr.util.gps.PositionUtil;
@@ -64,6 +65,7 @@ public class GaodeMarkerActivity extends GaodeBaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        EventBus.getDefault().register(this);
         setContentView(R.layout.activity_gaode_mark);
         TransparentStyle.setTransparentStyle(this, R.color.color_primary);
         super.init(savedInstanceState);
@@ -139,6 +141,27 @@ public class GaodeMarkerActivity extends GaodeBaseActivity {
                 }
             }
         });
+    }
+
+    /**
+     * 文本编辑的回调方法
+     *
+     * @param event
+     */
+    public void onEventMainThread(MarkerInfoSaveEvent event) {
+        if (event != null) {
+            //更新文本文件的数据
+            markerItem.setDeviceType(event.getMarkerItem().getDeviceType());
+            markerItem.setKilometerMark(event.getMarkerItem().getKilometerMark());
+            markerItem.setSideDirection(event.getMarkerItem().getSideDirection());
+            markerItem.setDistanceToRail(event.getMarkerItem().getDistanceToRail());
+            markerItem.setTowerType(event.getMarkerItem().getTowerType());
+            markerItem.setTowerHeight(event.getMarkerItem().getTowerHeight());
+            markerItem.setAntennaDirection1(event.getMarkerItem().getAntennaDirection1());
+            markerItem.setAntennaDirection2(event.getMarkerItem().getAntennaDirection2());
+            markerItem.setAntennaDirection3(event.getMarkerItem().getAntennaDirection3());
+            markerItem.setAntennaDirection4(event.getMarkerItem().getAntennaDirection4());
+        }
     }
 
     @Override

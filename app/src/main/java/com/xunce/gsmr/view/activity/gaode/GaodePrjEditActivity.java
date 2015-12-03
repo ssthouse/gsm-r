@@ -403,6 +403,10 @@ public class GaodePrjEditActivity extends GaodeBaseActivity {
                 break;
             //加载初始xml中的Marker数据
             case R.id.id_action_load_xml_marker:
+                //只有加载了xml文件才加载初始选址文件
+                if(xmlParser == null){
+                    ToastHelper.show(this, "请先加载cad文件(.xml)");
+                }
                 FileHelper.showFileChooser(this, REQUEST_CODE_LOAD_XML_MARKER_FILE);
                 break;
             // 加载数字地图

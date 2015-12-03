@@ -138,7 +138,8 @@ public class XmlMarkerParser extends DefaultHandler {
                 markerItem.setSideDirection(attributes.getValue(XmlCons.ATTRIBUTE_VALUE));
                 break;
             case XmlCons.DISTANCE_TO_RAIL:
-                markerItem.setDistanceToRail(attributes.getValue(XmlCons.ATTRIBUTE_VALUE));
+                markerItem.setDistanceToRail(
+                        Double.parseDouble(attributes.getValue(XmlCons.ATTRIBUTE_VALUE)));
                 break;
             case XmlCons.COMMENT:
                 markerItem.setComment(attributes.getValue(XmlCons.ATTRIBUTE_VALUE));
