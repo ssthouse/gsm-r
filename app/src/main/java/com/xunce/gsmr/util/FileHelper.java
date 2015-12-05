@@ -10,6 +10,7 @@ import android.os.Environment;
 import com.ipaulpro.afilechooser.FileChooserActivity;
 import com.xunce.gsmr.app.Constant;
 import com.xunce.gsmr.model.BitmapItem;
+import com.xunce.gsmr.model.PrjItem;
 import com.xunce.gsmr.model.event.CompressFileEvent;
 import com.xunce.gsmr.util.view.ToastHelper;
 
@@ -33,11 +34,13 @@ public class FileHelper {
      * 将app的数据打包发出去
      */
     public static void sendZipFile(final Context context) {
+        EventBus.getDefault().post(new CompressFileEvent(CompressFileEvent.Event.BEGIN));
         new AsyncTask<Void, Void, Void>() {
             @Override
             protected Void doInBackground(Void... params) {
-                EventBus.getDefault().post(new CompressFileEvent(CompressFileEvent.Event.BEGIN));
                 try {
+                    //将sd卡中不属于当前项目的文件删除
+                    deleteNoneUseFile();
                     //首先压缩文件
                     String srcPath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/GSM/Picture";
                     String outputPath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/GSM_输出.zip";
@@ -50,9 +53,10 @@ public class FileHelper {
                     sendFileIntent.setType("*/*");
                     sendFileIntent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(new File(outputPath)));
                     context.startActivity(sendFileIntent);
-                    ToastHelper.show(context, "文件发售给你成功\n 路径为：" + outputPath);
+
                 } catch (Exception e) {
                     e.printStackTrace();
+                    Timber.e(e.getMessage());
                     Timber.e("something is wrong");
                 }
                 return null;
@@ -61,15 +65,55 @@ public class FileHelper {
             @Override
             protected void onPostExecute(Void aVoid) {
                 super.onPostExecute(aVoid);
+                String outputPath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/GSM_输出.zip";
+                ToastHelper.show(context, "文件发售给你成功\n 路径为：" + outputPath);
                 EventBus.getDefault().post(new CompressFileEvent(CompressFileEvent.Event.END));
             }
         }.execute();
     }
 
     /**
+     * 删除不必要的文件
+     */
+    private static void deleteNoneUseFile() {
+        List<PrjItem> prjItemList = DBHelper.getPrjItemList();
+        List<String> prjNameList = new ArrayList<>();
+        for (PrjItem prjItem : prjItemList) {
+            prjNameList.add(prjItem.getPrjName());
+            Timber.e("找到一个工程名:\t" + prjItem.getPrjName());
+        }
+        //遍历文件夹
+        String srcPath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/GSM/Picture";
+        String files[] = new File(srcPath).list();
+        for (String filePath : files) {
+            File file = new File(srcPath+"/"+filePath);
+            if (!prjNameList.contains(file.getName()) && !file.getName().equals(DBHelper.DB_NAME)) {
+                deleteFile(file);
+            }
+        }
+    }
+
+    //递归删除文件夹
+    private static void deleteFile(File file) {
+        if (file.exists()) {//判断文件是否存在
+            if (file.isFile()) {//判断是否是文件
+                file.delete();//删除文件
+            } else if (file.isDirectory()) {//否则如果它是一个目录
+                File[] files = file.listFiles();//声明目录下所有的文件 files[];
+                for (int i = 0; i < files.length; i++) {//遍历目录下所有的文件
+                    deleteFile(files[i]);//把每个文件用这个方法进行迭代
+                }
+                file.delete();//删除文件夹
+            }
+        } else {
+            System.out.println("所删除的文件不存在");
+        }
+    }
+
+    /**
      * 获取SD卡路径
      *
-     * @return  获取SD卡的根路径
+     * @return 获取SD卡的根路径
      */
     public static String getSDPath() {
         File sdDir;
@@ -96,8 +140,8 @@ public class FileHelper {
     /**
      * 发送图片文件
      *
-     * @param context   上下文
-     * @param bitmapItemList    bitmapItem的list
+     * @param context        上下文
+     * @param bitmapItemList bitmapItem的list
      */
     public static void sendPicture(Context context, List<BitmapItem> bitmapItemList) {
         Intent intent = new Intent(android.content.Intent.ACTION_SEND_MULTIPLE);
@@ -128,7 +172,7 @@ public class FileHelper {
         }
         try {
             copyFile(new FileInputStream(new File(context.getDatabasePath(DBHelper.DB_NAME)
-                    .getAbsolutePath()))
+                            .getAbsolutePath()))
                     , tempDbFile.getAbsolutePath());
         } catch (FileNotFoundException e) {
             e.printStackTrace();
@@ -142,8 +186,9 @@ public class FileHelper {
 
     /**
      * 复制单个文件
-     * @param fis   输入文件流
-     * @param newPath   输出路径
+     *
+     * @param fis     输入文件流
+     * @param newPath 输出路径
      */
     public static void copyFile(FileInputStream fis, String newPath) {
         try {

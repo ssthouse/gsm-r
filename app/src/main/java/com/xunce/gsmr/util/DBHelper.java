@@ -57,11 +57,11 @@ public class DBHelper {
      * @return
      */
     public static boolean isPrjExist(String prjName) {
-        List<PrjItem> prjImteList = new Select()
+        List<PrjItem> prjItems = new Select()
                 .from(PrjItem.class)
                 .where("prjName = " + "'" + prjName + "'")
                 .execute();
-        return !(prjImteList == null || prjImteList.size() == 0);
+        return !(prjItems == null || prjItems.size() == 0);
     }
 
     /**

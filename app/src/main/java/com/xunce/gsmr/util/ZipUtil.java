@@ -4,8 +4,10 @@ import android.content.Context;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.List;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
@@ -37,6 +39,16 @@ public class ZipUtil {
     }
 
     /**
+     * 用于压缩输出文件
+     * 只输出项目文件
+     */
+    public static void zipOutputFiles(String srcPath, String outputPath, List<String> prjFolderNameList) throws FileNotFoundException {
+        //创建输出包
+        ZipOutputStream outZip = new ZipOutputStream(new FileOutputStream(outputPath));
+        // 打开要输出的文件
+        File srcFile = new File(srcPath);
+    }
+    /**
      * 将数据库文件放入zip包
      * @param context   上下文
      * @param zipFilePath   压缩包文件路径
@@ -60,6 +72,7 @@ public class ZipUtil {
             Timber.e("something is wrong");
         }
     }
+
 
     /**
      * 压缩文件
@@ -93,7 +106,7 @@ public class ZipUtil {
             String fileList[] = srcFile.list();
             // 如果没有子文件, 则添加进去即可
             if (fileList.length <= 0) {
-                ZipEntry zipEntry = new ZipEntry(filePath + java.io.File.separator);
+                ZipEntry zipEntry = new ZipEntry(filePath + File.separator);
                 zipOut.putNextEntry(zipEntry);
                 zipOut.closeEntry();
             }
