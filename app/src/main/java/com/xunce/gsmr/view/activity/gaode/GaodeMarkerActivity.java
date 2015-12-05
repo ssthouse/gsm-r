@@ -181,8 +181,8 @@ public class GaodeMarkerActivity extends GaodeBaseActivity {
             case R.id.id_action_load_digital_file:
                 break;
             //TODO
-            case R.id.id_action_load_marker:
-                break;
+//            case R.id.id_action_load_marker:
+//                break;
             case android.R.id.home:
                 if (requestCode == GaodePrjEditActivity.REQUEST_CODE_MARKER_EDIT_ACTIVITY) {
                     finish();

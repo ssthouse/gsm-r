@@ -4,11 +4,13 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Environment;
 
 import com.ipaulpro.afilechooser.FileChooserActivity;
 import com.xunce.gsmr.app.Constant;
 import com.xunce.gsmr.model.BitmapItem;
+import com.xunce.gsmr.model.event.CompressFileEvent;
 import com.xunce.gsmr.util.view.ToastHelper;
 
 import java.io.File;
@@ -19,6 +21,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import de.greenrobot.event.EventBus;
 import timber.log.Timber;
 
 /**
@@ -29,25 +32,38 @@ public class FileHelper {
     /**
      * 将app的数据打包发出去
      */
-    public static void sendZipFile(Context context) {
-        try {
-            //首先压缩文件
-            String srcPath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/GSM/Picture";
-            String outputPath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/GSM_输出.zip";
-            //首先将数据库文件复制到当前路径下
-            FileHelper.copyFile(new FileInputStream(context.getDatabasePath(DBHelper.DB_NAME)),
-                    srcPath + "/" + DBHelper.DB_NAME);
-            ZipUtil.zipFolder(srcPath, outputPath);
-            //然后发送压缩文件
-            Intent sendFileIntent = new Intent(Intent.ACTION_SEND);
-            sendFileIntent.setType("*/*");
-            sendFileIntent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(new File(outputPath)));
-            context.startActivity(sendFileIntent);
-            ToastHelper.show(context, "文件发售给你成功\n 路径为：" + outputPath);
-        } catch (Exception e) {
-            e.printStackTrace();
-            Timber.e("something is wrong");
-        }
+    public static void sendZipFile(final Context context) {
+        new AsyncTask<Void, Void, Void>() {
+            @Override
+            protected Void doInBackground(Void... params) {
+                EventBus.getDefault().post(new CompressFileEvent(CompressFileEvent.Event.BEGIN));
+                try {
+                    //首先压缩文件
+                    String srcPath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/GSM/Picture";
+                    String outputPath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/GSM_输出.zip";
+                    //首先将数据库文件复制到当前路径下
+                    FileHelper.copyFile(new FileInputStream(context.getDatabasePath(DBHelper.DB_NAME)),
+                            srcPath + "/" + DBHelper.DB_NAME);
+                    ZipUtil.zipFolder(srcPath, outputPath);
+                    //然后发送压缩文件
+                    Intent sendFileIntent = new Intent(Intent.ACTION_SEND);
+                    sendFileIntent.setType("*/*");
+                    sendFileIntent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(new File(outputPath)));
+                    context.startActivity(sendFileIntent);
+                    ToastHelper.show(context, "文件发售给你成功\n 路径为：" + outputPath);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    Timber.e("something is wrong");
+                }
+                return null;
+            }
+
+            @Override
+            protected void onPostExecute(Void aVoid) {
+                super.onPostExecute(aVoid);
+                EventBus.getDefault().post(new CompressFileEvent(CompressFileEvent.Event.END));
+            }
+        }.execute();
     }
 
     /**

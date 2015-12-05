@@ -230,8 +230,8 @@ public class BaiduMarkerActivity extends AppCompatActivity {
         switch (item.getItemId()) {
             case R.id.id_action_load_digital_file:
                 break;
-            case R.id.id_action_load_marker:
-                break;
+//            case R.id.id_action_load_marker:
+//                break;
             case android.R.id.home:
                 if (requestCode == BaiduPrjEditActivity.REQUEST_CODE_MARKER_EDIT_ACTIVITY) {
                     finish();

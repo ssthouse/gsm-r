@@ -11,6 +11,7 @@ import android.view.animation.AnimationUtils;
 import android.widget.CompoundButton;
 import android.widget.RadioGroup;
 import android.widget.Switch;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.amap.api.maps.AMap;
@@ -26,6 +27,7 @@ import com.xunce.gsmr.lib.kmlParser.KMLParser;
 import com.xunce.gsmr.lib.xmlMarkerParser.XmlMarkerParser;
 import com.xunce.gsmr.model.MarkerItem;
 import com.xunce.gsmr.model.PrjItem;
+import com.xunce.gsmr.model.event.CompressFileEvent;
 import com.xunce.gsmr.model.event.ExcelXmlDataEvent;
 import com.xunce.gsmr.model.event.MarkerEditEvent;
 import com.xunce.gsmr.model.event.MarkerIconChangeEvent;
@@ -59,7 +61,7 @@ public class GaodePrjEditActivity extends GaodeBaseActivity {
     public static final int REQUEST_CODE_MARKER_EDIT_ACTIVITY = 1003;
     //打开当前Marker的图片展示的Activity
     public static final int REQUEST_CODE_PICTURE_ACTIVITY = 1002;
-    //选取---初始选址文件(.xml)---数字地图文件--xml文件---kml文件
+    //选取---初始选址文件(.xml)---数字地图文 件--xml文件---kml文件
     public static final int REQUEST_CODE_LOAD_XML_MARKER_FILE = 1007;
     public static final int REQUEST_CODE_LOAD_DIGITAL_FILE = 1004;
     public static final int REQUEST_CODE_LOAD_XML_FILE = 1005;
@@ -79,6 +81,8 @@ public class GaodePrjEditActivity extends GaodeBaseActivity {
      */
     //进度条
     private View pbBlock;
+    //进度条说明文字
+    private TextView tvPbComment;
     //地图模式选择
     private RadioGroup rgMapMode;
     //公里标显示标志位
@@ -147,6 +151,7 @@ public class GaodePrjEditActivity extends GaodeBaseActivity {
         ViewHelper.initActionBar(this, getSupportActionBar(), prjItem.getPrjName());
         //progressbar控件
         pbBlock = findViewById(R.id.id_pb_block);
+        tvPbComment = (TextView) findViewById(R.id.id_tv_pb_comment);
         //初始化地图Mode控件
         initMapMode();
         //填充Marker
@@ -462,9 +467,25 @@ public class GaodePrjEditActivity extends GaodeBaseActivity {
      */
     public void onEventMainThread(ProgressbarEvent progressbarEvent) {
         if (progressbarEvent.isShow()) {
+            tvPbComment.setText("正在加载，请稍后。");
             pbBlock.setVisibility(View.VISIBLE);
         } else {
             pbBlock.setVisibility(View.INVISIBLE);
+        }
+    }
+
+    /**
+     * 正在压缩文件提示
+     */
+    public void onEventMainThread(CompressFileEvent event){
+        switch (event.getState()){
+            case BEGIN:
+                tvPbComment.setText("正在压缩输出文件，请稍后。");
+                pbBlock.setVisibility(View.VISIBLE);
+                break;
+            case END:
+                pbBlock.setVisibility(View.INVISIBLE);
+                break;
         }
     }
 

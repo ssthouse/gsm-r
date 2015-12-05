@@ -1,14 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/id_pb_block"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:gravity="center"
-    android:visibility="gone"
-    android:id="@+id/id_pb_block"
     android:background="#77bdbdbd"
-    android:orientation="vertical">
+    android:gravity="center"
+    android:orientation="vertical"
+    android:visibility="gone">
 
     <com.github.rahatarmanahmed.cpv.CircularProgressView
         xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -19,8 +18,9 @@
         app:cpv_indeterminate="true" />
 
     <TextView
+        android:id="@+id/id_tv_pb_comment"
         android:layout_width="wrap_content"
-        android:textSize="16dp"
         android:layout_height="wrap_content"
-        android:text="正在加载,请稍候..."/>
+        android:text="正在加载,请稍候..."
+        android:textSize="16dp" />
 </LinearLayout>
