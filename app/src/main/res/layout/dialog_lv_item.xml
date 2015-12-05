@@ -5,32 +5,32 @@
     android:orientation="vertical">
 
     <TextView
-        android:background="@drawable/lv_item_selector"
         android:id="@+id/id_menu_delete"
         android:layout_width="match_parent"
         android:layout_height="56dp"
+        android:background="@drawable/selector_btn_white_2_blue"
         android:gravity="center"
         android:text="删除"
-        android:textColor="@color/white"
+        android:textColor="@drawable/selector_text_black_2_white"
         android:textSize="@dimen/text_size_normal" />
 
     <TextView
-        android:background="@drawable/lv_item_selector"
         android:id="@+id/id_menu_edit"
         android:layout_width="match_parent"
         android:layout_height="56dp"
+        android:background="@drawable/selector_btn_white_2_blue"
         android:gravity="center"
         android:text="编辑"
-        android:textColor="@color/white"
+        android:textColor="@drawable/selector_text_black_2_white"
         android:textSize="@dimen/text_size_normal" />
 
     <TextView
-        android:background="@drawable/lv_item_selector"
         android:id="@+id/id_menu_rename"
         android:layout_width="match_parent"
         android:layout_height="56dp"
+        android:background="@drawable/selector_btn_white_2_blue"
         android:gravity="center"
         android:text="重命名"
-        android:textColor="@color/white"
+        android:textColor="@drawable/selector_text_black_2_white"
         android:textSize="@dimen/text_size_normal" />
 </LinearLayout>

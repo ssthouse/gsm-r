@@ -66,6 +66,11 @@ public class PrjItem extends Model implements Serializable{
         this.delete();
     }
 
+    /**
+     * 改变工程名
+     * @param context
+     * @param newName
+     */
     public void changeName(Context context, String newName){
         //首先要判断Preference中保存的是不是当前工程
         //如果是要修改Preference
@@ -82,7 +87,6 @@ public class PrjItem extends Model implements Serializable{
         List<MarkerItem> markerItemList = this.getMarkerItemList();
         if (markerItemList != null) {
             for (MarkerItem item : markerItemList) {
-//                L.log(TAG, "我修改了MarkerItem的prjName");
                 item.setPrjName(newName);
                 item.save();
             }
