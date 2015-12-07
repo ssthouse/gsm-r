@@ -28,7 +28,7 @@ public class Text extends BaseGraph {
     private float rotate;
     private String content;
 
-    //TODO---试试能不能提高速度
+    //保存options
     private TextOptions textOptions;
     //用于保存画在地图上的文字
     private com.amap.api.maps.model.Text text;

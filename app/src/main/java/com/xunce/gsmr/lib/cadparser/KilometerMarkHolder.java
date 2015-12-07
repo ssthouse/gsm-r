@@ -60,7 +60,6 @@ public class KilometerMarkHolder {
     }
 
     /**
-     * TODO
      * 获取给定数据点的经纬度
      * 调用该方法前___需要先检测数据是否正确
      * 根据:
@@ -70,7 +69,7 @@ public class KilometerMarkHolder {
      * 首先需要判断:
      * 数据是否正确
      *
-     * @return
+     * @return 经度, 纬度
      */
     public double[] getPosition(String text, String sideDirection, double distanceToRail) {
         //获取应该偏移的方向
@@ -110,16 +109,17 @@ public class KilometerMarkHolder {
         }
         //算出直线
         Timber.e("当前点的经纬度是:\t" + currentMark.getLatitude() + "\t" + currentMark.getLongitude());
-        double xy1[] = LonLatToUTMXY.LatLonToUTM(currentMark.getLatitude(), currentMark.getLongitude());
-        double xy2[] = LonLatToUTMXY.LatLonToUTM(nextMarker.getLatitude(), nextMarker.getLongitude());
+        double xyCurrent[] = LonLatToUTMXY.latLonToUTM(currentMark.getLatitude(), currentMark.getLongitude());
+        double xyNext[] = LonLatToUTMXY.latLonToUTM(nextMarker.getLatitude(), nextMarker.getLongitude());
 
-        Timber.e("当前点的大地坐标是:\t" + xy1[0] + "\t" + xy1[1]);
-        MathLine markerLine = MathLine.getMathLine(xy1[0], xy1[1], xy2[0], xy2[1]);
+        Timber.e("当前点的大地坐标是:\t" + xyCurrent[0] + "\t" + xyCurrent[1]);
+        //传出当前两个点获得的直线
+        MathLine markerLine = MathLine.getMathLine(xyCurrent[0], xyCurrent[1], xyNext[0], xyNext[1]);
         //获取垂直的线___根据找到的当前公里标
-        MathLine verticalLine = markerLine.getVerticalLine(xy1[0], xy1[1]);
+        MathLine verticalLine = markerLine.getVerticalLine(xyCurrent[0], xyCurrent[1]);
         //根据给定的距离当前点的距离___获取选定点的___大地坐标
-        double xyPosition[] = verticalLine.getPosition(xy1[0], xy1[1],distanceToRail, isRight);
-        double lonLat[] = UTMXY2BL.UTMWGSXYtoBL(xyPosition[1], xyPosition[0], xy1[2] * 6 - 180 - 3);
+        double xyPosition[] = verticalLine.getPosition(xyCurrent[0], xyCurrent[1], distanceToRail, isRight);
+        double lonLat[] = UTMXY2BL.UTMWGSXYtoBL(xyPosition[1], xyPosition[0], xyCurrent[2] * 6 - 180 - 3);
         //打印找到的点
         Timber.e("我找到的匹配的点是:\t" + currentMark.toString());
         Timber.e("我最终得到的大地坐标;\t" + xyPosition[0] + "\t" + xyPosition[1]);

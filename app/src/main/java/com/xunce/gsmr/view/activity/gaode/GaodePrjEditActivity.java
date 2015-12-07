@@ -140,7 +140,7 @@ public class GaodePrjEditActivity extends GaodeBaseActivity {
         initView();
 
         //TODO---测试代码
-        double data[] = LonLatToUTMXY.LatLonToUTM(29.75282575519019, 115.40374717759676);
+        double data[] = LonLatToUTMXY.latLonToUTM(29.75282575519019, 115.40374717759676);
         Timber.e(data[0] + "\t" + data[1] + "\t" + data[2]);
     }
 

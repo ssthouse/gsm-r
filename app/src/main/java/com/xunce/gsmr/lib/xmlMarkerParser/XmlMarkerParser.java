@@ -85,7 +85,7 @@ public class XmlMarkerParser extends DefaultHandler {
             ToastHelper.show(context, "请先加载cad文件（.xml）");
             return;
         }
-        //TODO--首先需要看数据能不能计算出经纬度--不能的就不添加
+        //首先要看数据能不能计算出经纬度--不能的就不添加将marker
         int addCount = 0;
         int failCount = 0;
         for (MarkerItem markerItem : markerItemList) {

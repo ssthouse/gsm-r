@@ -15,7 +15,7 @@ public class LonLatToUTMXY {
     static double UTMScaleFactor = 0.9996;
 
     //得到的结果是：x坐标，y坐标，区域编号
-    public static double[] LatLonToUTM(double lat, double lon) {
+    public static double[] latLonToUTM(double lat, double lon) {
         double zone = Math.floor((lon + 180.0) / 6) + 1;
 
         double cm = UTMCentralMeridian(zone);

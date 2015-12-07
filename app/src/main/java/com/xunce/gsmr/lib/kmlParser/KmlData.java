@@ -9,8 +9,6 @@ import com.amap.api.maps.model.TextOptions;
 import java.util.ArrayList;
 import java.util.List;
 
-import timber.log.Timber;
-
 /**
  * Kml文件解析出的数据
  * Created by ssthouse on 2015/11/25.
@@ -51,10 +49,10 @@ class KmlData {
                     .text(name);
             amap.addText(textOptions);
         }
-        //TODO---查看所有数据点
-        for (PolyCoordinates polyCoordinates : pointList) {
-            Timber.e(polyCoordinates + "\n");
-        }
+        //查看所有数据点
+//        for (PolyCoordinates polyCoordinates : pointList) {
+//            Timber.e(polyCoordinates + "\n");
+//        }
     }
 
     @Override
