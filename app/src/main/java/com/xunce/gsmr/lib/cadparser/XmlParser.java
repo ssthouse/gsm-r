@@ -63,6 +63,10 @@ public class XmlParser extends DefaultHandler {
      */
     private KilometerMarkHolder kilometerMarkHolder = new KilometerMarkHolder();
 
+    public XmlParser(){
+
+    }
+
     /**
      * 构造方法
      *
@@ -148,6 +152,7 @@ public class XmlParser extends DefaultHandler {
         }
         for (com.xunce.gsmr.model.gaodemap.graph.Vector vector : vectorList) {
             vector.draw(aMap);
+            Timber.e("我画了一条vector");
         }
     }
 
@@ -172,6 +177,21 @@ public class XmlParser extends DefaultHandler {
     public void hideText() {
         for (Text text : textList) {
             text.hide();
+        }
+    }
+
+    /**
+     * 清除数据
+     */
+    public void clearData(){
+        for (Line line : lineList) {
+            line.setPolyline(null);
+        }
+        for (Text text : textList) {
+            text.setText(null);
+        }
+        for (com.xunce.gsmr.model.gaodemap.graph.Vector vector : vectorList) {
+            vector.setPolyline(null);
         }
     }
 
@@ -298,5 +318,29 @@ public class XmlParser extends DefaultHandler {
 
     public void setKilometerMarkHolder(KilometerMarkHolder kilometerMarkHolder) {
         this.kilometerMarkHolder = kilometerMarkHolder;
+    }
+
+    public List<Line> getLineList() {
+        return lineList;
+    }
+
+    public void setLineList(List<Line> lineList) {
+        this.lineList = lineList;
+    }
+
+    public List<Text> getTextList() {
+        return textList;
+    }
+
+    public void setTextList(List<Text> textList) {
+        this.textList = textList;
+    }
+
+    public List<com.xunce.gsmr.model.gaodemap.graph.Vector> getVectorList() {
+        return vectorList;
+    }
+
+    public void setVectorList(List<com.xunce.gsmr.model.gaodemap.graph.Vector> vectorList) {
+        this.vectorList = vectorList;
     }
 }

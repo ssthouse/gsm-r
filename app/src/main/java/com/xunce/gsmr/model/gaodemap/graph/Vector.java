@@ -15,18 +15,12 @@ import java.util.List;
  * Created by ssthouse on 2015/10/16.
  */
 public class Vector extends BaseGraph {
-    private static final String TAG = "Vector";
-
     private static final int POLYLINE_WIDTH = 6;
 
     /**
      * 当前矢量的名称
      */
     private String name;
-    /**
-     * 矢量在地图中的类型
-     */
-    private String typeInMap;
 
     /**
      * 一个矢量的所有点
@@ -46,16 +40,6 @@ public class Vector extends BaseGraph {
      */
     public Vector(String name) {
         this.name = name;
-    }
-
-    /**
-     * 传入一个name的构造方法
-     *
-     * @param name
-     */
-    public Vector(String name, String typeInMap) {
-        this.name = name;
-        this.typeInMap = typeInMap;
     }
 
     /**
@@ -93,6 +77,14 @@ public class Vector extends BaseGraph {
     }
 
     /**
+     * 强制重画
+     */
+    public void forceDraw(AMap aMap){
+        initPolylineOptions();
+        polyline = aMap.addPolyline(polylineOptions);
+    }
+
+    /**
      * 隐藏
      */
     public void hide() {
@@ -124,5 +116,13 @@ public class Vector extends BaseGraph {
 
     public void setPointList(List<Point> pointList) {
         this.pointList = pointList;
+    }
+
+    public Polyline getPolyline() {
+        return polyline;
+    }
+
+    public void setPolyline(Polyline polyline) {
+        this.polyline = polyline;
     }
 }

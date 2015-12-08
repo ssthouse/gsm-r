@@ -201,9 +201,24 @@ public class GaodeMarkerActivity extends GaodeBaseActivity {
      * @param drawMapDataEvent
      */
     public void onEventMainThread(DrawMapDataEvent drawMapDataEvent) {
-        digitalMapHolder = drawMapDataEvent.getDigitalMapHolder();
-        xmlParser = drawMapDataEvent.getXmlParser();
-        getaMap().clear();
+        //复制一份holder到当前activity
+        if(drawMapDataEvent.getDigitalMapHolder() != null) {
+            digitalMapHolder = new DigitalMapHolder();
+            digitalMapHolder.setTextList(drawMapDataEvent.getDigitalMapHolder().getTextList());
+            digitalMapHolder.setVectorList(drawMapDataEvent.getDigitalMapHolder().getVectorList());
+            digitalMapHolder.clearData();
+        }
+        if(drawMapDataEvent.getXmlParser() != null) {
+            xmlParser = new XmlParser();
+            xmlParser.setTextList(drawMapDataEvent.getXmlParser().getTextList());
+            xmlParser.setLineList(drawMapDataEvent.getXmlParser().getLineList());
+            xmlParser.setVectorList(drawMapDataEvent.getXmlParser().getVectorList());
+            xmlParser.clearData();
+        }
+        //
+        //digitalMapHolder = drawMapDataEvent.getDigitalMapHolder();
+        //xmlParser = drawMapDataEvent.getXmlParser();
+        //getaMap().clear();
         if(digitalMapHolder != null){
             Timber.e("我画了---digitalmap");
             digitalMapHolder.drawLine(getaMap());
@@ -271,7 +286,7 @@ public class GaodeMarkerActivity extends GaodeBaseActivity {
         //如果直接想返回---需要删除提前在数据库中保存的数据
         markerItem.delete();
         EventBus.getDefault().post(new MarkerEditEvent(MarkerEditEvent.BackState.UNCHANGED));
-        finish();
+        super.onBackPressed();
     }
 
     @Override

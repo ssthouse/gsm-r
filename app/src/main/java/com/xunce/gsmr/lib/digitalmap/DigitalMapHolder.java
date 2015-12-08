@@ -38,19 +38,7 @@ public class DigitalMapHolder {
     private List<Text> textList = new ArrayList<>();
     private List<Vector> vectorList = new ArrayList<>();
 
-    /**
-     * 唯一的单例
-     */
-    private static DigitalMapHolder digitalMapHolder;
-
-    /**
-     * 是不是空的
-     *
-     * @return 单例是否为空
-     */
-    public static boolean isEmpty() {
-        return digitalMapHolder == null;
-    }
+    public DigitalMapHolder(){}
 
     /**
      * 传入数据库地址的构造方法
@@ -113,7 +101,7 @@ public class DigitalMapHolder {
                 Timber.e("我一共解释出来了这么多个Text的数据: " + textList.size());
                 //运行完将progressbar隐藏
                 EventBus.getDefault().post(new ProgressbarEvent(false));
-                ToastHelper.show(context, "xml文件加载成功!");
+                ToastHelper.show(context, "数字地图加载成功!");
             }
         }.execute();
     }
@@ -179,6 +167,18 @@ public class DigitalMapHolder {
     }
 
     /**
+     * 清除数据
+     */
+    public void clearData(){
+        for(Text text : textList){
+            text.setText(null);
+        }
+        for(Vector vector : vectorList){
+            vector.setPolyline(null);
+        }
+    }
+
+    /**
      * 将之前地图画的数据destory
      */
     public void destory() {
@@ -224,5 +224,23 @@ public class DigitalMapHolder {
             e.printStackTrace();
         }
         return null;
+    }
+
+    //getter---------------------setter---------------------------------------
+
+    public List<Text> getTextList() {
+        return textList;
+    }
+
+    public void setTextList(List<Text> textList) {
+        this.textList = textList;
+    }
+
+    public List<Vector> getVectorList() {
+        return vectorList;
+    }
+
+    public void setVectorList(List<Vector> vectorList) {
+        this.vectorList = vectorList;
     }
 }

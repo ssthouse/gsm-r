@@ -10,8 +10,6 @@ import com.amap.api.maps.model.PolylineOptions;
  * Created by ssthouse on 2015/9/15.
  */
 public class Line extends BaseGraph {
-    private static final String TAG = "Line";
-
     //直线的参数
     private static int lineColor = 0xAAFF0000;
     private static int lineWidth = 10;
@@ -88,4 +86,11 @@ public class Line extends BaseGraph {
         this.latLngEnd = latLngEnd;
     }
 
+    public Polyline getPolyline() {
+        return polyline;
+    }
+
+    public void setPolyline(Polyline polyline) {
+        this.polyline = polyline;
+    }
 }

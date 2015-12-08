@@ -145,4 +145,12 @@ public class Text extends BaseGraph {
     public void setContent(String content) {
         this.content = content;
     }
+
+    public com.amap.api.maps.model.Text getText() {
+        return text;
+    }
+
+    public void setText(com.amap.api.maps.model.Text text) {
+        this.text = text;
+    }
 }
