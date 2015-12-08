@@ -13,10 +13,13 @@ import android.widget.Switch;
 
 import com.gitonway.lee.niftymodaldialogeffects.lib.NiftyDialogBuilder;
 import com.xunce.gsmr.R;
+import com.xunce.gsmr.model.event.LocateModeChangeEvent;
 import com.xunce.gsmr.util.preference.PreferenceHelper;
+import com.xunce.gsmr.util.view.ToastHelper;
 import com.xunce.gsmr.util.view.ViewHelper;
 import com.xunce.gsmr.view.style.TransparentStyle;
 
+import de.greenrobot.event.EventBus;
 import timber.log.Timber;
 
 /**
@@ -59,6 +62,13 @@ public class SettingActivity extends AppCompatActivity {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 PreferenceHelper.getInstance(SettingActivity.this).setLocateMode(SettingActivity.this, isChecked);
+                //发送定位模式改变event
+                EventBus.getDefault().post(new LocateModeChangeEvent());
+                if(isChecked){
+                    ToastHelper.show(SettingActivity.this, "切换为使用Wifi定位");
+                }else{
+                    ToastHelper.show(SettingActivity.this, "切换为GPS定位");
+                }
             }
         });
 

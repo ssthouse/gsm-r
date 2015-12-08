@@ -29,6 +29,7 @@ import com.xunce.gsmr.model.MarkerItem;
 import com.xunce.gsmr.model.PrjItem;
 import com.xunce.gsmr.model.event.CompressFileEvent;
 import com.xunce.gsmr.model.event.ExcelXmlDataEvent;
+import com.xunce.gsmr.model.event.LocateModeChangeEvent;
 import com.xunce.gsmr.model.event.MarkerEditEvent;
 import com.xunce.gsmr.model.event.MarkerIconChangeEvent;
 import com.xunce.gsmr.model.event.ProgressbarEvent;
@@ -134,7 +135,7 @@ public class GaodePrjEditActivity extends GaodeBaseActivity {
         prjItem = (PrjItem) getIntent().getSerializableExtra(Constant.EXTRA_KEY_PRJ_ITEM);
 
         //启动定位
-        super.showLocate();
+        super.initLocate();
 
         //初始化View
         initView();
@@ -167,6 +168,7 @@ public class GaodePrjEditActivity extends GaodeBaseActivity {
                 if (isChecked) {
                     if (digitalMapHolder == null) {
                         ToastHelper.show(GaodePrjEditActivity.this, "请先加载数字地图文件");
+                        buttonView.setChecked(false);
                     } else {
                         CameraPosition cameraPosition = getaMap().getCameraPosition();
                         if (cameraPosition.zoom > GaodeMapCons.zoomLevel) {
@@ -175,10 +177,8 @@ public class GaodePrjEditActivity extends GaodeBaseActivity {
                             digitalMapHolder.drawLine(getaMap());
                         }
                     }
-                } else {
-                    if (digitalMapHolder != null) {
-                        digitalMapHolder.hide();
-                    }
+                } else if (digitalMapHolder != null) {
+                    digitalMapHolder.hide();
                 }
             }
         });
@@ -409,7 +409,7 @@ public class GaodePrjEditActivity extends GaodeBaseActivity {
             //加载初始xml中的Marker数据
             case R.id.id_action_load_xml_marker:
                 //只有加载了xml文件才加载初始选址文件
-                if(xmlParser == null){
+                if (xmlParser == null) {
                     ToastHelper.show(this, "请先加载cad文件(.xml)");
                 }
                 FileHelper.showFileChooser(this, REQUEST_CODE_LOAD_XML_MARKER_FILE);
@@ -448,6 +448,15 @@ public class GaodePrjEditActivity extends GaodeBaseActivity {
     }
 
     /**
+     * setting界面的定位mode改变事件
+     *
+     * @param event
+     */
+    public void onEventMainThread(LocateModeChangeEvent event) {
+        changeLocateMode();
+    }
+
+    /**
      * prjEditActivity的回调方法
      */
     public void onEventMainThread(MarkerEditEvent markerEditEvent) {
@@ -477,8 +486,8 @@ public class GaodePrjEditActivity extends GaodeBaseActivity {
     /**
      * 正在压缩文件提示
      */
-    public void onEventMainThread(CompressFileEvent event){
-        switch (event.getState()){
+    public void onEventMainThread(CompressFileEvent event) {
+        switch (event.getState()) {
             case BEGIN:
                 tvPbComment.setText("正在压缩输出文件，请稍后。");
                 pbBlock.setVisibility(View.VISIBLE);
@@ -491,16 +500,18 @@ public class GaodePrjEditActivity extends GaodeBaseActivity {
 
     /**
      * 更新Marker图标颜色
+     *
      * @param event
      */
-    public void onEventMainThread(MarkerIconChangeEvent event){
-        if(event.isChanged()){
+    public void onEventMainThread(MarkerIconChangeEvent event) {
+        if (event.isChanged()) {
             loadMarker(prjItem);
         }
     }
 
     /**
      * 提示xml文件加载情况
+     *
      * @param excelXmlDataEvent
      */
     public void onEventMainThread(ExcelXmlDataEvent excelXmlDataEvent) {

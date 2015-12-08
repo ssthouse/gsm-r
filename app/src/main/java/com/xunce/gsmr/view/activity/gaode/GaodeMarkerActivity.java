@@ -81,7 +81,7 @@ public class GaodeMarkerActivity extends GaodeBaseActivity {
         if (markerItem != null && markerItem.getLatitude() != 0 && markerItem.getLongitude() != 0) {
             super.animateToPoint(markerItem.getGaodeLatLng());
         } else {
-            showLocate();
+            initLocate();
             animateToMyLocation();
         }
 

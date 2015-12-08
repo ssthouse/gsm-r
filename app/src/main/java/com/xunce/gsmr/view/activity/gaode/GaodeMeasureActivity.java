@@ -88,10 +88,10 @@ public class GaodeMeasureActivity extends GaodeBaseActivity {
         ViewHelper.initActionBar(this, getSupportActionBar(), "测距");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+        //开启定位
+        super.initLocate();
         //将地图移动到目标点
         animateToPoint(latLng);
-        //开启定位
-        super.showLocate();
 
         //view---和点击事件
         tvLength = (TextView) findViewById(R.id.id_tv_length);

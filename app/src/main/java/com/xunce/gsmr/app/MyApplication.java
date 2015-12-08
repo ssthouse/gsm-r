@@ -18,6 +18,8 @@ public class MyApplication extends Application {
     public void onCreate() {
         //fir统计
         FIR.init(this);
+        //调试阶段---不提交数据
+        FIR.setDebug(true);
         super.onCreate();
         //百度地图初始化
         SDKInitializer.initialize(getApplicationContext());

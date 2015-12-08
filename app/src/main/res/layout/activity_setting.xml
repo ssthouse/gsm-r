@@ -28,8 +28,7 @@
             android:id="@+id/id_sw_locate_mode"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_gravity="center_vertical"
-            android:clickable="false" />
+            android:layout_gravity="center_vertical" />
     </LinearLayout>
 
     <!--地图选择-->
