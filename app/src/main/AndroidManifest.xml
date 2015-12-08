@@ -73,6 +73,8 @@
             android:name="com.baidu.location.f"
             android:enabled="true"
             android:process=":remote" />
+        <!--高德定位service-->
+        <service android:name="com.amap.api.location.APSService"/>
         <!--Project选择Activity-->
         <activity
             android:screenOrientation="portrait"

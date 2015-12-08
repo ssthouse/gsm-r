@@ -55,7 +55,7 @@ android {
 }
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
+    compile fileTree(include: ['*.jar'], dir: 'libs')
     //google_support_jar
     compile 'com.android.support:appcompat-v7:22.2.0'
     compile 'com.android.support:support-v4:22.2.0'
@@ -80,5 +80,6 @@ dependencies {
     //for log
     compile 'com.jakewharton.timber:timber:4.1.0'
     //侧滑删除的lib
-    compile "com.daimajia.swipelayout:library:1.1.8@aar"
+    compile 'com.daimajia.swipelayout:library:1.1.8@aar'
+    compile files('libs/AMap_Location_v2.1.0_20151202.jar')
 }

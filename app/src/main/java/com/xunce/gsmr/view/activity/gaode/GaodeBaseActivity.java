@@ -1,13 +1,12 @@
 package com.xunce.gsmr.view.activity.gaode;
 
-import android.location.Location;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
 import com.amap.api.location.AMapLocation;
+import com.amap.api.location.AMapLocationClient;
+import com.amap.api.location.AMapLocationClientOption;
 import com.amap.api.location.AMapLocationListener;
-import com.amap.api.location.LocationManagerProxy;
-import com.amap.api.location.LocationProviderProxy;
 import com.amap.api.maps.AMap;
 import com.amap.api.maps.CameraUpdate;
 import com.amap.api.maps.CameraUpdateFactory;
@@ -18,7 +17,9 @@ import com.amap.api.maps.model.LatLng;
 import com.xunce.gsmr.R;
 import com.xunce.gsmr.model.PrjItem;
 import com.xunce.gsmr.model.gaodemap.MarkerHolder;
-import com.xunce.gsmr.util.preference.PreferenceHelper;
+import com.xunce.gsmr.util.view.ToastHelper;
+
+import timber.log.Timber;
 
 /**
  * 必须有一个R.id.id_map的高德地图控件
@@ -43,7 +44,8 @@ public class GaodeBaseActivity extends AppCompatActivity {
     /**
      * 定位管理器
      */
-    private LocationManagerProxy aMapManager;
+    private AMapLocationClient locationClient = null;
+    private AMapLocationClientOption locationOption = null;
     /**
      * 保存当前位置
      */
@@ -54,82 +56,6 @@ public class GaodeBaseActivity extends AppCompatActivity {
      */
     private MarkerHolder markerHolder;
 
-    /**
-     * 定位回调
-     */
-    private LocationSource locationSource = new LocationSource() {
-        /**
-         * 激活定位
-         */
-        @Override
-        public void activate(OnLocationChangedListener listener) {
-            mListener = listener;
-            if (aMapManager == null) {
-                aMapManager = LocationManagerProxy.getInstance(GaodeBaseActivity.this);
-            /*
-			 * mAMapLocManager.setGpsEnable(false);//
-			 * 1.0.2版本新增方法，设置true表示混合定位中包含gps定位，false表示纯网络定位，默认是true
-			 */
-                // Location API定位采用GPS和网络混合定位方式，时间最短是2000毫秒
-                aMapManager.requestLocationData(
-                        LocationProviderProxy.AMapNetwork, 1000, 10, locationListener);
-                //判断是否开启GPS定位
-                if (PreferenceHelper.getInstance(GaodeBaseActivity.this)
-                        .getIsWifiLocateMode(GaodeBaseActivity.this)) {
-                    aMapManager.setGpsEnable(false);
-                }
-            }
-        }
-
-        /**
-         * 停止定位
-         */
-        @Override
-        public void deactivate() {
-            mListener = null;
-            if (aMapManager != null) {
-                aMapManager.removeUpdates(locationListener);
-                aMapManager.destroy();
-            }
-            aMapManager = null;
-        }
-    };
-
-    /**
-     * 获取定位的回调
-     */
-    private AMapLocationListener locationListener = new AMapLocationListener() {
-        /**
-         * 定位回调方法
-         */
-        @Override
-        public void onLocationChanged(AMapLocation aLocation) {
-            if (mListener != null && aLocation != null) {
-                currentAMapLocation = aLocation;
-                mListener.onLocationChanged(aLocation);// 显示系统小蓝点
-            }
-        }
-        //废弃方法---------------------------------------------
-        @Override
-        public void onLocationChanged(Location location) {
-
-        }
-
-        @Override
-        public void onProviderDisabled(String provider) {
-
-        }
-
-        @Override
-        public void onProviderEnabled(String provider) {
-
-        }
-
-        @Override
-        public void onStatusChanged(String provider, int status, Bundle extras) {
-
-        }
-    };
 
     /**
      * 初始化AMap对象
@@ -149,9 +75,9 @@ public class GaodeBaseActivity extends AppCompatActivity {
      */
     public void loadMarker(PrjItem prjItem) {
         //MarkerHolder模块
-        if(markerHolder == null){
+        if (markerHolder == null) {
             markerHolder = new MarkerHolder(this, prjItem, getaMap());
-        }else{
+        } else {
             markerHolder.initMarker();
         }
     }
@@ -171,6 +97,7 @@ public class GaodeBaseActivity extends AppCompatActivity {
      */
     public void animateToMyLocation() {
         if (currentAMapLocation == null) {
+            ToastHelper.show(this, "尚未获得定位信息");
             return;
         }
         LatLng latLng = new LatLng(currentAMapLocation.getLatitude(),
@@ -181,19 +108,47 @@ public class GaodeBaseActivity extends AppCompatActivity {
     //定位相关-------------------------------------------------------------
 
     /**
-     * 隐藏定位
+     * 获取定位得到的location
      */
-    public void hideLocate() {
-        aMap.setLocationSource(locationSource);// 设置定位监听
-        aMap.getUiSettings().setMyLocationButtonEnabled(false); // 是否显示默认的定位按钮
-        aMap.setMyLocationEnabled(false);// 是否可触发定位并显示定位层
-    }
+    private AMapLocationListener locationListener = new AMapLocationListener() {
+        @Override
+        public void onLocationChanged(AMapLocation aMapLocation) {
+            if (aMapLocation != null && aMapLocation.getErrorCode() == 0) {
+                currentAMapLocation = aMapLocation;
+                //显示小蓝点
+                mListener.onLocationChanged(currentAMapLocation);
+                Timber.e("我收到了一条定位...");
+            }
+        }
+    };
 
     /**
      * 显示定位
      */
     public void showLocate() {
-        aMap.setLocationSource(locationSource);// 设置定位监听
+        locationClient = new AMapLocationClient(this.getApplicationContext());
+        locationOption = new AMapLocationClientOption();
+        // 设置定位模式为仅设备模式
+        locationOption.setLocationMode(AMapLocationClientOption.AMapLocationMode.Hight_Accuracy);
+        locationOption.setInterval(1000);
+        // 设置定位监听
+        locationClient.setLocationListener(locationListener);
+        //开启定位
+        locationClient.startLocation();
+        //设置定位UI
+        aMap.setLocationSource(new LocationSource() {
+            @Override
+            public void activate(OnLocationChangedListener onLocationChangedListener) {
+                if(onLocationChangedListener != null){
+                    mListener = onLocationChangedListener;
+                }
+            }
+
+            @Override
+            public void deactivate() {
+
+            }
+        });
         aMap.getUiSettings().setMyLocationButtonEnabled(false); // 是否显示默认的定位按钮
         aMap.setMyLocationEnabled(true);// 是否可触发定位并显示定位层
     }
@@ -212,7 +167,6 @@ public class GaodeBaseActivity extends AppCompatActivity {
         super.onPause();
         if (mapView != null) {
             mapView.onPause();
-            locationSource.deactivate();
         }
     }
 
@@ -229,6 +183,15 @@ public class GaodeBaseActivity extends AppCompatActivity {
         super.onDestroy();
         if (mapView != null) {
             mapView.onDestroy();
+        }
+        if (null != locationClient) {
+            /**
+             * 如果AMapLocationClient是在当前Activity实例化的，
+             * 在Activity的onDestroy中一定要执行AMapLocationClient的onDestroy
+             */
+            locationClient.onDestroy();
+            locationClient = null;
+            locationOption = null;
         }
     }
 

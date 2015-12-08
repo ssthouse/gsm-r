@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.CompoundButton;
 import android.widget.Spinner;
 import android.widget.Switch;
 
@@ -54,12 +55,9 @@ public class SettingActivity extends AppCompatActivity {
         locateModeSwitch = (Switch) findViewById(R.id.id_sw_locate_mode);
         //首先设置为preference中的状态
         locateModeSwitch.setChecked(PreferenceHelper.getInstance(SettingActivity.this).getIsWifiLocateMode(this));
-        findViewById(R.id.id_ll_locate_mode).setOnClickListener(new View.OnClickListener() {
+        locateModeSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
-            public void onClick(View v) {
-                //改变switch状态
-                locateModeSwitch.toggle();
-                boolean isChecked = locateModeSwitch.isChecked();
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 PreferenceHelper.getInstance(SettingActivity.this).setLocateMode(SettingActivity.this, isChecked);
             }
         });
