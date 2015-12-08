@@ -152,7 +152,7 @@ public class XmlParser extends DefaultHandler {
         }
         for (com.xunce.gsmr.model.gaodemap.graph.Vector vector : vectorList) {
             vector.draw(aMap);
-            Timber.e("我画了一条vector");
+            //Timber.e("我画了一条vector");
         }
     }
 

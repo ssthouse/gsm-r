@@ -264,7 +264,8 @@ public class GaodePrjEditActivity extends GaodeBaseActivity {
                 //首先创建一个markerItem放到数据库中(在新开启Activity中--如果没有点击确定---就删除)
                 MarkerItem markerItem = new MarkerItem(prjItem);
                 markerItem.save();
-                GaodeMarkerActivity.start(GaodePrjEditActivity.this, markerItem, REQUEST_CODE_MARKER_ACTIVITY);
+                GaodeMarkerActivity.start(GaodePrjEditActivity.this,
+                        markerItem,getaMap().getCameraPosition().target,  REQUEST_CODE_MARKER_ACTIVITY);
                 //TODO---发送消息---在选址activity画出地图数据
                 handler.sendEmptyMessageDelayed(0, 1000);
             }
@@ -381,7 +382,7 @@ public class GaodePrjEditActivity extends GaodeBaseActivity {
     public void clickEdit(View v) {
         //生成MarkerItem--跳转到MarkerEditActivity
         GaodeMarkerActivity.start(this, getMarkerHolder().getCurrentMarkerItem(),
-                REQUEST_CODE_MARKER_EDIT_ACTIVITY);
+                getaMap().getCameraPosition().target, REQUEST_CODE_MARKER_EDIT_ACTIVITY);
     }
 
     /**

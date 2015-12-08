@@ -61,15 +61,18 @@ public class GaodeMarkerActivity extends GaodeBaseActivity {
     /**
      * 启动当前Activity
      *
-     * @param activity
-     * @param markerItem
-     * @param requestCode
+     * @param activity 上下文
+     * @param markerItem 编辑的数据
+     * @param requestCode 启动code
      */
-    public static void start(Activity activity, MarkerItem markerItem, int requestCode) {
+    public static void start(Activity activity, MarkerItem markerItem,LatLng latLng, int requestCode) {
         //填充intent进去markerItem和requestCode
         Intent intent = new Intent(activity, GaodeMarkerActivity.class);
         intent.putExtra(Constant.EXTRA_KEY_MARKER_ITEM, markerItem);
         intent.putExtra(Constant.EXTRA_KEY_REQUEST_CODE, requestCode);
+        //之前在prjEditAc的界面中心坐标
+        intent.putExtra(Constant.EXTRA_KEY_LATITUDE, latLng.latitude);
+        intent.putExtra(Constant.EXTRA_KEY_LONGITUDE, latLng.longitude);
         //启动Activity
         activity.startActivityForResult(intent, requestCode);
         activity.overridePendingTransition(R.anim.activity_fade_in, R.anim.activity_fade_out);
@@ -95,7 +98,11 @@ public class GaodeMarkerActivity extends GaodeBaseActivity {
             super.animateToPoint(markerItem.getGaodeLatLng());
         } else {
             initLocate();
-            animateToMyLocation();
+//            animateToMyLocation();
+            Intent intent = getIntent();
+            LatLng latLng = new LatLng(intent.getDoubleExtra(Constant.EXTRA_KEY_LATITUDE, 0),
+                    intent.getDoubleExtra(Constant.EXTRA_KEY_LONGITUDE, 0));
+            animateToPoint(latLng);
         }
 
         //初始化View
@@ -215,19 +222,12 @@ public class GaodeMarkerActivity extends GaodeBaseActivity {
             xmlParser.setVectorList(drawMapDataEvent.getXmlParser().getVectorList());
             xmlParser.clearData();
         }
-        //
-        //digitalMapHolder = drawMapDataEvent.getDigitalMapHolder();
-        //xmlParser = drawMapDataEvent.getXmlParser();
-        //getaMap().clear();
         if(digitalMapHolder != null){
-            Timber.e("我画了---digitalmap");
             digitalMapHolder.drawLine(getaMap());
         }
         if(xmlParser != null){
             xmlParser.drawLine(getaMap());
-            Timber.e("我画了---xml--map");
         }
-        Timber.e("我画出了---地图数据");
     }
 
     /**
