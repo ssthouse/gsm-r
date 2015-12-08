@@ -150,7 +150,7 @@ public class GaodeBaseActivity extends AppCompatActivity {
             }
         });
         aMap.getUiSettings().setMyLocationButtonEnabled(false); // 是否显示默认的定位按钮
-        aMap.setMyLocationEnabled(true);// 是否可触发定位并显示定位层
+        aMap.setMyLocationEnabled(true);// 是否可触 发定位并显示定位层
     }
 
     /**

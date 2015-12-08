@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import com.amap.api.maps.AMap;
 import com.amap.api.maps.AMapUtils;
+import com.amap.api.maps.model.BitmapDescriptorFactory;
 import com.amap.api.maps.model.LatLng;
 import com.amap.api.maps.model.Marker;
 import com.amap.api.maps.model.MarkerOptions;
@@ -71,7 +72,6 @@ public class GaodeMeasureActivity extends GaodeBaseActivity {
         setContentView(R.layout.activity_gaode_measure);
         TransparentStyle.setTransparentStyle(this, R.color.color_primary);
         super.init(savedInstanceState);
-
         //接收数据
         Intent intent = getIntent();
         latLng = new LatLng(intent.getDoubleExtra(Constant.EXTRA_KEY_LATITUDE, 0),
@@ -137,12 +137,14 @@ public class GaodeMeasureActivity extends GaodeBaseActivity {
         for (int i = 0; i < pointList.size(); i++) {
             if (i == 0 || i == pointList.size() - 1) {
                 MarkerOptions markerOptions = new MarkerOptions().position(pointList.get(i))
-                        .icon(MarkerIconCons.descriptorRed)
+                        .icon(BitmapDescriptorFactory
+                                .fromResource(R.drawable.icon_marker_red))
                         .zIndex(9).draggable(true);
                 getaMap().addMarker(markerOptions);
             } else {
                 MarkerOptions markerOptions = new MarkerOptions().position(pointList.get(i))
-                        .icon(MarkerIconCons.descriptorBlue)
+                        .icon(BitmapDescriptorFactory
+                                .fromResource(R.drawable.icon_marker_blue))
                         .zIndex(9).draggable(true);
                 getaMap().addMarker(markerOptions);
             }

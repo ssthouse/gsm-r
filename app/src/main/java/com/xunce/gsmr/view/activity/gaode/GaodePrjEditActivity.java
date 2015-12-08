@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -28,6 +30,7 @@ import com.xunce.gsmr.lib.xmlMarkerParser.XmlMarkerParser;
 import com.xunce.gsmr.model.MarkerItem;
 import com.xunce.gsmr.model.PrjItem;
 import com.xunce.gsmr.model.event.CompressFileEvent;
+import com.xunce.gsmr.model.event.DrawMapDataEvent;
 import com.xunce.gsmr.model.event.ExcelXmlDataEvent;
 import com.xunce.gsmr.model.event.LocateModeChangeEvent;
 import com.xunce.gsmr.model.event.MarkerEditEvent;
@@ -105,6 +108,19 @@ public class GaodePrjEditActivity extends GaodeBaseActivity {
     private XmlParser xmlParser;
     //数字地图文件解析器
     private DigitalMapHolder digitalMapHolder;
+
+    /**
+     * 用于延时发送数据
+     */
+    private Handler handler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            if(msg.what == 0) {
+                EventBus.getDefault().post(new DrawMapDataEvent(digitalMapHolder, xmlParser));
+            }
+        }
+    };
 
     /**
      * 启动Activity
@@ -249,6 +265,8 @@ public class GaodePrjEditActivity extends GaodeBaseActivity {
                 MarkerItem markerItem = new MarkerItem(prjItem);
                 markerItem.save();
                 GaodeMarkerActivity.start(GaodePrjEditActivity.this, markerItem, REQUEST_CODE_MARKER_ACTIVITY);
+                //TODO---发送消息---在选址activity画出地图数据
+                handler.sendEmptyMessageDelayed(0, 1000);
             }
         });
         //定位
@@ -610,5 +628,13 @@ public class GaodePrjEditActivity extends GaodeBaseActivity {
             //杀掉当前app的进程---释放地图的内存
             System.exit(0);
         }
+    }
+
+    public XmlParser getXmlParser() {
+        return xmlParser;
+    }
+
+    public DigitalMapHolder getDigitalMapHolder() {
+        return digitalMapHolder;
     }
 }

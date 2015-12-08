@@ -10,12 +10,17 @@ import android.view.View;
 import android.widget.EditText;
 
 import com.amap.api.maps.AMap;
+import com.amap.api.maps.model.CameraPosition;
 import com.amap.api.maps.model.LatLng;
 import com.xunce.gsmr.R;
 import com.xunce.gsmr.app.Constant;
+import com.xunce.gsmr.lib.cadparser.XmlParser;
+import com.xunce.gsmr.lib.digitalmap.DigitalMapHolder;
 import com.xunce.gsmr.model.MarkerItem;
+import com.xunce.gsmr.model.event.DrawMapDataEvent;
 import com.xunce.gsmr.model.event.MarkerEditEvent;
 import com.xunce.gsmr.model.event.MarkerInfoSaveEvent;
+import com.xunce.gsmr.model.gaodemap.GaodeMapCons;
 import com.xunce.gsmr.util.DBHelper;
 import com.xunce.gsmr.util.gps.MarkerHelper;
 import com.xunce.gsmr.util.gps.PositionUtil;
@@ -24,6 +29,7 @@ import com.xunce.gsmr.util.view.ViewHelper;
 import com.xunce.gsmr.view.style.TransparentStyle;
 
 import de.greenrobot.event.EventBus;
+import timber.log.Timber;
 
 /**
  * 开启本Activity需要一个MarkerItem
@@ -44,6 +50,13 @@ public class GaodeMarkerActivity extends GaodeBaseActivity {
      * 经纬度输入框
      */
     private EditText etLatitude, etLongitude;
+
+    private DigitalMapHolder digitalMapHolder;
+    private XmlParser xmlParser;
+
+    private boolean isXmlTextShowed = false;
+    private boolean isDigitalMapTextShowed = false;
+
 
     /**
      * 启动当前Activity
@@ -141,6 +154,65 @@ public class GaodeMarkerActivity extends GaodeBaseActivity {
                 }
             }
         });
+
+        //监测---地图的大小变化---画出/隐藏---文字
+        getaMap().setOnCameraChangeListener(new AMap.OnCameraChangeListener() {
+            @Override
+            public void onCameraChange(CameraPosition cameraPosition) {
+            }
+
+            @Override
+            public void onCameraChangeFinish(CameraPosition cameraPosition) {
+                //数字地图已经加载 且 switch为开
+                if (digitalMapHolder != null) {
+                    //如果放大到16以上
+                    if (cameraPosition.zoom > GaodeMapCons.zoomLevel) {
+                        //Timber.e("放大到16以上了");
+                        if (!isDigitalMapTextShowed) {
+                            digitalMapHolder.drawText(getaMap());
+                            isDigitalMapTextShowed = true;
+                        }
+                    } else if (cameraPosition.zoom < GaodeMapCons.zoomLevel) {
+                        //Timber.e("缩小到16以下了");
+                        digitalMapHolder.hideText();
+                        isDigitalMapTextShowed = false;
+                    }
+                }
+                //如果 xml文件已经加载 且 switch为开
+                if (xmlParser != null) {
+                    //如果放大到16以上
+                    if (cameraPosition.zoom > GaodeMapCons.zoomLevel && !isXmlTextShowed) {
+                        xmlParser.drawText(getaMap());
+                        isXmlTextShowed = true;
+                        Timber.e(">>>> 16了");
+                    } else if (cameraPosition.zoom < GaodeMapCons.zoomLevel && isXmlTextShowed) {
+                        Timber.e("缩小到16以下了");
+                        xmlParser.hideText();
+                        isXmlTextShowed = false;
+                    }
+                }
+            }
+        });
+    }
+
+    /**
+     * 画出PrjEditActivity上已有的地图数据
+     *
+     * @param drawMapDataEvent
+     */
+    public void onEventMainThread(DrawMapDataEvent drawMapDataEvent) {
+        digitalMapHolder = drawMapDataEvent.getDigitalMapHolder();
+        xmlParser = drawMapDataEvent.getXmlParser();
+        getaMap().clear();
+        if(digitalMapHolder != null){
+            Timber.e("我画了---digitalmap");
+            digitalMapHolder.drawLine(getaMap());
+        }
+        if(xmlParser != null){
+            xmlParser.drawLine(getaMap());
+            Timber.e("我画了---xml--map");
+        }
+        Timber.e("我画出了---地图数据");
     }
 
     /**
@@ -177,12 +249,6 @@ public class GaodeMarkerActivity extends GaodeBaseActivity {
             case R.id.id_action_edit_info:
                 MarkerInfoEditActivity.start(this, markerItem);
                 break;
-            //TODO
-            case R.id.id_action_load_digital_file:
-                break;
-            //TODO
-//            case R.id.id_action_load_marker:
-//                break;
             case android.R.id.home:
                 if (requestCode == GaodePrjEditActivity.REQUEST_CODE_MARKER_EDIT_ACTIVITY) {
                     finish();
@@ -205,6 +271,12 @@ public class GaodeMarkerActivity extends GaodeBaseActivity {
         //如果直接想返回---需要删除提前在数据库中保存的数据
         markerItem.delete();
         EventBus.getDefault().post(new MarkerEditEvent(MarkerEditEvent.BackState.UNCHANGED));
-        super.onBackPressed();
+        finish();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
     }
 }

@@ -69,10 +69,10 @@
             android:value="81ede838451fbee4e766e156e3421c1a"
             android:name="BUG_HD_SDK_GENERAL_KEY" />
         <!--百度地图定位service-->
-        <service
-            android:name="com.baidu.location.f"
-            android:enabled="true"
-            android:process=":remote" />
+        <!--<service-->
+            <!--android:name="com.baidu.location.f"-->
+            <!--android:enabled="true"-->
+            <!--android:process=":remote" />-->
         <!--高德定位service-->
         <service android:name="com.amap.api.location.APSService"/>
         <!--Project选择Activity-->

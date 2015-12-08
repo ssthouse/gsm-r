@@ -4,8 +4,10 @@ import android.content.Context;
 
 import com.amap.api.maps.AMap;
 import com.amap.api.maps.model.BitmapDescriptor;
+import com.amap.api.maps.model.BitmapDescriptorFactory;
 import com.amap.api.maps.model.Marker;
 import com.amap.api.maps.model.MarkerOptions;
+import com.xunce.gsmr.R;
 import com.xunce.gsmr.model.MarkerIconCons;
 import com.xunce.gsmr.model.MarkerItem;
 import com.xunce.gsmr.model.PrjItem;
@@ -81,22 +83,28 @@ public class MarkerHolder {
             String colorStr = PreferenceHelper.getInstance(context).getMarkerColorName(deviceType);
             switch (colorStr){
                 case MarkerIconCons.ColorName.BLUE:
-                    bitmapDescriptor = MarkerIconCons.descriptorBlue;
+                    bitmapDescriptor = BitmapDescriptorFactory
+                            .fromResource(R.drawable.icon_marker_blue);
                     break;
                 case MarkerIconCons.ColorName.GREEN:
-                    bitmapDescriptor = MarkerIconCons.descriptorGreen;
+                    bitmapDescriptor = BitmapDescriptorFactory
+                            .fromResource(R.drawable.icon_marker_green);
                     break;
                 case MarkerIconCons.ColorName.ORANGE:
-                    bitmapDescriptor = MarkerIconCons.descriptorOrange;
+                    bitmapDescriptor =BitmapDescriptorFactory
+                            .fromResource(R.drawable.icon_marker_orange);
                     break;
                 case MarkerIconCons.ColorName.PURPLE:
-                    bitmapDescriptor = MarkerIconCons.descriptorPurple;
+                    bitmapDescriptor = BitmapDescriptorFactory
+                            .fromResource(R.drawable.icon_marker_purple);
                     break;
                 case MarkerIconCons.ColorName.RED:
-                    bitmapDescriptor = MarkerIconCons.descriptorRed;
+                    bitmapDescriptor = BitmapDescriptorFactory
+                            .fromResource(R.drawable.icon_marker_red);
                     break;
                 default:
-                    bitmapDescriptor = MarkerIconCons.descriptorBlue;
+                    bitmapDescriptor = BitmapDescriptorFactory
+                            .fromResource(R.drawable.icon_marker_blue);
                     break;
             }
             //生成markerOptions
