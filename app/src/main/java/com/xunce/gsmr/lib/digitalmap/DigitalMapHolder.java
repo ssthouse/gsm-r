@@ -7,6 +7,8 @@ import android.os.AsyncTask;
 import android.os.Environment;
 
 import com.amap.api.maps.AMap;
+import com.xunce.gsmr.kilometerMark.KilometerMark;
+import com.xunce.gsmr.kilometerMark.KilometerMarkHolder;
 import com.xunce.gsmr.model.event.ProgressbarEvent;
 import com.xunce.gsmr.model.gaodemap.graph.Point;
 import com.xunce.gsmr.model.gaodemap.graph.Text;
@@ -38,6 +40,11 @@ public class DigitalMapHolder {
     private List<Text> textList = new ArrayList<>();
     private List<Vector> vectorList = new ArrayList<>();
 
+    /**
+     * 公里标管理器
+     */
+    private KilometerMarkHolder kilometerMarkHolder = new KilometerMarkHolder();
+
     public DigitalMapHolder(){}
 
     /**
@@ -57,13 +64,20 @@ public class DigitalMapHolder {
             protected Void doInBackground(Void... params) {
                 //打开数据库
                 SQLiteDatabase database = SQLiteDatabase.openOrCreateDatabase(new File(dbPath), null);
+
                 //读取数据库里面所有的-----Text
                 Cursor cursor = database.rawQuery("SELECT * FROM TextPoint", null);
                 while (cursor.moveToNext()) {
-                    Text text = new Text(PositionUtil.gps84_To_Gcj02(cursor.getDouble(1), cursor.getDouble(0)),
-                            cursor.getString(2));
+                    double latitude = cursor.getDouble(1);
+                    double longitude = cursor.getDouble(0);
+                    String content = cursor.getString(2);
+                    Text text = new Text(PositionUtil.gps84_To_Gcj02(latitude, longitude), content);
                     //提前初始化好数据
                     textList.add(text);
+
+                    //文字需要判断是不是公里标(是的话需要加入KilometerMarkHolder中)
+                    KilometerMark kilometerMark = KilometerMark.getKilometerMark(longitude, latitude, content);
+                    kilometerMarkHolder.addKilometerMark(kilometerMark);
                 }
                 cursor.close();
 
@@ -102,6 +116,9 @@ public class DigitalMapHolder {
                 //运行完将progressbar隐藏
                 EventBus.getDefault().post(new ProgressbarEvent(false));
                 ToastHelper.show(context, "数字地图加载成功!");
+
+                //TODO---打印获取的 公里标信息
+                Timber.e(kilometerMarkHolder.toString());
             }
         }.execute();
     }

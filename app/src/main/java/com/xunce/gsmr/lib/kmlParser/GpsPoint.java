@@ -7,13 +7,13 @@ import com.xunce.gsmr.util.gps.PositionUtil;
  * 表示一个点的坐标
  * Created by ssthouse on 2015/11/25.
  */
-public class PolyCoordinates {
+public class GpsPoint {
 
     private double longitude;
 
     private double latitude;
 
-    public PolyCoordinates(double longitude, double latitude) {
+    public GpsPoint(double longitude, double latitude) {
         this.longitude = longitude;
         this.latitude = latitude;
     }

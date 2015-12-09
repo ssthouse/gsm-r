@@ -1,6 +1,6 @@
 package com.xunce.gsmr.model.event;
 
-import com.xunce.gsmr.lib.cadparser.XmlParser;
+import com.xunce.gsmr.lib.xmlparser.XmlParser;
 import com.xunce.gsmr.lib.digitalmap.DigitalMapHolder;
 
 /**

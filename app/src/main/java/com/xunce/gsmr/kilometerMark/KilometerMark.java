@@ -1,4 +1,4 @@
-package com.xunce.gsmr.lib.cadparser;
+package com.xunce.gsmr.kilometerMark;
 
 /**
  * 保存一个公里标
@@ -21,6 +21,13 @@ public class KilometerMark {
      */
     private String text;
 
+    /**
+     * 构造方法
+     *
+     * @param longitude
+     * @param latitude
+     * @param text
+     */
     private KilometerMark(double longitude, double latitude, String text) {
         this.longitude = longitude;
         this.latitude = latitude;
@@ -37,15 +44,12 @@ public class KilometerMark {
         //需要对Text进行筛选
         //清除左右空格
         text = text.trim();
-        if (!text.contains("DK")) {
+        if (text.contains("+")) {
             return null;
-        } else {
-            if (text.contains("+")) {
-                return null;
-            } else {
-                return new KilometerMark(longitude, latitude, text);
-            }
+        } else if (text.contains("AK") || text.contains("CK") || text.contains("DK")) {
+            return new KilometerMark(longitude, latitude, text);
         }
+        return null;
     }
 
     @Override

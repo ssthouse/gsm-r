@@ -85,7 +85,7 @@ public class KMLParser extends DefaultHandler {
                 double longitude = Double.parseDouble(strs[0]);
                 double latitude = Double.parseDouble(strs[1]);
                 if(longitude>0.0 && latitude>0) {
-                    mydata.getPointList().add(new PolyCoordinates(longitude, latitude));
+                    mydata.getPointList().add(new GpsPoint(longitude, latitude));
                 }
             }
         } else if (qname.equals("styleUrl")) {

@@ -1,4 +1,4 @@
-package com.xunce.gsmr.lib.cadparser;
+package com.xunce.gsmr.lib.xmlparser;
 
 import timber.log.Timber;
 

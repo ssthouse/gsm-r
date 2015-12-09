@@ -1,4 +1,4 @@
-package com.xunce.gsmr.lib.cadparser;
+package com.xunce.gsmr.lib.xmlparser;
 
 import android.content.Context;
 import android.os.AsyncTask;
@@ -6,6 +6,8 @@ import android.util.Log;
 
 import com.amap.api.maps.AMap;
 import com.amap.api.maps.model.LatLng;
+import com.xunce.gsmr.kilometerMark.KilometerMark;
+import com.xunce.gsmr.kilometerMark.KilometerMarkHolder;
 import com.xunce.gsmr.model.event.ProgressbarEvent;
 import com.xunce.gsmr.model.gaodemap.graph.Line;
 import com.xunce.gsmr.model.gaodemap.graph.Point;

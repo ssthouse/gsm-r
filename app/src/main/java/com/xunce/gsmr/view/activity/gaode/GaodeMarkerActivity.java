@@ -14,7 +14,7 @@ import com.amap.api.maps.model.CameraPosition;
 import com.amap.api.maps.model.LatLng;
 import com.xunce.gsmr.R;
 import com.xunce.gsmr.app.Constant;
-import com.xunce.gsmr.lib.cadparser.XmlParser;
+import com.xunce.gsmr.lib.xmlparser.XmlParser;
 import com.xunce.gsmr.lib.digitalmap.DigitalMapHolder;
 import com.xunce.gsmr.model.MarkerItem;
 import com.xunce.gsmr.model.event.DrawMapDataEvent;

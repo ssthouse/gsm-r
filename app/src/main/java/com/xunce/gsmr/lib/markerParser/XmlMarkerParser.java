@@ -1,9 +1,9 @@
-package com.xunce.gsmr.lib.xmlMarkerParser;
+package com.xunce.gsmr.lib.markerParser;
 
 import android.content.Context;
 import android.util.Log;
 
-import com.xunce.gsmr.lib.cadparser.KilometerMarkHolder;
+import com.xunce.gsmr.kilometerMark.KilometerMarkHolder;
 import com.xunce.gsmr.model.MarkerItem;
 import com.xunce.gsmr.util.view.ToastHelper;
 

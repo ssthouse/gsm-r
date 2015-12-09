@@ -23,10 +23,10 @@ import com.amap.api.maps.model.CameraPosition;
 import com.amap.api.maps.model.Marker;
 import com.xunce.gsmr.R;
 import com.xunce.gsmr.app.Constant;
-import com.xunce.gsmr.lib.cadparser.XmlParser;
+import com.xunce.gsmr.lib.xmlparser.XmlParser;
 import com.xunce.gsmr.lib.digitalmap.DigitalMapHolder;
 import com.xunce.gsmr.lib.kmlParser.KMLParser;
-import com.xunce.gsmr.lib.xmlMarkerParser.XmlMarkerParser;
+import com.xunce.gsmr.lib.markerParser.XmlMarkerParser;
 import com.xunce.gsmr.model.MarkerItem;
 import com.xunce.gsmr.model.PrjItem;
 import com.xunce.gsmr.model.event.CompressFileEvent;
@@ -267,7 +267,7 @@ public class GaodePrjEditActivity extends GaodeBaseActivity {
                 GaodeMarkerActivity.start(GaodePrjEditActivity.this,
                         markerItem,getaMap().getCameraPosition().target,  REQUEST_CODE_MARKER_ACTIVITY);
                 //TODO---发送消息---在选址activity画出地图数据
-                handler.sendEmptyMessageDelayed(0, 1000);
+                handler.sendEmptyMessageDelayed(0, 300);
             }
         });
         //定位
@@ -290,7 +290,7 @@ public class GaodePrjEditActivity extends GaodeBaseActivity {
             @Override
             public void onClick(View v) {
                 toggleLlPosition();
-                //TODO
+                //TODO`
                 loadMarker(prjItem);
                 //TODO
             }

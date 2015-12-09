@@ -1,5 +1,6 @@
-package com.xunce.gsmr.lib.cadparser;
+package com.xunce.gsmr.kilometerMark;
 
+import com.xunce.gsmr.lib.xmlparser.MathLine;
 import com.xunce.gsmr.util.gps.LonLatToUTMXY;
 import com.xunce.gsmr.util.gps.UTMXY2BL;
 
@@ -132,7 +133,7 @@ public class KilometerMarkHolder {
      */
     public void addKilometerMark(KilometerMark kilometerMark) {
         if (kilometerMark != null) {
-            Timber.e("我添加了一个点：\t" + kilometerMark.toString());
+            //Timber.e("我添加了一个点：\t" + kilometerMark.toString());
             kilometerMarkList.add(kilometerMark);
         }
     }

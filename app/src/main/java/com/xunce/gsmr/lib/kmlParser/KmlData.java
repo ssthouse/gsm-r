@@ -25,7 +25,7 @@ class KmlData {
     /**
      * 蝴蝶形状的所有点
      */
-    private List<PolyCoordinates> pointList = new ArrayList<>();
+    private List<GpsPoint> pointList = new ArrayList<>();
 
     /**
      * 在地图上画出多边形
@@ -37,7 +37,7 @@ class KmlData {
             PolylineOptions polylineOptions = new PolylineOptions();
             polylineOptions.width(8)
                     .color(Color.GREEN);
-            for (PolyCoordinates polyCoordinates : pointList) {
+            for (GpsPoint polyCoordinates : pointList) {
                 polylineOptions.add(polyCoordinates.getLatLng());
             }
             amap.addPolyline(polylineOptions);
@@ -50,7 +50,7 @@ class KmlData {
             amap.addText(textOptions);
         }
         //查看所有数据点
-//        for (PolyCoordinates polyCoordinates : pointList) {
+//        for (GpsPoint polyCoordinates : pointList) {
 //            Timber.e(polyCoordinates + "\n");
 //        }
     }
@@ -92,11 +92,11 @@ class KmlData {
         this.styleUrl = styleUrl;
     }
 
-    public List<PolyCoordinates> getPointList() {
+    public List<GpsPoint> getPointList() {
         return pointList;
     }
 
-    public void setPointList(List<PolyCoordinates> pointList) {
+    public void setPointList(List<GpsPoint> pointList) {
         this.pointList = pointList;
     }
 }
