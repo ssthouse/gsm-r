@@ -2,6 +2,7 @@ package com.xunce.gsmr.util;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.media.ThumbnailUtils;
@@ -10,9 +11,12 @@ import android.os.Environment;
 import android.provider.MediaStore;
 import android.widget.Toast;
 
+import com.orhanobut.logger.Logger;
 import com.xunce.gsmr.R;
 import com.xunce.gsmr.app.Constant;
 import com.xunce.gsmr.model.BitmapItem;
+import com.xunce.gsmr.model.MarkerItem;
+import com.xunce.gsmr.model.PictureItem;
 
 import java.io.BufferedOutputStream;
 import java.io.File;
@@ -25,10 +29,12 @@ import java.util.List;
 import timber.log.Timber;
 
 /**
- * 处理图片的工具类
- * Created by ssthouse on 2015/7/18.
+ * 处理图片的工具类 Created by ssthouse on 2015/7/18.
  */
 public class PictureHelper {
+
+    public static final double DOUBLE = 19.;
+
     /**
      * 删除文件
      *
@@ -37,6 +43,31 @@ public class PictureHelper {
     public static void deletePicture(String path) {
         File file = new File(path);
         if (file.exists()) {
+            file.delete();
+        }
+    }
+
+    /**
+     * 删除文件夹
+     * @param path 要删除的文件路径
+     */
+    public static void delete(String path) {
+        File file = new File(path);
+        if (file.isFile()) {
+            file.delete();
+            return;
+        }
+
+        if (file.isDirectory()) {
+            File[] childFiles = file.listFiles();
+            if (childFiles == null || childFiles.length == 0) {
+                file.delete();
+                return;
+            }
+
+            for (int i = 0; i < childFiles.length; i++) {
+                delete(childFiles[i].getPath());
+            }
             file.delete();
         }
     }
@@ -69,6 +100,7 @@ public class PictureHelper {
         }
         return true;
     }
+
 
     /**
      * 将图片从指定文件夹---复制到目标文件夹
@@ -143,7 +175,7 @@ public class PictureHelper {
     public static double getFileNameInFloat(File file) {
         try {
             String fileName = file.getName();
-            String floatString = fileName.replace(".jpg", "");
+            String floatString = fileName.replace(".jpeg", "");
             double time = Double.parseDouble(floatString);
             return time;
         } catch (Exception e) {
@@ -155,6 +187,7 @@ public class PictureHelper {
 
     /**
      * 判断是否有照片缩略图
+     *
      * @param file
      * @return
      */
@@ -162,9 +195,18 @@ public class PictureHelper {
         File tempFile = new File(Constant.TEMP_FILE_PATH + file.getName());
         return tempFile.exists();
     }
+    public static boolean hasTempPicture(String fileName) {
+        File tempFile = new File(Constant.TEMP_FILE_PATH + fileName);
+        return tempFile.exists();
+    }
+    public static boolean hasSharePicture(String fileName){
+        File tempFile = new File(Constant.TEMP_SHARE_PATH + fileName);
+        return tempFile.exists();
+    }
 
     /**
      * 获取照片的缩略图
+     *
      * @param file
      * @return
      */
@@ -174,6 +216,7 @@ public class PictureHelper {
 
     /**
      * 获取指定路径下的所有bitmap
+     *
      * @param path
      * @return
      */
@@ -246,6 +289,7 @@ public class PictureHelper {
         return bitmap;
     }
 
+
     /**
      * 开启图库获取照片
      *
@@ -262,21 +306,34 @@ public class PictureHelper {
      *
      * @param activity
      */
-    public static void getPictureFromCamera(Activity activity, String path) {
+    public static Uri
+    getPictureFromCamera(Activity activity, MarkerItem markerItem) {
         String state = Environment.getExternalStorageState();
         if (state.equals(Environment.MEDIA_MOUNTED)) {
             //localTempImgDir和localTempImageFileName是自己定义的名字
-            File file = new File(path + System.currentTimeMillis() + ".jpg");
+            File file = new File(markerItem.getFilePath() + System.currentTimeMillis() + ".jpeg");
             //如果该路径前面的parent路径不存在就创建
             file.getParentFile().mkdirs();
             Uri uri = Uri.fromFile(file);
+            Logger.w("存储了照片 Uri=%s", uri.toString());
             Intent intent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
             intent.putExtra(MediaStore.Images.Media.ORIENTATION, 0);
             intent.putExtra(MediaStore.EXTRA_OUTPUT, uri);
             activity.startActivityForResult(intent, Constant.REQUEST_CODE_CAMERA);
             activity.overridePendingTransition(R.anim.activity_fade_in, R.anim.activity_fade_out);
+            return uri;
         } else {
             Toast.makeText(activity, "请确认已经插入SD卡", Toast.LENGTH_SHORT).show();
         }
+        return null;
+    }
+
+    /**
+     * 从path路径获取文件的名称
+     * @param path
+     * @return 文件名称
+     */
+    public static String getNameFromPath(String path){
+        return path.substring(path.lastIndexOf("/")+1,path.length());
     }
 }

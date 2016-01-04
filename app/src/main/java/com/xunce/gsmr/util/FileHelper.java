@@ -3,6 +3,8 @@ package com.xunce.gsmr.util;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
+import android.net.DhcpInfo;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Environment;
@@ -143,13 +145,16 @@ public class FileHelper {
      * @param context        上下文
      * @param bitmapItemList bitmapItem的list
      */
-    public static void sendPicture(Context context, List<BitmapItem> bitmapItemList) {
+    public static void sendPicture(Context context, SQLiteDatabase db, List<BitmapItem>
+            bitmapItemList) {
         Intent intent = new Intent(android.content.Intent.ACTION_SEND_MULTIPLE);
         ArrayList<Uri> uriList = new ArrayList<>();
         //获取对应TourItem的文件的URL
         for (BitmapItem item : bitmapItemList) {
-            File file = new File(item.getPath());
-            uriList.add(Uri.fromFile(file));
+            //将原图片从数据库中取出存放至临时文件夹并发送
+            uriList.add(DBHelper.selectPicture(db,PictureHelper.getNameFromPath(item.getPath())));
+//            File file = new File(item.getPath());
+//            uriList.add(Uri.fromFile(file));
         }
         intent.putParcelableArrayListExtra(Intent.EXTRA_STREAM, uriList);
         intent.setType("image/jpg");

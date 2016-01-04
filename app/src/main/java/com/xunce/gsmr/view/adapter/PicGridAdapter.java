@@ -1,6 +1,7 @@
 package com.xunce.gsmr.view.adapter;
 
 import android.content.Context;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
@@ -11,6 +12,8 @@ import android.widget.ImageView;
 
 import com.xunce.gsmr.R;
 import com.xunce.gsmr.model.BitmapItem;
+import com.xunce.gsmr.model.MarkerItem;
+import com.xunce.gsmr.util.DBHelper;
 import com.xunce.gsmr.view.widget.CustomImageView;
 import com.xunce.gsmr.util.PictureHelper;
 
@@ -24,20 +27,21 @@ import java.util.List;
 public class PicGridAdapter extends BaseAdapter {
     private static String TAG = "PicGridAdaoter";
 
+    private SQLiteDatabase db;
     private Context context;
     private List<BitmapItem> bitmapItemList;
 
-    private String path;
+    private MarkerItem markerItem;
 
     /**
-     * 根据path自己获取图片
-     * @param path
+     * 根据MakerId自己获取图片
      */
-    public PicGridAdapter(Context context,String path){
+    public PicGridAdapter(Context context,SQLiteDatabase db, MarkerItem markerItem){
+        this.db = db;
         this.context = context;
-        this.path = path;
+        this.markerItem = markerItem;
         bitmapItemList = new ArrayList<>();
-        new Task().execute(path);
+        new Task().execute(markerItem);
     }
 
     @Override
@@ -88,7 +92,7 @@ public class PicGridAdapter extends BaseAdapter {
 
     @Override
     public void notifyDataSetChanged() {
-        new Task().execute(path);
+        new Task().execute(markerItem);
         super.notifyDataSetChanged();
     }
 
@@ -96,10 +100,11 @@ public class PicGridAdapter extends BaseAdapter {
         notifyDataSetChanged();
     }
 
-    class Task extends AsyncTask<String, Void, List<BitmapItem>>{
+    class Task extends AsyncTask<MarkerItem, Void, List<BitmapItem>>{
         @Override
-        protected List<BitmapItem> doInBackground(String... params) {
-            return PictureHelper.getBitmapItemList(path);
+        protected List<BitmapItem> doInBackground(MarkerItem... params) {
+//            return PictureHelper.getBitmapItemList(MakerId);
+            return DBHelper.getPictureItemList(db,markerItem);
         }
 
         @Override

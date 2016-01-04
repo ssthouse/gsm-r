@@ -108,7 +108,8 @@
         <activity
             android:screenOrientation="portrait"
             android:name=".view.activity.PicGridActivity"
-            android:theme="@style/CustomNoActionbarStyle"/>
+            android:theme="@style/CustomNoActionbarStyle"
+        />
         <activity
             android:screenOrientation="portrait"
             android:name=".view.activity.baidu.BaiduGetLatLngActivity"/>

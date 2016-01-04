@@ -21,6 +21,7 @@ import com.amap.api.maps.CameraUpdate;
 import com.amap.api.maps.CameraUpdateFactory;
 import com.amap.api.maps.model.CameraPosition;
 import com.amap.api.maps.model.Marker;
+import com.orhanobut.logger.Logger;
 import com.xunce.gsmr.R;
 import com.xunce.gsmr.app.Constant;
 import com.xunce.gsmr.lib.xmlparser.XmlParser;
@@ -448,7 +449,7 @@ public class GaodePrjEditActivity extends GaodeBaseActivity {
             //数据导出
             case R.id.id_action_export_data:
                 //FileHelper.sendDbFile(this);
-                FileHelper.sendZipFile(this);
+                FileHelper.sendDbFile(this);
                 break;
             //开启离线地图
             case R.id.id_action_offline_map:
