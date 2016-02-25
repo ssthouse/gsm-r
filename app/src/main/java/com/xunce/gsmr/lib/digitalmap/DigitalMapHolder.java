@@ -7,6 +7,7 @@ import android.os.AsyncTask;
 import android.os.Environment;
 
 import com.amap.api.maps.AMap;
+import com.xunce.gsmr.app.Constant;
 import com.xunce.gsmr.kilometerMark.KilometerMark;
 import com.xunce.gsmr.kilometerMark.KilometerMarkHolder;
 import com.xunce.gsmr.model.event.ProgressbarEvent;
@@ -66,7 +67,7 @@ public class DigitalMapHolder {
                 SQLiteDatabase database = SQLiteDatabase.openOrCreateDatabase(new File(dbPath), null);
 
                 //读取数据库里面所有的-----Text
-                Cursor cursor = database.rawQuery("SELECT * FROM TextPoint", null);
+                Cursor cursor = database.rawQuery("SELECT * FROM "+ Constant.TABLE_TEXT, null);
                 while (cursor.moveToNext()) {
                     double latitude = cursor.getDouble(1);
                     double longitude = cursor.getDouble(0);

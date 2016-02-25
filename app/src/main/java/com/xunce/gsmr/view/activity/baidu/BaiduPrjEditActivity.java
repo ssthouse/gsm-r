@@ -107,8 +107,9 @@ public class BaiduPrjEditActivity extends AppCompatActivity {
             public void onClick(View v) {
                 //先保存进数据库---然后传递
                 MarkerItem markerItem = new MarkerItem(prjItem);
-                markerItem.save();
-                BaiduMarkerActivity.start(BaiduPrjEditActivity.this, markerItem, REQUEST_CODE_MARKER_ACTIVITY);
+//                markerItem.save();
+                BaiduMarkerActivity.start(BaiduPrjEditActivity.this, markerItem,prjItem.getDbLocation(),
+                        REQUEST_CODE_MARKER_ACTIVITY);
             }
         });
     }
@@ -176,8 +177,8 @@ public class BaiduPrjEditActivity extends AppCompatActivity {
     public void clickEdit(View v) {
         baiduMapFragment.hideInfoWindow();
         //生成MarkerItem--跳转到MarkerEditActivity
-        BaiduMarkerActivity.start(this, baiduMapFragment.getMarkerHolder().getCurrentMarkerItem(),
-                BaiduPrjEditActivity.REQUEST_CODE_MARKER_EDIT_ACTIVITY);
+        BaiduMarkerActivity.start(this, baiduMapFragment.getMarkerHolder().getCurrentMarkerItem()
+                ,prjItem.getDbLocation(), BaiduPrjEditActivity.REQUEST_CODE_MARKER_EDIT_ACTIVITY);
     }
 
     /**
@@ -188,6 +189,7 @@ public class BaiduPrjEditActivity extends AppCompatActivity {
     public void clickPhoto(View v) {
         baiduMapFragment.hideInfoWindow();
         PicGridActivity.start(this, baiduMapFragment.getMarkerHolder().getCurrentMarkerItem(),
+                prjItem.getDbLocation(),
                 BaiduPrjEditActivity.REQUEST_CODE_PICTURE_ACTIVITY);
     }
 
@@ -212,7 +214,7 @@ public class BaiduPrjEditActivity extends AppCompatActivity {
                 break;
             //数据导出
             case R.id.id_action_export_data:
-                FileHelper.sendDbFile(this);
+                FileHelper.sendDbFile(this,prjItem.getDbLocation());
                 break;
             case R.id.id_action_offline_map:
                 //开启离线地图管理Activity

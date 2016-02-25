@@ -74,7 +74,7 @@ dependencies {
     compile 'de.greenrobot:eventbus:2.4.0'
     compile files('libs/Android_Map_2.5.1.20150827.jar')
     compile files('libs/MapApiServices.jar')
-    compile files('libs/AMap_ Location_v1.4.0.1_20150910.jar')
+    compile files('libs/AMap_Location_v2.1.0_20151202.jar')
     //for BugHD
     compile 'im.fir:sdk:latest.integration'
     compile project(':aFileChooser')

@@ -111,7 +111,6 @@ public class GaodeBaseActivity extends AppCompatActivity {
         public void onLocationChanged(AMapLocation aMapLocation) {
             if (aMapLocation != null && aMapLocation.getErrorCode() == 0) {
                 currentAMapLocation = aMapLocation;
-
                 //Timber.e("我收到了一条定位...\t" + "定位结果为:\t" + aMapLocation.getErrorCode());
             }
         }

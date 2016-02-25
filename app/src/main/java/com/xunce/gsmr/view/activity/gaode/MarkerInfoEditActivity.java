@@ -168,17 +168,19 @@ public class MarkerInfoEditActivity extends AppCompatActivity {
 
         //杆塔类型
         Spinner spTowerType = (Spinner) findViewById(R.id.id_sp_tower_type);
-        switch (markerItem.getTowerType()){
-            case MarkerItem.MarkerItemCons.towerTypePole:
-                spTowerType.setSelection(0);
-                break;
-            case MarkerItem.MarkerItemCons.towerTypeSingleTower:
-                spTowerType.setSelection(1);
-                break;
-            case MarkerItem.MarkerItemCons.towerTypeFourTower:
-                spTowerType.setSelection(2);
-                break;
-        }
+        if(markerItem.getTowerType() !=null) {
+            switch (markerItem.getTowerType()) {
+                case MarkerItem.MarkerItemCons.towerTypePole:
+                    spTowerType.setSelection(0);
+                    break;
+                case MarkerItem.MarkerItemCons.towerTypeSingleTower:
+                    spTowerType.setSelection(1);
+                    break;
+                case MarkerItem.MarkerItemCons.towerTypeFourTower:
+                    spTowerType.setSelection(2);
+                    break;
+            }
+        }else {spTowerType.setSelection(0);}
         spTowerType.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {

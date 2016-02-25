@@ -98,10 +98,11 @@ public class BaiduMarkerActivity extends AppCompatActivity {
      * @param markerItem
      * @param requestCode
      */
-    public static void start(Activity activity, MarkerItem markerItem, int requestCode) {
+    public static void start(Activity activity, MarkerItem markerItem,String dbPath, int requestCode) {
         Intent intent = new Intent(activity, BaiduMarkerActivity.class);
         intent.putExtra(Constant.EXTRA_KEY_MARKER_ITEM, markerItem);
         intent.putExtra(Constant.EXTRA_KEY_REQUEST_CODE, requestCode);
+        intent.putExtra(Constant.EXTRA_KEY_DBPATH,dbPath);
         activity.startActivityForResult(intent, requestCode);
         activity.overridePendingTransition(R.anim.activity_fade_in, R.anim.activity_fade_out);
     }
@@ -115,7 +116,8 @@ public class BaiduMarkerActivity extends AppCompatActivity {
         //获取数据
         MarkerItem wrongItem = (MarkerItem) getIntent()
                 .getSerializableExtra(Constant.EXTRA_KEY_MARKER_ITEM);
-        markerItem = DBHelper.getMarkerItemInDB(wrongItem);
+        String dbPath = (String) getIntent().getSerializableExtra(Constant.EXTRA_KEY_DBPATH);
+        markerItem = DBHelper.getMarkerItemInDB(dbPath,wrongItem.getMarkerId());
         requestCode = getIntent().getIntExtra(Constant.EXTRA_KEY_REQUEST_CODE,
                 BaiduPrjEditActivity.REQUEST_CODE_MARKER_ACTIVITY);
 
@@ -237,7 +239,7 @@ public class BaiduMarkerActivity extends AppCompatActivity {
                     finish();
                     return true;
                 }
-                markerItem.delete();
+//                markerItem.delete();
                 setResult(Constant.RESULT_CODE_OK);
                 finish();
         }
@@ -251,7 +253,7 @@ public class BaiduMarkerActivity extends AppCompatActivity {
             return;
         }
         //如果直接想返回---需要删除提前在数据库中保存的数据
-        markerItem.delete();
+//        markerItem.delete();
         setResult(Constant.RESULT_CODE_OK);
         super.onBackPressed();
     }

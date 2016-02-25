@@ -21,7 +21,6 @@ import com.amap.api.maps.CameraUpdate;
 import com.amap.api.maps.CameraUpdateFactory;
 import com.amap.api.maps.model.CameraPosition;
 import com.amap.api.maps.model.Marker;
-import com.orhanobut.logger.Logger;
 import com.xunce.gsmr.R;
 import com.xunce.gsmr.app.Constant;
 import com.xunce.gsmr.lib.xmlparser.XmlParser;
@@ -38,6 +37,8 @@ import com.xunce.gsmr.model.event.MarkerEditEvent;
 import com.xunce.gsmr.model.event.MarkerIconChangeEvent;
 import com.xunce.gsmr.model.event.ProgressbarEvent;
 import com.xunce.gsmr.model.gaodemap.GaodeMapCons;
+import com.xunce.gsmr.model.gaodemap.GaodeRailWayHolder;
+import com.xunce.gsmr.model.gaodemap.graph.Vector;
 import com.xunce.gsmr.util.FileHelper;
 import com.xunce.gsmr.util.gps.LonLatToUTMXY;
 import com.xunce.gsmr.util.preference.PreferenceHelper;
@@ -49,13 +50,14 @@ import com.xunce.gsmr.view.activity.SettingActivity;
 import com.xunce.gsmr.view.style.TransparentStyle;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
 import de.greenrobot.event.EventBus;
 import timber.log.Timber;
 
 /**
- * 高德地图编辑Activity
- * Created by ssthouse on 2015/9/14.
+ * 高德地图编辑Activity Created by ssthouse on 2015/9/14.
  */
 public class GaodePrjEditActivity extends GaodeBaseActivity {
     //Activity请求码
@@ -97,8 +99,8 @@ public class GaodePrjEditActivity extends GaodeBaseActivity {
     private Switch swDigitalFile;
     private boolean isDigitalMapTextShowed = false;
     //cad的xml文件开关
-    private Switch swXmlFile;
-    private boolean isXmlTextShowed = false;
+    private Switch swMapData;
+    private boolean isMapTextShowed = false;
 
     /**
      * 数据解析器
@@ -107,6 +109,7 @@ public class GaodePrjEditActivity extends GaodeBaseActivity {
     private XmlMarkerParser xmlMarkerParser;
     //xml数据文件的解析工具
     private XmlParser xmlParser;
+    private GaodeRailWayHolder railWayHolder;
     //数字地图文件解析器
     private DigitalMapHolder digitalMapHolder;
 
@@ -117,8 +120,8 @@ public class GaodePrjEditActivity extends GaodeBaseActivity {
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
-            if(msg.what == 0) {
-                EventBus.getDefault().post(new DrawMapDataEvent(digitalMapHolder, xmlParser));
+            if (msg.what == 0) {
+                EventBus.getDefault().post(new DrawMapDataEvent(railWayHolder));
             }
         }
     };
@@ -157,6 +160,8 @@ public class GaodePrjEditActivity extends GaodeBaseActivity {
         //初始化View
         initView();
 
+        //初始化数据
+        initdata();
         //TODO---测试代码
         double data[] = LonLatToUTMXY.latLonToUTM(29.75282575519019, 115.40374717759676);
         Timber.e(data[0] + "\t" + data[1] + "\t" + data[2]);
@@ -176,47 +181,24 @@ public class GaodePrjEditActivity extends GaodeBaseActivity {
         loadMarker(prjItem);
         //初始化Marker的点击事件--以及InfoWindow的填充
         initMarkerClick();
-        //初始化--数字地图的Switch
-        swDigitalFile = (Switch) findViewById(R.id.id_sw_digital_file);
-        swDigitalFile.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                //如果想打开
-                if (isChecked) {
-                    if (digitalMapHolder == null) {
-                        ToastHelper.show(GaodePrjEditActivity.this, "请先加载数字地图文件");
-                        buttonView.setChecked(false);
-                    } else {
-                        CameraPosition cameraPosition = getaMap().getCameraPosition();
-                        if (cameraPosition.zoom > GaodeMapCons.zoomLevel) {
-                            digitalMapHolder.draw(getaMap());
-                        } else {
-                            digitalMapHolder.drawLine(getaMap());
-                        }
-                    }
-                } else if (digitalMapHolder != null) {
-                    digitalMapHolder.hide();
-                }
-            }
-        });
         //初始化--xml文件的Switch
-        swXmlFile = (Switch) findViewById(R.id.id_sw_xml_file);
-        swXmlFile.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        swMapData = (Switch) findViewById(R.id.id_sw_map_data);
+        swMapData.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 //如果是想打开--并且没有加载文件
-                if (isChecked && xmlParser == null) {
+                if (isChecked && railWayHolder == null) {
                     ToastHelper.show(GaodePrjEditActivity.this, "请先加载Xml文件");
                     buttonView.setChecked(false);
-                } else if (isChecked && xmlParser != null) {
+                } else if (isChecked && railWayHolder != null) {
                     CameraPosition cameraPosition = getaMap().getCameraPosition();
                     if (cameraPosition.zoom > GaodeMapCons.zoomLevel) {
-                        xmlParser.draw(getaMap());
+                        railWayHolder.draw(getaMap());
                     } else {
-                        xmlParser.drawLine(getaMap());
+                        railWayHolder.drawLine(getaMap());
                     }
                 } else if (!isChecked) {
-                    xmlParser.hide();
+                    railWayHolder.hide();
                 }
             }
         });
@@ -228,32 +210,17 @@ public class GaodePrjEditActivity extends GaodeBaseActivity {
 
             @Override
             public void onCameraChangeFinish(CameraPosition cameraPosition) {
-                //数字地图已经加载 且 switch为开
-                if (digitalMapHolder != null && swDigitalFile.isChecked()) {
-                    //如果放大到16以上
-                    if (cameraPosition.zoom > GaodeMapCons.zoomLevel) {
-                        //Timber.e("放大到16以上了");
-                        if (!isDigitalMapTextShowed) {
-                            digitalMapHolder.drawText(getaMap());
-                            isDigitalMapTextShowed = true;
-                        }
-                    } else if (cameraPosition.zoom < GaodeMapCons.zoomLevel) {
-                        //Timber.e("缩小到16以下了");
-                        digitalMapHolder.hideText();
-                        isDigitalMapTextShowed = false;
-                    }
-                }
                 //如果 xml文件已经加载 且 switch为开
-                if (xmlParser != null && swXmlFile.isChecked()) {
+                if (railWayHolder != null && swMapData.isChecked()) {
                     //如果放大到16以上
-                    if (cameraPosition.zoom > GaodeMapCons.zoomLevel && !isXmlTextShowed) {
-                        xmlParser.drawText(getaMap());
-                        isXmlTextShowed = true;
+                    if (cameraPosition.zoom > GaodeMapCons.zoomLevel && !isMapTextShowed) {
+                        railWayHolder.drawText(getaMap());
+                        isMapTextShowed = true;
                         Timber.e(">>>> 16了");
-                    } else if (cameraPosition.zoom < GaodeMapCons.zoomLevel && isXmlTextShowed) {
+                    } else if (cameraPosition.zoom < GaodeMapCons.zoomLevel && isMapTextShowed) {
                         Timber.e("缩小到16以下了");
-                        xmlParser.hideText();
-                        isXmlTextShowed = false;
+                        railWayHolder.hideText();
+                        isMapTextShowed = false;
                     }
                 }
             }
@@ -263,10 +230,10 @@ public class GaodePrjEditActivity extends GaodeBaseActivity {
             @Override
             public void onClick(View v) {
                 //首先创建一个markerItem放到数据库中(在新开启Activity中--如果没有点击确定---就删除)
-                MarkerItem markerItem = new MarkerItem(prjItem);
-                markerItem.save();
+                MarkerItem markerItem = new MarkerItem();
                 GaodeMarkerActivity.start(GaodePrjEditActivity.this,
-                        markerItem,getaMap().getCameraPosition().target,  REQUEST_CODE_MARKER_ACTIVITY);
+                        markerItem,prjItem.getDbLocation(), getaMap().getCameraPosition().target,
+                        REQUEST_CODE_MARKER_ACTIVITY);
                 //TODO---发送消息---在选址activity画出地图数据
                 handler.sendEmptyMessageDelayed(0, 300);
             }
@@ -298,6 +265,14 @@ public class GaodePrjEditActivity extends GaodeBaseActivity {
         });
     }
 
+    /**
+     * 初始化数据
+     */
+    private void initdata(){
+        railWayHolder = new GaodeRailWayHolder(this,prjItem.getDbLocation());
+        KMLParser kmlParser = new KMLParser(this,prjItem.getDbLocation());
+        kmlParser.draw(getaMap());
+    }
     /**
      * 初始化Marker的点击事件--以及InfoWindow的填充
      */
@@ -382,8 +357,9 @@ public class GaodePrjEditActivity extends GaodeBaseActivity {
      */
     public void clickEdit(View v) {
         //生成MarkerItem--跳转到MarkerEditActivity
-        GaodeMarkerActivity.start(this, getMarkerHolder().getCurrentMarkerItem(),
-                getaMap().getCameraPosition().target, REQUEST_CODE_MARKER_EDIT_ACTIVITY);
+        GaodeMarkerActivity.start(this, getMarkerHolder().getCurrentMarkerItem(),prjItem
+                .getDbLocation(), getaMap().getCameraPosition().target,
+                REQUEST_CODE_MARKER_EDIT_ACTIVITY);
     }
 
     /**
@@ -393,8 +369,8 @@ public class GaodePrjEditActivity extends GaodeBaseActivity {
      */
     public void clickPhoto(View v) {
         //这里传入的MarkerItem
-        PicGridActivity.start(this, getMarkerHolder().getCurrentMarkerItem(),
-                REQUEST_CODE_PICTURE_ACTIVITY);
+        PicGridActivity.start(this, getMarkerHolder().getCurrentMarkerItem(),prjItem
+                .getDbLocation(), REQUEST_CODE_PICTURE_ACTIVITY);
     }
 
     /**
@@ -429,10 +405,11 @@ public class GaodePrjEditActivity extends GaodeBaseActivity {
             //加载初始xml中的Marker数据
             case R.id.id_action_load_xml_marker:
                 //只有加载了xml文件才加载初始选址文件
-                if (xmlParser == null) {
-                    ToastHelper.show(this, "请先加载cad文件(.xml)");
+                if (railWayHolder == null) {
+                    ToastHelper.show(this, "请先加载地图文件");
+                } else {
+                    FileHelper.showFileChooser(this, REQUEST_CODE_LOAD_XML_MARKER_FILE);
                 }
-                FileHelper.showFileChooser(this, REQUEST_CODE_LOAD_XML_MARKER_FILE);
                 break;
             // 加载数字地图
             case R.id.id_action_load_digital_file:
@@ -449,7 +426,7 @@ public class GaodePrjEditActivity extends GaodeBaseActivity {
             //数据导出
             case R.id.id_action_export_data:
                 //FileHelper.sendDbFile(this);
-                FileHelper.sendDbFile(this);
+                FileHelper.sendDbFile(this, prjItem.getDbLocation());
                 break;
             //开启离线地图
             case R.id.id_action_offline_map:
@@ -558,7 +535,8 @@ public class GaodePrjEditActivity extends GaodeBaseActivity {
                     xmlMarkerParser = new XmlMarkerParser(this, filePath);
                     xmlMarkerParser.parse();
                     //将数据增加到当前工程中去(给每一个Marker添加prjName---然后save)
-                    xmlMarkerParser.saveMarkerItem(prjItem.getPrjName(), xmlParser.getKilometerMarkHolder());
+                    xmlMarkerParser.saveMarkerItem(prjItem.getPrjName(), railWayHolder
+                            .getKilometerMarkHolder(),prjItem.getDbLocation());
                     //重画界面的Marker
                     loadMarker(prjItem);
                 }
@@ -579,8 +557,10 @@ public class GaodePrjEditActivity extends GaodeBaseActivity {
                         return;
                     }
                     //如果获取路径成功就----加载digitalMapHolder
-                    digitalMapHolder = new DigitalMapHolder(this, path);
+                    digitalMapHolder = new  DigitalMapHolder(this, path);
+                    //保存数字地图数据
                 }
+
                 break;
             //加载xml文件
             case REQUEST_CODE_LOAD_XML_FILE:
@@ -593,7 +573,17 @@ public class GaodePrjEditActivity extends GaodeBaseActivity {
                         ToastHelper.show(this, "您选取的XML文件格式有误!");
                         return;
                     }
-                    xmlParser = new XmlParser(this, path);
+                    xmlParser = new XmlParser(this, path,prjItem.getDbLocation());
+                    //合并两个表
+                    List<Vector> vectorList = new ArrayList<>();
+                    vectorList.addAll(xmlParser.getPolyList());
+                    vectorList.addAll(xmlParser.getP2dpolyList());
+
+                    //加载数据
+                    railWayHolder.hide();
+                    railWayHolder.clearData();
+                    railWayHolder = new GaodeRailWayHolder(xmlParser.getLineList(),xmlParser
+                            .getTextList(),vectorList);
                 }
                 break;
             //加载kml文件
@@ -632,11 +622,11 @@ public class GaodePrjEditActivity extends GaodeBaseActivity {
         }
     }
 
-    public XmlParser getXmlParser() {
-        return xmlParser;
+    public GaodeRailWayHolder getRailWayHolder() {
+        return railWayHolder;
     }
 
-    public DigitalMapHolder getDigitalMapHolder() {
-        return digitalMapHolder;
+    public void setRailWayHolder(GaodeRailWayHolder railWayHolder) {
+        this.railWayHolder = railWayHolder;
     }
 }

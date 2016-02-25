@@ -27,7 +27,7 @@ import java.util.List;
 public class PicGridAdapter extends BaseAdapter {
     private static String TAG = "PicGridAdaoter";
 
-    private SQLiteDatabase db;
+    private String dbPath;
     private Context context;
     private List<BitmapItem> bitmapItemList;
 
@@ -36,8 +36,8 @@ public class PicGridAdapter extends BaseAdapter {
     /**
      * 根据MakerId自己获取图片
      */
-    public PicGridAdapter(Context context,SQLiteDatabase db, MarkerItem markerItem){
-        this.db = db;
+    public PicGridAdapter(Context context,String dbPath, MarkerItem markerItem){
+        this.dbPath = dbPath;
         this.context = context;
         this.markerItem = markerItem;
         bitmapItemList = new ArrayList<>();
@@ -104,7 +104,7 @@ public class PicGridAdapter extends BaseAdapter {
         @Override
         protected List<BitmapItem> doInBackground(MarkerItem... params) {
 //            return PictureHelper.getBitmapItemList(MakerId);
-            return DBHelper.getPictureItemList(db,markerItem);
+            return DBHelper.getPictureItemList(dbPath,markerItem);
         }
 
         @Override

@@ -1,6 +1,7 @@
 package com.xunce.gsmr.model.gaodemap;
 
 import android.content.Context;
+import android.database.sqlite.SQLiteDatabase;
 
 import com.amap.api.maps.AMap;
 import com.amap.api.maps.model.BitmapDescriptor;
@@ -73,7 +74,10 @@ public class MarkerHolder {
         currentMarker = null;
         currentMarkerItem = null;
         //填充MarkerList
-        markerOnDbList = DBHelper.getMarkerList(prjItem);
+        SQLiteDatabase db = SQLiteDatabase.openDatabase(prjItem.getDbLocation(),null,
+                SQLiteDatabase.OPEN_READWRITE);
+        markerOnDbList = DBHelper.getMarkerList(db);
+        db.close();
         for (int i = 0; i < markerOnDbList.size(); i++) {
             //获取latLng
             com.amap.api.maps.model.LatLng latLng = markerOnDbList.get(i).getGaodeLatLng();

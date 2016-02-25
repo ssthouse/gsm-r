@@ -6,8 +6,7 @@ import com.amap.api.maps.model.Polyline;
 import com.amap.api.maps.model.PolylineOptions;
 
 /**
- * 高德地图的Line
- * Created by ssthouse on 2015/9/15.
+ * 高德地图的Line Created by ssthouse on 2015/9/15.
  */
 public class Line extends BaseGraph {
     //直线的参数
@@ -46,8 +45,8 @@ public class Line extends BaseGraph {
     /**
      * 隐藏
      */
-    public void hide(){
-        if(polyline != null){
+    public void hide() {
+        if (polyline != null) {
             polyline.setVisible(false);
         }
     }
@@ -55,8 +54,8 @@ public class Line extends BaseGraph {
     /**
      * 销毁
      */
-    public void destory(){
-        if(polyline != null){
+    public void destory() {
+        if (polyline != null) {
             polyline.remove();
         }
     }

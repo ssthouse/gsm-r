@@ -72,7 +72,8 @@ public class Vector extends BaseGraph {
         if (polyline == null) {
             polyline = aMap.addPolyline(polylineOptions);
         } else {
-            polyline.setVisible(true);
+//            polyline.setVisible(true);
+            polyline = aMap.addPolyline(polylineOptions);
         }
     }
 

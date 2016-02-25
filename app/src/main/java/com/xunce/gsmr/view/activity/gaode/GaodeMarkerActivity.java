@@ -2,6 +2,7 @@ package com.xunce.gsmr.view.activity.gaode;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -21,6 +22,7 @@ import com.xunce.gsmr.model.event.DrawMapDataEvent;
 import com.xunce.gsmr.model.event.MarkerEditEvent;
 import com.xunce.gsmr.model.event.MarkerInfoSaveEvent;
 import com.xunce.gsmr.model.gaodemap.GaodeMapCons;
+import com.xunce.gsmr.model.gaodemap.GaodeRailWayHolder;
 import com.xunce.gsmr.util.DBHelper;
 import com.xunce.gsmr.util.gps.MarkerHelper;
 import com.xunce.gsmr.util.gps.PositionUtil;
@@ -51,13 +53,11 @@ public class GaodeMarkerActivity extends GaodeBaseActivity {
      */
     private EditText etLatitude, etLongitude;
 
-    private DigitalMapHolder digitalMapHolder;
-    private XmlParser xmlParser;
+    private GaodeRailWayHolder railWayHolder;
 
-    private boolean isXmlTextShowed = false;
-    private boolean isDigitalMapTextShowed = false;
+    private boolean isMapTextShowed = false;
 
-
+    private String dbPath;
     /**
      * 启动当前Activity
      *
@@ -65,7 +65,8 @@ public class GaodeMarkerActivity extends GaodeBaseActivity {
      * @param markerItem 编辑的数据
      * @param requestCode 启动code
      */
-    public static void start(Activity activity, MarkerItem markerItem,LatLng latLng, int requestCode) {
+    public static void start(Activity activity, MarkerItem markerItem,String DBpath,LatLng latLng,
+                             int requestCode) {
         //填充intent进去markerItem和requestCode
         Intent intent = new Intent(activity, GaodeMarkerActivity.class);
         intent.putExtra(Constant.EXTRA_KEY_MARKER_ITEM, markerItem);
@@ -73,6 +74,7 @@ public class GaodeMarkerActivity extends GaodeBaseActivity {
         //之前在prjEditAc的界面中心坐标
         intent.putExtra(Constant.EXTRA_KEY_LATITUDE, latLng.latitude);
         intent.putExtra(Constant.EXTRA_KEY_LONGITUDE, latLng.longitude);
+        intent.putExtra(Constant.EXTRA_KEY_DBPATH,DBpath);
         //启动Activity
         activity.startActivityForResult(intent, requestCode);
         activity.overridePendingTransition(R.anim.activity_fade_in, R.anim.activity_fade_out);
@@ -89,7 +91,8 @@ public class GaodeMarkerActivity extends GaodeBaseActivity {
         //获取数据
         MarkerItem wrongItem = (MarkerItem) getIntent()
                 .getSerializableExtra(Constant.EXTRA_KEY_MARKER_ITEM);
-        markerItem = DBHelper.getMarkerItemInDB(wrongItem);
+        dbPath = (String) getIntent().getSerializableExtra(Constant.EXTRA_KEY_DBPATH);
+        markerItem = DBHelper.getMarkerItemInDB(dbPath,wrongItem.getMarkerId());
         requestCode = getIntent().getIntExtra(Constant.EXTRA_KEY_REQUEST_CODE,
                 GaodePrjEditActivity.REQUEST_CODE_MARKER_ACTIVITY);
 
@@ -97,6 +100,9 @@ public class GaodeMarkerActivity extends GaodeBaseActivity {
         if (markerItem != null && markerItem.getLatitude() != 0 && markerItem.getLongitude() != 0) {
             super.animateToPoint(markerItem.getGaodeLatLng());
         } else {
+            markerItem = new MarkerItem();
+            SQLiteDatabase db = DBHelper.openDatabase(dbPath);
+            DBHelper.insertMarkerItem(db,markerItem);
             initLocate();
 //            animateToMyLocation();
             Intent intent = getIntent();
@@ -129,7 +135,7 @@ public class GaodeMarkerActivity extends GaodeBaseActivity {
                     double latitude = MarkerHelper.getLatitude(etLatitude);
                     double longitude = MarkerHelper.getLongitude(etLongitude);
                     //double wgsLatlng[] = PositionUtil.gcj_To_Gps84(latitude, longitude);
-                    markerItem.changeData(new double[]{latitude, longitude});
+                    markerItem.changeData(new double[]{latitude, longitude},dbPath);
                     //返回
                     EventBus.getDefault().post(new MarkerEditEvent(MarkerEditEvent.BackState.CHANGED));
                     //退出
@@ -170,32 +176,32 @@ public class GaodeMarkerActivity extends GaodeBaseActivity {
 
             @Override
             public void onCameraChangeFinish(CameraPosition cameraPosition) {
-                //数字地图已经加载 且 switch为开
-                if (digitalMapHolder != null) {
+//                //数字地图已经加载 且 switch为开
+//                if (digitalMapHolder != null) {
+//                    //如果放大到16以上
+//                    if (cameraPosition.zoom > GaodeMapCons.zoomLevel) {
+//                        //Timber.e("放大到16以上了");
+//                        if (!isDigitalMapTextShowed) {
+//                            digitalMapHolder.drawText(getaMap());
+//                            isDigitalMapTextShowed = true;
+//                        }
+//                    } else if (cameraPosition.zoom < GaodeMapCons.zoomLevel) {
+//                        //Timber.e("缩小到16以下了");
+//                        digitalMapHolder.hideText();
+//                        isDigitalMapTextShowed = false;
+//                    }
+//                }
+                //如果 地图数据已经加载 且 switch为开
+                if (railWayHolder != null) {
                     //如果放大到16以上
-                    if (cameraPosition.zoom > GaodeMapCons.zoomLevel) {
-                        //Timber.e("放大到16以上了");
-                        if (!isDigitalMapTextShowed) {
-                            digitalMapHolder.drawText(getaMap());
-                            isDigitalMapTextShowed = true;
-                        }
-                    } else if (cameraPosition.zoom < GaodeMapCons.zoomLevel) {
-                        //Timber.e("缩小到16以下了");
-                        digitalMapHolder.hideText();
-                        isDigitalMapTextShowed = false;
-                    }
-                }
-                //如果 xml文件已经加载 且 switch为开
-                if (xmlParser != null) {
-                    //如果放大到16以上
-                    if (cameraPosition.zoom > GaodeMapCons.zoomLevel && !isXmlTextShowed) {
-                        xmlParser.drawText(getaMap());
-                        isXmlTextShowed = true;
+                    if (cameraPosition.zoom > GaodeMapCons.zoomLevel && !isMapTextShowed) {
+                        railWayHolder.drawText(getaMap());
+                        isMapTextShowed = true;
                         Timber.e(">>>> 16了");
-                    } else if (cameraPosition.zoom < GaodeMapCons.zoomLevel && isXmlTextShowed) {
+                    } else if (cameraPosition.zoom < GaodeMapCons.zoomLevel && isMapTextShowed) {
                         Timber.e("缩小到16以下了");
-                        xmlParser.hideText();
-                        isXmlTextShowed = false;
+                        railWayHolder.hideText();
+                        isMapTextShowed = false;
                     }
                 }
             }
@@ -209,25 +215,33 @@ public class GaodeMarkerActivity extends GaodeBaseActivity {
      */
     public void onEventMainThread(DrawMapDataEvent drawMapDataEvent) {
         //复制一份holder到当前activity
-        if(drawMapDataEvent.getDigitalMapHolder() != null) {
-            digitalMapHolder = new DigitalMapHolder();
-            digitalMapHolder.setTextList(drawMapDataEvent.getDigitalMapHolder().getTextList());
-            digitalMapHolder.setVectorList(drawMapDataEvent.getDigitalMapHolder().getVectorList());
-            digitalMapHolder.clearData();
+        if(drawMapDataEvent.getRailWayHolder()!=null){
+            railWayHolder = new GaodeRailWayHolder(drawMapDataEvent.getRailWayHolder()
+                    .getLineList(),drawMapDataEvent.getRailWayHolder().getTextList(),
+                    drawMapDataEvent.getRailWayHolder().getVectorList());
         }
-        if(drawMapDataEvent.getXmlParser() != null) {
-            xmlParser = new XmlParser();
-            xmlParser.setTextList(drawMapDataEvent.getXmlParser().getTextList());
-            xmlParser.setLineList(drawMapDataEvent.getXmlParser().getLineList());
-            xmlParser.setVectorList(drawMapDataEvent.getXmlParser().getVectorList());
-            xmlParser.clearData();
+        if(railWayHolder !=null){
+            railWayHolder.drawLine(getaMap());
         }
-        if(digitalMapHolder != null){
-            digitalMapHolder.drawLine(getaMap());
-        }
-        if(xmlParser != null){
-            xmlParser.drawLine(getaMap());
-        }
+//        if(drawMapDataEvent.getDigitalMapHolder() != null) {
+//            digitalMapHolder = new DigitalMapHolder();
+//            digitalMapHolder.setTextList(drawMapDataEvent.getDigitalMapHolder().getTextList());
+//            digitalMapHolder.setVectorList(drawMapDataEvent.getDigitalMapHolder().getVectorList());
+//            digitalMapHolder.clearData();
+//        }
+//        if(drawMapDataEvent.getXmlParser() != null) {
+//            xmlParser = new XmlParser();
+//            xmlParser.setTextList(drawMapDataEvent.getXmlParser().getTextList());
+//            xmlParser.setLineList(drawMapDataEvent.getXmlParser().getLineList());
+//            xmlParser.setVectorList(drawMapDataEvent.getXmlParser().getVectorList());
+//            xmlParser.clearData();
+//        }
+//        if(digitalMapHolder != null){
+//            digitalMapHolder.drawLine(getaMap());
+//        }
+//        if(xmlParser != null){
+//            xmlParser.drawLine(getaMap());
+//        }
     }
 
     /**
@@ -248,6 +262,7 @@ public class GaodeMarkerActivity extends GaodeBaseActivity {
             markerItem.setAntennaDirection2(event.getMarkerItem().getAntennaDirection2());
             markerItem.setAntennaDirection3(event.getMarkerItem().getAntennaDirection3());
             markerItem.setAntennaDirection4(event.getMarkerItem().getAntennaDirection4());
+            markerItem.save(dbPath);
         }
     }
 
@@ -269,7 +284,7 @@ public class GaodeMarkerActivity extends GaodeBaseActivity {
                     finish();
                     return true;
                 }
-                markerItem.delete();
+                markerItem.delete(dbPath);
                 EventBus.getDefault().post(new MarkerEditEvent(MarkerEditEvent.BackState.UNCHANGED));
                 finish();
                 break;
@@ -283,8 +298,8 @@ public class GaodeMarkerActivity extends GaodeBaseActivity {
             finish();
             return;
         }
-        //如果直接想返回---需要删除提前在数据库中保存的数据
-        markerItem.delete();
+//        //如果直接想返回---需要删除提前在数据库中保存的数据
+        markerItem.delete(dbPath);
         EventBus.getDefault().post(new MarkerEditEvent(MarkerEditEvent.BackState.UNCHANGED));
         super.onBackPressed();
     }

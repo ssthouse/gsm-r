@@ -1,16 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="56dp"
-    android:paddingLeft="8dp"
-    android:paddingRight="8dp"
-    android:orientation="vertical">
+              android:layout_width="match_parent"
+              android:layout_height="56dp"
+              android:orientation="horizontal"
+              android:paddingLeft="8dp"
+              android:paddingRight="8dp">
+
+    <CheckBox
+        android:id="@+id/id_cb_prj_name"
+        android:layout_width="56dp"
+        android:layout_height="56dp"
+        android:clickable="false"
+        android:focusable="false"
+        android:focusableInTouchMode="false"
+        android:visibility="gone"/>
 
     <TextView
-        android:textSize="@dimen/text_size_normal"
-        android:gravity="left|center_vertical"
-        android:paddingLeft="12dp"
         android:id="@+id/id_tv_prj_name"
         android:layout_width="match_parent"
-        android:layout_height="56dp" />
+        android:layout_height="56dp"
+        android:gravity="left|center_vertical"
+        android:textSize="@dimen/text_size_normal"/>
 </LinearLayout>

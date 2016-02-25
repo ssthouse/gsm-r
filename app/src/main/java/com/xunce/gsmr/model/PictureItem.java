@@ -19,17 +19,17 @@ public class PictureItem{
     /**
      * 工程名
      */
-    //@Column(name = PictureItemCons.column_prjname)
+    //@Column(name = PictureItemCons.photo_column_prjname)
     private String prjName;
     /**
      * 照片路径的文件名
      */
-    //@Column(name = PictureItemCons.column_maker_id)
+    //@Column(name = PictureItemCons.photo_column_maker_id)
     private String makerId;
     /**
      * 照片数据
      */
-    //@Column(name = PictureItemCons.column_blob)
+    //@Column(name = PictureItemCons.photo_column_blob)
     private Bitmap photoData;
 
     /**
@@ -74,8 +74,8 @@ public class PictureItem{
      */
     public PictureItem(MarkerItem markerItem, Bitmap bitmap) {
         super();
-        this.prjName = markerItem.getPrjName();
-        this.makerId = markerItem.getPhotoPathName();
+        this.prjName = markerItem.getId();
+        this.makerId = markerItem.getMarkerId();
         ByteArrayOutputStream os = new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.PNG, 100, os);
 //        this.photoData = os.toByteArray();

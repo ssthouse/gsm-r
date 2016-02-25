@@ -1,8 +1,10 @@
 package com.xunce.gsmr.lib.kmlParser;
 
+import android.content.Context;
 import android.util.Log;
 
 import com.amap.api.maps.AMap;
+import com.xunce.gsmr.util.DBHelper;
 
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
@@ -43,10 +45,18 @@ public class KMLParser extends DefaultHandler {
         }
     }
 
+    public KMLParser(Context context ,String dbPath)
+    {
+        polyList = DBHelper.getKMLPolyInDB(dbPath);
+        textList = DBHelper.getKMLTextInDB(dbPath);
+    }
+
     public void draw(AMap amap){
+        if (textList !=null && textList.size() !=0)
         for(KmlData data : textList){
             data.draw(amap);
         }
+        if (polyList!=null && polyList.size() !=0)
         for(KmlData data : polyList){
             data.draw(amap);
         }

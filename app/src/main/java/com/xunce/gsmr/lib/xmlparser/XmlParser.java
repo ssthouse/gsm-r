@@ -1,6 +1,7 @@
 package com.xunce.gsmr.lib.xmlparser;
 
 import android.content.Context;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.AsyncTask;
 import android.util.Log;
 
@@ -12,6 +13,8 @@ import com.xunce.gsmr.model.event.ProgressbarEvent;
 import com.xunce.gsmr.model.gaodemap.graph.Line;
 import com.xunce.gsmr.model.gaodemap.graph.Point;
 import com.xunce.gsmr.model.gaodemap.graph.Text;
+import com.xunce.gsmr.model.gaodemap.graph.Vector;
+import com.xunce.gsmr.util.DBHelper;
 import com.xunce.gsmr.util.gps.PositionUtil;
 import com.xunce.gsmr.util.view.ToastHelper;
 
@@ -47,14 +50,14 @@ public class XmlParser extends DefaultHandler {
     private Line line;
     private Text text;
     private com.xunce.gsmr.model.gaodemap.graph.Vector vector;
-
+    private String dbPath;
     /**
      * 从xml中解析出来的数据
      */
     private List<Line> lineList = new ArrayList<>();
     private List<Text> textList = new ArrayList<>();
-    private List<com.xunce.gsmr.model.gaodemap.graph.Vector> vectorList = new ArrayList<>();
-
+    private List<com.xunce.gsmr.model.gaodemap.graph.Vector> polyList = new ArrayList<>();
+    private List<com.xunce.gsmr.model.gaodemap.graph.Vector> p2dpolyList = new ArrayList<>();
     /**
      * 当前解析的xml文件的路径
      */
@@ -74,9 +77,10 @@ public class XmlParser extends DefaultHandler {
      *
      * @param context
      */
-    public XmlParser(final Context context, final String xmlFilePath) {
+    public XmlParser(final Context context, final String xmlFilePath,final String dbPath) {
         this.context = context;
         this.xmlFilePath = xmlFilePath;
+        this.dbPath = dbPath;
         //开始解析xml文件
         parse();
     }
@@ -117,85 +121,85 @@ public class XmlParser extends DefaultHandler {
         }.execute();
     }
 
-    /**
-     * 将解析出来的数据画出来
-     */
-    public void draw(AMap aMap) {
-        for (Line line : lineList) {
-            line.draw(aMap);
-        }
-        for (Text text : textList) {
-            text.draw(aMap);
-        }
-        for (com.xunce.gsmr.model.gaodemap.graph.Vector vector : vectorList) {
-            vector.draw(aMap);
-        }
-    }
-
-    /**
-     * 仅仅画出文字
-     *
-     * @param aMap
-     */
-    public void drawText(AMap aMap) {
-        for (Text text : textList) {
-            text.draw(aMap);
-        }
-    }
-
-    /**
-     * 仅仅画出线段
-     *
-     * @param aMap
-     */
-    public void drawLine(AMap aMap) {
-        for (Line line : lineList) {
-            line.draw(aMap);
-        }
-        for (com.xunce.gsmr.model.gaodemap.graph.Vector vector : vectorList) {
-            vector.draw(aMap);
-            //Timber.e("我画了一条vector");
-        }
-    }
-
-    /**
-     * 将画好的图像隐藏
-     */
-    public void hide() {
-        for (Line line : lineList) {
-            line.hide();
-        }
-        for (Text text : textList) {
-            text.hide();
-        }
-        for (com.xunce.gsmr.model.gaodemap.graph.Vector vector : vectorList) {
-            vector.hide();
-        }
-    }
-
-    /**
-     * 隐藏文字
-     */
-    public void hideText() {
-        for (Text text : textList) {
-            text.hide();
-        }
-    }
-
-    /**
-     * 清除数据
-     */
-    public void clearData(){
-        for (Line line : lineList) {
-            line.setPolyline(null);
-        }
-        for (Text text : textList) {
-            text.setText(null);
-        }
-        for (com.xunce.gsmr.model.gaodemap.graph.Vector vector : vectorList) {
-            vector.setPolyline(null);
-        }
-    }
+//    /**
+//     * 将解析出来的数据画出来
+//     */
+//    public void draw(AMap aMap) {
+//        for (Line line : lineList) {
+//            line.draw(aMap);
+//        }
+//        for (Text text : textList) {
+//            text.draw(aMap);
+//        }
+//        for (com.xunce.gsmr.model.gaodemap.graph.Vector vector : vectorList) {
+//            vector.draw(aMap);
+//        }
+//    }
+//
+//    /**
+//     * 仅仅画出文字
+//     *
+//     * @param aMap
+//     */
+//    public void drawText(AMap aMap) {
+//        for (Text text : textList) {
+//            text.draw(aMap);
+//        }
+//    }
+//
+//    /**
+//     * 仅仅画出线段
+//     *
+//     * @param aMap
+//     */
+//    public void drawLine(AMap aMap) {
+//        for (Line line : lineList) {
+//            line.draw(aMap);
+//        }
+//        for (com.xunce.gsmr.model.gaodemap.graph.Vector vector : vectorList) {
+//            vector.draw(aMap);
+//            //Timber.e("我画了一条vector");
+//        }
+//    }
+//
+//    /**
+//     * 将画好的图像隐藏
+//     */
+//    public void hide() {
+//        for (Line line : lineList) {
+//            line.hide();
+//        }
+//        for (Text text : textList) {
+//            text.hide();
+//        }
+//        for (com.xunce.gsmr.model.gaodemap.graph.Vector vector : vectorList) {
+//            vector.hide();
+//        }
+//    }
+//
+//    /**
+//     * 隐藏文字
+//     */
+//    public void hideText() {
+//        for (Text text : textList) {
+//            text.hide();
+//        }
+//    }
+//
+//    /**
+//     * 清除数据
+//     */
+//    public void clearData(){
+//        for (Line line : lineList) {
+//            line.setPolyline(null);
+//        }
+//        for (Text text : textList) {
+//            text.setText(null);
+//        }
+//        for (com.xunce.gsmr.model.gaodemap.graph.Vector vector : vectorList) {
+//            vector.setPolyline(null);
+//        }
+//    }
 
     @Override
     public void startElement(String uri, String localName, String qName, Attributes attributes) throws SAXException {
@@ -223,7 +227,7 @@ public class XmlParser extends DefaultHandler {
             int order = Integer.parseInt(attributes.getValue(Vector.order));
             if (order == 0) {
                 if (vector != null && vector.getPointList().size() != 0) {
-                    vectorList.add(vector);
+                    p2dpolyList.add(vector);
                 }
                 vector = new com.xunce.gsmr.model.gaodemap.graph.Vector("");
             } else {
@@ -235,7 +239,7 @@ public class XmlParser extends DefaultHandler {
             int order = Integer.parseInt(attributes.getValue(Vector.order));
             if (order == 0) {
                 if (vector != null && vector.getPointList().size() != 0) {
-                    vectorList.add(vector);
+                    polyList.add(vector);
                 }
                 vector = new com.xunce.gsmr.model.gaodemap.graph.Vector("");
             } else {
@@ -250,7 +254,36 @@ public class XmlParser extends DefaultHandler {
         super.endElement(uri, localName, qName);
         if (Element.DATA.equals(localName)) {
             Timber.e("我添加了最后一个Vector");
-            vectorList.add(vector);
+            //Cad的数据中最后一条是P2dpoly
+            p2dpolyList.add(vector);
+            //读取完成后把所有读到的数据存到指定的数据库中
+            SQLiteDatabase db = DBHelper.openDatabase(dbPath);
+            for (Text text1 : textList) {
+                DBHelper.insertText(db,text1.getLatLng().longitude,text1.getLatLng().latitude,
+                        text1.getContent());
+            }
+            for (Line line1 : lineList) {
+                DBHelper.insertLine(db,line1.getLatLngBegin().longitude, line1.getLatLngBegin()
+                        .latitude,line1.getLatLngEnd().longitude,line1.getLatLngEnd().latitude);
+            }
+            int id =0;int orderId = 0;
+            for (com.xunce.gsmr.model.gaodemap.graph.Vector vector1 : polyList) {
+                for (Point point : vector1.getPointList()) {
+                    DBHelper.insertPoly(db,id,orderId,point.getLongitude(),point.getLatitude());
+                    orderId++;
+                }
+                orderId = 0;
+                id++;
+            }
+            orderId = 0;id = 0;
+            for (com.xunce.gsmr.model.gaodemap.graph.Vector vector1 : p2dpolyList) {
+                for (Point point : vector1.getPointList()) {
+                    DBHelper.insertPoly(db,id,orderId,point.getLongitude(),point.getLatitude());
+                    orderId++;
+                }
+                orderId = 0;
+                id++;
+            }
         }
     }
 
@@ -338,11 +371,19 @@ public class XmlParser extends DefaultHandler {
         this.textList = textList;
     }
 
-    public List<com.xunce.gsmr.model.gaodemap.graph.Vector> getVectorList() {
-        return vectorList;
+    public List<com.xunce.gsmr.model.gaodemap.graph.Vector> getPolyList() {
+        return polyList;
     }
 
-    public void setVectorList(List<com.xunce.gsmr.model.gaodemap.graph.Vector> vectorList) {
-        this.vectorList = vectorList;
+    public void setPolyList(List<com.xunce.gsmr.model.gaodemap.graph.Vector> polyList) {
+        this.polyList = polyList;
+    }
+
+    public List<com.xunce.gsmr.model.gaodemap.graph.Vector> getP2dpolyList() {
+        return p2dpolyList;
+    }
+
+    public void setP2dpolyList(List<com.xunce.gsmr.model.gaodemap.graph.Vector> p2dpolyList) {
+        this.p2dpolyList = p2dpolyList;
     }
 }

@@ -1,10 +1,12 @@
 package com.xunce.gsmr.lib.markerParser;
 
 import android.content.Context;
+import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
 import com.xunce.gsmr.kilometerMark.KilometerMarkHolder;
 import com.xunce.gsmr.model.MarkerItem;
+import com.xunce.gsmr.util.DBHelper;
 import com.xunce.gsmr.util.view.ToastHelper;
 
 import org.xml.sax.Attributes;
@@ -79,7 +81,8 @@ public class XmlMarkerParser extends DefaultHandler {
     /**
      * 设置解析出来的MarkerItem的prjName
      */
-    public void saveMarkerItem(String prjName, KilometerMarkHolder kilometerMarkHolder) {
+    public void saveMarkerItem(String prjName, KilometerMarkHolder kilometerMarkHolder ,String
+            DBpath) {
         //必须先加载好了Xml文件
         if (kilometerMarkHolder == null) {
             ToastHelper.show(context, "请先加载cad文件（.xml）");
@@ -88,6 +91,8 @@ public class XmlMarkerParser extends DefaultHandler {
         //首先要看数据能不能计算出经纬度--不能的就不添加将marker
         int addCount = 0;
         int failCount = 0;
+        SQLiteDatabase db = DBHelper.openDatabase(DBpath);
+        db.beginTransaction();
         for (MarkerItem markerItem : markerItemList) {
             //判断数据是否可用
             if (kilometerMarkHolder.isDataValid(markerItem.getKilometerMark(),
@@ -97,15 +102,18 @@ public class XmlMarkerParser extends DefaultHandler {
                         markerItem.getSideDirection(), markerItem.getDistanceToRail());
                 markerItem.setLongitude(position[1]);
                 markerItem.setLatitude(position[0]);
-                markerItem.setPrjName(prjName);
+                markerItem.setId(prjName);
                 //正式将数据写入数据库
-                markerItem.save();
+                DBHelper.insertMarkerItem(db,markerItem);
                 //计数加一
                 addCount++;
             } else {
                 failCount++;
             }
         }
+        db.setTransactionSuccessful();
+        db.endTransaction();
+        db.close();
         ToastHelper.show(context, addCount + "个标记点添加到当前工程中");
         ToastHelper.show(context, failCount + "个标记点因格式不符无法添加");
     }

@@ -20,9 +20,15 @@ public class Constant {
 
     //table名
     public static final String TABLE_PRJ_ITEM = "Projects";
-    public static final String TABLE_MARKER_ITEM = "Markers";
-    public static final String TABLE_PHOTO_ITEM = "Photos";
-    public static final String TABLE_PICTURE_ITEM = "Pictures";
+    public static final String TABLE_MARKER_ITEM = "BaseStation";
+    public static final String TABLE_PICTURE_ITEM = "Photo";
+    public static final String TABLE_PROJECT_INFO = "ProjectInfo";
+    public static final String TABLE_POLY = "Poly";
+    public static final String TABLE_P2DPOLY = "P2DPoly";
+    public static final String TABLE_TEXT = "Text";
+    public static final String TABLE_LINE = "Line";
+    public static final String TABLE_KML_POLY = "KMLPoly";
+    public static final String TABLE_KML_TEXT = "KMLText";
 
     //Extra的key
     public static final String EXTRA_KEY_PRJ_ITEM = "prjItem";
@@ -30,7 +36,7 @@ public class Constant {
     public static final String EXTRA_KEY_REQUEST_CODE = "requestCode";
     public static final String EXTRA_KEY_LATITUDE = "latitude";
     public static final String EXTRA_KEY_LONGITUDE = "longitude";
-
+    public static final String EXTRA_KEY_DBPATH = "dbPath";
 
     //result_code
     public static final int RESULT_CODE_OK = 2000;
@@ -40,5 +46,7 @@ public class Constant {
 
     //.db文件的requestCode
     public static final int REQUEST_CODE_DB_FILE = 2004;
+
+
 
 }

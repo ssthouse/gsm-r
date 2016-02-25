@@ -1,5 +1,7 @@
 package com.xunce.gsmr.model.baidumap;
 
+import android.database.sqlite.SQLiteDatabase;
+
 import com.baidu.mapapi.map.BaiduMap;
 import com.baidu.mapapi.map.BitmapDescriptor;
 import com.baidu.mapapi.map.BitmapDescriptorFactory;
@@ -71,7 +73,10 @@ public class MarkerHolder {
         markerList.clear();
         markerItemList.clear();
         //初始化markerList
-        markerItemList = DBHelper.getMarkerList(prjItem);
+        SQLiteDatabase db = SQLiteDatabase.openDatabase(prjItem.getDbLocation(),null,
+                SQLiteDatabase.OPEN_READWRITE);
+        markerItemList = DBHelper.getMarkerList(db);
+        db.close();
         for (int i = 0; i < markerItemList.size(); i++) {
             LatLng latLng = markerItemList.get(i).getBaiduLatLng();
             OverlayOptions redOverlay = new MarkerOptions()

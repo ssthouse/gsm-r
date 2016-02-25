@@ -35,65 +35,65 @@ public class FileHelper {
     /**
      * 将app的数据打包发出去
      */
-    public static void sendZipFile(final Context context) {
-        EventBus.getDefault().post(new CompressFileEvent(CompressFileEvent.Event.BEGIN));
-        new AsyncTask<Void, Void, Void>() {
-            @Override
-            protected Void doInBackground(Void... params) {
-                try {
-                    //将sd卡中不属于当前项目的文件删除
-                    deleteNoneUseFile();
-                    //首先压缩文件
-                    String srcPath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/GSM/Picture";
-                    String outputPath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/GSM_输出.zip";
-                    //首先将数据库文件复制到当前路径下
-                    FileHelper.copyFile(new FileInputStream(context.getDatabasePath(DBHelper.DB_NAME)),
-                            srcPath + "/" + DBHelper.DB_NAME);
-                    ZipUtil.zipFolder(srcPath, outputPath);
-                    //然后发送压缩文件
-                    Intent sendFileIntent = new Intent(Intent.ACTION_SEND);
-                    sendFileIntent.setType("*/*");
-                    sendFileIntent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(new File(outputPath)));
-                    context.startActivity(sendFileIntent);
-
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    Timber.e(e.getMessage());
-                    Timber.e("something is wrong");
-                }
-                return null;
-            }
-
-            @Override
-            protected void onPostExecute(Void aVoid) {
-                super.onPostExecute(aVoid);
-                String outputPath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/GSM_输出.zip";
-                ToastHelper.show(context, "文件发售给你成功\n 路径为：" + outputPath);
-                EventBus.getDefault().post(new CompressFileEvent(CompressFileEvent.Event.END));
-            }
-        }.execute();
-    }
+//    public static void sendZipFile(final Context context) {
+//        EventBus.getDefault().post(new CompressFileEvent(CompressFileEvent.Event.BEGIN));
+//        new AsyncTask<Void, Void, Void>() {
+//            @Override
+//            protected Void doInBackground(Void... params) {
+//                try {
+//                    //将sd卡中不属于当前项目的文件删除
+//                    //deleteNoneUseFile();
+//                    //首先压缩文件
+//                    String srcPath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/GSM/Picture";
+//                    String outputPath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/GSM_输出.zip";
+//                    //首先将数据库文件复制到当前路径下
+//                    FileHelper.copyFile(new FileInputStream(context.getDatabasePath(DBHelper.DB_NAME)),
+//                            srcPath + "/" + DBHelper.DB_NAME);
+//                    ZipUtil.zipFolder(srcPath, outputPath);
+//                    //然后发送压缩文件
+//                    Intent sendFileIntent = new Intent(Intent.ACTION_SEND);
+//                    sendFileIntent.setType("*/*");
+//                    sendFileIntent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(new File(outputPath)));
+//                    context.startActivity(sendFileIntent);
+//
+//                } catch (Exception e) {
+//                    e.printStackTrace();
+//                    Timber.e(e.getMessage());
+//                    Timber.e("something is wrong");
+//                }
+//                return null;
+//            }
+//
+//            @Override
+//            protected void onPostExecute(Void aVoid) {
+//                super.onPostExecute(aVoid);
+//                String outputPath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/GSM_输出.zip";
+//                ToastHelper.show(context, "文件发售给你成功\n 路径为：" + outputPath);
+//                EventBus.getDefault().post(new CompressFileEvent(CompressFileEvent.Event.END));
+//            }
+//        }.execute();
+//    }
 
     /**
      * 删除不必要的文件
      */
-    private static void deleteNoneUseFile() {
-        List<PrjItem> prjItemList = DBHelper.getPrjItemList();
-        List<String> prjNameList = new ArrayList<>();
-        for (PrjItem prjItem : prjItemList) {
-            prjNameList.add(prjItem.getPrjName());
-            Timber.e("找到一个工程名:\t" + prjItem.getPrjName());
-        }
-        //遍历文件夹
-        String srcPath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/GSM/Picture";
-        String files[] = new File(srcPath).list();
-        for (String filePath : files) {
-            File file = new File(srcPath+"/"+filePath);
-            if (!prjNameList.contains(file.getName()) && !file.getName().equals(DBHelper.DB_NAME)) {
-                deleteFile(file);
-            }
-        }
-    }
+//    private static void deleteNoneUseFile() {
+//        List<PrjItem> prjItemList = DBHelper.getPrjItemList();
+//        List<String> prjNameList = new ArrayList<>();
+//        for (PrjItem prjItem : prjItemList) {
+//            prjNameList.add(prjItem.getId());
+//            Timber.e("找到一个工程名:\t" + prjItem.getId());
+//        }
+//        //遍历文件夹
+//        String srcPath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/GSM/Picture";
+//        String files[] = new File(srcPath).list();
+//        for (String filePath : files) {
+//            File file = new File(srcPath+"/"+filePath);
+//            if (!prjNameList.contains(file.getName()) && !file.getName().equals(DBHelper.DB_NAME)) {
+//                deleteFile(file);
+//            }
+//        }
+//    }
 
     //递归删除文件夹
     private static void deleteFile(File file) {
@@ -145,14 +145,14 @@ public class FileHelper {
      * @param context        上下文
      * @param bitmapItemList bitmapItem的list
      */
-    public static void sendPicture(Context context, SQLiteDatabase db, List<BitmapItem>
+    public static void sendPicture(Context context, String dbPath, List<BitmapItem>
             bitmapItemList) {
         Intent intent = new Intent(android.content.Intent.ACTION_SEND_MULTIPLE);
         ArrayList<Uri> uriList = new ArrayList<>();
         //获取对应TourItem的文件的URL
         for (BitmapItem item : bitmapItemList) {
             //将原图片从数据库中取出存放至临时文件夹并发送
-            uriList.add(DBHelper.selectPicture(db,PictureHelper.getNameFromPath(item.getPath())));
+            uriList.add(DBHelper.selectPicture(dbPath,PictureHelper.getNameFromPath(item.getPath())));
 //            File file = new File(item.getPath());
 //            uriList.add(Uri.fromFile(file));
         }
@@ -162,29 +162,42 @@ public class FileHelper {
         context.startActivity(Intent.createChooser(intent, "Share　Image"));
     }
 
+//    /**
+//     * 将本地的数据库文件发送出去
+//     *
+//     * @param context
+//     */
+//    public static void sendDbFile(Activity context) {
+//        File tempDbFile = new File(Constant.TEMP_FILE_PATH, DBHelper.DB_NAME);
+//        try {
+//            tempDbFile.createNewFile();
+//        } catch (IOException e) {
+//            Timber.e("create new file is wrong");
+//            e.printStackTrace();
+//        }
+//        try {
+//            copyFile(new FileInputStream(new File(context.getDatabasePath(DBHelper.DB_NAME)
+//                            .getAbsolutePath()))
+//                    , tempDbFile.getAbsolutePath());
+//        } catch (FileNotFoundException e) {
+//            e.printStackTrace();
+//            Timber.e("copy file wrong");
+//        }
+//        Intent intent = new Intent(Intent.ACTION_SEND);
+//        intent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(tempDbFile));
+//        intent.setType("*/*");
+//        context.startActivity(intent);
+//    }
+
     /**
-     * 将本地的数据库文件发送出去
-     *
+     * 根据路径发送db文件
      * @param context
+     * @param path DB文件存放的路径
      */
-    public static void sendDbFile(Activity context) {
-        File tempDbFile = new File(Constant.TEMP_FILE_PATH, DBHelper.DB_NAME);
-        try {
-            tempDbFile.createNewFile();
-        } catch (IOException e) {
-            Timber.e("create new file is wrong");
-            e.printStackTrace();
-        }
-        try {
-            copyFile(new FileInputStream(new File(context.getDatabasePath(DBHelper.DB_NAME)
-                            .getAbsolutePath()))
-                    , tempDbFile.getAbsolutePath());
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-            Timber.e("copy file wrong");
-        }
+    public static void sendDbFile (Activity context,String path){
+        File dbFile = new File(path);
         Intent intent = new Intent(Intent.ACTION_SEND);
-        intent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(tempDbFile));
+        intent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(dbFile));
         intent.setType("*/*");
         context.startActivity(intent);
     }

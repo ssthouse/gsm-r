@@ -13,19 +13,20 @@ import java.util.List;
  * Kml文件解析出的数据
  * Created by ssthouse on 2015/11/25.
  */
-class KmlData {
+public class KmlData {
     private String name;
     private String longitude;
     private String latitude;
     private String styleUrl;
 
-    private static final String POLY_STYLE = "#polystyle";
-    private static final String TEXT_STYLE = "#msn_shaded_dot";
+    public static final String POLY_STYLE = "#polystyle";
+    public static final String TEXT_STYLE = "#msn_shaded_dot";
 
     /**
      * 蝴蝶形状的所有点
      */
     private List<GpsPoint> pointList = new ArrayList<>();
+
 
     /**
      * 在地图上画出多边形

@@ -6,7 +6,6 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
@@ -28,7 +27,6 @@ import com.xunce.gsmr.model.MarkerItem;
 import com.xunce.gsmr.util.DBHelper;
 import com.xunce.gsmr.util.FileHelper;
 import com.xunce.gsmr.util.PictureHelper;
-import com.xunce.gsmr.util.DBSqliteHelper;
 import com.xunce.gsmr.util.VibrateHelper;
 import com.xunce.gsmr.view.adapter.PicGridAdapter;
 import com.xunce.gsmr.view.style.TransparentStyle;
@@ -48,8 +46,7 @@ public class PicGridActivity extends AppCompatActivity {
     private MarkerItem markerItem;
     private static final String TAG = "PicGridActivity";
     private List<BitmapItem> selectedList = new ArrayList<>();
-    private DBSqliteHelper myHelper;
-    private SQLiteDatabase db;
+    private String dbPath;
 
     private GridView gv;
     private ImageButton btnAdd;
@@ -62,10 +59,12 @@ public class PicGridActivity extends AppCompatActivity {
     private boolean isInSelectMode = false;
     private Uri uri;
 
-    public static void start(Activity activity, MarkerItem markerItem, int requestCode) {
+    public static void start(Activity activity, MarkerItem markerItem,String dbPath, int
+            requestCode) {
         //从Marker中获取信息--找到Picture的目录---展示所有的图片
         Intent intent = new Intent(activity, PicGridActivity.class);
         intent.putExtra(Constant.EXTRA_KEY_MARKER_ITEM, markerItem);
+        intent.putExtra(Constant.EXTRA_KEY_DBPATH, dbPath);
         activity.startActivityForResult(intent, requestCode);
         activity.overridePendingTransition(R.anim.activity_fade_in, R.anim.activity_fade_out);
     }
@@ -75,9 +74,8 @@ public class PicGridActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pic_grid);
         TransparentStyle.setTransparentStyle(this, R.color.color_primary);
-        myHelper = new DBSqliteHelper(getBaseContext(), DBSqliteHelper.DB_NAME, null, 1);
+        dbPath = (String) getIntent().getSerializableExtra(Constant.EXTRA_KEY_DBPATH);
         //获取数据库对象
-        db = myHelper.getWritableDatabase();
         markerItem = (MarkerItem) getIntent().getSerializableExtra(Constant.EXTRA_KEY_MARKER_ITEM);
         if (markerItem == null) {
             Timber.e("卧槽...我竟然时空的");
@@ -92,7 +90,7 @@ public class PicGridActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        adapter = new PicGridAdapter(this, db, markerItem);
+        adapter = new PicGridAdapter(this, dbPath, markerItem);
         gv.setAdapter(adapter);
     }
 
@@ -120,7 +118,7 @@ public class PicGridActivity extends AppCompatActivity {
         btnShare.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                FileHelper.sendPicture(PicGridActivity.this,db, selectedList);
+                FileHelper.sendPicture(PicGridActivity.this,dbPath, selectedList);
             }
         });
 
@@ -223,7 +221,7 @@ public class PicGridActivity extends AppCompatActivity {
             public void onClick(View v) {
                 for (BitmapItem item : selectedList) {
                     PictureHelper.deletePicture(item.getPath());
-                    DBHelper.deletePicture(db,PictureHelper.getNameFromPath(item.getPath()));
+                    DBHelper.deletePicture(dbPath,PictureHelper.getNameFromPath(item.getPath()));
                 }
                 adapter.notifyDataSetChanged();
                 selectedList.clear();
@@ -264,7 +262,7 @@ public class PicGridActivity extends AppCompatActivity {
                 PicGridActivity.this.findViewById(R.id.id_pb_empty).setVisibility(View.VISIBLE);
                 for (BitmapItem item : selectedList) {
                     PictureHelper.deletePicture(item.getPath());
-                    DBHelper.deletePicture(db,PictureHelper.getNameFromPath(item.getPath()));
+                    DBHelper.deletePicture(dbPath,PictureHelper.getNameFromPath(item.getPath()));
                 }
                 adapter.notifyDataSetChanged();
                 selectedList.clear();
@@ -330,9 +328,8 @@ public class PicGridActivity extends AppCompatActivity {
                 if (bitmap != null) {
                     //将照片保存到数据库
                     ByteArrayOutputStream os = new ByteArrayOutputStream();
-                    bitmap.compress(Bitmap.CompressFormat.JPEG, 30, os);
-                    DBHelper.insertPicture(db, markerItem.getPrjName(), markerItem
-                                    .getPhotoPathName(),picName,
+                    bitmap.compress(Bitmap.CompressFormat.JPEG, 60, os);
+                    DBHelper.insertPicture(dbPath, markerItem.getMarkerId(),picName,
                             os.toByteArray());
                     //将缩略图保存到临时文件夹
                     bitmap = PictureHelper.getSmallBitmap(uri.getPath(), 120, 120);
@@ -345,7 +342,7 @@ public class PicGridActivity extends AppCompatActivity {
             PicGridActivity.this.findViewById(R.id.id_pb_empty).setVisibility(View.VISIBLE);
             //更新界面
             if(adapter ==null){
-                adapter = new PicGridAdapter(this, db, markerItem);
+                adapter = new PicGridAdapter(this, dbPath, markerItem);
                 gv.setAdapter(adapter);
             }
             adapter.addPicture();

@@ -20,7 +20,7 @@
         android:layout_height="56dp"
         android:background="@drawable/selector_btn_white_2_blue"
         android:gravity="center"
-        android:text="编辑"
+        android:text="发送"
         android:textColor="@drawable/selector_text_black_2_white"
         android:textSize="@dimen/text_size_normal" />
 
